@@ -1,81 +1,66 @@
 # AI Business Growth Platform
 
-Implementation of [PRD.md](PRD.md). This repository currently covers **Phase 1 (Foundation)** and **Phase 2 (Website)** of the delivery sequence in PRD §16.
+An implementation of [PRD.md](PRD.md). Business owners create a profile and website from facts they confirm, capture enquiries, improve their pages through an approval workflow, and see how supported AI answers mention or cite them. Every number opens the evidence behind it.
+
+All six build phases from PRD §16 are implemented. Phase 0 (provider feasibility) needs real API keys and is an operator task, described in [docs/providers.md](docs/providers.md).
 
 ## Quick start
 
 ```bash
 npm install
-cp .env.example .env.local   # optional; defaults work locally
-npm run dev                  # http://localhost:3000
+npm run dev            # http://localhost:3000
 ```
 
-No database setup is needed locally. The app uses embedded Postgres ([PGlite](https://pglite.dev)) stored in `.data/`, and migrations run automatically on first use. Delete `.data/` to start fresh.
+No database or accounts are needed locally. The app uses embedded Postgres ([PGlite](https://pglite.dev)) in `.data/`, and migrations apply automatically, including new ones while the dev server is running. Sign in with any email: without an email provider, the sign-in link appears on the login page, labelled "Development only". Delete `.data/` to start fresh.
 
-Sign in with any email address. In development the sign-in link prints to the server console and appears on the login page, labelled "Development only".
+To open the admin console locally, start with `ADMIN_EMAILS=you@example.com npm run dev`.
 
 ```bash
-npm test           # domain tests against an in-memory Postgres
-npm run typecheck
-npm run lint
-npm run build
-npm run seed:dev   # optional: a demo owner with a published site in the dev DB (prints a session cookie)
+npm test               # 64 tests against an in-memory Postgres
+npm run typecheck && npm run lint && npm run build
+npm run seed:dev       # optional demo owner with a published site
 ```
 
-## What works
+All configuration is documented in [.env.example](.env.example).
 
-| Area | Status |
+## What's in each phase
+
+| Phase | Delivered |
 | --- | --- |
-| Email magic-link sign in, sessions, sign out everywhere | ✅ single-use hashed tokens; the token is consumed by POST so link scanners can't use it up |
-| Workspaces and roles (owner / editor / viewer) | ✅ checked on the server for every read and write |
-| Onboarding steps 1–6 | ✅ saved after each step, resumes where you left off, can go back |
-| My Business (facts, hours, services, areas, address visibility) | ✅ version precondition; contact changes need re-confirmation before publishing |
-| Public directory and profile pages | ✅ public routes read only the published projection; JSON-LD built only from supplied facts |
-| One-click website generation | ✅ deterministic, from confirmed facts only; idempotent job record (queued → generating → validating → ready/failed) |
-| Block editor | ✅ autosave, reorder, remove, colours with contrast warning, SEO fields, rewrite a single section |
-| Preview / publish / rollback / unpublish | ✅ private noindex preview; immutable content-hashed versions; publish checks the reviewed draft revision |
-| Site address (slug) | ✅ reserved and blocked names; old addresses redirect |
-| Lead capture | ✅ honeypot, rate limits, works without JavaScript; leads list, status, notes, CSV export (formula-safe) |
-| Data export | ✅ full JSON export (business, profile, draft, versions, leads) |
-| AI Visibility | ⏸ honest "Not connected" for all four providers (`src/lib/providers.ts`); suggested questions with branded ones kept separate. No observations, scores or demo data. |
-| Improve My Business | ⏸ suggestions from missing facts only; audits come in Phase 4 |
-| PWA | ✅ manifest and icons; no offline service worker yet |
+| **1 Foundation** | Magic-link sign-in. Hashed single-use tokens, consumed by POST so email link scanners can't use them up. Sessions, including sign out everywhere. Workspaces with owner, editor and viewer roles enforced in the server data layer. Six-step onboarding with per-step save and resume. Business facts with version preconditions. Public and private field separation. Directory and profile pages with JSON-LD built only from supplied facts. |
+| **2 Website** | Deterministic site generation that never invents claims. Idempotent jobs that retry safely after failure. Block editor with autosave, reordering, per-section regeneration, a colour contrast warning, and photo uploads checked by file signature (no SVG). Privacy page draft. Private noindex preview. Immutable content-hashed versions with publish, rollback and unpublish. Slugs with reserved names and redirects. Custom domains with TXT and CNAME verification, served from a separate origin. Lead capture with honeypot and rate limits that works without JavaScript; lead inbox and CSV export. Team invitations, roles, last-owner protection and ownership transfer. Ownership claims by DNS, file or manual review, with dispute handling. English and Hindi interface. |
+| **3 Visibility** | Owner-approved tracked questions, with branded questions kept separate. Competitors. Adapters for ChatGPT (OpenAI Responses), Perplexity (Sonar), Gemini (Search grounding) and Claude (Messages + web search), each off until validated. Raw evidence stored unchanged. Brand and citation extraction with flags for uncertain matches. Mention rate, citation rate, competitor share and coverage, always showing numerator and denominator. Small-sample warnings. Comparisons using only matched question and source pairs. Evidence screen and owner corrections that never edit raw answers. CSV export. Weekly scheduling and resumable runs. Credits reserved atomically and charged only for valid answers. |
+| **4 Improvements** | SSRF-safe crawler: blocks private networks, cloud metadata and DNS rebinding; respects robots.txt; bounded in pages, bytes and time. Versioned checklist covering facts, technical access, content, structured data, and partial accessibility checks. Tasks with evidence, a hypothesis and an editable draft. Full workflow: detected → proposed → owner edited → approved → queued → applied → verified, plus rejected, failed and rolled back. Edits invalidate approvals, and placeholders block approval. Hosted-site changes are applied to the draft and verified once published. Downloadable fixes and off-site checklists. |
+| **5 Paid pilot** | Plans and entitlements (enforcement switchable). Hosted checkout through a replaceable adapter: Razorpay, or a local test mode. Signed webhooks deduplicated by event id. Allowance credits once per billing period. Grace period on failed payment, with content never deleted for non-payment. Downgrades at period end and cancellation. Lead alerts and opt-in weekly summaries with signed unsubscribe links. Website and account deletion as separate actions with a 14-day recovery window. Admin console covering moderation, disputes, failed work, provider health, time-boxed and reasoned support access, and credit adjustments, all audited. Runbooks, backup and restore scripts. |
+| **6 Expansion** | WordPress connector: application password for an Editor-role user (administrators refused), encrypted at rest. Owner picks the page and previews the exact escaped HTML. Revision check before writing; rollback only if the page is unchanged. Multiple workspaces per user, a workspace switcher and portfolio view, and agency workspace limits. Installable PWA with an offline page. |
+
+**Not built (by design or out of scope):** native iOS and Android apps (PRD: "after pilot evidence"; the PWA covers mobile), connectors for CMSs other than WordPress, white-label agency reporting, domain purchasing, and reviews (the PRD keeps them disabled until moderation exists).
 
 ## Architecture
 
 ```
-src/
-  db/schema.ts        Drizzle schema (Postgres). Every private row carries workspace_id.
-  db/index.ts         PGlite locally / postgres-js when DATABASE_URL is set
-  server/*            Domain layer: plain functions taking an explicit tenant Ctx. No Next.js imports, fully unit-tested.
-  lib/site/*          Site content schema (zod) and the deterministic generator
-  lib/auth/*          Cookie session (DAL entry point: requireCtx) and the mail adapter
-  app/                Next.js 16 App Router: owner app (/app), onboarding, directory (/directory, /b/[slug]),
-                      hosted sites (/s/[slug]), auth
-  proxy.ts            Rewrites <slug>.<SITES_ROOT_DOMAIN> to /s/<slug>; redirects signed-out users away from /app
-drizzle/              SQL migrations (generate with `npm run db:generate`)
-tests/                Vitest: tenant isolation, roles, idempotency, publish/rollback, slugs, privacy
+src/db/              Drizzle schema + driver (PGlite locally, Postgres via DATABASE_URL)
+src/server/          Domain layer — plain functions taking an explicit tenant Ctx; no Next.js imports
+  monitoring/        provider adapters, extraction, metrics, runs
+  audit/             crawler, checklist, task templates, workflow
+  billing/           plans, payment adapters, webhook processing
+src/lib/             validation, site content schema + generator, auth/session, i18n
+src/app/             Next.js 16 App Router: /app (owner), /admin, /s/[slug] + /d/[host] (sites),
+                     /directory, /b/[slug], /api/cron/*, /api/webhooks/payments/[provider]
+src/proxy.ts         separates customer-site origins from the app; optimistic auth redirect
+drizzle/             SQL migrations     docs/       providers, deployment, runbooks
+tests/               phase-by-phase domain tests
 ```
 
-Key rules the code enforces (with tests in `tests/domain.test.ts`):
-- The workspace always comes from the session, never from the request. Every query filters by `workspace_id`.
-- Draft edits can't change server-owned facts. Facts are refreshed from My Business when you publish.
-- A publish binds an immutable version in one transaction, and it fails if the draft changed after review.
-- A failed generation never replaces the existing draft. A retry reuses the same job, so it isn't counted twice.
-- Generated copy uses only owner-supplied facts: no years in business, reviews, prices, credentials or guarantees.
+**Rules the code enforces** (each has tests): the workspace always comes from the session, never from the request; publishing binds a reviewed revision atomically; failed jobs keep earlier work and are never charged twice; generated content uses only confirmed facts; unsupported providers produce no data; raw evidence is never modified; a duplicate payment webhook changes nothing.
 
 ## Deviations from the PRD's proposed stack
 
-- **Auth:** this repo has its own magic-link sessions instead of Supabase Auth, so it runs without external credentials. Tenant isolation is enforced in the server data layer. **Before production on Supabase:** either switch to Supabase Auth or add row-level security (RLS) policies that set the workspace in the session, so the database also enforces isolation (PRD §03).
-- **Jobs:** generation runs inside the request, but its state and attempts are recorded on a durable `jobs` row. Move it to a queue worker (for example Vercel Queues) when AI-assisted drafting or crawling is added.
+- **Auth:** the app has its own magic-link sessions instead of Supabase Auth, so it runs without credentials. Isolation is enforced in the data layer and covered by tests. If you deploy on Supabase, also add row-level security (RLS) policies keyed on `workspace_id` as defence in depth.
+- **Jobs:** background work runs through `after()`, with durable state rows (`jobs`, `monitoring_runs`, `audits`). Hourly and daily crons resume and schedule work. For higher volume, move execution to a queue (for example Vercel Queues); the run functions are already idempotent.
 - **Rate limiting** is in-process. Use a shared store before running more than one instance.
-- **Customer-site origin:** set `SITES_ROOT_DOMAIN` to serve sites from their own origin. Without it they're served at `/s/<slug>` on the app origin, which is fine for development but not for production (PRD §08).
+- **Media** is stored on the local filesystem (`UPLOADS_DIR`). Use object storage in production.
 
-## Next slices (in PRD order)
+## Before launch
 
-1. Phase 2 remainder: team invitations, ownership claims (DNS/file verification), custom domains, media uploads to tenant-scoped storage, policy pages, English/Hindi interface copy.
-2. Phase 3: provider feasibility → adapters behind `PROVIDERS`, observation storage with raw evidence, metrics with numerator and denominator.
-3. Phase 4: SSRF-safe website scanner, audit checklist, approval workflow.
-4. Phase 5: billing adapter, credit reservations, usage ledger, admin console.
-
-Open decisions (PRD §17): product name, pilot categories, provider coverage, hosting and domain supplier, payment provider, trial allowance, retention policy.
+Work through [docs/deployment.md](docs/deployment.md) and [docs/acceptance.md](docs/acceptance.md). Open decisions from PRD §17: product name, pilot categories, which providers to validate, hosting and domain supplier, payment provider settings, plan prices, trial allowance, and retention policy. A native speaker should review the Hindi strings.

@@ -36,6 +36,13 @@
       "when": 1792702663397,
       "tag": "0004_phase5_billing_lifecycle_support",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792703069262,
+      "tag": "0005_phase6_integrations",
+      "breakpoints": true
     }
   ]
 }

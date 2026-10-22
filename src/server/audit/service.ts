@@ -6,7 +6,7 @@ import { siteContent } from "@/lib/site/content";
 import { requireBusiness } from "../business";
 import { AppError, audit as auditEvent, requireRole, type Ctx } from "../context";
 import { normalizeSiteUrl } from "../safe-fetch";
-import { applyToContent, contentReflects, hasPlaceholder, templateFor, type ApplyKind } from "./actions";
+import { applyToContent, contentReflects, hasPlaceholder, isHostedKind, templateFor, type ApplyKind } from "./actions";
 import { CHECKLIST_VERSION, externalChecks, hostedChecks, type CheckResult } from "./checks";
 import { crawlSite, type Fetcher } from "./crawl";
 
@@ -179,9 +179,10 @@ export async function applyAction(db: Db, ctx: Ctx, id: string) {
     if (a.status !== "approved" || a.approvedRevision !== a.draftRevision || a.approvedHash !== hash(a.draft)) {
       throw new AppError("precondition_failed", "This task needs approval of its current draft before it can be applied.");
     }
+    if (a.applyKind === "wordpress_append") throw new AppError("invalid", "Apply this through WordPress.");
     await tx.update(improvementActions).set({ status: "queued", updatedAt: new Date() }).where(eq(improvementActions.id, a.id));
     let before: unknown = null;
-    if (a.applyKind !== "manual") {
+    if (isHostedKind(a.applyKind)) {
       const [s] = await tx.select().from(sites).where(and(eq(sites.businessId, a.businessId), eq(sites.workspaceId, ctx.workspaceId))).for("update");
       if (!s) throw new AppError("not_found", "Create your website first.");
       const next = applyToContent(a.applyKind as ApplyKind, a.draft, s.draft);
@@ -209,7 +210,7 @@ export async function verifyAction(db: Db, ctx: Ctx, id: string, deps: { fetcher
   if (a.status !== "applied" && a.status !== "failed") throw new AppError("invalid", "Apply this task first.");
   let ok = false;
   let note = "";
-  if (a.applyKind !== "manual") {
+  if (isHostedKind(a.applyKind)) {
     const [row] = await db
       .select({ content: siteVersions.content, n: siteVersions.versionNumber })
       .from(sites)
@@ -227,7 +228,7 @@ export async function verifyAction(db: Db, ctx: Ctx, id: string, deps: { fetcher
   }
   const [u] = await db
     .update(improvementActions)
-    .set({ status: ok ? "verified" : a.status === "applied" && a.applyKind !== "manual" ? "applied" : "failed", verifiedAt: ok ? new Date() : null, verificationNote: note, updatedAt: new Date() })
+    .set({ status: ok ? "verified" : a.status === "applied" && isHostedKind(a.applyKind) ? "applied" : "failed", verifiedAt: ok ? new Date() : null, verificationNote: note, updatedAt: new Date() })
     .where(eq(improvementActions.id, a.id))
     .returning();
   return u;
@@ -239,7 +240,8 @@ export async function rollbackAction(db: Db, ctx: Ctx, id: string) {
   return db.transaction(async (tx) => {
     const a = await getAction(tx, ctx, id, true);
     if (!["applied", "verified"].includes(a.status)) throw new AppError("invalid", "Only applied changes can be rolled back.");
-    if (a.applyKind !== "manual" && a.beforeSnapshot) {
+    if (a.applyKind === "wordpress_append") throw new AppError("invalid", "Roll this back through WordPress.");
+    if (isHostedKind(a.applyKind) && a.beforeSnapshot) {
       const [s] = await tx.select().from(sites).where(and(eq(sites.businessId, a.businessId), eq(sites.workspaceId, ctx.workspaceId))).for("update");
       await tx.update(sites).set({ draft: siteContent.parse(a.beforeSnapshot), draftRevision: s.draftRevision + 1, updatedAt: new Date() }).where(eq(sites.id, s.id));
     }

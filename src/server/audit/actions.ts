@@ -10,7 +10,9 @@ import type { CheckResult } from "./checks";
  * to write it rather than inventing it. Benefits are stated as hypotheses.
  */
 
-export type ApplyKind = "manual" | "hosted_seo_description" | "hosted_faq_add" | "hosted_service_descriptions" | "hosted_about";
+export type ApplyKind = "manual" | "wordpress_append" | "hosted_seo_description" | "hosted_faq_add" | "hosted_service_descriptions" | "hosted_about";
+
+export const isHostedKind = (k: string) => k.startsWith("hosted_");
 
 export type ActionTemplate = {
   title: string;
@@ -166,6 +168,7 @@ export function applyToContent(kind: ApplyKind, draft: string, content: SiteCont
       return next;
     }
     case "manual":
+    case "wordpress_append":
       return null;
   }
 }
@@ -188,6 +191,7 @@ export function contentReflects(kind: ApplyKind, draft: string, content: SiteCon
     case "hosted_about":
       return blocks.some((x) => x.type === "about" && x.body === draft.trim().slice(0, 3000));
     case "manual":
+    case "wordpress_append":
       return false;
   }
 }

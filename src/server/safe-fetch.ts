@@ -62,9 +62,25 @@ export type SafeResponse = {
   truncated: boolean;
 };
 
-export type SafeFetchOptions = { maxBytes?: number; timeoutMs?: number; maxRedirects?: number; userAgent?: string };
+export type SafeFetchOptions = {
+  maxBytes?: number;
+  timeoutMs?: number;
+  maxRedirects?: number;
+  userAgent?: string;
+  method?: "GET" | "POST";
+  headers?: Record<string, string>;
+  body?: string;
+};
 
-const DEFAULTS = { maxBytes: 1_500_000, timeoutMs: 10_000, maxRedirects: 5, userAgent: "GrowthPlatformBot/1.0 (+site audit; owner-requested)" };
+const DEFAULTS = {
+  maxBytes: 1_500_000,
+  timeoutMs: 10_000,
+  maxRedirects: 5,
+  userAgent: "GrowthPlatformBot/1.0 (+site audit; owner-requested)",
+  method: "GET" as "GET" | "POST",
+  headers: {} as Record<string, string>,
+  body: undefined as string | undefined,
+};
 
 function assertPublicUrl(raw: string): URL {
   const url = new URL(raw);
@@ -79,15 +95,15 @@ function assertPublicUrl(raw: string): URL {
   return url;
 }
 
-function requestOnce(url: URL, opts: Required<SafeFetchOptions>): Promise<Omit<SafeResponse, "redirects" | "url">> {
+function requestOnce(url: URL, opts: typeof DEFAULTS & SafeFetchOptions): Promise<Omit<SafeResponse, "redirects" | "url">> {
   return new Promise((resolve, reject) => {
     const lib = url.protocol === "https:" ? https : http;
     const req = lib.request(
       url,
       {
-        method: "GET",
+        method: opts.method,
         lookup: guardedLookup as unknown as typeof dns.lookup,
-        headers: { "User-Agent": opts.userAgent, Accept: "text/html,application/xhtml+xml,text/plain,application/xml;q=0.9,*/*;q=0.5" },
+        headers: { "User-Agent": opts.userAgent, Accept: "text/html,application/xhtml+xml,text/plain,application/xml,application/json;q=0.9,*/*;q=0.5", ...opts.headers },
         timeout: opts.timeoutMs,
       },
       (res) => {
@@ -117,7 +133,7 @@ function requestOnce(url: URL, opts: Required<SafeFetchOptions>): Promise<Omit<S
     );
     req.on("timeout", () => req.destroy(new Error(`Timed out after ${opts.timeoutMs}ms`)));
     req.on("error", reject);
-    req.end();
+    req.end(opts.body);
   });
 }
 
@@ -127,7 +143,8 @@ export async function safeFetch(raw: string, options: SafeFetchOptions = {}): Pr
   const redirects: string[] = [];
   for (let hop = 0; hop <= opts.maxRedirects; hop++) {
     const res = await requestOnce(url, opts);
-    if (res.status >= 300 && res.status < 400 && res.headers.location) {
+    // Never follow redirects for writes: credentials must not be replayed to another host.
+    if (opts.method === "GET" && res.status >= 300 && res.status < 400 && res.headers.location) {
       redirects.push(url.toString());
       url = assertPublicUrl(new URL(res.headers.location, url).toString());
       continue;

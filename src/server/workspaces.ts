@@ -1,7 +1,8 @@
 import { and, count, eq, isNotNull } from "drizzle-orm";
 import type { Db } from "@/db";
-import { businesses, leads, memberships, sites, workspaces } from "@/db/schema";
-import { audit } from "./context";
+import { businesses, leads, memberships, sites, subscriptions, workspaces } from "@/db/schema";
+import { billingEnforced, planSpec } from "@/lib/plans";
+import { AppError, audit } from "./context";
 import { ensureTrialCredits } from "./credits";
 
 /** Every workspace the user belongs to, with a small portfolio summary. */
@@ -23,7 +24,23 @@ export async function listUserWorkspaces(db: Db, userId: string) {
   );
 }
 
+/**
+ * Each plan allows a number of businesses per owner; Agency allows several.
+ * Only enforced once billing is on.
+ */
+export async function assertCanCreateWorkspace(db: Db, userId: string) {
+  if (!billingEnforced()) return;
+  const owned = await db
+    .select({ plan: subscriptions.plan })
+    .from(memberships)
+    .leftJoin(subscriptions, eq(subscriptions.workspaceId, memberships.workspaceId))
+    .where(and(eq(memberships.userId, userId), eq(memberships.role, "owner")));
+  const limit = Math.max(1, ...owned.map((o) => planSpec(o.plan ?? "free").maxWorkspaces));
+  if (owned.length >= limit) throw new AppError("forbidden", `Your plan allows ${limit} business${limit === 1 ? "" : "es"}. Upgrade to Agency to add more.`);
+}
+
 export async function createWorkspace(db: Db, userId: string, name: string) {
+  await assertCanCreateWorkspace(db, userId);
   const ws = await db.transaction(async (tx) => {
     const [ws] = await tx.insert(workspaces).values({ name: name.trim().slice(0, 80) || "New workspace" }).returning();
     await tx.insert(memberships).values({ workspaceId: ws.id, userId, role: "owner" });

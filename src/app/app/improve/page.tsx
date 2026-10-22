@@ -10,11 +10,15 @@ import { latestAudit, listActions } from "@/server/audit/service";
 import { requireBusiness } from "@/server/business";
 import { can } from "@/server/context";
 import { getSite } from "@/server/sites";
+import { getWordPress, listPages, sectionHtml, WORDPRESS_CHECKS } from "@/server/wordpress";
 import {
   applyActionAction,
   approveActionAction,
   rejectActionAction,
+  applyWordPressAction,
+  prepareWordPressAction,
   rollbackActionAction,
+  rollbackWordPressAction,
   saveDraftAction,
   startAuditAction,
   verifyActionAction,
@@ -42,7 +46,8 @@ export default async function ImprovePage() {
   const locale = await getLocale();
   const db = await getDb();
   const b = await requireBusiness(db, ctx);
-  const [audit, actions, site] = await Promise.all([latestAudit(db, ctx), listActions(db, ctx), getSite(db, ctx)]);
+  const [audit, actions, site, wp] = await Promise.all([latestAudit(db, ctx), listActions(db, ctx), getSite(db, ctx), getWordPress(db, ctx)]);
+  const wpPages = wp ? await listPages(db, ctx).catch(() => null) : null;
   const open = actions.filter((a) => !["verified", "rejected", "rolled_back"].includes(a.status));
   const closed = actions.filter((a) => ["verified", "rejected", "rolled_back"].includes(a.status));
   const isOwner = can(ctx, "owner");
@@ -174,6 +179,33 @@ export default async function ImprovePage() {
                   </div>
                 )}
                 {a.draft && ["applied", "queued"].includes(a.status) && <pre className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-lg bg-surface-2 p-3 text-sm">{a.draft}</pre>}
+                {wp && WORDPRESS_CHECKS.includes(a.checkKey) && !["applied", "queued"].includes(a.status) && (
+                  <div className="mt-3 rounded-lg border border-border p-3">
+                    <h4 className="text-sm font-semibold">Add this to a WordPress page</h4>
+                    {wpPages === null ? (
+                      <p className="text-sm text-err-fg">We couldn&apos;t list your WordPress pages. Check the connection in Settings.</p>
+                    ) : (
+                      <ActionForm action={prepareWordPressAction} submitLabel="Preview change" variant="secondary" inline>
+                        <input type="hidden" name="actionId" value={a.id} />
+                        <select name="pageId" aria-label="WordPress page" defaultValue={a.externalTarget?.pageId} className="min-h-11 rounded-lg border border-border bg-surface px-2">
+                          {wpPages.map((p) => (
+                            <option key={p.id} value={p.id}>
+                              {p.title}
+                            </option>
+                          ))}
+                        </select>
+                      </ActionForm>
+                    )}
+                    {a.externalTarget && (
+                      <>
+                        <p className="mt-2 text-sm">
+                          This section will be added to the end of <strong>{a.externalTarget.pageTitle}</strong> (page last edited {a.externalTarget.previewedModified} UTC). If the page changes before you apply, nothing is written.
+                        </p>
+                        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded bg-surface-2 p-2 text-xs">{sectionHtml(a.checkKey, a.draft) ?? "Nothing to add — edit the draft."}</pre>
+                      </>
+                    )}
+                  </div>
+                )}
                 <div className="mt-3 flex flex-wrap gap-2">
                   {isOwner && ["detected", "proposed", "owner_edited", "failed", "rolled_back"].includes(a.status) && (
                     <ActionForm action={approveActionAction} submitLabel="Approve" inline>
@@ -181,7 +213,12 @@ export default async function ImprovePage() {
                       <input type="hidden" name="revision" value={a.draftRevision} />
                     </ActionForm>
                   )}
-                  {isOwner && a.status === "approved" && (
+                  {isOwner && a.status === "approved" && a.applyKind === "wordpress_append" && (
+                    <ActionForm action={applyWordPressAction} submitLabel="Apply to WordPress" inline>
+                      <input type="hidden" name="actionId" value={a.id} />
+                    </ActionForm>
+                  )}
+                  {isOwner && a.status === "approved" && a.applyKind === "wordpress_append" ? null : isOwner && a.status === "approved" && (
                     <ActionForm action={applyActionAction} submitLabel={a.applyKind === "manual" ? "I've made this change" : "Apply to my website draft"} inline>
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
@@ -191,7 +228,12 @@ export default async function ImprovePage() {
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
                   )}
-                  {isOwner && a.status === "applied" && a.applyKind !== "manual" && (
+                  {isOwner && a.status === "applied" && a.applyKind === "wordpress_append" && (
+                    <ActionForm action={rollbackWordPressAction} submitLabel="Undo in WordPress" variant="ghost" inline>
+                      <input type="hidden" name="actionId" value={a.id} />
+                    </ActionForm>
+                  )}
+                  {isOwner && a.status === "applied" && a.applyKind.startsWith("hosted_") && (
                     <ActionForm action={rollbackActionAction} submitLabel="Roll back" variant="ghost" inline>
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
@@ -201,7 +243,7 @@ export default async function ImprovePage() {
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
                   )}
-                  {a.status === "applied" && a.applyKind !== "manual" && (
+                  {a.status === "applied" && a.applyKind.startsWith("hosted_") && (
                     <Link href="/app/website" className="inline-flex min-h-11 items-center text-sm font-semibold underline">
                       Review and publish
                     </Link>

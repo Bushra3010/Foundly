@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 const SESSION_COOKIE = "abgp_session";
-const PASSTHROUGH = /^\/(_next|media|favicon\.ico|icon-)/;
+const PASSTHROUGH = /^\/(_next|media|favicon\.ico|icon-|sw\.js|offline\.html)/;
 
 function rewriteToSite(req: NextRequest, pathname: string, base: string, target: string) {
   const url = req.nextUrl.clone();

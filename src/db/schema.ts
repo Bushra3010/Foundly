@@ -669,6 +669,8 @@ export const improvementActions = pgTable(
     approvedHash: text("approved_hash"),
     /** Snapshot taken before applying, used for rollback. */
     beforeSnapshot: jsonb("before_snapshot").$type<unknown>(),
+    /** For CMS-applied changes: target page and the revision the owner previewed. */
+    externalTarget: jsonb("external_target").$type<{ kind: "wordpress"; pageId: number; pageTitle: string; previewedModified: string } | null>(),
     appliedAt: timestamp("applied_at", { withTimezone: true }),
     verifiedAt: timestamp("verified_at", { withTimezone: true }),
     verificationNote: text("verification_note"),
@@ -769,3 +771,25 @@ export const supportGrants = pgTable("support_grants", {
 
 export type Plan = (typeof planEnum.enumValues)[number];
 export type Subscription = typeof subscriptions.$inferSelect;
+
+// ---------- Phase 6: CMS integrations ----------
+
+export const integrations = pgTable(
+  "integrations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    kind: text("kind").notNull(),
+    siteUrl: text("site_url").notNull(),
+    username: text("username").notNull(),
+    /** AES-256-GCM ciphertext of the application password; never returned to clients. */
+    secretEncrypted: text("secret_encrypted").notNull(),
+    status: text("status").notNull().default("connected"),
+    lastError: text("last_error"),
+    connectedBy: uuid("connected_by").references(() => users.id),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex("integrations_ws_kind_idx").on(t.workspaceId, t.kind)],
+);
