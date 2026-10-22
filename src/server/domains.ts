@@ -5,6 +5,7 @@ import type { Db, DbOrTx } from "@/db";
 import { customDomains, siteVersions, sites } from "@/db/schema";
 import { AppError, audit, requireRole, type Ctx } from "./context";
 import { getSite } from "./sites";
+import { requireEntitlement } from "./billing/service";
 
 export const DOMAIN_TXT_PREFIX = "_growth-domain";
 
@@ -28,6 +29,7 @@ export async function listDomains(db: DbOrTx, ctx: Ctx) {
 /** Connects an existing domain. Buying or renewing domains is out of scope. */
 export async function addDomain(db: Db, ctx: Ctx, input: string) {
   requireRole(ctx, "owner");
+  await requireEntitlement(db, ctx.workspaceId, "customDomain");
   const hostname = normalizeHostname(input);
   if (!HOST_RE.test(hostname)) throw new AppError("invalid", "Enter a domain like www.example.com");
   const appHost = process.env.APP_URL ? new URL(process.env.APP_URL).hostname : "localhost";

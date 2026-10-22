@@ -681,3 +681,91 @@ export const improvementActions = pgTable(
 export type Audit = typeof audits.$inferSelect;
 export type Finding = typeof findings.$inferSelect;
 export type ImprovementAction = typeof improvementActions.$inferSelect;
+
+// ---------- Phase 5: billing, notifications, lifecycle, support ----------
+
+export const planEnum = pgEnum("plan", ["free", "website", "growth", "agency"]);
+export const subscriptionStatusEnum = pgEnum("subscription_status", ["active", "past_due", "cancelled"]);
+
+export const subscriptions = pgTable("subscriptions", {
+  workspaceId: uuid("workspace_id")
+    .primaryKey()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  plan: planEnum("plan").notNull().default("free"),
+  status: subscriptionStatusEnum("status").notNull().default("active"),
+  provider: text("provider"),
+  providerSubscriptionId: text("provider_subscription_id").unique(),
+  currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
+  scheduledPlan: planEnum("scheduled_plan"),
+  /** After a failed payment, features stay on until this date; content is never deleted for non-payment. */
+  graceUntil: timestamp("grace_until", { withTimezone: true }),
+  updatedAt: updatedAt(),
+});
+
+/** One row per external payment event; the unique key makes webhook retries no-ops. */
+export const paymentEvents = pgTable(
+  "payment_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    provider: text("provider").notNull(),
+    eventId: text("event_id").notNull(),
+    type: text("type").notNull(),
+    workspaceId: uuid("workspace_id").references(() => workspaces.id, { onDelete: "set null" }),
+    payload: jsonb("payload").$type<unknown>().notNull(),
+    receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("payment_events_provider_event_idx").on(t.provider, t.eventId)],
+);
+
+export const notificationPrefs = pgTable(
+  "notification_prefs",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    weeklySummary: boolean("weekly_summary").notNull().default(false),
+    leadAlerts: boolean("lead_alerts").notNull().default(true),
+    updatedAt: updatedAt(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.workspaceId] })],
+);
+
+export const notificationLog = pgTable("notification_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  dedupeKey: text("dedupe_key").notNull().unique(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+  kind: text("kind").notNull(),
+  sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const deletionRequests = pgTable("deletion_requests", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  kind: text("kind").notNull(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+  workspaceId: uuid("workspace_id").references(() => workspaces.id, { onDelete: "cascade" }),
+  requestedBy: uuid("requested_by").references(() => users.id, { onDelete: "set null" }),
+  scheduledFor: timestamp("scheduled_for", { withTimezone: true }).notNull(),
+  cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+  createdAt: createdAt(),
+});
+
+/** Time-boxed, reasoned support access. Every use is written to audit_events. */
+export const supportGrants = pgTable("support_grants", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  adminEmail: text("admin_email").notNull(),
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  reason: text("reason").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  revokedAt: timestamp("revoked_at", { withTimezone: true }),
+  createdAt: createdAt(),
+});
+
+export type Plan = (typeof planEnum.enumValues)[number];
+export type Subscription = typeof subscriptions.$inferSelect;

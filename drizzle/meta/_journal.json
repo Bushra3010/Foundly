@@ -29,6 +29,13 @@
       "when": 1792702425520,
       "tag": "0003_phase4_audits_actions",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792702663397,
+      "tag": "0004_phase5_billing_lifecycle_support",
+      "breakpoints": true
     }
   ]
 }

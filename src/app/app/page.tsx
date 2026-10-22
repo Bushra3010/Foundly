@@ -26,6 +26,13 @@ const ACTIVITY_TEXT: Record<string, string> = {
   "site.slug_changed": "Website address changed",
   "profile.published": "Directory profile published",
   "profile.unpublished": "Directory profile hidden",
+  "admin.support_access_granted": "Support team was given temporary access",
+  "admin.support_view": "Support team viewed your workspace",
+  "billing.subscription.activated": "Plan activated",
+  "billing.payment.failed": "Payment failed",
+  "monitoring.run_created": "AI visibility check started",
+  "action.applied": "Improvement applied",
+  "team.joined": "Someone joined your team",
 };
 
 export default async function HomePage() {

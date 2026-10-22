@@ -1,5 +1,5 @@
 import "server-only";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { PGlite } from "@electric-sql/pglite";
 import { drizzle as drizzlePglite, type PgliteDatabase } from "drizzle-orm/pglite";
@@ -15,7 +15,17 @@ export type DbOrTx = Db | Tx;
 
 const MIGRATIONS = path.join(process.cwd(), "drizzle");
 
-const globalForDb = globalThis as unknown as { __db?: Promise<Db> };
+const globalForDb = globalThis as unknown as { __db?: Promise<Db>; __dbMigrations?: number; __dbMigrating?: Promise<void> };
+
+/** Number of migrations on disk, so a long-running dev server notices new ones. */
+function migrationCount(): number {
+  try {
+    const journal = JSON.parse(readFileSync(path.join(MIGRATIONS, "meta", "_journal.json"), "utf8")) as { entries: unknown[] };
+    return journal.entries.length;
+  } catch {
+    return 0;
+  }
+}
 
 async function connect(): Promise<Db> {
   const url = process.env.DATABASE_URL;
@@ -30,16 +40,25 @@ async function connect(): Promise<Db> {
   const client = new PGlite(dataDir);
   const db = drizzlePglite({ client, schema });
   await migratePglite(db, { migrationsFolder: MIGRATIONS });
+  globalForDb.__dbMigrations = migrationCount();
   return db;
 }
 
-export function getDb(): Promise<Db> {
+export async function getDb(): Promise<Db> {
   globalForDb.__db ??= connect().catch((err) => {
     // Don't cache a failed connection; the next request retries.
     globalForDb.__db = undefined;
     throw err;
   });
-  return globalForDb.__db;
+  const db = await globalForDb.__db;
+  // Embedded dev database: apply migrations added while the server was running.
+  if (!process.env.DATABASE_URL && migrationCount() !== globalForDb.__dbMigrations) {
+    globalForDb.__dbMigrating ??= migratePglite(db, { migrationsFolder: MIGRATIONS })
+      .then(() => void (globalForDb.__dbMigrations = migrationCount()))
+      .finally(() => (globalForDb.__dbMigrating = undefined));
+    await globalForDb.__dbMigrating;
+  }
+  return db;
 }
 
 export { schema };

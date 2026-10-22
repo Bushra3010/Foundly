@@ -8,6 +8,7 @@ import { toPublicProfile } from "@/lib/profile";
 import { checkSlug, SLUG_PROBLEM_TEXT } from "@/lib/slug";
 import { requireBusiness, uniqueSlug } from "./business";
 import { AppError, audit, requireRole, type Ctx } from "./context";
+import { requireEntitlement } from "./billing/service";
 
 export async function getSite(db: DbOrTx, ctx: Ctx): Promise<Site | null> {
   const b = await requireBusiness(db, ctx);
@@ -192,6 +193,7 @@ export async function regenerateBlock(db: Db, ctx: Ctx, blockId: string, expecte
  */
 export async function publishSite(db: Db, ctx: Ctx, expectedRevision: number) {
   requireRole(ctx, "owner");
+  await requireEntitlement(db, ctx.workspaceId, "hostedSite");
   return db.transaction(async (tx) => {
     const site = await requireSite(tx, ctx, true);
     if (site.draftRevision !== expectedRevision) {

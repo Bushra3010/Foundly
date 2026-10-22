@@ -12,6 +12,9 @@ import { LOCALE_COOKIE, parseLocale } from "@/lib/i18n";
 import { revokeAllSessions } from "@/server/auth";
 import { audit } from "@/server/context";
 import { changeRole, inviteMember, removeMember, revokeInvite, transferOwnership } from "@/server/team";
+import { cancelSubscription, scheduleDowngrade, startCheckout } from "@/server/billing/service";
+import { cancelDeletion, RECOVERY_DAYS, requestAccountDeletion, requestWebsiteDeletion } from "@/server/lifecycle";
+import { setPrefs } from "@/server/notifications";
 
 const roleSchema = z.enum(["owner", "editor", "viewer"]);
 
@@ -97,6 +100,83 @@ export async function transferOwnershipAction(_prev: ActionState, form: FormData
     await transferOwnership(await getDb(), await requireCtx(), String(form.get("userId")));
     revalidatePath("/app", "layout");
     return { ok: true, message: "Ownership transferred. You're now an editor." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function checkoutAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const plan = z.enum(["website", "growth", "agency"]).safeParse(form.get("plan"));
+  if (!plan.success) return { ok: false, message: "Choose a plan." };
+  let url: string;
+  try {
+    const ctx = await requireCtx();
+    ({ url } = await startCheckout(await getDb(), ctx, plan.data, `${await origin()}/app/settings`));
+  } catch (err) {
+    return toActionError(err);
+  }
+  redirect(url);
+}
+
+export async function downgradeAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const plan = z.enum(["free", "website", "growth"]).safeParse(form.get("plan"));
+  if (!plan.success) return { ok: false, message: "Choose a plan." };
+  try {
+    await scheduleDowngrade(await getDb(), await requireCtx(), plan.data);
+    revalidatePath("/app/settings");
+    return { ok: true, message: "Scheduled. You keep your current plan until the end of the paid period." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function cancelPlanAction(): Promise<ActionState> {
+  try {
+    await cancelSubscription(await getDb(), await requireCtx());
+    revalidatePath("/app/settings");
+    return { ok: true, message: "Cancelled. Your plan stays active until the end of the paid period; your content is kept and exportable." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function savePrefsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    await setPrefs(await getDb(), await requireCtx(), { weeklySummary: form.get("weeklySummary") === "on", leadAlerts: form.get("leadAlerts") === "on" });
+    revalidatePath("/app/settings");
+    return { ok: true, message: "Email preferences saved." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function deleteWebsiteAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  if (form.get("confirm") !== "DELETE WEBSITE") return { ok: false, message: "Type DELETE WEBSITE to confirm." };
+  try {
+    await requestWebsiteDeletion(await getDb(), await requireCtx());
+    revalidatePath("/app", "layout");
+    return { ok: true, message: `Your website is offline and will be deleted in ${RECOVERY_DAYS} days. You can cancel until then.` };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function deleteAccountAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  if (form.get("confirm") !== "DELETE ACCOUNT") return { ok: false, message: "Type DELETE ACCOUNT to confirm." };
+  try {
+    await requestAccountDeletion(await getDb(), await requireCtx());
+    await clearSessionCookie();
+  } catch (err) {
+    return toActionError(err);
+  }
+  redirect("/login?deleted=1");
+}
+
+export async function cancelDeletionAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    await cancelDeletion(await getDb(), await requireCtx(), String(form.get("requestId")));
+    revalidatePath("/app/settings");
+    return { ok: true, message: "Deletion cancelled. Republish your website when you're ready." };
   } catch (err) {
     return toActionError(err);
   }

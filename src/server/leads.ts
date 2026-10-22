@@ -4,6 +4,7 @@ import type { Db, DbOrTx } from "@/db";
 import { leads, sites, type Lead } from "@/db/schema";
 import type { leadSchema } from "@/lib/validation";
 import { AppError, requireRole, type Ctx } from "./context";
+import { notifyNewLead } from "./notifications";
 
 /**
  * Public submission from a hosted site. The workspace comes from the published
@@ -26,6 +27,8 @@ export async function submitLead(db: Db, input: z.infer<typeof leadSchema>, sour
       source,
     })
     .returning({ id: leads.id });
+  // Alerts are best-effort; a mail failure never loses the lead.
+  await notifyNewLead(db, site.workspaceId, lead.id).catch((err) => console.error("[notify] lead alert failed", err));
   return lead;
 }
 
