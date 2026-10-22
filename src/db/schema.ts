@@ -573,3 +573,111 @@ export type Observation = typeof observations.$inferSelect;
 export type BrandMatch = typeof brandMatches.$inferSelect;
 export type Competitor = typeof competitors.$inferSelect;
 export type MonitoringRun = typeof monitoringRuns.$inferSelect;
+
+// ---------- Phase 4: audits and improvement actions ----------
+
+export const auditStatusEnum = pgEnum("audit_status", ["queued", "running", "completed", "failed"]);
+
+export const audits = pgTable(
+  "audits",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    businessId: uuid("business_id")
+      .notNull()
+      .references(() => businesses.id, { onDelete: "cascade" }),
+    /** "external" scans the owner's own website; "hosted" checks the platform site's content. */
+    kind: text("kind").notNull(),
+    target: text("target").notNull(),
+    status: auditStatusEnum("status").notNull().default("queued"),
+    checklistVersion: integer("checklist_version").notNull(),
+    pagesScanned: jsonb("pages_scanned").$type<{ url: string; status: number }[]>().notNull().default([]),
+    /** Checks that couldn't run and why (blocked crawling, timeouts). */
+    notRun: jsonb("not_run").$type<{ check: string; reason: string }[]>().notNull().default([]),
+    error: text("error"),
+    createdBy: uuid("created_by").references(() => users.id),
+    createdAt: createdAt(),
+    finishedAt: timestamp("finished_at", { withTimezone: true }),
+  },
+  (t) => [index("audits_ws_idx").on(t.workspaceId, t.createdAt)],
+);
+
+export const findings = pgTable(
+  "findings",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    auditId: uuid("audit_id")
+      .notNull()
+      .references(() => audits.id, { onDelete: "cascade" }),
+    checkKey: text("check_key").notNull(),
+    category: text("category").notNull(),
+    page: text("page"),
+    passed: boolean("passed").notNull(),
+    severity: text("severity").notNull(),
+    evidence: text("evidence").notNull(),
+    /** Automated accessibility/mobile checks are partial and need manual review. */
+    partial: boolean("partial").notNull().default(false),
+  },
+  (t) => [index("findings_audit_idx").on(t.auditId)],
+);
+
+export const actionStatusEnum = pgEnum("action_status", [
+  "detected",
+  "proposed",
+  "owner_edited",
+  "approved",
+  "queued",
+  "applied",
+  "verified",
+  "rejected",
+  "failed",
+  "rolled_back",
+]);
+
+export const improvementActions = pgTable(
+  "improvement_actions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    businessId: uuid("business_id")
+      .notNull()
+      .references(() => businesses.id, { onDelete: "cascade" }),
+    findingId: uuid("finding_id").references(() => findings.id, { onDelete: "set null" }),
+    checkKey: text("check_key").notNull(),
+    /** How an approved action is applied: a fixed operation, never generated code. */
+    applyKind: text("apply_kind").notNull(),
+    title: text("title").notNull(),
+    page: text("page"),
+    evidence: text("evidence").notNull(),
+    severity: text("severity").notNull(),
+    priority: integer("priority").notNull(),
+    hypothesis: text("hypothesis").notNull(),
+    proposedChange: text("proposed_change").notNull(),
+    draft: text("draft").notNull(),
+    draftRevision: integer("draft_revision").notNull().default(1),
+    status: actionStatusEnum("status").notNull().default("proposed"),
+    approvedBy: uuid("approved_by").references(() => users.id),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    approvedRevision: integer("approved_revision"),
+    approvedHash: text("approved_hash"),
+    /** Snapshot taken before applying, used for rollback. */
+    beforeSnapshot: jsonb("before_snapshot").$type<unknown>(),
+    appliedAt: timestamp("applied_at", { withTimezone: true }),
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
+    verificationNote: text("verification_note"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index("improvement_actions_ws_idx").on(t.workspaceId, t.status)],
+);
+
+export type Audit = typeof audits.$inferSelect;
+export type Finding = typeof findings.$inferSelect;
+export type ImprovementAction = typeof improvementActions.$inferSelect;
