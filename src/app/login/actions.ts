@@ -33,7 +33,9 @@ export async function requestSignIn(_prev: SignInState, form: FormData): Promise
     const { delivered } = await sendSignInEmail({ to: parsed.data.email, link });
     return {
       ok: true,
-      message: `We sent a sign-in link to ${parsed.data.email}. It works once and expires in 15 minutes.`,
+      message: delivered
+        ? `We sent a sign-in link to ${parsed.data.email}. It works once and expires in 15 minutes.`
+        : "Your sign-in link is ready below. It works once and expires in 15 minutes.",
       // Only shown when no mail provider is configured in development.
       devLink: !delivered && process.env.NODE_ENV !== "production" ? link : undefined,
       values,

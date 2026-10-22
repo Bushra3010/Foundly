@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Brand, Icon } from "@/components/icon";
 import { BottomNav, SidebarNav } from "@/components/app-nav";
 import { getDb } from "@/db";
 import { isPlatformAdmin } from "@/lib/admin";
@@ -10,43 +11,89 @@ import { getBusiness } from "@/server/business";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const ctx = await requireCtx();
   const locale = await getLocale();
   const business = await getBusiness(await getDb(), ctx);
   if (!business?.onboardingCompletedAt) redirect("/onboarding");
   const extra = [
     { href: "/app/workspaces", label: "Workspaces", icon: "⧉" },
-    ...(isPlatformAdmin(ctx.user.email) ? [{ href: "/admin", label: "Admin console", icon: "⛨" }] : []),
+    ...(isPlatformAdmin(ctx.user.email)
+      ? [{ href: "/admin", label: "Admin console", icon: "⛨" }]
+      : []),
   ];
 
   return (
-    <div className="lg:grid lg:min-h-dvh lg:grid-cols-[16rem_1fr]">
-      <aside className="hidden border-r border-border bg-surface p-4 lg:block">
-        <Link href="/app" className="mb-1 block px-3 py-2 text-lg font-bold">
-          Growth Platform
+    <div className="app-shell">
+      <aside className="app-sidebar">
+        <Link href="/app" className="sidebar-brand">
+          <Brand />
         </Link>
-        <Link href="/app/workspaces" className="mb-4 block truncate px-3 text-sm text-muted hover:underline">
-          {business.name} ▾
+        <Link href="/app/workspaces" className="workspace-switch">
+          <span className="workspace-avatar">
+            {business.name.slice(0, 1).toUpperCase()}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block truncate text-sm font-semibold">
+              {business.name}
+            </span>
+          </span>
+          <Icon name="down" size={16} />
         </Link>
+        <p className="nav-caption">WORKSPACE</p>
         <nav aria-label="Main">
           <SidebarNav locale={locale} extra={extra} />
         </nav>
+        <div className="sidebar-footer">
+          <Link href="/app/settings" className="account-link">
+            <span className="account-avatar">
+              {ctx.user.email.slice(0, 1).toUpperCase()}
+            </span>
+            <span className="min-w-0">
+              <span className="block text-xs font-semibold">Your account</span>
+              <span className="block truncate text-xs text-muted">
+                {ctx.user.email}
+              </span>
+            </span>
+            <Icon name="settings" size={17} />
+          </Link>
+        </div>
       </aside>
-      <div className="min-w-0">
-        <header className="flex items-center justify-between border-b border-border bg-surface px-4 py-3 lg:hidden">
-          <Link href="/app" className="font-bold">
-            Growth Platform
+      <div className="app-content">
+        <header className="app-topbar">
+          <Link href="/app" className="mobile-brand">
+            <Brand />
           </Link>
-          <Link href="/app/workspaces" className="max-w-[50%] truncate text-sm text-muted">
-            {business.name} ▾
-          </Link>
+          <div className="desktop-breadcrumb">
+            <Icon name="home" size={14} />
+            <Link href="/app">Home</Link>
+            <span className="breadcrumb-divider">/</span>
+            <span className="font-medium text-text">{business.name}</span>
+          </div>
+          <div className="topbar-actions">
+            <Link href="/app/website" className="topbar-site">
+              <Icon name="globe" size={16} />
+              <span>Your website</span>
+              <span aria-hidden="true">↗</span>
+            </Link>
+            <Link
+              href="/app/workspaces"
+              className="topbar-avatar"
+              aria-label={`Switch workspace: ${business.name}`}
+            >
+              {business.name.slice(0, 1).toUpperCase()}
+            </Link>
+          </div>
         </header>
-        <main id="main" lang={locale} className="mx-auto max-w-5xl px-4 pt-6 pb-28 sm:px-6 lg:pb-12">
+        <main id="main" lang={locale} className="app-main">
           {children}
         </main>
       </div>
-      <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <nav aria-label="Main" className="mobile-bottom-nav">
         <BottomNav locale={locale} />
       </nav>
     </div>
