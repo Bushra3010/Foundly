@@ -1,18 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getDb } from "@/db";
 import type { Lead } from "@/db/schema";
-import { getCurrentUser } from "@/lib/auth/session";
-import { contextForUser } from "@/server/auth";
+import { getCtxOrNull } from "@/lib/auth/session";
 import { audit } from "@/server/context";
 import { leadsToCsv, listLeads } from "@/server/leads";
 
 const STATUSES = ["new", "contacted", "qualified", "closed"];
 
 export async function GET(req: NextRequest) {
-  const user = await getCurrentUser();
-  if (!user) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
+  const ctx = await getCtxOrNull();
+  if (!ctx) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
   const db = await getDb();
-  const ctx = await contextForUser(db, user.id);
   if (!ctx) return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
   const q = req.nextUrl.searchParams.get("q")?.slice(0, 100) || undefined;

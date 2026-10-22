@@ -22,18 +22,18 @@ export function SiteRenderer({
   const page = content.pages.find((p) => p.key === pageKey) ?? content.pages[0];
   const { primary, accent } = content.theme;
   const f = content.facts;
-  const href = (key: PageKey) => (key === "home" ? basePath : `${basePath}/${key}`);
+  const href = (key: PageKey) => (key === "home" ? basePath || "/" : `${basePath}/${key}`);
 
   return (
     <div className="min-h-dvh bg-white text-neutral-900" style={{ ["--site-primary" as string]: primary }}>
       <header className="border-b border-neutral-200">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
-          <a href={basePath} className="text-xl font-bold" style={{ color: primary }}>
+          <a href={basePath || "/"} className="text-xl font-bold" style={{ color: primary }}>
             {f.name}
           </a>
           <nav aria-label="Site">
             <ul className="flex flex-wrap gap-1">
-              {content.pages.map((p) => (
+              {content.pages.filter((p) => p.key !== "privacy").map((p) => (
                 <li key={p.key}>
                   <a
                     href={href(p.key)}
@@ -60,7 +60,17 @@ export function SiteRenderer({
             {f.category} · {f.address ? `${f.address}, ` : ""}
             {f.city}
           </p>
-          <p className="mt-4">© {new Date().getFullYear()} {f.name}</p>
+          <p className="mt-4">
+            © {new Date().getFullYear()} {f.name}
+            {content.pages.some((p) => p.key === "privacy") && (
+              <>
+                {" · "}
+                <a href={href("privacy")} className="underline">
+                  Privacy
+                </a>
+              </>
+            )}
+          </p>
         </div>
       </footer>
     </div>
@@ -171,6 +181,19 @@ function BlockView({
                 <summary className="cursor-pointer text-lg font-semibold">{item.question}</summary>
                 <p className="mt-2 text-neutral-700">{item.answer}</p>
               </details>
+            ))}
+          </div>
+        </section>
+      );
+    case "text":
+      return (
+        <section className="mx-auto max-w-3xl px-4 py-12">
+          <h2 className="text-2xl font-bold">{block.heading}</h2>
+          <div className="mt-4 space-y-4 text-neutral-800">
+            {block.body.split(/\n{2,}/).map((para, i) => (
+              <p key={i} className="whitespace-pre-line">
+                {para}
+              </p>
             ))}
           </div>
         </section>

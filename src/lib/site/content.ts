@@ -37,7 +37,16 @@ export const galleryBlock = z.object({
   type: z.literal("gallery"),
   heading: text(120).min(1),
   images: z
-    .array(z.object({ url: z.url({ protocol: /^https$/ }), alt: text(200).min(1, "Describe the photo") }))
+    .array(
+      z.object({
+        // Uploaded photos (/media/<id>) or an https link the owner controls.
+        url: z
+          .string()
+          .trim()
+          .refine((u) => /^\/media\/[0-9a-f-]{36}$/.test(u) || z.url({ protocol: /^https$/ }).safeParse(u).success, "Upload a photo or use an https link"),
+        alt: text(200).min(1, "Describe the photo"),
+      }),
+    )
     .max(24),
 });
 
@@ -49,7 +58,15 @@ export const contactBlock = z.object({
   showForm: z.boolean(),
 });
 
+export const textBlock = z.object({
+  id: z.string(),
+  type: z.literal("text"),
+  heading: text(120).min(1),
+  body: text(8000).min(1),
+});
+
 export const block = z.discriminatedUnion("type", [
+  textBlock,
   heroBlock,
   servicesBlock,
   aboutBlock,
@@ -61,7 +78,7 @@ export const block = z.discriminatedUnion("type", [
 export type Block = z.infer<typeof block>;
 export type BlockType = Block["type"];
 
-export const pageKey = z.enum(["home", "services", "about", "contact"]);
+export const pageKey = z.enum(["home", "services", "about", "contact", "privacy"]);
 export type PageKey = z.infer<typeof pageKey>;
 
 /** Public facts copied into each version so a published version never changes underneath. */

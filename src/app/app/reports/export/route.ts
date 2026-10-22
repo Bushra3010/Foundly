@@ -2,8 +2,7 @@ import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { getDb } from "@/db";
 import { siteVersions } from "@/db/schema";
-import { getCurrentUser } from "@/lib/auth/session";
-import { contextForUser } from "@/server/auth";
+import { getCtxOrNull } from "@/lib/auth/session";
 import { getProfile, requireBusiness } from "@/server/business";
 import { audit, can } from "@/server/context";
 import { listLeads } from "@/server/leads";
@@ -11,10 +10,9 @@ import { getSite } from "@/server/sites";
 
 /** Portable export of everything the workspace owns. Owner only. */
 export async function GET() {
-  const user = await getCurrentUser();
-  if (!user) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
+  const ctx = await getCtxOrNull();
+  if (!ctx) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
   const db = await getDb();
-  const ctx = await contextForUser(db, user.id);
   if (!ctx || !can(ctx, "owner")) return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
   const business = await requireBusiness(db, ctx);

@@ -9,6 +9,9 @@ export type ActionState = {
   fieldErrors?: FieldErrors;
   /** Echoed back so a failed submit keeps what the owner typed. */
   values?: Record<string, string>;
+  /** Optional link shown with the message (e.g. a dev-only invitation link). */
+  link?: string;
+  linkLabel?: string;
 };
 
 export function formValues(form: FormData): Record<string, string> {

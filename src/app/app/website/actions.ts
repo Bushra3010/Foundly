@@ -6,6 +6,7 @@ import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
 import type { SiteContent } from "@/lib/site/content";
 import { AppError } from "@/server/context";
+import { addDomain, removeDomain, verifyDomain } from "@/server/domains";
 import { changeSiteSlug, generateSiteDraft, publishSite, regenerateBlock, rollbackSite, saveDraft, unpublishSite } from "@/server/sites";
 
 export async function generateAction(_prev: ActionState, form: FormData): Promise<ActionState> {
@@ -92,5 +93,37 @@ export async function changeSlugAction(_prev: ActionState, form: FormData): Prom
     return { ok: true, message: `Your website address is now /s/${site.slug}. The old address redirects.` };
   } catch (err) {
     return toActionError(err, values);
+  }
+}
+
+export async function addDomainAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    await addDomain(await getDb(), await requireCtx(), String(form.get("hostname") ?? ""));
+    revalidatePath("/app/website");
+    return { ok: true, message: "Add the DNS records shown, then select Check DNS." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function verifyDomainAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    const d = await verifyDomain(await getDb(), await requireCtx(), String(form.get("domainId")));
+    revalidatePath("/app/website");
+    return d.status === "verified"
+      ? { ok: true, message: `${d.hostname} is verified. It goes live once your hosting provider has issued its security certificate.` }
+      : { ok: false, message: `Not ready yet: ${d.lastError}. DNS changes can take up to 48 hours.` };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function removeDomainAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    await removeDomain(await getDb(), await requireCtx(), String(form.get("domainId")));
+    revalidatePath("/app/website");
+    return { ok: true, message: "Domain disconnected. Your platform address still works." };
+  } catch (err) {
+    return toActionError(err);
   }
 }

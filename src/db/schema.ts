@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   boolean,
   index,
@@ -169,6 +170,11 @@ export const ownershipClaims = pgTable(
       .references(() => users.id),
     method: text("method").notNull(),
     status: claimStatusEnum("status").notNull().default("pending"),
+    /** Value the owner places in DNS or a file on their website. */
+    verificationToken: text("verification_token").notNull(),
+    target: text("target"),
+    reviewNote: text("review_note"),
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
     createdAt: createdAt(),
   },
   (t) => [index("ownership_claims_business_idx").on(t.businessId)],
@@ -301,3 +307,71 @@ export type Site = typeof sites.$inferSelect;
 export type SiteVersion = typeof siteVersions.$inferSelect;
 export type Lead = typeof leads.$inferSelect;
 export type Role = (typeof roleEnum.enumValues)[number];
+
+// ---------- Phase 2: team, claims, domains, assets ----------
+
+export const invitations = pgTable(
+  "invitations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    email: text("email").notNull(),
+    role: roleEnum("role").notNull(),
+    tokenHash: text("token_hash").notNull().unique(),
+    invitedBy: uuid("invited_by")
+      .notNull()
+      .references(() => users.id),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [index("invitations_workspace_idx").on(t.workspaceId)],
+);
+
+export const domainStatusEnum = pgEnum("domain_status", ["pending", "verified", "failed", "removed"]);
+
+export const customDomains = pgTable(
+  "custom_domains",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    siteId: uuid("site_id")
+      .notNull()
+      .references(() => sites.id, { onDelete: "cascade" }),
+    hostname: text("hostname").notNull(),
+    verificationToken: text("verification_token").notNull(),
+    status: domainStatusEnum("status").notNull().default("pending"),
+    lastCheckedAt: timestamp("last_checked_at", { withTimezone: true }),
+    lastError: text("last_error"),
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  // Only one active claim per hostname; removed rows don't block a new claim.
+  (t) => [uniqueIndex("custom_domains_active_host_idx").on(t.hostname).where(sql`status <> 'removed'`)],
+);
+
+export const assets = pgTable(
+  "assets",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    uploadedBy: uuid("uploaded_by")
+      .notNull()
+      .references(() => users.id),
+    contentType: text("content_type").notNull(),
+    bytes: integer("bytes").notNull(),
+    sha256: text("sha256").notNull(),
+    originalName: text("original_name"),
+    /** Owner's statement about rights to the image, kept as ownership metadata. */
+    rights: text("rights").notNull().default("owner_supplied"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("assets_workspace_idx").on(t.workspaceId)],
+);

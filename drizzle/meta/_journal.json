@@ -8,6 +8,13 @@
       "when": 1792699728025,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792701644159,
+      "tag": "0001_phase2_team_claims_domains_assets",
+      "breakpoints": true
     }
   ]
 }

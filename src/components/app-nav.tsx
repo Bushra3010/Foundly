@@ -2,26 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV } from "./nav-items";
+import { t, type Locale } from "@/lib/i18n";
+import { MOBILE_NAV, NAV } from "./nav-items";
 import { cx } from "./ui";
-
-
-const MOBILE = [
-  { href: "/app", label: "Home", icon: "⌂" },
-  { href: "/app/website", label: "Website", icon: "◧" },
-  { href: "/app/visibility", label: "Visibility", icon: "◎" },
-  { href: "/app/more", label: "More", icon: "☰" },
-];
 
 function isActive(pathname: string, href: string) {
   return href === "/app" ? pathname === "/app" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function SidebarNav() {
+export function SidebarNav({ locale, extra = [] }: { locale: Locale; extra?: { href: string; label: string; icon: string }[] }) {
   const pathname = usePathname();
+  const items = [...NAV.map((i) => ({ ...i, label: t(locale, i.key) })), ...extra];
   return (
     <ul className="space-y-1">
-      {NAV.map((item) => {
+      {items.map((item) => {
         const active = isActive(pathname, item.href);
         return (
           <li key={item.href}>
@@ -45,12 +39,12 @@ export function SidebarNav() {
   );
 }
 
-export function BottomNav() {
+export function BottomNav({ locale }: { locale: Locale }) {
   const pathname = usePathname();
-  const moreActive = !MOBILE.slice(0, 3).some((i) => isActive(pathname, i.href));
+  const moreActive = !MOBILE_NAV.slice(0, 3).some((i) => isActive(pathname, i.href));
   return (
     <ul className="grid grid-cols-4">
-      {MOBILE.map((item) => {
+      {MOBILE_NAV.map((item) => {
         const active = item.href === "/app/more" ? moreActive : isActive(pathname, item.href);
         return (
           <li key={item.href}>
@@ -65,7 +59,7 @@ export function BottomNav() {
               <span aria-hidden="true" className="text-lg leading-none">
                 {item.icon}
               </span>
-              {item.label}
+              {t(locale, item.key)}
             </Link>
           </li>
         );

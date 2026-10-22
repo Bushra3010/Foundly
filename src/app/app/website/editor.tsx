@@ -20,9 +20,10 @@ const BLOCK_LABEL: Record<Block["type"], string> = {
   faq: "Questions and answers",
   gallery: "Photos",
   contact: "Contact",
+  text: "Text",
 };
 
-const REGENERABLE: Block["type"][] = ["hero", "services", "about", "faq", "contact"];
+const REGENERABLE: Block["type"][] = ["hero", "services", "about", "faq", "contact", "text"];
 const AUTOSAVE_MS = 1200;
 
 const input = "block w-full min-h-11 rounded-lg border border-border bg-surface px-3 py-2 text-base";
@@ -315,6 +316,14 @@ function BlockFields({ block, onChange, disabled }: { block: Block; onChange: (f
           <LabeledInput label="Button text" max={40} value={block.ctaLabel} onChange={(v) => set<typeof block>((b) => void (b.ctaLabel = v))} disabled={disabled} />
         </div>
       );
+    case "text":
+      return (
+        <div className="grid gap-4">
+          <LabeledInput label="Heading" max={120} value={block.heading} onChange={(v) => set<typeof block>((b) => void (b.heading = v))} disabled={disabled} />
+          <LabeledInput label="Text" max={8000} multiline value={block.body} onChange={(v) => set<typeof block>((b) => void (b.body = v))} disabled={disabled} />
+          <p className="text-sm text-muted">This is a starting draft. Check that it matches how you actually handle customer details.</p>
+        </div>
+      );
     case "about":
       return (
         <div className="grid gap-4">
@@ -384,11 +393,14 @@ function BlockFields({ block, onChange, disabled }: { block: Block; onChange: (f
       return (
         <div className="grid gap-4">
           <LabeledInput label="Heading" max={120} value={block.heading} onChange={(v) => set<typeof block>((b) => void (b.heading = v))} disabled={disabled} />
-          <p className="text-sm text-muted">Use your own photos only. Add a secure (https) link to each image and describe it for people who can&apos;t see it.</p>
+          <p className="text-sm text-muted">Use your own photos only, and describe each one for people who can&apos;t see it.</p>
+          {!disabled && <PhotoUpload onUploaded={(url) => set<typeof block>((b) => void b.images.push({ url, alt: "" }))} />}
           {block.images.map((img, i) => (
             <fieldset key={i} className="grid gap-3 rounded-lg border border-border p-3">
               <legend className="px-1 text-sm font-semibold">Photo {i + 1}</legend>
-              <LabeledInput label="Image link (https)" value={img.url} onChange={(v) => set<typeof block>((b) => void (b.images[i].url = v))} disabled={disabled} />
+              {/* eslint-disable-next-line @next/next/no-img-element -- preview of the owner's own upload */}
+              <img src={img.url} alt="" className="h-24 w-24 rounded object-cover" />
+              <LabeledInput label="Image link" value={img.url} onChange={(v) => set<typeof block>((b) => void (b.images[i].url = v))} disabled={disabled} />
               <LabeledInput label="Description" max={200} value={img.alt} onChange={(v) => set<typeof block>((b) => void (b.images[i].alt = v))} disabled={disabled} />
               {!disabled && (
                 <Button variant="ghost" className="justify-self-start" onClick={() => set<typeof block>((b) => void b.images.splice(i, 1))}>
@@ -399,10 +411,55 @@ function BlockFields({ block, onChange, disabled }: { block: Block; onChange: (f
           ))}
           {!disabled && (
             <Button variant="secondary" className="justify-self-start" onClick={() => set<typeof block>((b) => void b.images.push({ url: "https://", alt: "" }))}>
-              + Add photo
+              + Add photo by link
             </Button>
           )}
         </div>
       );
   }
+}
+
+function PhotoUpload({ onUploaded }: { onUploaded: (url: string) => void }) {
+  const [rights, setRights] = useState(false);
+  const [status, setStatus] = useState<{ busy: boolean; error?: string }>({ busy: false });
+  async function upload(file: File) {
+    setStatus({ busy: true });
+    const form = new FormData();
+    form.set("file", file);
+    if (rights) form.set("rights", "on");
+    try {
+      const res = await fetch("/app/media/upload", { method: "POST", body: form });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok || !data.url) throw new Error(data.error ?? "Upload failed");
+      onUploaded(data.url);
+      setStatus({ busy: false });
+    } catch (e) {
+      setStatus({ busy: false, error: e instanceof Error ? e.message : "Upload failed" });
+    }
+  }
+  return (
+    <div className="space-y-2 rounded-lg border border-dashed border-border p-3">
+      <label className="flex min-h-11 items-center gap-3">
+        <input type="checkbox" className="size-5" checked={rights} onChange={(e) => setRights(e.target.checked)} />
+        <span className="text-sm">I took this photo or have permission to use it, and it shows my real work or premises.</span>
+      </label>
+      <label className="block text-sm font-semibold">
+        Upload a photo (JPEG, PNG or WebP, up to 5 MB)
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          disabled={!rights || status.busy}
+          className="mt-1 block w-full text-sm"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void upload(f);
+            e.target.value = "";
+          }}
+        />
+      </label>
+      <p aria-live="polite" className="text-sm">
+        {status.busy ? "Uploading…" : status.error ? <span className="text-err-fg">{status.error}</span> : null}
+      </p>
+    </div>
+  );
 }

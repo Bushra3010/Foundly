@@ -5,8 +5,8 @@ import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = { title: "Sign in", robots: { index: false } };
 
-export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
-  const { error } = await searchParams;
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
+  const { error, next } = await searchParams;
   return (
     <main id="main" className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-4 py-12">
       <Link href="/" className="mb-8 text-lg font-bold">
@@ -20,7 +20,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             <Notice tone="err">Your account has no workspace. Contact support so we can restore access.</Notice>
           </div>
         )}
-        <LoginForm />
+        <LoginForm next={next} />
       </Card>
     </main>
   );

@@ -5,6 +5,7 @@ import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
 import { businessDetailsSchema, fieldErrors, splitList } from "@/lib/validation";
+import { startClaim, verifyClaim } from "@/server/claims";
 import { confirmPublicContact, publishProfile, unpublishProfile, updateBusinessDetails } from "@/server/business";
 
 function lines(value: FormDataEntryValue | null) {
@@ -82,6 +83,28 @@ export async function unpublishProfileAction(): Promise<ActionState> {
     revalidatePath("/app", "layout");
     revalidatePath("/directory");
     return { ok: true, message: "Your profile is hidden from the directory." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function startClaimAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const method = String(form.get("method"));
+  if (method !== "dns" && method !== "file" && method !== "manual") return { ok: false, message: "Choose a verification method." };
+  try {
+    await startClaim(await getDb(), await requireCtx(), method, String(form.get("note") ?? "").slice(0, 1000) || undefined);
+    revalidatePath("/app/business");
+    return { ok: true, message: method === "manual" ? "Sent for review. We'll email you." : "Follow the steps below, then select Check now." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function verifyClaimAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    await verifyClaim(await getDb(), await requireCtx(), String(form.get("claimId")));
+    revalidatePath("/app/business");
+    return { ok: true, message: "Verified. Your profile now shows how ownership was confirmed." };
   } catch (err) {
     return toActionError(err);
   }

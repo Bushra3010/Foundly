@@ -3,6 +3,8 @@ import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { getProfile, requireBusiness } from "@/server/business";
 import { can } from "@/server/context";
+import { listClaims } from "@/server/claims";
+import { ClaimsCard } from "./claims-card";
 import { ConfirmContactForm, DetailsForm, ProfilePublishForm } from "./forms";
 
 export const metadata = { title: "My Business" };
@@ -11,7 +13,7 @@ export default async function BusinessPage() {
   const ctx = await requireCtx();
   const db = await getDb();
   const b = await requireBusiness(db, ctx);
-  const profile = await getProfile(db, ctx);
+  const [profile, claims] = await Promise.all([getProfile(db, ctx), listClaims(db, ctx)]);
   const published = profile?.status === "published";
 
   return (
@@ -72,7 +74,10 @@ export default async function BusinessPage() {
             <h2 className="font-semibold">Directory profile</h2>
             <div className="mt-2 flex flex-wrap gap-2">
               {published ? <Badge tone="ok">Published</Badge> : <Badge tone="neutral">Not published</Badge>}
-              <Badge tone="neutral">Ownership not verified</Badge>
+              <Badge tone={profile?.verification === "none" ? "neutral" : "ok"}>
+                {profile?.verification === "none" ? "Ownership not verified" : "Ownership verified"}
+              </Badge>
+              {profile?.status === "disputed" && <Badge tone="err">Under review</Badge>}
             </div>
             {profile?.publishedAt && (
               <p className="mt-2 text-sm text-muted">
@@ -88,6 +93,7 @@ export default async function BusinessPage() {
               </div>
             )}
           </Card>
+          <ClaimsCard claims={claims} websiteUrl={b.websiteUrl} isOwner={can(ctx, "owner")} />
           <Card>
             <h2 className="font-semibold">Private details</h2>
             <DefinitionList items={[["Street address", b.showAddress ? "Shown publicly" : "Hidden"]]} />

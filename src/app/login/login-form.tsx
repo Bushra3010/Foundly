@@ -5,10 +5,11 @@ import { SubmitButton } from "@/components/submit-button";
 import { Notice, TextField } from "@/components/ui";
 import { requestSignIn, type SignInState } from "./actions";
 
-export function LoginForm() {
+export function LoginForm({ next }: { next?: string }) {
   const [state, action] = useActionState<SignInState, FormData>(requestSignIn, {});
   return (
     <form action={action} className="space-y-4" noValidate>
+      {next && <input type="hidden" name="next" value={next} />}
       <TextField
         label="Email address"
         name="email"

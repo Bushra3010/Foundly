@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { getDb } from "@/db";
 import type { ActionState } from "@/lib/actions";
 import { toActionError } from "@/lib/actions";
-import { sendSignInEmail } from "@/lib/auth/mailer";
+import { safeNextPath, sendSignInEmail } from "@/lib/auth/mailer";
 import { clearSessionCookie, readSessionToken, setSessionCookie } from "@/lib/auth/session";
 import { rateLimit } from "@/lib/rate-limit";
 import { fieldErrors, loginSchema } from "@/lib/validation";
@@ -28,7 +28,8 @@ export async function requestSignIn(_prev: SignInState, form: FormData): Promise
   try {
     const token = await createLoginToken(await getDb(), parsed.data.email);
     const origin = process.env.APP_URL ?? `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host")}`;
-    const link = `${origin}/auth/verify?token=${encodeURIComponent(token)}`;
+    const next = safeNextPath(String(form.get("next") ?? ""));
+    const link = `${origin}/auth/verify?token=${encodeURIComponent(token)}${next ? `&next=${encodeURIComponent(next)}` : ""}`;
     const { delivered } = await sendSignInEmail({ to: parsed.data.email, link });
     return {
       ok: true,
@@ -52,6 +53,8 @@ export async function completeSignIn(_prev: ActionState, form: FormData): Promis
     const ctx = await contextForUser(db, userId);
     const business = ctx ? await getBusiness(db, ctx) : null;
     if (!business?.onboardingCompletedAt) destination = "/onboarding";
+    const next = safeNextPath(String(form.get("next") ?? ""));
+    if (next) destination = next;
   } catch (err) {
     return toActionError(err);
   }

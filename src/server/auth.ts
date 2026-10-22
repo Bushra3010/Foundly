@@ -89,13 +89,13 @@ export async function revokeAllSessions(db: Db, userId: string) {
     .where(and(eq(sessions.userId, userId), isNull(sessions.revokedAt)));
 }
 
-/** MVP: one workspace per user — the earliest membership. */
-export async function contextForUser(db: Db, userId: string): Promise<Ctx | null> {
-  const [m] = await db
-    .select()
-    .from(memberships)
-    .where(eq(memberships.userId, userId))
-    .orderBy(asc(memberships.createdAt))
-    .limit(1);
+/**
+ * Resolves the active workspace: the preferred one if the user is a member
+ * of it, otherwise their earliest membership. A preferred id that the user
+ * doesn't belong to is ignored, never trusted.
+ */
+export async function contextForUser(db: Db, userId: string, preferredWorkspaceId?: string): Promise<Ctx | null> {
+  const rows = await db.select().from(memberships).where(eq(memberships.userId, userId)).orderBy(asc(memberships.createdAt));
+  const m = rows.find((r) => r.workspaceId === preferredWorkspaceId) ?? rows[0];
   return m ? { userId, workspaceId: m.workspaceId, role: m.role } : null;
 }

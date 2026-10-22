@@ -7,11 +7,12 @@ import { Notice } from "@/components/ui";
 import type { ActionState } from "@/lib/actions";
 import { completeSignIn } from "@/app/login/actions";
 
-export function VerifyForm({ token }: { token: string }) {
+export function VerifyForm({ token, next }: { token: string; next?: string }) {
   const [state, action] = useActionState<ActionState, FormData>(completeSignIn, {});
   return (
     <form action={action} className="space-y-4">
       <input type="hidden" name="token" value={token} />
+      {next && <input type="hidden" name="next" value={next} />}
       {state.message && (
         <Notice tone="err">
           {state.message}{" "}

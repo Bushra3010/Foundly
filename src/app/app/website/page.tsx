@@ -7,6 +7,8 @@ import { missingOptionalFacts, requiredFactsProblems } from "@/lib/site/generate
 import { requireBusiness } from "@/server/business";
 import { can } from "@/server/context";
 import { getSite, latestGenerationJob, listVersions } from "@/server/sites";
+import { listDomains } from "@/server/domains";
+import { DomainsCard } from "./domains-card";
 import { SiteEditor } from "./editor";
 import { GenerateForm, PublishForm, RollbackForm, SlugForm, UnpublishForm } from "./panels";
 
@@ -24,7 +26,7 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireBusiness(db, ctx);
-  const [site, job, versions] = await Promise.all([getSite(db, ctx), latestGenerationJob(db, ctx), listVersions(db, ctx)]);
+  const [site, job, versions, domains] = await Promise.all([getSite(db, ctx), latestGenerationJob(db, ctx), listVersions(db, ctx), listDomains(db, ctx)]);
   const { generated } = await searchParams;
   const problems = requiredFactsProblems(business);
   const missing = missingOptionalFacts(business);
@@ -196,10 +198,10 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
               <GenerateForm requestId={randomUUID()} label="Regenerate whole draft" pendingLabel="Rebuilding draft…" variant="secondary" />
             </div>
           )}
-          <p className="text-sm text-muted">
-            Custom domains aren&apos;t available yet. Your site is served at its platform address.
-          </p>
         </Card>
+        <div className="md:col-span-2">
+          <DomainsCard domains={domains} isOwner={isOwner} />
+        </div>
       </div>
     </>
   );

@@ -7,6 +7,7 @@ import { contextForUser, SESSION_TTL_MS, userForSession, type SessionUser } from
 import type { Ctx } from "@/server/context";
 
 export const SESSION_COOKIE = "abgp_session";
+export const WORKSPACE_COOKIE = "abgp_ws";
 
 export async function setSessionCookie(token: string) {
   (await cookies()).set(SESSION_COOKIE, token, {
@@ -37,7 +38,21 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
 export const requireCtx = cache(async (): Promise<Ctx & { user: SessionUser }> => {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
-  const ctx = await contextForUser(await getDb(), user.id);
+  const preferred = (await cookies()).get(WORKSPACE_COOKIE)?.value;
+  const ctx = await contextForUser(await getDb(), user.id, preferred);
   if (!ctx) redirect("/login?error=no_workspace");
   return { ...ctx, user };
 });
+
+/** For route handlers: the tenant context or null (no redirects). */
+export async function getCtxOrNull(): Promise<(Ctx & { user: SessionUser }) | null> {
+  const user = await getCurrentUser();
+  if (!user) return null;
+  const preferred = (await cookies()).get(WORKSPACE_COOKIE)?.value;
+  const ctx = await contextForUser(await getDb(), user.id, preferred);
+  return ctx ? { ...ctx, user } : null;
+}
+
+export async function setWorkspaceCookie(workspaceId: string) {
+  (await cookies()).set(WORKSPACE_COOKIE, workspaceId, { httpOnly: true, sameSite: "lax", path: "/", secure: process.env.NODE_ENV === "production" });
+}

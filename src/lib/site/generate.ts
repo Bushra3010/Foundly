@@ -159,6 +159,18 @@ export function buildBlock(type: Block["type"], b: Business, id: string): Block 
         intro: `Get in touch with ${f.name} in ${f.city}.`,
         showForm: true,
       };
+    case "text":
+      return {
+        id,
+        type: "text",
+        heading: "Privacy notice",
+        body: [
+          `When you send an enquiry through this website, ${f.name} receives the name, contact details and message you enter so that we can reply to you.`,
+          "We use these details only to respond to your enquiry and to provide the service you ask about. We don't sell them.",
+          `To ask what we hold about you, or to have it deleted, contact ${f.name}${f.email ? ` at ${f.email}` : f.phone ? ` on ${f.phone}` : ""}.`,
+          "This website is hosted by our website provider, which stores enquiries on our behalf.",
+        ].join("\n\n"),
+      };
     case "gallery":
       return null;
   }
@@ -179,6 +191,8 @@ export function generateSite(b: Business): SiteContent {
     { key: "services", title: "Services", blocks: compact([block("services", "services")]) },
     { key: "about", title: "About", blocks: compact([block("about", "about")]) },
     { key: "contact", title: "Contact", blocks: compact([block("contact", "contact")]) },
+    // Owner-editable draft; review before publishing.
+    { key: "privacy", title: "Privacy", blocks: compact([block("text", "privacy")]) },
   ];
 
   const content: SiteContent = {
