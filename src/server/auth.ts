@@ -3,6 +3,7 @@ import { and, asc, eq, gt, isNull } from "drizzle-orm";
 import type { Db } from "@/db";
 import { loginTokens, memberships, sessions, users, workspaces } from "@/db/schema";
 import { AppError, audit, type Ctx } from "./context";
+import { ensureTrialCredits } from "./credits";
 
 const LOGIN_TOKEN_TTL_MS = 15 * 60 * 1000;
 export const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
@@ -31,7 +32,7 @@ export async function createLoginToken(db: Db, email: string): Promise<string> {
  * a workspace they own. Returns a new raw session token.
  */
 export async function consumeLoginToken(db: Db, raw: string) {
-  return db.transaction(async (tx) => {
+  const result = await db.transaction(async (tx) => {
     const [token] = await tx
       .update(loginTokens)
       .set({ usedAt: new Date() })
@@ -47,11 +48,13 @@ export async function consumeLoginToken(db: Db, raw: string) {
 
     let [user] = await tx.select().from(users).where(eq(users.email, token.email));
     let isNew = false;
+    let workspaceId: string | null = null;
     if (!user) {
       isNew = true;
       [user] = await tx.insert(users).values({ email: token.email }).returning();
       const [ws] = await tx.insert(workspaces).values({ name: "My workspace" }).returning();
       await tx.insert(memberships).values({ workspaceId: ws.id, userId: user.id, role: "owner" });
+      workspaceId = ws.id;
       await audit(tx, { workspaceId: ws.id, userId: user.id }, "workspace.created", ws.id);
     }
 
@@ -61,8 +64,10 @@ export async function consumeLoginToken(db: Db, raw: string) {
       tokenHash: hashToken(sessionToken),
       expiresAt: new Date(Date.now() + SESSION_TTL_MS),
     });
-    return { userId: user.id, isNew, sessionToken };
+    return { userId: user.id, isNew, sessionToken, workspaceId };
   });
+  if (result.workspaceId) await ensureTrialCredits(db, result.workspaceId);
+  return result;
 }
 
 export type SessionUser = { id: string; email: string; name: string | null };

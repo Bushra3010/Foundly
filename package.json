@@ -14,6 +14,7 @@
     "seed:dev": "vite-node -c vitest.config.ts scripts/seed-dev.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.1.0",
     "@electric-sql/pglite": "^0.5.11",
     "drizzle-orm": "^0.45.4",
     "nanoid": "^5.1.16",

@@ -2,6 +2,7 @@ import { and, count, eq, isNotNull } from "drizzle-orm";
 import type { Db } from "@/db";
 import { businesses, leads, memberships, sites, workspaces } from "@/db/schema";
 import { audit } from "./context";
+import { ensureTrialCredits } from "./credits";
 
 /** Every workspace the user belongs to, with a small portfolio summary. */
 export async function listUserWorkspaces(db: Db, userId: string) {
@@ -23,10 +24,12 @@ export async function listUserWorkspaces(db: Db, userId: string) {
 }
 
 export async function createWorkspace(db: Db, userId: string, name: string) {
-  return db.transaction(async (tx) => {
+  const ws = await db.transaction(async (tx) => {
     const [ws] = await tx.insert(workspaces).values({ name: name.trim().slice(0, 80) || "New workspace" }).returning();
     await tx.insert(memberships).values({ workspaceId: ws.id, userId, role: "owner" });
     await audit(tx, { workspaceId: ws.id, userId }, "workspace.created", ws.id);
     return ws;
   });
+  await ensureTrialCredits(db, ws.id);
+  return ws;
 }

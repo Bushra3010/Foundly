@@ -109,6 +109,10 @@ export const businesses = pgTable(
     hours: jsonb("hours").$type<OpeningHours>().notNull().default([]),
     services: jsonb("services").$type<Service[]>().notNull().default([]),
     serviceAreas: jsonb("service_areas").$type<string[]>().notNull().default([]),
+    /** Other names customers use for the business, for brand matching. */
+    aliases: jsonb("aliases").$type<string[]>().notNull().default([]),
+    /** Domains the business owns, besides its website, for citation matching. */
+    ownedDomains: jsonb("owned_domains").$type<string[]>().notNull().default([]),
     hasWebsite: boolean("has_website"),
     onboardingStep: integer("onboarding_step").notNull().default(2),
     onboardingCompletedAt: timestamp("onboarding_completed_at", { withTimezone: true }),
@@ -375,3 +379,197 @@ export const assets = pgTable(
   },
   (t) => [index("assets_workspace_idx").on(t.workspaceId)],
 );
+
+// ---------- Phase 3: AI visibility monitoring ----------
+
+export const questionGroupEnum = pgEnum("question_group", ["service", "purchase", "comparison", "location", "branded"]);
+
+/** Immutable once created: editing a question archives it and creates a new row (a new version). */
+export const trackedQuestions = pgTable(
+  "tracked_questions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    businessId: uuid("business_id")
+      .notNull()
+      .references(() => businesses.id, { onDelete: "cascade" }),
+    text: text("text").notNull(),
+    group: questionGroupEnum("group").notNull(),
+    language: text("language").notNull().default("en"),
+    location: text("location"),
+    replacesId: uuid("replaces_id"),
+    approvedBy: uuid("approved_by")
+      .notNull()
+      .references(() => users.id),
+    archivedAt: timestamp("archived_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [index("tracked_questions_workspace_idx").on(t.workspaceId)],
+);
+
+export const competitors = pgTable("competitors", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  aliases: jsonb("aliases").$type<string[]>().notNull().default([]),
+  domains: jsonb("domains").$type<string[]>().notNull().default([]),
+  createdAt: createdAt(),
+});
+
+export const runStatusEnum = pgEnum("run_status", ["queued", "running", "completed", "partial", "failed", "cancelled"]);
+
+export const monitoringRuns = pgTable(
+  "monitoring_runs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    businessId: uuid("business_id")
+      .notNull()
+      .references(() => businesses.id, { onDelete: "cascade" }),
+    trigger: text("trigger").notNull(),
+    idempotencyKey: text("idempotency_key").notNull(),
+    status: runStatusEnum("status").notNull().default("queued"),
+    questionIds: jsonb("question_ids").$type<string[]>().notNull(),
+    providers: jsonb("providers").$type<{ key: string; method: string; model: string; locale: string }[]>().notNull(),
+    samples: integer("samples").notNull().default(1),
+    /** Hash of question ids + provider config + extraction version, used to warn on unequal comparisons. */
+    configHash: text("config_hash").notNull(),
+    reservationId: uuid("reservation_id"),
+    plannedObservations: integer("planned_observations").notNull(),
+    startedAt: timestamp("started_at", { withTimezone: true }),
+    finishedAt: timestamp("finished_at", { withTimezone: true }),
+    createdBy: uuid("created_by").references(() => users.id),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex("monitoring_runs_key_idx").on(t.workspaceId, t.idempotencyKey), index("monitoring_runs_ws_idx").on(t.workspaceId, t.createdAt)],
+);
+
+export const observationStatusEnum = pgEnum("observation_status", [
+  "answered",
+  "answered_uncited",
+  "refusal",
+  "partial",
+  "timeout",
+  "unavailable",
+  "error",
+]);
+
+export type Citation = { url: string; title?: string | null };
+
+/** Raw evidence. Never modified after capture; corrections live on brand_matches. */
+export const observations = pgTable(
+  "observations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    runId: uuid("run_id")
+      .notNull()
+      .references(() => monitoringRuns.id, { onDelete: "cascade" }),
+    questionId: uuid("question_id")
+      .notNull()
+      .references(() => trackedQuestions.id),
+    questionText: text("question_text").notNull(),
+    provider: text("provider").notNull(),
+    sourceType: text("source_type").notNull(),
+    model: text("model"),
+    requestedLocale: text("requested_locale"),
+    appliedLocale: text("applied_locale").notNull(),
+    searchEnabled: boolean("search_enabled").notNull(),
+    sample: integer("sample").notNull().default(1),
+    idempotencyKey: text("idempotency_key").notNull().unique(),
+    status: observationStatusEnum("status").notNull(),
+    rawAnswer: text("raw_answer"),
+    citations: jsonb("citations").$type<Citation[]>().notNull().default([]),
+    rawResponse: jsonb("raw_response").$type<unknown>(),
+    errorMessage: text("error_message"),
+    latencyMs: integer("latency_ms"),
+    extractionVersion: integer("extraction_version").notNull(),
+    capturedAt: timestamp("captured_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("observations_ws_idx").on(t.workspaceId, t.capturedAt), index("observations_run_idx").on(t.runId)],
+);
+
+/** Derived annotations; owners can correct them without touching the raw answer. */
+export const brandMatches = pgTable(
+  "brand_matches",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    observationId: uuid("observation_id")
+      .notNull()
+      .references(() => observations.id, { onDelete: "cascade" }),
+    /** "self" for the owner's business, otherwise a competitor id. */
+    brandKey: text("brand_key").notNull(),
+    brandName: text("brand_name").notNull(),
+    mentioned: boolean("mentioned").notNull(),
+    cited: boolean("cited").notNull(),
+    matchedText: text("matched_text"),
+    listedPosition: integer("listed_position"),
+    ambiguous: boolean("ambiguous").notNull().default(false),
+    extractionVersion: integer("extraction_version").notNull(),
+    correction: text("correction"),
+    correctionReason: text("correction_reason"),
+    correctedBy: uuid("corrected_by").references(() => users.id),
+    correctedAt: timestamp("corrected_at", { withTimezone: true }),
+  },
+  (t) => [index("brand_matches_obs_idx").on(t.observationId), index("brand_matches_ws_idx").on(t.workspaceId, t.brandKey)],
+);
+
+// ---------- Credits ----------
+
+export const creditAccounts = pgTable("credit_accounts", {
+  workspaceId: uuid("workspace_id")
+    .primaryKey()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  balance: integer("balance").notNull().default(0),
+  updatedAt: updatedAt(),
+});
+
+export const creditLedger = pgTable(
+  "credit_ledger",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    delta: integer("delta").notNull(),
+    reason: text("reason").notNull(),
+    refType: text("ref_type"),
+    refId: text("ref_id"),
+    idempotencyKey: text("idempotency_key").notNull().unique(),
+    createdAt: createdAt(),
+  },
+  (t) => [index("credit_ledger_ws_idx").on(t.workspaceId, t.createdAt)],
+);
+
+export const reservationStatusEnum = pgEnum("reservation_status", ["reserved", "settled", "released"]);
+
+export const creditReservations = pgTable("credit_reservations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  amount: integer("amount").notNull(),
+  settledAmount: integer("settled_amount"),
+  status: reservationStatusEnum("status").notNull().default("reserved"),
+  refType: text("ref_type").notNull(),
+  refId: text("ref_id").notNull(),
+  createdAt: createdAt(),
+  settledAt: timestamp("settled_at", { withTimezone: true }),
+});
+
+export type TrackedQuestion = typeof trackedQuestions.$inferSelect;
+export type Observation = typeof observations.$inferSelect;
+export type BrandMatch = typeof brandMatches.$inferSelect;
+export type Competitor = typeof competitors.$inferSelect;
+export type MonitoringRun = typeof monitoringRuns.$inferSelect;

@@ -25,6 +25,8 @@ const base: Business = {
   hours: [],
   services: [{ name: "Leak repair" }],
   serviceAreas: [],
+  aliases: [],
+  ownedDomains: [],
   hasWebsite: false,
   onboardingStep: 6,
   onboardingCompletedAt: null,

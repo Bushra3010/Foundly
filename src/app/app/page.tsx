@@ -7,6 +7,7 @@ import { requireCtx } from "@/lib/auth/session";
 import { missingOptionalFacts } from "@/lib/site/generate";
 import { getProfile, requireBusiness } from "@/server/business";
 import { getSite, listVersions } from "@/server/sites";
+import { visibilitySummary } from "@/server/monitoring/service";
 
 export const metadata = { title: "Home" };
 
@@ -32,14 +33,16 @@ export default async function HomePage() {
   const db = await getDb();
   const business = await requireBusiness(db, ctx);
   const weekAgo = daysAgo(7);
-  const [site, versions, profile, [{ n: newLeads }], [{ n: weekLeads }], activity] = await Promise.all([
+  const [site, versions, profile, [{ n: newLeads }], [{ n: weekLeads }], activity, visibility] = await Promise.all([
     getSite(db, ctx),
     listVersions(db, ctx),
     getProfile(db, ctx),
     db.select({ n: count() }).from(leads).where(and(eq(leads.workspaceId, ctx.workspaceId), eq(leads.status, "new"))),
     db.select({ n: count() }).from(leads).where(and(eq(leads.workspaceId, ctx.workspaceId), gte(leads.createdAt, weekAgo))),
     db.select().from(auditEvents).where(eq(auditEvents.workspaceId, ctx.workspaceId)).orderBy(desc(auditEvents.createdAt)).limit(8),
+    visibilitySummary(db, ctx, 30),
   ]);
+  const vm = visibility.metrics;
   const live = site && versions.find((v) => v.id === site.publishedVersionId);
 
   // Three next actions, in order of what unlocks the most for the owner.
@@ -74,10 +77,24 @@ export default async function HomePage() {
         </Card>
         <Card>
           <h2 className="text-sm font-semibold text-muted">AI visibility</h2>
-          <p className="mt-2">
-            <Badge tone="neutral">No checks yet</Badge>
-          </p>
-          <p className="mt-2 text-sm text-muted">Monitoring isn&apos;t enabled for any AI source yet, so there&apos;s no mention rate to show.</p>
+          {vm.valid > 0 && vm.mention.rate !== null ? (
+            <>
+              <p className="mt-2 text-3xl font-bold">{Math.round(vm.mention.rate * 100)}%</p>
+              <p className="text-sm text-muted">
+                mention rate · {vm.mention.numerator} of {vm.mention.denominator} answers, last 30 days{vm.smallSample ? " · small sample" : ""}
+              </p>
+              <Link href="/app/visibility" className="mt-1 block text-sm font-semibold text-brand underline">
+                See evidence
+              </Link>
+            </>
+          ) : (
+            <>
+              <p className="mt-2">
+                <Badge tone="neutral">No results yet</Badge>
+              </p>
+              <p className="mt-2 text-sm text-muted">No valid AI answers collected in the last 30 days.</p>
+            </>
+          )}
         </Card>
         <Card>
           <h2 className="text-sm font-semibold text-muted">Leads</h2>
