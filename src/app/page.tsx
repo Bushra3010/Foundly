@@ -6,6 +6,7 @@ import { LandingPricing } from "@/components/landing-pricing";
 import { LandingResults } from "@/components/landing-results";
 import { LandingAiAnswers } from "@/components/landing-ai-answers";
 import { FitSections } from "@/components/fit-sections";
+import { HeroDemo } from "@/components/hero-demo";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -39,8 +40,9 @@ export default function Home() {
       </header></div>
       <main id="main" className="landing-main">
         <div className="landing-fit landing-first"><div className="fit-body"><section className="landing-hero" aria-labelledby="hero-title">
-          <div><p className="landing-eyebrow"><span /> SMALL BUSINESS. BIG POSSIBILITIES.</p><h1 id="hero-title">Good businesses<br />deserve to be <span className="hero-found">found<svg viewBox="0 0 330 18" aria-hidden="true"><path d="M4 13 Q150 -2 326 7" /></svg></span>.</h1></div>
-          <div className="hero-intro"><p>You do the work you love.{" "}<br />Let’s help the world find it.</p><p className="hero-description">Build your website, bring your business information together, and understand how you show up in AI answers. Your online presence, all in one place.</p><div className="hero-buttons"><Link href="/signup" className="landing-button">Start building <Icon name="arrow" size={18} /></Link><a href="#products" className="landing-button secondary">Explore Foundly <Icon name="down" size={17} /></a></div><span className="hero-note">Made for business owners. No coding needed.</span></div>
+          <div className="hero-copy"><p className="landing-eyebrow"><span /> SMALL BUSINESS. BIG POSSIBILITIES.</p><h1 id="hero-title">Good businesses<br />deserve to be <span className="hero-found">found<svg viewBox="0 0 330 18" aria-hidden="true"><path d="M4 13 Q150 -2 326 7" /></svg></span>.</h1>
+          <div className="hero-intro"><p>You do the work you love.{" "}<br />Let’s help the world find it.</p><p className="hero-description">Build your website, bring your business information together, and understand how you show up in AI answers. Your online presence, all in one place.</p><div className="hero-buttons"><Link href="/signup" className="landing-button">Start building <Icon name="arrow" size={18} /></Link><a href="#products" className="landing-button secondary">Explore Foundly <Icon name="down" size={17} /></a></div><span className="hero-note">Made for business owners. No coding needed.</span></div></div>
+          <HeroDemo />
         </section><div className="landing-audience"><span>FOR PEOPLE BUILDING SOMETHING OF THEIR OWN</span><div>{["Local businesses","Independent professionals","Growing teams","Service businesses","Studios and clinics"].map(a=><span key={a} className="audience-pill"><span className="audience-star" aria-hidden="true">✳</span>{a}</span>)}</div></div></div></div>
         <section id="products" className="landing-products landing-fit" aria-label="Explore Foundly products"><div className="fit-body"><LandingShowcase /></div></section>
         
