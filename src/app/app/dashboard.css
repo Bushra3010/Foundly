@@ -96,8 +96,8 @@
     border-radius:9px;
     font-weight:700;
     font-size:14px;
-    background:var(--d-lime);
-    color:#1b1e17;
+    background:#20221e;
+    color:var(--d-lime);
   }
 
   .app-shell .nav-caption {
@@ -1187,4 +1187,16 @@
 }
 .app-shell .profile-menu-item:hover {
   background:var(--d-soft);
+}
+
+/* Dark theme keeps the neon tile with dark letter. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .app-shell .workspace-avatar {
+    background:var(--d-lime);
+    color:#1b1e17;
+  }
+}
+:root[data-theme="dark"] .app-shell .workspace-avatar {
+  background:var(--d-lime);
+  color:#1b1e17;
 }

@@ -38,13 +38,29 @@ export default async function SettingsPage() {
     <>
       <PageHeader icon="settings" title={t(locale, "nav.settings")} />
       <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          <h2 className="font-semibold">Your account</h2>
-          <p className="mt-2 break-all">{ctx.user.email}</p>
-          <p className="mt-1">
-            <Badge tone="info">{ROLE_TEXT[ctx.role]}</Badge>
-          </p>
-        </Card>
+        <div className="grid content-start gap-4">
+          <Card>
+            <h2 className="font-semibold">Your account</h2>
+            <p className="mt-2 break-all">{ctx.user.email}</p>
+            <p className="mt-1">
+              <Badge tone="info">{ROLE_TEXT[ctx.role]}</Badge>
+            </p>
+          </Card>
+
+          <Card>
+            <h2 className="font-semibold">{t(locale, "common.language")}</h2>
+            <p className="mt-1 mb-3 text-sm text-muted">{t(locale, "settings.languageHint")}</p>
+            <ActionForm action={setLanguageAction} submitLabel={t(locale, "common.save")} variant="secondary" inline>
+              <label className="sr-only" htmlFor="locale">
+                {t(locale, "common.language")}
+              </label>
+              <select id="locale" name="locale" defaultValue={locale} className={select}>
+                <option value="en">English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+              </select>
+            </ActionForm>
+          </Card>
+        </div>
 
         <Card>
           <h2 className="font-semibold">Password</h2>
@@ -55,20 +71,6 @@ export default async function SettingsPage() {
             {passwordSet && <TextField label="Current password" name="currentPassword" type="password" autoComplete="current-password" />}
             <TextField label="New password" name="newPassword" type="password" autoComplete="new-password" hint="At least 8 characters" />
             <TextField label="Confirm new password" name="confirmPassword" type="password" autoComplete="new-password" />
-          </ActionForm>
-        </Card>
-
-        <Card>
-          <h2 className="font-semibold">{t(locale, "common.language")}</h2>
-          <p className="mt-1 mb-3 text-sm text-muted">{t(locale, "settings.languageHint")}</p>
-          <ActionForm action={setLanguageAction} submitLabel={t(locale, "common.save")} variant="secondary" inline>
-            <label className="sr-only" htmlFor="locale">
-              {t(locale, "common.language")}
-            </label>
-            <select id="locale" name="locale" defaultValue={locale} className={select}>
-              <option value="en">English</option>
-              <option value="hi">हिन्दी (Hindi)</option>
-            </select>
           </ActionForm>
         </Card>
 
