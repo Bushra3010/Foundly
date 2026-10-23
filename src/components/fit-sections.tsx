@@ -25,16 +25,23 @@ export function FitSections() {
       // Anchors and section heights use the real header and footer sizes.
       root?.style.setProperty("--lp-header", `${Math.round(header)}px`);
       root?.style.setProperty("--lp-footer", `${Math.round(footer)}px`);
+      const announce = document.querySelector<HTMLElement>(".landing-announcement")?.getBoundingClientRect().height ?? 0;
+      root?.style.setProperty("--lp-announce", `${Math.round(announce)}px`);
       for (const body of bodies) {
         if (!media.matches) {
           body.style.zoom = "";
           continue;
         }
         const current = parseFloat(body.style.zoom || "1") || 1;
-        const natural = body.getBoundingClientRect().height / current;
         const section = body.parentElement!;
+        // The first screen's body stretches to fill the screen, so measure its
+        // stacked children instead of the stretched box.
+        const natural =
+          (section.classList.contains("landing-first")
+            ? Array.from(body.children).reduce((h, c) => h + (c as HTMLElement).getBoundingClientRect().height, 0)
+            : body.getBoundingClientRect().height) / current;
         const cs = getComputedStyle(section);
-        const reserve = section.classList.contains("landing-last") ? footer : 0;
+        const reserve = section.classList.contains("landing-last") ? footer : section.classList.contains("landing-first") ? announce : 0;
         const room = window.innerHeight - header - reserve - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
         const next = natural > room ? Math.max(MIN_ZOOM, room / natural) : 1;
         // Always shrink when content doesn't fit; only grow back for clear gains,
