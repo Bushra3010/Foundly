@@ -33,7 +33,10 @@ export function proxy(req: NextRequest) {
     if (PASSTHROUGH.test(pathname)) return NextResponse.next();
     return rewriteToSite(req, pathname, "", `/s/${host.slice(0, -(sitesRoot.length + 1))}${sub}`);
   }
-  if (appHost && host !== appHost && host !== sitesRoot && host !== "localhost" && host !== "127.0.0.1") {
+  // The host's own preview addresses (e.g. *.netlify.app) always serve the app,
+  // never an owner's custom domain, so the site keeps working there too.
+  const platformHost = host.endsWith(".netlify.app") || host.endsWith(".vercel.app");
+  if (appHost && host !== appHost && !platformHost && host !== sitesRoot && host !== "localhost" && host !== "127.0.0.1") {
     if (PASSTHROUGH.test(pathname)) return NextResponse.next();
     return rewriteToSite(req, pathname, "", `/d/${host}${sub}`);
   }
