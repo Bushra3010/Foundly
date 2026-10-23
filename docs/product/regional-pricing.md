@@ -1,12 +1,12 @@
 # Regional launch pricing
 
-Plans are priced by GEO keywords. A keyword is one tracked question, such as "best dentist in Pune", checked on ChatGPT, Gemini, Perplexity and Claude. Three plans are on sale: Growth (5 keywords, checked every 2 weeks), Pro (10 keywords, checked every week) and Agency (up to ten businesses with 5 keywords each, checked every 2 weeks). The old Website plan (`website`, shown as Base) is retired. It is no longer sold, but existing subscriptions keep working.
+Plans are priced by GEO keywords. A keyword is one tracked question, such as "best dentist in Pune", checked on ChatGPT, Gemini, Perplexity and Claude. Three plans are on sale: Growth (5 keywords, checked every 2 weeks), Pro (10 keywords, checked every week) and Enterprise (stored as `agency`; up to ten businesses with 5 keywords each, checked every 2 weeks). The old Website plan (`website`, shown as Base) is retired. It is no longer sold, but existing subscriptions keep working.
 
-Credits per month = keywords × 4 AIs × runs per month, where a weekly plan budgets 4.5 runs (enough for a month with 5 Mondays) and a biweekly plan budgets 2.25. That gives Growth 45, Pro 180 and Agency 45 per business. With billing enforced, tracked questions are capped at the plan's keywords, and biweekly plans run on even ISO weeks.
+Credits per month = keywords × 4 AIs × runs per month, where a weekly plan budgets 4.5 runs (enough for a month with 5 Mondays) and a biweekly plan budgets 2.25. That gives Growth 45, Pro 180 and Enterprise 45 per business. With billing enforced, tracked questions are capped at the plan's keywords, and biweekly plans run on even ISO weeks.
 
 These are fixed local prices, not exchange-rate conversions. Each one keeps at least a 90% gross margin even when every credit is used. `tests/regional-pricing.test.ts` checks this.
 
-| Market | Currency | Growth | Pro | Agency |
+| Market | Currency | Growth | Pro | Enterprise |
 | --- | --- | ---: | ---: | ---: |
 | India | INR | 2,999 | 10,999 | 29,999 |
 | United States / other countries | USD | 45 | 159 | 449 |
@@ -19,7 +19,7 @@ These are fixed local prices, not exchange-rate conversions. Each one keeps at l
 | Singapore | SGD | 59 | 209 | 589 |
 | South Africa | ZAR | 799 | 2,799 | 7,999 |
 
-Extra keywords can be added to any plan for a monthly price per keyword: ₹999, $15, £12, €15, C$22, A$25, NZ$27, AED 59, S$21 or R279. On biweekly plans (Growth, Agency) the cost is about ₹36 per keyword, a 93% margin. On Pro, which checks weekly, it is about ₹72, so ₹999 sits at 89.9%. Selling add-ons needs Razorpay subscription add-ons plus raising the keyword cap and credits for that workspace. The cards show the price, but buying an add-on is not built yet.
+Extra keywords can be added to any plan for a monthly price per keyword: ₹999, $15, £12, €15, C$22, A$25, NZ$27, AED 59, S$21 or R279. On biweekly plans (Growth, Enterprise) the cost is about ₹36 per keyword, a 93% margin. On Pro, which checks weekly, it is about ₹72, so ₹999 sits at 89.9%. Selling add-ons needs Razorpay subscription add-ons plus raising the keyword cap and credits for that workspace. The cards show the price, but buying an add-on is not built yet.
 
 ## Cost model (90% margin)
 
@@ -42,7 +42,7 @@ Worst case, India, with every credit used (₹4 per credit, ₹25 platform cost 
 | --- | ---: | ---: | ---: | ---: |
 | Growth | ₹2,999 | 45 | ₹295 | 90.2% |
 | Pro | ₹10,999 | 180 | ₹1,075 | 90.2% |
-| Agency | ₹29,999 | 450 | ₹2,950 | 90.2% |
+| Enterprise | ₹29,999 | 450 | ₹2,950 | 90.2% |
 
 The ₹25 platform cost assumes about 100 or more paying businesses sharing fixed hosting, database and email bills. With fewer customers, margins are lower. Support time, salaries and taxes are outside this model.
 

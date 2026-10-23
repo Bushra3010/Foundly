@@ -1,26 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Icon } from "./icon";
 import { planSpec, SALE_PLANS, type SalePlan } from "@/lib/plans";
 import { formatRegionalPrice, GEO_COUNTRY_COOKIE, pricingCountry, pricingCountryFor, PRICING_COUNTRIES, PRICING_MARKETS, regionalPrice, suggestPricingCountry } from "@/lib/regional-pricing";
 
+const SAVED_COUNTRY_KEY = "foundly-pricing-country";
+
+/** A saved manual choice wins, then the visitor's IP location, then the device timezone. */
+function detectCountry() {
+  let saved: string | null = null;
+  try { saved = localStorage.getItem(SAVED_COUNTRY_KEY); } catch {}
+  const geo = document.cookie.match(new RegExp(`(?:^|; )${GEO_COUNTRY_COOKIE}=([A-Z]{2})`))?.[1];
+  return pricingCountry(saved)?.code ?? (geo ? pricingCountryFor(geo) : suggestPricingCountry(Intl.DateTimeFormat().resolvedOptions().timeZone, navigator.languages));
+}
+const noSubscribe = () => () => {};
+
 export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<string, number | null> }) {
-  const [countryCode, setCountryCode] = useState("IN");
+  // The prerendered page shows India; the browser switches to the detected country.
+  const detected = useSyncExternalStore(noSubscribe, detectCountry, () => "IN");
+  const [chosen, setChosen] = useState<string | null>(null);
+  const countryCode = chosen ?? detected;
   const [selected, setSelected] = useState<SalePlan>("growth");
-  useEffect(() => {
-    let saved: string | null = null;
-    try { saved = localStorage.getItem("foundly-pricing-country"); } catch {}
-    // A manual choice wins, then the visitor's IP location, then the device timezone.
-    const geo = document.cookie.match(new RegExp(`(?:^|; )${GEO_COUNTRY_COOKIE}=([A-Z]{2})`))?.[1];
-    setCountryCode(pricingCountry(saved)?.code ?? (geo ? pricingCountryFor(geo) : suggestPricingCountry(Intl.DateTimeFormat().resolvedOptions().timeZone, navigator.languages)));
-  }, []);
   const country = pricingCountry(countryCode)!;
   const market = PRICING_MARKETS[country.market];
   function chooseCountry(code: string) {
-    setCountryCode(code);
-    try { localStorage.setItem("foundly-pricing-country", code); } catch {}
+    setChosen(code);
+    try { localStorage.setItem(SAVED_COUNTRY_KEY, code); } catch {}
   }
 
   return (

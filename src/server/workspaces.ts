@@ -25,7 +25,7 @@ export async function listUserWorkspaces(db: Db, userId: string) {
 }
 
 /**
- * Each plan allows a number of businesses per owner; Agency allows several.
+ * Each plan allows a number of businesses per owner; Enterprise allows several.
  * Only enforced once billing is on.
  */
 export async function assertCanCreateWorkspace(db: Db, userId: string) {

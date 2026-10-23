@@ -129,8 +129,9 @@
   display:none;
 }
 
+/* Same width and gutter as .landing-header, so content lines up with the logo. */
 .landing-main {
-  max-width:1280px;
+  max-width:1360px;
   margin:auto;
   padding:0 40px;
 }
@@ -1026,7 +1027,7 @@
 }
 
 .landing-footer {
-  max-width:1280px;
+  max-width:1360px;
   margin:auto;
   border-top:1px solid var(--lp-line);
   padding:34px 40px 40px;
@@ -1068,7 +1069,7 @@
     max-width:1440px;
   }
   .landing-main,.landing-footer {
-    max-width:1360px;
+    max-width:1440px;
   }
   .landing-hero {
     padding-top:95px;
@@ -1111,7 +1112,7 @@
     gap:15px;
   }
   .landing-main {
-    padding:0 28px;
+    padding:0 25px;
   }
   .landing-hero {
     gap:35px;
@@ -1168,7 +1169,7 @@
   }
   .landing-footer {
     gap:25px;
-    padding-inline:28px;
+    padding-inline:25px;
   }
 }
 
@@ -1570,7 +1571,7 @@
   background: #dfebc7;
 }
 .pricing-highlight {
-  font-size:10px;
+  font-size:12px;
   font-weight: 600;
   letter-spacing:.8px;
   color: #5e713b;
@@ -1587,7 +1588,7 @@
 }
 .pricing-summary {
   color: var(--lp-muted);
-  font-size:14px;
+  font-size:16px;
   line-height:1.65;
   min-height:68px;
   margin: 0 0 20px;
@@ -1611,11 +1612,11 @@
   padding-top: 8px;
 }
 .pricing-amount > span {
-  font-size:13px;
+  font-size:14px;
   color: var(--lp-muted);
 }
 .pricing-term {
-  font-size:12px;
+  font-size:14px;
   color: #868a7b;
   margin: 6px 0 24px;
 }
@@ -1627,7 +1628,7 @@
   min-height:46px;
 }
 .pricing-includes {
-  font-size:11px;
+  font-size:12.5px;
   letter-spacing: 1px;
   margin: 25px 0 16px;
   padding-top: 23px;
@@ -1645,10 +1646,10 @@
 .pricing-card li {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  font-size:14px;
-  line-height:1.6;
-  color: #5e6556;
+  gap: 10px;
+  font-size:16px;
+  line-height:1.55;
+  color: #4f5648;
 }
 .pricing-card li svg {
   flex-shrink: 0;
@@ -1695,16 +1696,16 @@
     margin-bottom: 16px;
   }
   .pricing-highlight {
-    font-size: 10px;
+    font-size: 11px;
     padding: 6px 10px;
   }
   .pricing-summary {
     min-height: 0;
-    font-size: 14px;
+    font-size: 15px;
     margin-bottom: 17px;
   }
   .pricing-card li {
-    font-size: 14px;
+    font-size: 15px;
   }
   .pricing-footnote > span {
     max-width: 300px;
@@ -3118,13 +3119,13 @@
   .landing-fit .landing-feature > p { margin-bottom: 20px; }
 
   /* Pricing */
-  .landing-fit .pricing-card { padding: 22px 20px; }
+  .landing-fit .pricing-card { padding: 26px 24px; }
   .landing-fit .pricing-card-top { margin-bottom: 12px; }
   .landing-fit .pricing-summary { min-height: 0; margin-bottom: 12px; }
   .landing-fit .pricing-term { margin: 4px 0 14px; }
   .landing-fit .pricing-includes { margin: 16px 0 10px; padding-top: 14px; }
-  .landing-fit .pricing-card ul { gap: 7px; }
-  .landing-fit .pricing-card li { font-size: 13.5px; line-height: 1.45; }
+  .landing-fit .pricing-card ul { gap: 10px; }
+  .landing-fit .pricing-card li { font-size: 16px; line-height: 1.5; }
   .landing-fit .pricing-footnote { padding-top: 16px; }
 }
 

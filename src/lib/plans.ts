@@ -49,7 +49,7 @@ export const PLANS: PlanSpec[] = [
   { key: "website", name: "Base", summary: "Get your business ready for AI answers", features: GEO, hostedSite: true, customDomain: true, keywords: 3, checks: null, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "PLAN_PRICE_WEBSITE_INR", retired: true },
   keywordPlan("growth", "Growth", 5, "biweekly"),
   keywordPlan("pro", "Pro", 10, "weekly"),
-  { key: "agency", name: "Agency", summary: "Growth for up to 10 businesses", features: ["Growth for every business", "5 keywords per business, checked every 2 weeks", AI_LIST, "Up to 10 businesses", "Portfolio view"], hostedSite: true, customDomain: true, keywords: 5, checks: "biweekly", monthlyCredits: credits(5, "biweekly"), maxWorkspaces: 10, priceEnv: "PLAN_PRICE_AGENCY_INR" },
+  { key: "agency", name: "Enterprise", summary: "Growth for up to 10 businesses", features: ["Growth for every business", "5 keywords per business, checked every 2 weeks", AI_LIST, "Up to 10 businesses", "Portfolio view"], hostedSite: true, customDomain: true, keywords: 5, checks: "biweekly", monthlyCredits: credits(5, "biweekly"), maxWorkspaces: 10, priceEnv: "PLAN_PRICE_AGENCY_INR" },
 ];
 
 export const planSpec = (p: Plan) => PLANS.find((x) => x.key === p)!;
