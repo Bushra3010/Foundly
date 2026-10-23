@@ -1144,3 +1144,47 @@
 .dash-focus .share-btn:not(.wa) { background:#ffffff14; border-color:#ffffff24; color:#fff; }
 
 .lead-reply { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+
+/* Account menu in the top bar. */
+.app-shell .profile-menu {
+  position:relative;
+}
+.app-shell .profile-menu > summary {
+  list-style:none;
+  cursor:pointer;
+}
+.app-shell .profile-menu > summary::-webkit-details-marker {
+  display:none;
+}
+.app-shell .profile-menu-panel {
+  position:absolute;
+  right:0;
+  top:calc(100% + 8px);
+  z-index:40;
+  width:240px;
+  padding:6px;
+  background:var(--d-card);
+  border:1px solid var(--d-line);
+  border-radius:14px;
+  box-shadow:var(--d-shadow);
+}
+.app-shell .profile-menu-head {
+  padding:8px 10px 10px;
+  margin-bottom:4px;
+  border-bottom:1px solid var(--d-line);
+}
+.app-shell .profile-menu-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  padding:8px 10px;
+  border-radius:9px;
+  font-size:14px;
+  font-weight:500;
+  text-align:left;
+  color:var(--d-ink);
+}
+.app-shell .profile-menu-item:hover {
+  background:var(--d-soft);
+}

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Brand, Icon } from "@/components/icon";
 import { BottomNav, SidebarNav } from "@/components/app-nav";
+import { signOut } from "@/app/login/actions";
+import { signOutEverywhereAction } from "./settings/actions";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { getLocale } from "@/lib/locale";
@@ -20,8 +22,6 @@ export default async function AppLayout({
   const locale = await getLocale();
   const business = await getBusiness(await getDb(), ctx);
   if (!business?.onboardingCompletedAt) redirect("/onboarding");
-  // The founder console lives separately at /admin with its own sign-in.
-  const extra = [{ href: "/app/workspaces", label: "Workspaces", icon: "⧉" }];
 
   return (
     <div className="app-shell">
@@ -29,7 +29,7 @@ export default async function AppLayout({
         <Link href="/app" className="sidebar-brand">
           <Brand />
         </Link>
-        <Link href="/app/workspaces" className="workspace-switch">
+        <div className="workspace-switch">
           <span className="workspace-avatar">
             {business.name.slice(0, 1).toUpperCase()}
           </span>
@@ -38,26 +38,11 @@ export default async function AppLayout({
               {business.name}
             </span>
           </span>
-          <Icon name="down" size={16} />
-        </Link>
+        </div>
         <p className="nav-caption">WORKSPACE</p>
         <nav aria-label="Main">
-          <SidebarNav locale={locale} extra={extra} />
+          <SidebarNav locale={locale} />
         </nav>
-        <div className="sidebar-footer">
-          <Link href="/app/settings" className="account-link">
-            <span className="account-avatar">
-              {ctx.user.email.slice(0, 1).toUpperCase()}
-            </span>
-            <span className="min-w-0">
-              <span className="block text-xs font-semibold">Your account</span>
-              <span className="block truncate text-xs text-muted">
-                {ctx.user.email}
-              </span>
-            </span>
-            <Icon name="settings" size={17} />
-          </Link>
-        </div>
       </aside>
       <div className="app-content">
         <header className="app-topbar">
@@ -76,13 +61,31 @@ export default async function AppLayout({
               <span>Your website</span>
               <span aria-hidden="true">↗</span>
             </Link>
-            <Link
-              href="/app/workspaces"
-              className="topbar-avatar"
-              aria-label={`Switch workspace: ${business.name}`}
-            >
-              {business.name.slice(0, 1).toUpperCase()}
-            </Link>
+            <details className="profile-menu">
+              <summary className="topbar-avatar" aria-label="Your account">
+                {ctx.user.email.slice(0, 1).toUpperCase()}
+              </summary>
+              <div className="profile-menu-panel">
+                <div className="profile-menu-head">
+                  <span className="block text-xs font-semibold">Your account</span>
+                  <span className="block truncate text-xs text-muted">
+                    {ctx.user.email}
+                  </span>
+                </div>
+                <form action={signOut}>
+                  <button type="submit" className="profile-menu-item">
+                    <Icon name="arrow" size={16} />
+                    Sign out
+                  </button>
+                </form>
+                <form action={signOutEverywhereAction}>
+                  <button type="submit" className="profile-menu-item">
+                    <Icon name="arrow" size={16} />
+                    Sign out on all devices
+                  </button>
+                </form>
+              </div>
+            </details>
           </div>
         </header>
         <main id="main" lang={locale} className="app-main">

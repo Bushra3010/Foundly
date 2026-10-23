@@ -18,7 +18,6 @@ export default async function MorePage() {
             (i) =>
               !["/app", "/app/website", "/app/visibility"].includes(i.href),
           ).map((i) => ({ ...i, label: t(locale, i.key) })),
-          { href: "/app/workspaces", label: "Workspaces", icon: "⧉" },
         ].map((item) => (
           <li key={item.href}>
             <Link

@@ -1,11 +1,9 @@
 import { ActionForm } from "@/components/action-form";
-import { SubmitButton } from "@/components/submit-button";
 import { Badge, Card, PageHeader, TextField } from "@/components/ui";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
-import { signOut } from "@/app/login/actions";
 import { can } from "@/server/context";
 import { listMembers, listPendingInvites } from "@/server/team";
 import { hasPassword } from "@/server/auth";
@@ -16,7 +14,6 @@ import {
   revokeInviteAction,
   setLanguageAction,
   setPasswordAction,
-  signOutEverywhereAction,
   transferOwnershipAction,
 } from "./actions";
 import { AccountSection } from "./account-section";
@@ -47,14 +44,6 @@ export default async function SettingsPage() {
           <p className="mt-1">
             <Badge tone="info">{ROLE_TEXT[ctx.role]}</Badge>
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <form action={signOut}>
-              <SubmitButton variant="secondary">Sign out</SubmitButton>
-            </form>
-            <form action={signOutEverywhereAction}>
-              <SubmitButton variant="secondary">Sign out on all devices</SubmitButton>
-            </form>
-          </div>
         </Card>
 
         <Card>

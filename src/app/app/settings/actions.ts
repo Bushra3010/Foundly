@@ -105,7 +105,7 @@ export async function removeMemberAction(_prev: ActionState, form: FormData): Pr
     const ctx = await requireCtx();
     const userId = String(form.get("userId"));
     await removeMember(await getDb(), ctx, userId);
-    if (userId === ctx.userId) redirect("/app/workspaces");
+    if (userId === ctx.userId) redirect("/app");
     revalidatePath("/app/settings");
     return { ok: true, message: "Removed from the team." };
   } catch (err) {
