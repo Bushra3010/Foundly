@@ -11,6 +11,8 @@ import { listDomains } from "@/server/domains";
 import { DomainsCard } from "./domains-card";
 import { SiteEditor } from "./editor";
 import { GenerateForm, PublishForm, RollbackForm, SlugForm, UnpublishForm } from "./panels";
+import { ShareLink } from "@/components/share-link";
+import { siteUrl } from "@/app/s/load";
 
 export const metadata = { title: "My Website" };
 
@@ -111,9 +113,12 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
             {live && !liveIsCurrent && <Badge tone="warn">Older version live</Badge>}
             {job && <Badge tone={JOB_TEXT[job.status][0]}>Last generation: {JOB_TEXT[job.status][1]}</Badge>}
           </div>
-          <p className="mt-3 text-sm text-muted">
-            Address: <span className="font-mono">/s/{site.slug}</span>
-          </p>
+          <ShareLink
+            url={siteUrl(site.slug)}
+            label={live ? "Your live website" : "Your website address (live after you publish)"}
+            shareText={business.name}
+            live={!!live}
+          />
           {!business.publicContactConfirmedAt && (
             <div className="mt-3">
               <Notice tone="warn">
@@ -151,7 +156,14 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
           )}
           {factsChanged && (
             <div className="mt-4">
-              <Notice tone="info">Your business details changed since this draft was made. Use “Rewrite from my details” on a section to refresh it.</Notice>
+              <Notice tone="info" title="Your details changed since this draft was made">
+                Refresh the whole draft with your latest details, or use “Rewrite from my details” on one section. Refreshing replaces edits you made to the draft. Your live site only changes when you publish.
+              </Notice>
+              {canEdit && (
+                <div className="mt-3">
+                  <GenerateForm requestId={randomUUID()} label="Refresh draft with my details" pendingLabel="Refreshing draft…" variant="secondary" />
+                </div>
+              )}
             </div>
           )}
         </Card>

@@ -4,6 +4,7 @@ import { ActionForm } from "@/components/action-form";
 import { Badge, Card, Notice, PageHeader, TextArea, TextField } from "@/components/ui";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
+import { isPlatformAdmin } from "@/lib/admin";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { GROUP_LABEL, suggestQuestions } from "@/lib/questions";
@@ -34,8 +35,8 @@ import { MetricCard, pct } from "./metric-card";
 export const metadata = { title: "AI Visibility" };
 
 const STATE_BADGE = {
-  not_connected: ["neutral", "Not connected"],
-  awaiting_validation: ["warn", "Awaiting validation"],
+  not_connected: ["neutral", "Coming soon"],
+  awaiting_validation: ["warn", "Being tested"],
   connected: ["ok", "Connected"],
 } as const;
 
@@ -52,6 +53,8 @@ const LOCALE_TEXT = { native: "Location sent as a supported setting", text_instr
 
 export default async function VisibilityPage({ searchParams }: { searchParams: Promise<{ days?: string; provider?: string }> }) {
   const ctx = await requireCtx();
+  // Provider setup is a platform task; only admins see the variable names.
+  const showSetup = isPlatformAdmin(ctx.user.email);
   const locale = await getLocale();
   const db = await getDb();
   const sp = await searchParams;
@@ -102,8 +105,12 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
                 <p className="mt-1 text-sm text-muted">
                   Last successful check: {lastSuccess[a.key] ? lastSuccess[a.key].toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : "none"}
                 </p>
-                {state === "not_connected" && <p className="mt-1 text-xs text-muted">Needs: {a.requiredEnv.join(", ")}</p>}
-                {state === "awaiting_validation" && <p className="mt-1 text-xs text-muted">Credentials found. Enabled after the feasibility checks pass.</p>}
+                {state === "not_connected" && (
+                  <p className="mt-1 text-xs text-muted">
+                    {showSetup ? `Admin: set ${a.requiredEnv.join(", ")}` : "We're switching this on for Foundly. Nothing for you to set up."}
+                  </p>
+                )}
+                {state === "awaiting_validation" && <p className="mt-1 text-xs text-muted">We&apos;re checking this source before turning it on for everyone.</p>}
               </Card>
             </li>
           );
@@ -111,7 +118,9 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
       </ul>
       {connected.length === 0 && (
         <div className="mt-3">
-          <Notice tone="info">No AI sources are connected yet, so there are no results. We never show estimates or sample data in their place.</Notice>
+          <Notice tone="info" title="AI checks are being switched on">
+            Meanwhile, choose the customer questions you want tracked below, and keep your business details complete. Your first results appear here after the first check. We never show estimates or sample data.
+          </Notice>
         </div>
       )}
 

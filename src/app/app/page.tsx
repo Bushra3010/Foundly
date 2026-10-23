@@ -2,6 +2,8 @@ import { and, count, desc, eq, gte } from "drizzle-orm";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { Badge } from "@/components/ui";
+import { ShareLink } from "@/components/share-link";
+import { siteUrl } from "@/app/s/load";
 import { getDb } from "@/db";
 import { auditEvents, leads } from "@/db/schema";
 import { requireCtx } from "@/lib/auth/session";
@@ -180,6 +182,7 @@ export default async function HomePage() {
               <Link href={focus.href} className="dash-btn lime">
                 {focus.cta} <Icon name="arrow" size={17} />
               </Link>
+              {live && site && <ShareLink url={siteUrl(site.slug)} label="Share your website with customers" shareText={business.name} />}
             </>
           ) : (
             <>
@@ -189,6 +192,7 @@ export default async function HomePage() {
               <Link href="/app/visibility" className="dash-btn lime">
                 See AI visibility <Icon name="arrow" size={17} />
               </Link>
+              {live && site && <ShareLink url={siteUrl(site.slug)} label="Share your website with customers" shareText={business.name} />}
             </>
           )}
         </div>

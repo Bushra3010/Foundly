@@ -32,9 +32,10 @@ const TEMPLATE_KEYWORDS: Record<Exclude<TemplateKey, "service">, string[]> = {
 };
 
 const THEMES: Record<TemplateKey, SiteContent["theme"]> = {
-  service: { primary: "#1d4ed8", accent: "#f59e0b" },
-  travel: { primary: "#0f766e", accent: "#f97316" },
-  professional: { primary: "#334155", accent: "#0ea5e9" },
+  // primary carries white text; accent carries dark text.
+  service: { primary: "#1f3b33", accent: "#f2c94c" },
+  travel: { primary: "#0e4a5a", accent: "#f6ad6b" },
+  professional: { primary: "#23263a", accent: "#b9c6ff" },
 };
 
 export function chooseTemplate(category: string): TemplateKey {

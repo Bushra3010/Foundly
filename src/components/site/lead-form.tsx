@@ -8,15 +8,14 @@ export function LeadForm({ siteSlug, disabled, primary }: { siteSlug: string; di
   const e = state.fieldErrors ?? {};
   if (state.ok) {
     return (
-      <p role="status" className="rounded-lg bg-white/80 p-4 font-medium text-neutral-900">
+      <p role="status" className="fs-success">
         {state.message}
       </p>
     );
   }
-  const input = "block w-full min-h-11 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-base text-neutral-900";
   const field = (name: "name" | "contact" | "message", label: string, kind: "input" | "textarea", auto?: string) => (
-    <div className="space-y-1">
-      <label htmlFor={`lead-${name}`} className="block text-sm font-semibold">
+    <div className="fs-field">
+      <label htmlFor={`lead-${name}`}>
         {label}
       </label>
       {kind === "input" ? (
@@ -27,7 +26,6 @@ export function LeadForm({ siteSlug, disabled, primary }: { siteSlug: string; di
           defaultValue={state.values?.[name]}
           aria-invalid={e[name] ? true : undefined}
           aria-describedby={e[name] ? `lead-${name}-err` : undefined}
-          className={input}
         />
       ) : (
         <textarea
@@ -37,18 +35,17 @@ export function LeadForm({ siteSlug, disabled, primary }: { siteSlug: string; di
           defaultValue={state.values?.[name]}
           aria-invalid={e[name] ? true : undefined}
           aria-describedby={e[name] ? `lead-${name}-err` : undefined}
-          className={input}
         />
       )}
       {e[name] && (
-        <p id={`lead-${name}-err`} className="text-sm font-medium text-red-700">
+        <p id={`lead-${name}-err`} className="fs-err">
           {e[name]![0]}
         </p>
       )}
     </div>
   );
   return (
-    <form action={action} className="space-y-4" noValidate>
+    <form action={action} className="fs-form" noValidate>
       <input type="hidden" name="siteSlug" value={siteSlug} />
       <div aria-hidden="true" className="absolute -left-[9999px]">
         <label>
@@ -59,18 +56,18 @@ export function LeadForm({ siteSlug, disabled, primary }: { siteSlug: string; di
       {field("name", "Your name", "input", "name")}
       {field("contact", "Phone or email", "input", "email")}
       {field("message", "How can we help?", "textarea")}
-      <p className="text-xs text-neutral-600">
+      <p className="fs-small">
         Your details are sent only to this business so they can reply to your enquiry.
       </p>
       {state.message && (
-        <p role="alert" className="text-sm font-medium text-red-700">
+        <p role="alert" className="fs-err">
           {state.message}
         </p>
       )}
       <button
         type="submit"
         disabled={disabled || pending}
-        className="min-h-11 rounded-lg px-5 font-semibold text-white disabled:opacity-60"
+        className="fs-btn fs-btn-primary"
         style={{ background: primary }}
       >
         {disabled ? "Form works after publishing" : pending ? "Sending…" : "Send enquiry"}

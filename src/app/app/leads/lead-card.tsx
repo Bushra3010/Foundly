@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { SubmitButton } from "@/components/submit-button";
 import { Badge, Card } from "@/components/ui";
+import { phoneDigits } from "@/lib/profile";
 import { updateLeadAction } from "./actions";
 
 const STATUS = { new: ["info", "New"], contacted: ["warn", "Contacted"], qualified: ["ok", "Qualified"], closed: ["neutral", "Closed"] } as const;
@@ -18,6 +19,34 @@ export type LeadView = {
   createdAt: string;
 };
 
+/** One-tap ways to answer, based on what the customer left: email, or a phone number for WhatsApp and calls. */
+function ReplyActions({ lead }: { lead: LeadView }) {
+  const contact = lead.contact.trim();
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+  const digits = isEmail ? "" : phoneDigits(contact, "IN");
+  const isPhone = !isEmail && /^\d{8,15}$/.test(digits);
+  if (!isEmail && !isPhone) return null;
+  const first = lead.name.trim().split(/\s+/)[0] || "there";
+  const hello = `Hi ${first}, thanks for your enquiry. `;
+  return (
+    <div className="lead-reply">
+      {isEmail && (
+        <a className="share-btn" href={`mailto:${contact}?subject=${encodeURIComponent("Re: your enquiry")}&body=${encodeURIComponent(`${hello}\n\n`)}`}>
+          Reply by email
+        </a>
+      )}
+      {isPhone && (
+        <>
+          <a className="share-btn wa" href={`https://wa.me/${digits}?text=${encodeURIComponent(hello)}`} target="_blank" rel="noopener noreferrer">
+            Reply on WhatsApp
+          </a>
+          <a className="share-btn" href={`tel:+${digits}`}>Call</a>
+        </>
+      )}
+    </div>
+  );
+}
+
 export function LeadCard({ lead, canEdit }: { lead: LeadView; canEdit: boolean }) {
   const [state, action] = useActionState(updateLeadAction, {});
   const [tone, label] = STATUS[lead.status];
@@ -31,6 +60,7 @@ export function LeadCard({ lead, canEdit }: { lead: LeadView; canEdit: boolean }
         <Badge tone={tone}>{label}</Badge>
       </div>
       <p className="mt-3 whitespace-pre-line">{lead.message}</p>
+      <ReplyActions lead={lead} />
       <p className="mt-2 text-xs text-muted">
         {new Date(lead.createdAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
         {lead.source ? ` · ${lead.source}` : ""}
