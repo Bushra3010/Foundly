@@ -1,10 +1,12 @@
 import { ActionForm } from "@/components/action-form";
+import { requireAdminPage } from "@/lib/admin-guard";
 import { Badge, Card, EmptyState, PageHeader } from "@/components/ui";
 import { getDb } from "@/db";
 import { listClaimsForReview } from "@/server/admin";
-import { resolveClaimAction } from "../actions";
+import { resolveClaimAction } from "../../actions";
 
 export default async function AdminClaims() {
+  await requireAdminPage();
   const rows = await listClaimsForReview(await getDb());
   return (
     <>

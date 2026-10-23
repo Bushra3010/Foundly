@@ -1,13 +1,15 @@
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/admin-guard";
 import { ActionForm } from "@/components/action-form";
 import { Badge, Card, PageHeader } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { getDb } from "@/db";
 import { failedWork, listUsers, overview, recentAudit, userStats } from "@/server/admin";
 import { ADAPTERS, providerState } from "@/server/monitoring/registry";
-import { resumeRunAction } from "./actions";
+import { resumeRunAction } from "../actions";
 
 export default async function AdminHome() {
+  await requireAdminPage();
   const db = await getDb();
   const [o, work, events, people, latest] = await Promise.all([overview(db), failedWork(db), recentAudit(db, 40), userStats(db), listUsers(db, "", 6)]);
   const growth = [

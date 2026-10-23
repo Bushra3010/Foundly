@@ -2,12 +2,14 @@ import { ActionForm } from "@/components/action-form";
 import { Card, DefinitionList, Notice, PageHeader, TextField } from "@/components/ui";
 import { getDb } from "@/db";
 import { getCurrentUser } from "@/lib/auth/session";
+import { requireAdminPage } from "@/lib/admin-guard";
 import { activeGrant, requireAdmin, supportView } from "@/server/admin";
-import { adjustCreditsAction, grantAccessAction } from "../../actions";
+import { adjustCreditsAction, grantAccessAction } from "../../../actions";
 
 export default async function SupportPage({ params }: { params: Promise<{ workspaceId: string }> }) {
   const { workspaceId } = await params;
   const db = await getDb();
+  await requireAdminPage();
   const admin = requireAdmin(await getCurrentUser());
   const grant = await activeGrant(db, admin, workspaceId);
   if (!grant) {

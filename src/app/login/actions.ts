@@ -8,8 +8,9 @@ import { toActionError } from "@/lib/actions";
 import { safeNextPath, sendPasswordResetEmail } from "@/lib/auth/mailer";
 import { clearSessionCookie, readSessionToken, setSessionCookie } from "@/lib/auth/session";
 import { rateLimit } from "@/lib/rate-limit";
+import { isPlatformAdmin } from "@/lib/admin";
 import { fieldErrors, loginSchema, type FieldErrors } from "@/lib/validation";
-import { accountExists, consumeLoginToken, contextForUser, createLoginToken, resetPasswordWithToken, revokeSession, signInWithPassword, signUpWithPassword } from "@/server/auth";
+import { accountExists, adminDummyCheck, consumeLoginToken, contextForUser, createLoginToken, resetPasswordWithToken, revokeSession, signInWithPassword, signUpWithPassword } from "@/server/auth";
 import { getBusiness } from "@/server/business";
 
 export type SignInState = ActionState & { devLink?: string };
@@ -149,4 +150,38 @@ export async function resetPasswordAction(_prev: ActionState, form: FormData): P
     return toActionError(err);
   }
   redirect(destination);
+}
+
+/**
+ * Admin console sign-in. Only emails in ADMIN_EMAILS can get in, and every
+ * failure gets the same message so the page can't be used to find admin emails.
+ */
+export async function adminLogInAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const values = { email: String(form.get("email") ?? "") };
+  const parsed = loginSchema.safeParse(values);
+  const password = String(form.get("password") ?? "");
+  if (!parsed.success || !password) return { ok: false, message: "Enter your admin email and password.", values };
+  const ip = await clientIp();
+  if (!rateLimit(`adminlogin:ip:${ip}`, 10, 15 * 60_000) || !rateLimit(`adminlogin:email:${parsed.data.email}`, 5, 15 * 60_000)) {
+    return { ok: false, message: "Too many attempts. Wait 15 minutes and try again.", values };
+  }
+  const denied = { ok: false, message: "That email and password don't match an admin account.", values };
+  try {
+    if (!isPlatformAdmin(parsed.data.email)) {
+      await adminDummyCheck(password);
+      return denied;
+    }
+    const { sessionToken } = await signInWithPassword(await getDb(), parsed.data.email, password);
+    await setSessionCookie(sessionToken);
+  } catch {
+    return denied;
+  }
+  redirect("/admin");
+}
+
+export async function adminSignOut() {
+  const token = await readSessionToken();
+  if (token) await revokeSession(await getDb(), token);
+  await clearSessionCookie();
+  redirect("/admin/login");
 }

@@ -120,6 +120,11 @@ export async function signInWithPassword(db: Db, email: string, password: string
   return { userId: user.id, sessionToken: await createSession(db, user.id) };
 }
 
+/** Spends the same time as a real password check, for refusals that must not be distinguishable. */
+export async function adminDummyCheck(password: string) {
+  await verifyPassword(password, await dummyHash());
+}
+
 export async function hasPassword(db: Db, userId: string): Promise<boolean> {
   const [row] = await db.select({ h: users.passwordHash }).from(users).where(eq(users.id, userId));
   return Boolean(row?.h);

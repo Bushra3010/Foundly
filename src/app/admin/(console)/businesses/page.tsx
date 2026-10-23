@@ -1,11 +1,13 @@
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/admin-guard";
 import { ActionForm } from "@/components/action-form";
 import { Badge, Card, PageHeader } from "@/components/ui";
 import { getDb } from "@/db";
 import { searchBusinesses } from "@/server/admin";
-import { moderateAction } from "../actions";
+import { moderateAction } from "../../actions";
 
 export default async function AdminBusinesses({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  await requireAdminPage();
   const { q = "" } = await searchParams;
   const rows = await searchBusinesses(await getDb(), q.slice(0, 80));
   return (

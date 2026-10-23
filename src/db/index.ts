@@ -31,7 +31,13 @@ async function connect(): Promise<Db> {
   const url = process.env.DATABASE_URL;
   if (url) {
     // Production Postgres (e.g. Supabase). Migrations run via `npm run db:migrate`.
-    const client = postgres(url, { prepare: false });
+    // Supabase's transaction pooler (Supavisor) can stall when several queries are
+    // pipelined on one connection, which happens once pooled connections are warm.
+    // So: one query in flight per connection, no prepared statements, and short
+    // idle and connect timeouts so a dead serverless socket is never reused.
+    // `max_pipeline` is a real postgres.js option that its type definitions omit.
+    const options = { prepare: false, max_pipeline: 0, max: 10, idle_timeout: 20, max_lifetime: 60 * 10, connect_timeout: 10 };
+    const client = postgres(url, options as Parameters<typeof postgres>[1]);
     return drizzlePostgres({ client, schema }) as unknown as Db;
   }
   // Local development and tests: embedded Postgres, migrated on first use.

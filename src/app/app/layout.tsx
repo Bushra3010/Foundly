@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { Brand, Icon } from "@/components/icon";
 import { BottomNav, SidebarNav } from "@/components/app-nav";
 import { getDb } from "@/db";
-import { isPlatformAdmin } from "@/lib/admin";
 import { requireCtx } from "@/lib/auth/session";
 import { getLocale } from "@/lib/locale";
 import { getBusiness } from "@/server/business";
@@ -21,12 +20,8 @@ export default async function AppLayout({
   const locale = await getLocale();
   const business = await getBusiness(await getDb(), ctx);
   if (!business?.onboardingCompletedAt) redirect("/onboarding");
-  const extra = [
-    { href: "/app/workspaces", label: "Workspaces", icon: "⧉" },
-    ...(isPlatformAdmin(ctx.user.email)
-      ? [{ href: "/admin", label: "Admin console", icon: "⛨" }]
-      : []),
-  ];
+  // The founder console lives separately at /admin with its own sign-in.
+  const extra = [{ href: "/app/workspaces", label: "Workspaces", icon: "⧉" }];
 
   return (
     <div className="app-shell">

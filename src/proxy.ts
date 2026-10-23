@@ -39,9 +39,10 @@ export function proxy(req: NextRequest) {
   }
 
   // Whole path segments only, so files like /apple-icon.png are never caught.
-  if (PROTECTED.test(pathname) && !req.cookies.has(SESSION_COOKIE)) {
+  if (PROTECTED.test(pathname) && pathname !== "/admin/login" && !req.cookies.has(SESSION_COOKIE)) {
     const url = req.nextUrl.clone();
-    url.pathname = "/login";
+    // The founder console has its own sign-in page.
+    url.pathname = /^\/admin(\/|$)/.test(pathname) ? "/admin/login" : "/login";
     url.search = "";
     return NextResponse.redirect(url);
   }

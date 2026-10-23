@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/admin-guard";
 import { Badge, EmptyState, PageHeader } from "@/components/ui";
 import { getDb } from "@/db";
 import { listUsers } from "@/server/admin";
@@ -8,6 +9,7 @@ export const metadata = { title: "Users" };
 const fmt = (d: Date) => d.toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" });
 
 export default async function AdminUsers({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  await requireAdminPage();
   const { q = "" } = await searchParams;
   const rows = await listUsers(await getDb(), q.trim().slice(0, 80));
   return (
