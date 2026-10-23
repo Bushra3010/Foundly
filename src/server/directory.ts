@@ -55,9 +55,21 @@ export async function getPublicProfile(db: DbOrTx, slug: string) {
   return { ...row, profile: row.profile, siteSlug: row.siteLive ? row.siteSlug : null };
 }
 
-export async function listPublishedProfileSlugs(db: DbOrTx) {
-  return db
-    .select({ slug: businessProfiles.slug, updatedAt: businessProfiles.updatedAt })
+/** Every published profile with its live website (if any), for llms.txt and city/category pages. */
+export async function listPublishedProfiles(db: DbOrTx) {
+  const rows = await db
+    .select({
+      slug: businessProfiles.slug,
+      profile: businessProfiles.publishedData,
+      verification: businessProfiles.verification,
+      siteSlug: sites.slug,
+      siteLive: sites.publishedVersionId,
+    })
     .from(businessProfiles)
-    .where(eq(businessProfiles.status, "published"));
+    .leftJoin(sites, eq(sites.businessId, businessProfiles.businessId))
+    .where(eq(businessProfiles.status, "published"))
+    .limit(5000);
+  return rows
+    .filter((r) => r.profile)
+    .map((r) => ({ slug: r.slug, profile: r.profile!, verification: r.verification, siteSlug: r.siteLive ? r.siteSlug : null }));
 }

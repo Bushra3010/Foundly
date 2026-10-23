@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { Badge } from "@/components/ui";
 import { ShareLink } from "@/components/share-link";
+import { AiReadiness } from "@/components/ai-readiness";
+import { readinessFor } from "@/server/geo";
 import { siteUrl } from "@/app/s/load";
 import { getDb } from "@/db";
 import { auditEvents, leads } from "@/db/schema";
@@ -142,6 +144,8 @@ export default async function HomePage() {
   ];
   const completed = setupSteps.filter((step) => step.done).length;
 
+  const readiness = await readinessFor(db, ctx, business);
+
   const [focus, ...moreActions] = actions;
   const mentionRate = vm.valid > 0 && vm.mention.rate !== null ? Math.round(vm.mention.rate * 100) : null;
   const ringR = 34;
@@ -255,6 +259,8 @@ export default async function HomePage() {
           <span className="dash-kpi-link">Open inbox <Icon name="arrow" size={14} /></span>
         </Link>
       </section>
+
+      <AiReadiness readiness={readiness} limit={4} />
 
       <div className="dash-lower">
         <section className="dash-panel" aria-labelledby="dash-more">

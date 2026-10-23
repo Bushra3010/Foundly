@@ -1,3 +1,4 @@
+import { discoveryFaq } from "@/lib/geo";
 import type { Business } from "@/db/schema";
 import { siteContent, type Block, type SiteContent, type SiteFacts } from "./content";
 
@@ -129,7 +130,14 @@ export function buildBlock(type: Block["type"], b: Business, id: string): Block 
       if (!b.description?.trim()) return null;
       return { id, type: "about", heading: `About ${f.name}`, body: b.description.trim() };
     case "faq": {
-      const items: { question: string; answer: string }[] = [];
+      // Questions people ask AI assistants come first, answered from confirmed facts only.
+      const items: { question: string; answer: string }[] = discoveryFaq({
+        name: f.name,
+        category: f.category,
+        city: f.city,
+        serviceAreas: f.serviceAreas,
+        services: b.services,
+      });
       items.push({
         question: `Which areas does ${f.name} serve?`,
         answer: `We serve ${where}.`,

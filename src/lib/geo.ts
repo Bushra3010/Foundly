@@ -1,0 +1,334 @@
+/**
+ * Generative Engine Optimisation (GEO): making each business easy for AI
+ * assistants and AI search to find, understand and cite.
+ *
+ * Everything here is built only from facts the owner confirmed. No ratings,
+ * rankings, awards, prices or "best" claims are ever generated.
+ */
+import type { PublicProfile } from "./profile";
+
+/** Crawlers used by AI assistants and AI search. They are welcome on public pages. */
+export const AI_CRAWLERS = [
+  "GPTBot", // OpenAI training
+  "OAI-SearchBot", // ChatGPT search
+  "ChatGPT-User", // ChatGPT browsing on a user's behalf
+  "ClaudeBot",
+  "Claude-SearchBot",
+  "Claude-User",
+  "PerplexityBot",
+  "Perplexity-User",
+  "Google-Extended", // Gemini
+  "Applebot-Extended", // Apple Intelligence
+  "Bingbot", // powers Copilot and ChatGPT search results
+  "Amazonbot",
+  "meta-externalagent",
+  "CCBot",
+] as const;
+
+export function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+/** "Interior designer" -> "Interior designers" for list headings. Conservative on purpose. */
+export function pluralCategory(category: string): string {
+  const c = category.trim();
+  if (!c) return "Businesses";
+  if (/(s|services|care|work|repair|cleaning|consulting|tutoring|coaching)$/i.test(c)) return c;
+  if (/[^aeiou]y$/i.test(c)) return c.slice(0, -1) + "ies";
+  if (/(ch|sh|x|z)$/i.test(c)) return c + "es";
+  return c + "s";
+}
+
+/** "a plumber", "an interior designer". */
+export function withArticle(noun: string): string {
+  const n = noun.trim();
+  return /^[aeiou]/i.test(n) ? `an ${n}` : `a ${n}`;
+}
+
+export function titleCase(s: string): string {
+  return s.replace(/\b\p{L}/gu, (m) => m.toUpperCase());
+}
+
+type Faq = { question: string; answer: string };
+
+type BusinessForLd = Pick<
+  PublicProfile,
+  "name" | "category" | "city" | "region" | "country" | "address" | "phone" | "whatsapp" | "email" | "hours" | "serviceAreas" | "services"
+> & {
+  description?: string;
+  url?: string;
+  profileUrl?: string;
+  bookingUrl?: string;
+  sameAs?: string[];
+};
+
+/**
+ * schema.org graph for a business: LocalBusiness with its services, areas and
+ * contact points, plus an FAQPage when the site has questions and answers.
+ * AI search engines read this to understand who the business is and what it does.
+ */
+export function businessGraph(b: BusinessForLd, faq: Faq[] = []) {
+  const id = `${b.url ?? b.profileUrl ?? ""}#business`;
+  const business: Record<string, unknown> = {
+    "@type": "LocalBusiness",
+    "@id": id,
+    name: b.name,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: b.city,
+      ...(b.region ? { addressRegion: b.region } : {}),
+      addressCountry: b.country,
+      ...(b.address ? { streetAddress: b.address } : {}),
+    },
+  };
+  if (b.category) business.additionalType = b.category;
+  if (b.description) business.description = b.description;
+  if (b.url) business.url = b.url;
+  if (b.phone) business.telephone = b.phone;
+  if (b.email) business.email = b.email;
+  const sameAs = [...(b.sameAs ?? []), ...(b.profileUrl && b.profileUrl !== b.url ? [b.profileUrl] : [])].filter(Boolean);
+  if (sameAs.length) business.sameAs = Array.from(new Set(sameAs));
+  const areas = b.serviceAreas.length ? b.serviceAreas : [b.city];
+  business.areaServed = areas.map((name) => ({ "@type": "Place", name }));
+  if (b.hours.length) business.openingHours = b.hours.map((h) => `${h.days} ${h.hours}`);
+  if (b.services.length) {
+    business.knowsAbout = b.services.map((s) => s.name);
+    business.hasOfferCatalog = {
+      "@type": "OfferCatalog",
+      name: `${b.name} services`,
+      itemListElement: b.services.map((s) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: s.name,
+          ...(s.description ? { description: s.description } : {}),
+          areaServed: areas.map((name) => ({ "@type": "Place", name })),
+          provider: { "@id": id },
+        },
+      })),
+    };
+  }
+  const contactPoints: Record<string, unknown>[] = [];
+  if (b.phone) contactPoints.push({ "@type": "ContactPoint", telephone: b.phone, contactType: "customer service" });
+  if (b.whatsapp && b.whatsapp !== b.phone)
+    contactPoints.push({ "@type": "ContactPoint", telephone: b.whatsapp, contactType: "customer service", contactOption: "WhatsApp" });
+  if (contactPoints.length) business.contactPoint = contactPoints;
+  if (b.bookingUrl)
+    business.potentialAction = { "@type": "ReserveAction", target: b.bookingUrl, name: `Book with ${b.name}` };
+
+  const graph: Record<string, unknown>[] = [business];
+  if (faq.length) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: faq.map((q) => ({
+        "@type": "Question",
+        name: q.question,
+        acceptedAnswer: { "@type": "Answer", text: q.answer },
+      })),
+    });
+  }
+  return { "@context": "https://schema.org", "@graph": graph };
+}
+
+/**
+ * Plain-markdown fact sheet (llms.txt style). Language models read this more
+ * reliably than a designed page, and it gives them exact wording to quote.
+ */
+export function businessLlmsText(
+  p: Pick<PublicProfile, "name" | "category" | "city" | "region" | "address" | "phone" | "whatsapp" | "email" | "hours" | "serviceAreas" | "services" | "updatedAt"> & {
+    description?: string;
+    bookingUrl?: string;
+  },
+  links: { website?: string; profile?: string },
+  faq: Faq[] = [],
+): string {
+  const lines: string[] = [];
+  const place = [p.city, p.region].filter(Boolean).join(", ");
+  lines.push(`# ${p.name}`, "");
+  lines.push(`> ${p.name} is ${withArticle(p.category.toLowerCase())} in ${place}.${p.description ? ` ${p.description.split("\n")[0].trim()}` : ""}`, "");
+  lines.push("## Facts", "");
+  lines.push(`- Business: ${p.name}`);
+  lines.push(`- Type: ${p.category}`);
+  lines.push(`- Location: ${[p.address, place].filter(Boolean).join(", ")}`);
+  if (p.serviceAreas.length) lines.push(`- Areas served: ${p.serviceAreas.join(", ")}`);
+  if (p.phone) lines.push(`- Phone: ${p.phone}`);
+  if (p.whatsapp) lines.push(`- WhatsApp: ${p.whatsapp}`);
+  if (p.email) lines.push(`- Email: ${p.email}`);
+  if (p.bookingUrl) lines.push(`- Book online: ${p.bookingUrl}`);
+  if (p.hours.length) lines.push(`- Opening hours: ${p.hours.map((h) => `${h.days} ${h.hours}`).join("; ")}`);
+  lines.push(`- Details confirmed by the owner, last updated ${p.updatedAt.slice(0, 10)}`);
+  if (p.services.length) {
+    lines.push("", "## Services", "");
+    for (const s of p.services) lines.push(`- ${s.name}${s.description ? `: ${s.description}` : ""}`);
+  }
+  if (p.description) lines.push("", "## About", "", p.description.trim());
+  if (faq.length) {
+    lines.push("", "## Questions and answers", "");
+    for (const q of faq) lines.push(`### ${q.question}`, "", q.answer, "");
+  }
+  lines.push("", "## Links", "");
+  if (links.website) lines.push(`- [Website](${links.website})`);
+  if (links.profile) lines.push(`- [Business profile](${links.profile})`);
+  return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
+}
+
+/**
+ * Questions people actually type into AI assistants, answered only with the
+ * owner's confirmed facts. Used on the website's FAQ.
+ */
+export function discoveryFaq(f: {
+  name: string;
+  category: string;
+  city: string;
+  serviceAreas: string[];
+  services: { name: string; description?: string }[];
+}): Faq[] {
+  const out: Faq[] = [];
+  const areas = f.serviceAreas.length ? ` across ${f.serviceAreas.slice(0, 4).join(", ")}` : "";
+  for (const s of f.services.slice(0, 2)) {
+    const service = s.name.trim();
+    out.push({
+      question: `Who offers ${service.toLowerCase()} in ${f.city}?`,
+      answer: `${f.name} offers ${service.toLowerCase()} in ${f.city}${areas}.${s.description ? ` ${s.description.trim()}` : ""}`,
+    });
+  }
+  if (f.category) {
+    out.push({
+      question: `Is ${f.name} ${withArticle(f.category.toLowerCase())} in ${f.city}?`,
+      answer: `Yes. ${f.name} is ${withArticle(f.category.toLowerCase())} based in ${f.city}${areas}.`,
+    });
+  }
+  return out;
+}
+
+export type ReadinessItem = { key: string; label: string; why: string; done: boolean; href: string };
+
+/** How ready a business is to be found and cited by AI assistants, with next steps. */
+export function geoReadiness(input: {
+  description?: string | null;
+  services: { name: string; description?: string }[];
+  serviceAreas: string[];
+  hours: unknown[];
+  phone?: string | null;
+  whatsapp?: string | null;
+  email?: string | null;
+  sitePublished: boolean;
+  siteCurrent: boolean;
+  faqCount: number;
+  profilePublished: boolean;
+  verified: boolean;
+}) {
+  const items: ReadinessItem[] = [
+    {
+      key: "description",
+      label: "Describe your business in your own words",
+      why: "AI answers quote clear, specific descriptions",
+      done: (input.description?.trim().length ?? 0) >= 80,
+      href: "/app/business",
+    },
+    {
+      key: "services",
+      label: "Explain each service",
+      why: "Lets AI match you to the exact service people ask about",
+      done: input.services.length > 0 && input.services.every((s) => (s.description?.trim().length ?? 0) >= 20),
+      href: "/app/business",
+    },
+    {
+      key: "areas",
+      label: "List the areas you serve",
+      why: "Most AI questions name a city or neighbourhood",
+      done: input.serviceAreas.length > 0,
+      href: "/app/business",
+    },
+    {
+      key: "hours",
+      label: "Add opening hours",
+      why: "AI assistants answer “is it open now?” from this",
+      done: input.hours.length > 0,
+      href: "/app/business",
+    },
+    {
+      key: "contact",
+      label: "Give a phone or WhatsApp number",
+      why: "AI answers show a way to reach you",
+      done: Boolean(input.phone || input.whatsapp),
+      href: "/app/business",
+    },
+    {
+      key: "site",
+      label: "Publish your website",
+      why: "Gives AI a page of yours to read and cite",
+      done: input.sitePublished,
+      href: "/app/website",
+    },
+    {
+      key: "fresh",
+      label: "Keep your live website up to date",
+      why: "AI should quote your latest details",
+      done: input.sitePublished && input.siteCurrent,
+      href: "/app/website",
+    },
+    {
+      key: "faq",
+      label: "Answer at least 4 customer questions on your website",
+      why: "AI assistants reuse clear question-and-answer text",
+      done: input.faqCount >= 4,
+      href: "/app/website",
+    },
+    {
+      key: "profile",
+      label: "Publish your directory profile",
+      why: "Lists you on Foundly’s city and category pages that AI reads",
+      done: input.profilePublished,
+      href: "/app/business",
+    },
+    {
+      key: "verified",
+      label: "Verify you own the business",
+      why: "Verified details are more trustworthy to cite",
+      done: input.verified,
+      href: "/app/business",
+    },
+  ];
+  const done = items.filter((i) => i.done).length;
+  return { score: Math.round((done / items.length) * 100), done, total: items.length, items };
+}
+
+/** Services, questions and description as published on a website, for structured data and llms.txt. */
+export function factsFromSiteContent(content: {
+  pages: { blocks: ({ type: string } & Record<string, unknown>)[] }[];
+}) {
+  const blocks = content.pages.flatMap((p) => p.blocks);
+  // The same block can appear on more than one page; keep each service and question once.
+  const seen = new Set<string>();
+  const services = blocks
+    .filter((b) => b.type === "services")
+    .flatMap((b) => (b.items as { name: string; description?: string }[]) ?? [])
+    .filter((s) => {
+      const k = s.name.trim().toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    })
+    .map((s) => ({ name: s.name, ...(s.description ? { description: s.description } : {}) }));
+  const asked = new Set<string>();
+  const faq = blocks
+    .filter((b) => b.type === "faq")
+    .flatMap((b) => (b.items as Faq[]) ?? [])
+    .filter((q) => {
+      const k = q.question.trim().toLowerCase();
+      if (asked.has(k)) return false;
+      asked.add(k);
+      return true;
+    });
+  const about = blocks.find((b) => b.type === "about");
+  const description = about && typeof about.body === "string" ? about.body : undefined;
+  return { services, faq, description };
+}

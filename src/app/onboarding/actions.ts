@@ -1,6 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { after } from "next/server";
+import { resubmitBusiness } from "@/server/indexnow";
 import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
@@ -76,7 +78,10 @@ export async function finishSetupAction(_prev: ActionState, form: FormData): Pro
       const url = "websiteUrl" in parsed.data ? (parsed.data.websiteUrl ?? null) : null;
       await saveWebsiteChoice(db, ctx, true, url);
       await confirmReview(db, ctx, false);
-      if (values.publishProfile === "on") await publishProfile(db, ctx);
+      if (values.publishProfile === "on") {
+        await publishProfile(db, ctx);
+        after(() => resubmitBusiness(db, ctx));
+      }
     } else {
       await saveWebsiteChoice(db, ctx, false, null);
       await confirmReview(db, ctx, false);

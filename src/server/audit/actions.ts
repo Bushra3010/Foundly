@@ -1,7 +1,8 @@
 import type { Business } from "@/db/schema";
 import type { SiteContent } from "@/lib/site/content";
 import { buildBlock } from "@/lib/site/generate";
-import { localBusinessJsonLd, toPublicProfile } from "@/lib/profile";
+import { toPublicProfile } from "@/lib/profile";
+import { businessGraph } from "@/lib/geo";
 import type { CheckResult } from "./checks";
 
 /**
@@ -68,7 +69,7 @@ export function templateFor(check: CheckResult, b: Business, hosted: boolean): A
       return { title: "Explain each service", hypothesis: "Specific descriptions answer customers' questions before they call.", proposedChange: "Add a description for each service. Replace every [bracket] with your own words before approving.", draft: b.services.map((s) => `${s.name}: ${s.description ?? "[What's included, who it's for, typical timing]"}`).join("\n"), applyKind: "hosted_service_descriptions", priority: base + 5 };
     case "structured_data":
     case "structured_data_agrees":
-      return { title: "Add accurate structured data", hypothesis: "Structured data that matches the page may help search tools read your details correctly.", proposedChange: "Add this JSON-LD to your homepage <head>. It contains only details you confirmed.", draft: `<script type="application/ld+json">\n${JSON.stringify(localBusinessJsonLd({ ...facts, url: b.websiteUrl ?? undefined }), null, 2)}\n</script>`, applyKind: "manual", priority: base };
+      return { title: "Add accurate structured data", hypothesis: "Structured data that matches the page may help search tools read your details correctly.", proposedChange: "Add this JSON-LD to your homepage <head>. It contains only details you confirmed.", draft: `<script type="application/ld+json">\n${JSON.stringify(businessGraph({ ...facts, url: b.websiteUrl ?? undefined }), null, 2)}\n</script>`, applyKind: "manual", priority: base };
     case "faq":
       return { title: "Answer common customer questions", hypothesis: "Clear answers to real questions make your page more useful to customers and to tools that summarise it.", proposedChange: hosted ? "Add these questions to your website's Questions section." : "Add a questions-and-answers section with these answers.", draft: faqDraft(b), applyKind: hosted ? "hosted_faq_add" : "manual", priority: base + 3 };
     case "about":

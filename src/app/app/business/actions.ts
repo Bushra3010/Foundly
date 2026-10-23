@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { resubmitBusiness } from "@/server/indexnow";
 import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
@@ -68,8 +70,10 @@ export async function confirmContactAction(): Promise<ActionState> {
 
 export async function publishProfileAction(): Promise<ActionState> {
   try {
-    await publishProfile(await getDb(), await requireCtx());
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await publishProfile(db, ctx);
     revalidatePath("/app", "layout");
+    after(() => resubmitBusiness(db, ctx));
     revalidatePath("/directory");
     return { ok: true, message: "Your directory profile is up to date." };
   } catch (err) {
@@ -79,8 +83,10 @@ export async function publishProfileAction(): Promise<ActionState> {
 
 export async function unpublishProfileAction(): Promise<ActionState> {
   try {
-    await unpublishProfile(await getDb(), await requireCtx());
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await unpublishProfile(db, ctx);
     revalidatePath("/app", "layout");
+    after(() => resubmitBusiness(db, ctx));
     revalidatePath("/directory");
     return { ok: true, message: "Your profile is hidden from the directory." };
   } catch (err) {

@@ -10,6 +10,8 @@ import { latestAudit, listActions } from "@/server/audit/service";
 import { requireBusiness } from "@/server/business";
 import { can } from "@/server/context";
 import { getSite } from "@/server/sites";
+import { readinessFor } from "@/server/geo";
+import { AiReadiness } from "@/components/ai-readiness";
 import { getWordPress, listPages, sectionHtml, WORDPRESS_CHECKS } from "@/server/wordpress";
 import {
   applyActionAction,
@@ -46,7 +48,7 @@ export default async function ImprovePage() {
   const locale = await getLocale();
   const db = await getDb();
   const b = await requireBusiness(db, ctx);
-  const [audit, actions, site, wp] = await Promise.all([latestAudit(db, ctx), listActions(db, ctx), getSite(db, ctx), getWordPress(db, ctx)]);
+  const [audit, actions, site, wp, readiness] = await Promise.all([latestAudit(db, ctx), listActions(db, ctx), getSite(db, ctx), getWordPress(db, ctx), readinessFor(db, ctx, b)]);
   const wpPages = wp ? await listPages(db, ctx).catch(() => null) : null;
   const open = actions.filter((a) => !["verified", "rejected", "rolled_back"].includes(a.status));
   const closed = actions.filter((a) => ["verified", "rejected", "rolled_back"].includes(a.status));
@@ -69,6 +71,10 @@ export default async function ImprovePage() {
           ) : undefined
         }
       />
+
+      <div className="mb-6">
+        <AiReadiness readiness={readiness} />
+      </div>
 
       <Card>
         <h2 className="font-semibold">Check your website</h2>

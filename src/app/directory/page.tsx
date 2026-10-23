@@ -3,7 +3,8 @@ import Link from "next/link";
 import { PublicHeader } from "@/components/public-header";
 import { Card, EmptyState } from "@/components/ui";
 import { getDb } from "@/db";
-import { searchDirectory } from "@/server/directory";
+import { listPublishedProfiles, searchDirectory } from "@/server/directory";
+import { pluralCategory, slugify } from "@/lib/geo";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -15,7 +16,16 @@ export default async function DirectoryPage({ searchParams }: { searchParams: Pr
   const sp = await searchParams;
   const clean = (v?: string) => v?.trim().slice(0, 80) || undefined;
   const filters = { q: clean(sp.q), category: clean(sp.category), city: clean(sp.city) };
-  const results = await searchDirectory(await getDb(), filters);
+  const db = await getDb();
+  const [results, all] = await Promise.all([searchDirectory(db, filters), listPublishedProfiles(db)]);
+  // City and category pages, linked here so people and AI crawlers can reach them.
+  const facets = new Map<string, { href: string; label: string; count: number }>();
+  for (const r of all) {
+    const href = `/directory/${slugify(r.profile.city)}/${slugify(r.profile.category)}`;
+    const f = facets.get(href) ?? { href, label: `${pluralCategory(r.profile.category.trim())} in ${r.profile.city.trim()}`, count: 0 };
+    facets.set(href, { ...f, count: f.count + 1 });
+  }
+  const browse = [...facets.values()].sort((a, b) => a.label.localeCompare(b.label));
   const filtered = Object.values(filters).some(Boolean);
 
   return (
@@ -43,6 +53,20 @@ export default async function DirectoryPage({ searchParams }: { searchParams: Pr
             </button>
           </form>
         </Card>
+        {browse.length > 0 && (
+          <section className="mt-6" aria-labelledby="browse-title">
+            <h2 id="browse-title" className="text-lg font-semibold">Browse by city and category</h2>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {browse.map((f) => (
+                <li key={f.href}>
+                  <Link href={f.href} className="inline-flex min-h-11 items-center rounded-full border border-border bg-surface px-4 text-sm font-semibold hover:border-brand">
+                    {f.label} ({f.count})
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
         <p className="mt-4 text-sm text-muted">Ordered by how well a listing matches your search, then by how complete it is.</p>
         {results.length === 0 ? (
           <div className="mt-4">

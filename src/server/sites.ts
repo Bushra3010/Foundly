@@ -314,14 +314,14 @@ export async function changeSiteSlug(db: Db, ctx: Ctx, newSlug: string) {
 // ---------- Public delivery ----------
 
 export type PublicSiteResult =
-  | { kind: "site"; slug: string; content: SiteContent; versionNumber: number; publishedAt: Date }
+  | { kind: "site"; slug: string; content: SiteContent; versionNumber: number; publishedAt: Date; profileSlug: string | null }
   | { kind: "redirect"; slug: string }
   | { kind: "none" };
 
 /** Resolves a live site by address. Reads only published versions. */
 export async function getPublishedSite(db: DbOrTx, slug: string): Promise<PublicSiteResult> {
   const [row] = await db
-    .select({ site: sites, version: siteVersions, profileStatus: businessProfiles.status })
+    .select({ site: sites, version: siteVersions, profileStatus: businessProfiles.status, profileSlug: businessProfiles.slug })
     .from(sites)
     .innerJoin(siteVersions, eq(siteVersions.id, sites.publishedVersionId))
     .leftJoin(businessProfiles, eq(businessProfiles.businessId, sites.businessId))
@@ -334,6 +334,8 @@ export async function getPublishedSite(db: DbOrTx, slug: string): Promise<Public
       content: row.version.content,
       versionNumber: row.version.versionNumber,
       publishedAt: row.version.createdAt,
+      // Only a published profile is linked from the site's structured data.
+      profileSlug: row.profileStatus === "published" ? row.profileSlug : null,
     };
   }
   const [redirect] = await db

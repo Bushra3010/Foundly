@@ -1200,3 +1200,29 @@
   background:var(--d-lime);
   color:#1b1e17;
 }
+
+/* ---------- AI readiness ---------- */
+.geo-panel { padding: 24px; }
+.geo-head { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; }
+.geo-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; letter-spacing: .4px; color: #6f8a4f; text-transform: uppercase; }
+.geo-head h2 { margin: 6px 0 4px; font-size: 22px; font-weight: 700; letter-spacing: -.4px; }
+.geo-head p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--d-muted); max-width: 640px; }
+.geo-score { flex-shrink: 0; display: grid; grid-auto-flow: column; align-items: baseline; gap: 2px; padding: 12px 16px; border-radius: 18px; background: var(--d-soft); }
+.geo-score strong { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; font-variant-numeric: tabular-nums; }
+.geo-score span { font-size: 14px; color: var(--d-muted); font-weight: 600; }
+.geo-score.good strong { color: #2f7a3e; }
+.geo-score.mid strong { color: #a36b10; }
+.geo-score.low strong { color: #b4441f; }
+.geo-bar { height: 8px; border-radius: 8px; background: var(--d-soft); overflow: hidden; margin: 18px 0 14px; }
+.geo-bar span { display: block; height: 100%; border-radius: 8px; background: linear-gradient(90deg, #a4cd48, #6f8a4f); transition: width .6s; }
+.geo-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.geo-list a { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--d-soft); border: 1px solid transparent; }
+.geo-list a:hover { border-color: var(--d-line); background: var(--d-card); }
+.geo-dot { width: 10px; height: 10px; flex-shrink: 0; border-radius: 50%; border: 2px solid #a4cd48; }
+.geo-text { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.geo-text strong { font-size: 15px; font-weight: 650; }
+.geo-text span { font-size: 13.5px; color: var(--d-muted); }
+.geo-done { display: flex; gap: 6px; align-items: flex-start; margin: 14px 0 0; font-size: 13.5px; color: #2f7a3e; line-height: 1.5; }
+.geo-done svg { flex-shrink: 0; margin-top: 2px; }
+.geo-note { margin: 12px 0 0; font-size: 13px; color: var(--d-muted); line-height: 1.5; }
+@media (max-width: 640px) { .geo-head { flex-direction: column; } .geo-panel { padding: 18px; } }

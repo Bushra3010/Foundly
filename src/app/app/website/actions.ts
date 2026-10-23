@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { resubmitBusiness } from "@/server/indexnow";
 import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
@@ -57,8 +59,11 @@ export async function regenerateBlockAction(blockId: string, revision: number): 
 
 export async function publishAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   try {
-    const v = await publishSite(await getDb(), await requireCtx(), Number(form.get("revision")));
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    const v = await publishSite(db, ctx, Number(form.get("revision")));
     revalidatePath("/app", "layout");
+    // Tell search engines (and so AI search) the pages changed, after responding.
+    after(() => resubmitBusiness(db, ctx));
     return { ok: true, message: `Version ${v.versionNumber} is live.` };
   } catch (err) {
     return toActionError(err);
@@ -67,8 +72,10 @@ export async function publishAction(_prev: ActionState, form: FormData): Promise
 
 export async function rollbackAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   try {
-    const v = await rollbackSite(await getDb(), await requireCtx(), String(form.get("versionId")));
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    const v = await rollbackSite(db, ctx, String(form.get("versionId")));
     revalidatePath("/app/website");
+    after(() => resubmitBusiness(db, ctx));
     return { ok: true, message: `Version ${v.versionNumber} is live again.` };
   } catch (err) {
     return toActionError(err);
@@ -77,8 +84,10 @@ export async function rollbackAction(_prev: ActionState, form: FormData): Promis
 
 export async function unpublishAction(): Promise<ActionState> {
   try {
-    await unpublishSite(await getDb(), await requireCtx());
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await unpublishSite(db, ctx);
     revalidatePath("/app", "layout");
+    after(() => resubmitBusiness(db, ctx));
     return { ok: true, message: "Your website is offline. Your draft and versions are kept." };
   } catch (err) {
     return toActionError(err);
@@ -88,8 +97,10 @@ export async function unpublishAction(): Promise<ActionState> {
 export async function changeSlugAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const values = formValues(form);
   try {
-    const site = await changeSiteSlug(await getDb(), await requireCtx(), String(values.slug ?? "").trim().toLowerCase());
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    const site = await changeSiteSlug(db, ctx, String(values.slug ?? "").trim().toLowerCase());
     revalidatePath("/app/website");
+    after(() => resubmitBusiness(db, ctx));
     return { ok: true, message: `Your website address is now /s/${site.slug}. The old address redirects.` };
   } catch (err) {
     return toActionError(err, values);

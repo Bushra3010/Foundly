@@ -1,5 +1,4 @@
 import type { Business } from "@/db/schema";
-import type { SiteFacts } from "@/lib/site/content";
 
 /** The only business fields ever served on public routes. */
 export type PublicProfile = {
@@ -84,10 +83,6 @@ export function localBusinessJsonLd(
   if (p.serviceAreas.length) data.areaServed = p.serviceAreas;
   if (p.hours.length) data.openingHours = p.hours.map((h) => `${h.days} ${h.hours}`);
   return data;
-}
-
-export function jsonLdFromFacts(f: SiteFacts, url?: string, description?: string) {
-  return localBusinessJsonLd({ ...f, url, description });
 }
 
 /** Serialise JSON-LD safely for a <script> tag. */

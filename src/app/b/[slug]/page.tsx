@@ -4,7 +4,8 @@ import { cache } from "react";
 import { PublicHeader } from "@/components/public-header";
 import { Badge, Card } from "@/components/ui";
 import { getDb } from "@/db";
-import { jsonLdScript, localBusinessJsonLd, phoneDigits } from "@/lib/profile";
+import { jsonLdScript, phoneDigits } from "@/lib/profile";
+import { businessGraph } from "@/lib/geo";
 import { getPublicProfile } from "@/server/directory";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -35,7 +36,13 @@ export default async function ProfilePage({ params }: Props) {
   if (!row) notFound();
   const p = row.profile;
   const btn = "inline-flex min-h-11 items-center rounded-lg px-4 font-semibold";
-  const ld = localBusinessJsonLd({ ...p, url: p.websiteUrl });
+  const appUrl = process.env.APP_URL ?? "http://localhost:3000";
+  const ld = businessGraph({
+    ...p,
+    url: row.siteSlug ? `${appUrl}/s/${row.siteSlug}` : p.websiteUrl,
+    profileUrl: `${appUrl}/b/${row.slug}`,
+    sameAs: p.websiteUrl ? [p.websiteUrl] : [],
+  });
 
   return (
     <>
