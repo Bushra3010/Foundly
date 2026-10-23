@@ -2954,8 +2954,21 @@
 
 @media(max-width:700px) {
   .ai-board { padding:8px; border-radius:20px; }
-  .ai-tabs { overflow-x:auto; scrollbar-width:none; margin:0 -8px 8px; padding:0 8px; }
-  .ai-tabs button { padding:9px 15px; font-size:14px; }
+  .ai-tabs {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin:0 0 10px;
+  }
+  .ai-tabs button {
+    justify-content:center;
+    min-width:0;
+    min-height:44px;
+    padding:10px 12px;
+    border-radius:12px;
+    font-size:14px;
+  }
+  .ai-tabs .ai-tab-dot { flex-shrink:0; }
   .ai-stage { gap:8px; }
   .ai-body { padding:18px 16px; }
   .ai-user-bubble { max-width:92%; font-size:14.5px; }
