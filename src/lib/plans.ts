@@ -20,8 +20,8 @@ export type PlanSpec = {
 export const PLANS: PlanSpec[] = [
   { key: "free", name: "Free", summary: "Business profile and a private website preview", features: ["Directory profile", "Website draft and private preview", "One-time trial credits"], hostedSite: false, customDomain: false, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "" },
   { key: "website", name: "Website", summary: "A published website with enquiry forms", features: ["Everything in Free", "Published website on a platform address", "Enquiry form and lead inbox", "Your own domain"], hostedSite: true, customDomain: true, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "PLAN_PRICE_WEBSITE_INR" },
-  { key: "growth", name: "Growth", summary: "Website plus a capped AI visibility allowance", features: ["Everything in Website", "Weekly AI visibility checks", "Website audits and improvement tasks"], hostedSite: true, customDomain: true, monthlyCredits: 400, maxWorkspaces: 1, priceEnv: "PLAN_PRICE_GROWTH_INR" },
-  { key: "agency", name: "Agency", summary: "Several businesses and portfolio reporting", features: ["Growth features per business", "Up to 10 businesses", "Portfolio view"], hostedSite: true, customDomain: true, monthlyCredits: 400, maxWorkspaces: 10, priceEnv: "PLAN_PRICE_AGENCY_INR" },
+  { key: "growth", name: "Growth", summary: "Website plus a capped AI visibility allowance", features: ["Everything in Website", "Weekly AI visibility checks", "Website audits and improvement tasks"], hostedSite: true, customDomain: true, monthlyCredits: 75, maxWorkspaces: 1, priceEnv: "PLAN_PRICE_GROWTH_INR" },
+  { key: "agency", name: "Agency", summary: "Several businesses and portfolio reporting", features: ["Growth features per business", "Up to 10 businesses", "Portfolio view"], hostedSite: true, customDomain: true, monthlyCredits: 40, maxWorkspaces: 10, priceEnv: "PLAN_PRICE_AGENCY_INR" },
 ];
 
 export const planSpec = (p: Plan) => PLANS.find((x) => x.key === p)!;

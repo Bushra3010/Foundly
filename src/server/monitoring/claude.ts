@@ -12,7 +12,7 @@ export const claudeAdapter: ProviderAdapter = {
   method: "search_grounded_api",
   locale: "native",
   requiredEnv: ["ANTHROPIC_API_KEY"],
-  configuredModel: () => (process.env.ANTHROPIC_API_KEY ? process.env.CLAUDE_MONITOR_MODEL || "claude-opus-5-5" : null),
+  configuredModel: () => (process.env.ANTHROPIC_API_KEY ? process.env.CLAUDE_MONITOR_MODEL || "claude-haiku-5-5" : null),
   async ask(input, signal): Promise<AskResult> {
     const model = this.configuredModel()!;
     const client = new Anthropic({ maxRetries: 2 });

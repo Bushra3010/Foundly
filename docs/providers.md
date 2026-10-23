@@ -10,7 +10,7 @@ Every adapter in `src/server/monitoring/` is off until both:
 | ChatGPT | `openai.ts` — Responses API + `web_search` | Search-grounded API (not the ChatGPT app) | Native approximate location | `OPENAI_API_KEY`, `OPENAI_MONITOR_MODEL` |
 | Perplexity | `perplexity.ts` — Sonar chat completions | Search-grounded API | Text instruction only | `PERPLEXITY_API_KEY`, `PERPLEXITY_MONITOR_MODEL` |
 | Gemini | `gemini.ts` — `generateContent` + Google Search grounding | Search-grounded API | Text instruction only | `GEMINI_API_KEY`, `GEMINI_MONITOR_MODEL` |
-| Claude | `claude.ts` — Messages API + `web_search_20260209`, server-side fallback | Search-grounded API (not claude.ai) | Native approximate location | `ANTHROPIC_API_KEY` (model `CLAUDE_MONITOR_MODEL`, default `claude-opus-5-5`, effort `low`) |
+| Claude | `claude.ts` — Messages API + `web_search_20260209`, server-side fallback | Search-grounded API (not claude.ai) | Native approximate location | `ANTHROPIC_API_KEY` (model `CLAUDE_MONITOR_MODEL`, default `claude-haiku-5-5`, effort `low`) |
 
 Only the Claude adapter's request shape was checked against the installed SDK's types. The others follow each provider's public REST docs and must be verified with real calls.
 

@@ -8,6 +8,7 @@ import { applyPeriodTransitions, effectivePlan, getSubscription, processBillingE
 import { getBusiness } from "@/server/business";
 import { AppError, type Ctx } from "@/server/context";
 import { getBalance } from "@/server/credits";
+import { planSpec } from "@/lib/plans";
 import { processDueDeletions, requestAccountDeletion, requestWebsiteDeletion } from "@/server/lifecycle";
 import { unsubscribeToken, verifyUnsubscribe } from "@/server/notifications";
 import { generateSiteDraft, getSite, publishSite } from "@/server/sites";
@@ -40,11 +41,11 @@ describe("billing webhooks", () => {
     const before = await getBalance(db, ctx.workspaceId);
     expect(await processBillingEvent(db, e)).toBe("applied");
     expect(await processBillingEvent(db, e)).toBe("duplicate");
-    expect(await getBalance(db, ctx.workspaceId)).toBe(before + 400);
+    expect(await getBalance(db, ctx.workspaceId)).toBe(before + planSpec("growth").monthlyCredits);
     // A different event for the same period also doesn't grant twice.
     const renew = signed({ id: "evt_2", type: "subscription.renewed", workspaceId: ctx.workspaceId, plan: "growth", subscriptionId: "sub_1", periodEnd })!;
     await processBillingEvent(db, renew);
-    expect(await getBalance(db, ctx.workspaceId)).toBe(before + 400);
+    expect(await getBalance(db, ctx.workspaceId)).toBe(before + planSpec("growth").monthlyCredits);
     expect((await getSubscription(db, ctx.workspaceId)).plan).toBe("growth");
   });
 
