@@ -5,7 +5,7 @@ import { getBusiness, publishProfile } from "@/server/business";
 import { listPublishedProfiles } from "@/server/directory";
 import { generateSiteDraft, getPublishedSite, getSite, publishSite } from "@/server/sites";
 import { facebookPageUpdate, googleLocationUpdate, presenceKit } from "@/lib/presence";
-import { geoMaintenance } from "@/server/sync";
+import { geoMaintenance, upkeepWeekday } from "@/server/sync";
 import { makeDb, onboard, signUp } from "./helpers";
 
 const facts = {
@@ -148,6 +148,21 @@ describe("GEO on published businesses", () => {
     const upkeep = await geoMaintenance(db);
     expect(upkeep.businesses).toBe(1);
     expect(upkeep.urls).toBeGreaterThan(5);
+    // The daily cron only handles each business on its own weekday.
+    const day = upkeepWeekday(ctx.workspaceId);
+    expect((await geoMaintenance(db, { weekday: day })).businesses).toBe(1);
+    expect((await geoMaintenance(db, { weekday: (day + 1) % 7 })).businesses).toBe(0);
+    // Past the time budget, nothing new is started.
+    expect(await geoMaintenance(db, { budgetMs: -1 })).toMatchObject({ synced: 0, skipped: 1 });
+    // With billing enforced, Free workspaces get no weekly upkeep.
+    const enforced = process.env.BILLING_ENFORCED;
+    process.env.BILLING_ENFORCED = "true";
+    try {
+      expect((await geoMaintenance(db)).synced).toBe(0);
+    } finally {
+      if (enforced === undefined) delete process.env.BILLING_ENFORCED;
+      else process.env.BILLING_ENFORCED = enforced;
+    }
 
     const listed = await listPublishedProfiles(db);
     const mine = listed.find((r) => r.profile.name === "Sharma Plumbing")!;
