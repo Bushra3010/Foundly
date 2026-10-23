@@ -21,7 +21,8 @@ export type PublicProfile = {
   teamSize?: number;
   projectsCompleted?: number;
   credentials?: string;
-  listings: string[];
+  /** Absent on profiles published before this field existed. */
+  listings?: string[];
   updatedAt: string;
 };
 

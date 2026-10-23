@@ -104,10 +104,10 @@ export default async function ProfilePage({ params }: Props) {
               {p.credentials && (<div className="sm:col-span-3"><dt className="text-sm text-muted">Credentials</dt><dd className="font-semibold">{p.credentials}</dd></div>)}
             </dl>
           )}
-          {p.listings.length > 0 && (
+          {(p.listings ?? []).length > 0 && (
             <p className="mt-4 text-sm text-muted">
               Also on:{" "}
-              {p.listings.map((u, i) => (
+              {(p.listings ?? []).map((u, i) => (
                 <span key={u}>
                   {i > 0 && " · "}
                   <a href={u} rel="noopener noreferrer nofollow" target="_blank" className="underline">{listingLabel(u)}</a>
