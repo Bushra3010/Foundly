@@ -3361,3 +3361,8 @@
   .sc-pop, .sc-rise { transition: none; }
   .sc-caret { display: none; }
 }
+
+/* The FAQ is short: size it to its content instead of a full screen. */
+@media (min-width: 900px) and (min-height: 520px) {
+  #faq.landing-fit { min-height: 0; padding-top: 88px; padding-bottom: 88px; }
+}
