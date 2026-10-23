@@ -2,7 +2,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import type { DbOrTx } from "@/db";
 import { siteUrl } from "@/app/s/load";
-import { slugify } from "@/lib/geo";
+import { factsFromSiteContent, slugify } from "@/lib/geo";
 import { getBusiness, getProfile } from "./business";
 import type { Ctx } from "./context";
 import { getSite } from "./sites";
@@ -59,6 +59,7 @@ export async function businessPublicUrls(db: DbOrTx, ctx: Ctx) {
   const urls = [`${base}/llms.txt`, `${base}/directory`];
   if (site) {
     for (const page of ["home", "services", "about", "contact"]) urls.push(siteUrl(site.slug, page));
+    for (const s of factsFromSiteContent(site.draft).services) urls.push(`${siteUrl(site.slug)}/services/${slugify(s.name)}`);
     urls.push(`${siteUrl(site.slug)}/llms.txt`);
   }
   if (profile) urls.push(`${base}/b/${profile.slug}`, `${base}/b/${profile.slug}/llms.txt`);

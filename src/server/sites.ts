@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { and, desc, eq, max, sql } from "drizzle-orm";
+import { factsFromSiteContent, slugify } from "@/lib/geo";
 import type { Db, DbOrTx } from "@/db";
 import { businessProfiles, jobs, siteSlugRedirects, siteVersions, sites, type Site } from "@/db/schema";
 import { siteContent, type SiteContent } from "@/lib/site/content";
@@ -352,4 +353,15 @@ export async function listPublishedSiteSlugs(db: DbOrTx) {
     .from(sites)
     .innerJoin(businessProfiles, eq(businessProfiles.businessId, sites.businessId))
     .where(and(sql`${sites.publishedVersionId} is not null`, eq(businessProfiles.status, "published")));
+}
+
+/** Published sites with their service page slugs, for the sitemap. */
+export async function listPublishedSiteServices(db: DbOrTx) {
+  const rows = await db
+    .select({ slug: sites.slug, updatedAt: sites.updatedAt, content: siteVersions.content })
+    .from(sites)
+    .innerJoin(siteVersions, eq(siteVersions.id, sites.publishedVersionId))
+    .innerJoin(businessProfiles, eq(businessProfiles.businessId, sites.businessId))
+    .where(eq(businessProfiles.status, "published"));
+  return rows.map((r) => ({ slug: r.slug, updatedAt: r.updatedAt, services: factsFromSiteContent(r.content).services.map((s) => slugify(s.name)) }));
 }

@@ -8,7 +8,8 @@ import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
 import { businessDetailsSchema, fieldErrors, splitList } from "@/lib/validation";
 import { startClaim, verifyClaim } from "@/server/claims";
-import { confirmPublicContact, publishProfile, unpublishProfile, updateBusinessDetails } from "@/server/business";
+import { confirmPublicContact, getProfile, publishProfile, unpublishProfile, updateBusinessDetails } from "@/server/business";
+import { can } from "@/server/context";
 
 function lines(value: FormDataEntryValue | null) {
   return String(value ?? "")
@@ -112,6 +113,25 @@ export async function verifyClaimAction(_prev: ActionState, form: FormData): Pro
     await verifyClaim(await getDb(), await requireCtx(), String(form.get("claimId")));
     revalidatePath("/app/business");
     return { ok: true, message: "Verified. Your profile now shows how ownership was confirmed." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+/**
+ * "Still correct?" Marks the details as confirmed today and refreshes the public
+ * profile, so pages carry a current date (recently confirmed content is cited
+ * more often) and search engines are told to recrawl.
+ */
+export async function confirmFreshAction(): Promise<ActionState> {
+  try {
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await confirmPublicContact(db, ctx);
+    const profile = await getProfile(db, ctx);
+    if (profile?.status === "published" && can(ctx, "owner")) await publishProfile(db, ctx);
+    revalidatePath("/app", "layout");
+    after(() => resubmitBusiness(db, ctx));
+    return { ok: true, message: "Thanks. Your details are marked as confirmed today." };
   } catch (err) {
     return toActionError(err);
   }

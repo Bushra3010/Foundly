@@ -1,6 +1,6 @@
 import type { Block, PageKey, SiteContent } from "@/lib/site/content";
 import { phoneDigits } from "@/lib/profile";
-import { listingLabel } from "@/lib/geo";
+import { listingLabel, slugify } from "@/lib/geo";
 import { LeadForm } from "./lead-form";
 import "./site.css";
 
@@ -15,6 +15,7 @@ export function SiteRenderer({
   siteSlug,
   mode,
   publishedAt,
+  page: pageOverride,
 }: {
   content: SiteContent;
   pageKey: PageKey;
@@ -23,8 +24,10 @@ export function SiteRenderer({
   mode: "preview" | "live";
   /** When this version went live; shown so readers and crawlers know the facts are current. */
   publishedAt?: Date;
+  /** Render these blocks instead of a page from the content (used for per-service pages). */
+  page?: { title: string; blocks: Block[] };
 }) {
-  const page = content.pages.find((p) => p.key === pageKey) ?? content.pages[0];
+  const page = pageOverride ?? content.pages.find((p) => p.key === pageKey) ?? content.pages[0];
   const { primary, accent } = content.theme;
   const f = content.facts;
   const href = (key: PageKey) => (key === "home" ? basePath || "/" : `${basePath}/${key}`);
@@ -46,12 +49,12 @@ export function SiteRenderer({
             {content.pages
               .filter((p) => p.key !== "privacy" && p.key !== "contact")
               .map((p) => (
-                <a key={p.key} href={href(p.key)} aria-current={p.key === page.key ? "page" : undefined}>
+                <a key={p.key} href={href(p.key)} aria-current={!pageOverride && p.key === pageKey ? "page" : undefined}>
                   {p.title}
                 </a>
               ))}
             {hasContact && (
-              <a href={href("contact")} aria-current={page.key === "contact" ? "page" : undefined} className="fs-nav-cta">
+              <a href={href("contact")} aria-current={!pageOverride && pageKey === "contact" ? "page" : undefined} className="fs-nav-cta">
                 Get in touch
               </a>
             )}
@@ -60,7 +63,7 @@ export function SiteRenderer({
       </header>
       <main id="main">
         {page.blocks.map((block) => (
-          <BlockView key={block.id} block={block} content={content} siteSlug={siteSlug} mode={mode} contactHref={href("contact")} />
+          <BlockView key={block.id} block={block} content={content} siteSlug={siteSlug} mode={mode} contactHref={href("contact")} servicesBase={`${basePath}/services`} />
         ))}
       </main>
       <footer className="fs-footer">
@@ -172,12 +175,14 @@ function BlockView({
   siteSlug,
   mode,
   contactHref,
+  servicesBase,
 }: {
   block: Block;
   content: SiteContent;
   siteSlug: string;
   mode: "preview" | "live";
   contactHref: string;
+  servicesBase: string;
 }) {
   const f = content.facts;
   switch (block.type) {
@@ -230,8 +235,12 @@ function BlockView({
               {block.items.map((item, i) => (
                 <li key={item.name} className="fs-card">
                   <span className="fs-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                  <h3>{item.name}</h3>
+                  <h3>
+                    {/* Each service has its own page, so service-specific questions have a page to cite. */}
+                    {mode === "live" ? <a href={`${servicesBase}/${slugify(item.name)}`} className="fs-card-link">{item.name}</a> : item.name}
+                  </h3>
                   {item.description && <p>{item.description}</p>}
+                  {mode === "live" && <a href={`${servicesBase}/${slugify(item.name)}`} className="fs-card-more">{item.name} in {f.city} <Svg d={ICON.arrow} size={15} /></a>}
                 </li>
               ))}
             </ul>
@@ -246,7 +255,14 @@ function BlockView({
               <p className="fs-eyebrow">About us</p>
               <h2 className="fs-h2 fs-serif">{block.heading}</h2>
             </div>
-            <Paragraphs body={block.body} className="fs-about-body" />
+            <div>
+              {/* The owner's own words as a quotation: quoted text is cited more often by AI answers. */}
+              <blockquote className="fs-quote">
+                <p>{block.body.split(/\n{2,}/)[0]}</p>
+                <cite>{f.name}</cite>
+              </blockquote>
+              {block.body.split(/\n{2,}/).length > 1 && <Paragraphs body={block.body.split(/\n{2,}/).slice(1).join("\n\n")} className="fs-about-body" />}
+            </div>
           </div>
         </section>
       );

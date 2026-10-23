@@ -79,9 +79,11 @@ describe("GEO helpers", () => {
       profilePublished: false,
       verified: false,
     });
-    expect(r.total).toBe(13);
+    expect(r.total).toBe(15);
     expect(r.done).toBe(3); // areas, hours, contact
-    expect(r.score).toBe(23);
+    expect(r.score).toBe(20);
+    expect(r.items.find((i) => i.key === "confirmed")?.done).toBe(false);
+    expect(geoReadiness({ services: [], serviceAreas: [], hours: [], sitePublished: false, siteCurrent: false, faqCount: 0, profilePublished: false, verified: false, confirmedAt: new Date() }).items.find((i) => i.key === "confirmed")?.done).toBe(true);
     expect(r.items.find((i) => i.key === "google")?.done).toBe(false);
     expect(r.items.find((i) => i.key === "site")?.href).toBe("/app/website");
   });

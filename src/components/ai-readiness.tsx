@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { geoReadiness } from "@/lib/geo";
+import { ConfirmFresh } from "./confirm-fresh";
 import { Icon } from "./icon";
 
 type Readiness = ReturnType<typeof geoReadiness>;
 
 /** "Get found by AI" panel: score, what's done, and the next steps with links. */
-export function AiReadiness({ readiness, limit }: { readiness: Readiness; limit?: number }) {
+export function AiReadiness({ readiness, limit, fresh }: { readiness: Readiness; limit?: number; fresh?: boolean }) {
   const todo = readiness.items.filter((i) => !i.done);
   const done = readiness.items.filter((i) => i.done);
   const shownTodo = limit ? todo.slice(0, limit) : todo;
@@ -48,8 +49,9 @@ export function AiReadiness({ readiness, limit }: { readiness: Readiness; limit?
           <Icon name="check" size={14} /> Done: {done.map((i) => i.label.toLowerCase()).join(" · ")}
         </p>
       )}
+      {fresh && <ConfirmFresh daysAgo={readiness.confirmedDaysAgo} />}
       <p className="geo-note">
-        Foundly also does this for you automatically: your pages carry structured data and an AI-readable fact sheet, AI crawlers are allowed, and search engines are told the moment you publish.
+        Foundly also does this for you automatically: every page of your website and profile carries structured data, each service has its own page, AI crawlers are allowed, and search engines are told the moment you publish.
       </p>
     </section>
   );

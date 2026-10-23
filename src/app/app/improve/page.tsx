@@ -73,7 +73,7 @@ export default async function ImprovePage() {
       />
 
       <div className="mb-6">
-        <AiReadiness readiness={readiness} />
+        <AiReadiness readiness={readiness} fresh />
       </div>
 
       <Card>

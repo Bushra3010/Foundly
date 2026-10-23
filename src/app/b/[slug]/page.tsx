@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${p.name} — ${p.category} in ${p.city}`,
     description: (p.description ?? `${p.name}: ${p.category} in ${p.city}. ${p.services.map((s) => s.name).join(", ")}`).slice(0, 170),
     alternates: { canonical: `/b/${row.slug}` },
+    openGraph: { title: `${p.name} — ${p.category} in ${p.city}`, type: "profile", url: `/b/${row.slug}` },
   };
 }
 
@@ -42,6 +43,7 @@ export default async function ProfilePage({ params }: Props) {
     url: row.siteSlug ? `${appUrl}/s/${row.siteSlug}` : p.websiteUrl,
     profileUrl: `${appUrl}/b/${row.slug}`,
     sameAs: p.websiteUrl ? [p.websiteUrl] : [],
+    dateModified: row.publishedAt ?? p.updatedAt,
   });
 
   return (

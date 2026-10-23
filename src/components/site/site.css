@@ -137,6 +137,14 @@
 .fs-card h3 { margin: 0; font-size: 21px; line-height: 1.25; letter-spacing: -.3px; font-weight: 650; }
 .fs-card p { margin: 10px 0 0; color: var(--muted); font-size: 16px; }
 
+.fs-card-link { color: inherit; }
+.fs-card-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.fs-card-more { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 14px; font-weight: 650; color: var(--p); }
+.fs-card-more:hover { text-decoration: underline; text-underline-offset: 3px; }
+.fs-quote { margin: 0 0 20px; padding: 22px 26px; border-left: 4px solid var(--p); border-radius: 0 18px 18px 0; background: var(--soft); }
+.fs-quote p { margin: 0; font-size: 21px; line-height: 1.55; font-family: ui-serif, Georgia, serif; color: #26282c; white-space: pre-line; }
+.fs-quote cite { display: block; margin-top: 10px; font-style: normal; font-size: 14px; font-weight: 650; color: var(--muted); }
+.fs-quote cite::before { content: "— "; }
 .fs-about { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.4fr); gap: 48px; align-items: start; }
 .fs-about-body p { margin: 0 0 18px; font-size: 19px; line-height: 1.7; color: #33363b; white-space: pre-line; }
 .fs-text-body p { margin: 0 0 16px; color: #33363b; white-space: pre-line; }

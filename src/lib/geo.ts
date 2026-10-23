@@ -61,12 +61,13 @@ type Faq = { question: string; answer: string };
 /** Where AI assistants look for corroboration. Order matters: it is the suggested order for owners. */
 export const LISTING_SITES = [
   { key: "google", label: "Google Business Profile", match: /(google\.[a-z.]+\/maps|maps\.app\.goo\.gl|g\.page|business\.google|share\.google)/i, create: "https://business.google.com/create", why: "Gemini and Google's AI answers read it first for local businesses" },
-  { key: "bing", label: "Bing Places", match: /bingplaces\.com|bing\.com\/maps/i, create: "https://www.bingplaces.com", why: "Feeds Copilot and ChatGPT search" },
-  { key: "justdial", label: "Justdial", match: /justdial\.com/i, create: "https://www.justdial.com/free-listing", why: "India's most-cited local directory in AI answers" },
+  { key: "justdial", label: "Justdial", match: /justdial\.com/i, create: "https://www.justdial.com/free-listing", why: "Appears in over half of Indian AI answers about local businesses, and has its own ChatGPT plugin" },
+  { key: "bing", label: "Bing Places", match: /bingplaces\.com|bing\.com\/maps/i, create: "https://www.bingplaces.com", why: "Bing's index feeds ChatGPT search and Copilot" },
   { key: "instagram", label: "Instagram", match: /instagram\.com/i, create: "https://www.instagram.com", why: "Shows your work and confirms you are active" },
   { key: "facebook", label: "Facebook", match: /facebook\.com|fb\.com/i, create: "https://www.facebook.com/pages/create", why: "Another source with the same name, phone and address" },
+  { key: "youtube", label: "YouTube", match: /youtube\.com|youtu\.be/i, create: "https://www.youtube.com/create_channel", why: "Google's AI answers cite YouTube often; even one short video of your work helps" },
+  { key: "sulekha", label: "Sulekha", match: /sulekha\.com/i, create: "https://www.sulekha.com", why: "Widely read for service businesses in India" },
   { key: "indiamart", label: "IndiaMART", match: /indiamart\.com/i, create: "https://seller.indiamart.com", why: "Widely crawled business listings" },
-  { key: "sulekha", label: "Sulekha", match: /sulekha\.com/i, create: "https://www.sulekha.com", why: "Local services directory" },
   { key: "linkedin", label: "LinkedIn", match: /linkedin\.com/i, create: "https://www.linkedin.com/company/setup/new/", why: "Confirms the business and its people" },
 ] as const;
 
@@ -132,6 +133,8 @@ type BusinessForLd = Pick<
   projectsCompleted?: number;
   credentials?: string;
   listings?: string[];
+  /** When the owner last confirmed or published these details. */
+  dateModified?: Date | string;
 };
 
 /**
@@ -193,6 +196,10 @@ export function businessGraph(b: BusinessForLd, faq: Faq[] = []) {
     business.potentialAction = { "@type": "ReserveAction", target: b.bookingUrl, name: `Book with ${b.name}` };
 
   const graph: Record<string, unknown>[] = [business];
+  if (b.url && b.dateModified) {
+    const when = typeof b.dateModified === "string" ? b.dateModified : b.dateModified.toISOString();
+    graph.push({ "@type": "WebPage", "@id": `${b.url}#page`, url: b.url, about: { "@id": id }, dateModified: when, isPartOf: { "@type": "WebSite", url: b.url, name: b.name } });
+  }
   if (faq.length) {
     graph.push({
       "@type": "FAQPage",
@@ -294,10 +301,44 @@ export function discoveryFaq(f: EntityFacts & { services: { name: string; descri
   return out;
 }
 
+/** Questions people ask AI about one service, answered from confirmed facts. */
+export function serviceFaq(
+  f: EntityFacts & { phone?: string; whatsapp?: string; email?: string; bookingUrl?: string; hours: { days: string; hours: string }[] },
+  service: { name: string; description?: string },
+): Faq[] {
+  const name = service.name.trim();
+  const lower = name.toLowerCase();
+  const areas = f.serviceAreas.length ? listToText(f.serviceAreas.slice(0, 5)) : f.city;
+  const out: Faq[] = [
+    {
+      question: `Who offers ${lower} in ${f.city}?`,
+      answer: `${f.name} offers ${lower} in ${f.city}, serving ${areas}.${service.description ? ` ${service.description.trim().replace(/\.$/, "")}.` : ""}`,
+    },
+    { question: `Which areas does ${f.name} cover for ${lower}?`, answer: `${f.name} provides ${lower} across ${areas}.` },
+  ];
+  const ways = [
+    f.bookingUrl ? "book online" : "",
+    f.phone ? `call ${f.phone}` : "",
+    f.whatsapp ? `message ${f.whatsapp} on WhatsApp` : "",
+    f.email ? `email ${f.email}` : "",
+  ].filter(Boolean);
+  if (ways.length) out.push({ question: `How do I book ${lower} with ${f.name}?`, answer: `You can ${listToText(ways)}.${f.hours[0] ? ` Hours: ${f.hours.map((h) => `${h.days} ${h.hours}`).join(", ")}.` : ""}` });
+  if (f.foundedYear || f.projectsCompleted) {
+    out.push({
+      question: `How experienced is ${f.name} in ${lower}?`,
+      answer: `${f.name} has been in business${f.foundedYear ? ` since ${f.foundedYear}` : ""}${f.projectsCompleted ? ` and has completed ${f.projectsCompleted.toLocaleString("en-IN")}+ projects` : ""}.${f.credentials ? ` ${f.credentials.trim().replace(/\.$/, "")}.` : ""}`,
+    });
+  }
+  return out;
+}
+
 export type ReadinessItem = { key: string; label: string; why: string; done: boolean; href: string };
 
 /** How ready a business is to be found and cited by AI assistants, with next steps. */
 export function geoReadiness(input: {
+  /** When the owner last confirmed the details are correct. */
+  confirmedAt?: Date | null;
+  customDomain?: boolean;
   foundedYear?: number | null;
   projectsCompleted?: number | null;
   listings?: string[];
@@ -393,6 +434,20 @@ export function geoReadiness(input: {
       href: "/app/website",
     },
     {
+      key: "confirmed",
+      label: "Confirm your details every month",
+      why: "Content confirmed in the last 30 days is cited about 3× more often",
+      done: Boolean(input.confirmedAt && Date.now() - new Date(input.confirmedAt).getTime() < 30 * 86_400_000),
+      href: "/app",
+    },
+    {
+      key: "domain",
+      label: "Use your own domain for your website",
+      why: "AI assistants cite brand homepages far more than pages on shared sites",
+      done: Boolean(input.customDomain),
+      href: "/app/website",
+    },
+    {
       key: "profile",
       label: "Publish your directory profile",
       why: "Lists you on Foundly’s city and category pages that AI reads",
@@ -408,7 +463,8 @@ export function geoReadiness(input: {
     },
   ];
   const done = items.filter((i) => i.done).length;
-  return { score: Math.round((done / items.length) * 100), done, total: items.length, items };
+  const confirmedDaysAgo = input.confirmedAt ? Math.floor((Date.now() - new Date(input.confirmedAt).getTime()) / 86_400_000) : null;
+  return { score: Math.round((done / items.length) * 100), done, total: items.length, items, confirmedDaysAgo };
 }
 
 /** Services, questions and description as published on a website, for structured data and llms.txt. */

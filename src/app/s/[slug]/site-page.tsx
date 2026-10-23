@@ -20,6 +20,7 @@ export async function LiveSitePage({ slug, page }: { slug: string; page?: string
       url: siteUrl(site.slug),
       profileUrl: site.profileSlug ? `${appUrl}/b/${site.profileSlug}` : undefined,
       sameAs: facts.websiteUrl ? [facts.websiteUrl] : [],
+      dateModified: site.publishedAt,
     },
     site.key === "home" ? faq : [],
   );

@@ -1,5 +1,5 @@
 import { getDb } from "@/db";
-import { businessLlmsText, factsFromSiteContent } from "@/lib/geo";
+import { businessLlmsText, factsFromSiteContent, slugify } from "@/lib/geo";
 import { getPublishedSite } from "@/server/sites";
 import { siteUrl } from "../../load";
 
@@ -17,5 +17,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
     { website: siteUrl(result.slug), profile: result.profileSlug ? `${base}/b/${result.profileSlug}` : undefined },
     faq,
   );
-  return new Response(text, { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
+  const servicePages = services.map((s) => `- [${s.name} in ${f.city}](${siteUrl(result.slug)}/services/${slugify(s.name)})`);
+  const withPages = servicePages.length ? `${text}\n## Service pages\n\n${servicePages.join("\n")}\n` : text;
+  return new Response(withPages, { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
 }

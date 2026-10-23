@@ -4,16 +4,19 @@ import type { Business } from "@/db/schema";
 import { geoReadiness } from "@/lib/geo";
 import { getProfile } from "./business";
 import type { Ctx } from "./context";
+import { listDomains } from "./domains";
 import { getSite } from "./sites";
 
 /** AI readiness for the signed-in workspace's business. */
 export async function readinessFor(db: DbOrTx, ctx: Ctx, business: Business) {
-  const [site, profile] = await Promise.all([getSite(db, ctx), getProfile(db, ctx)]);
+  const [site, profile, domains] = await Promise.all([getSite(db, ctx), getProfile(db, ctx), listDomains(db, ctx)]);
   const live = Boolean(site?.publishedVersionId);
   const faqCount = (site?.draft.pages ?? [])
     .flatMap((pg) => pg.blocks)
     .reduce((n, b) => n + (b.type === "faq" ? b.items.length : 0), 0);
   return geoReadiness({
+    confirmedAt: business.publicContactConfirmedAt,
+    customDomain: domains.some((d) => d.status === "verified"),
     foundedYear: business.foundedYear,
     projectsCompleted: business.projectsCompleted,
     listings: business.listings,

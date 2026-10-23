@@ -260,7 +260,7 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      <AiReadiness readiness={readiness} limit={4} />
+      <AiReadiness readiness={readiness} limit={4} fresh />
 
       <div className="dash-lower">
         <section className="dash-panel" aria-labelledby="dash-more">
