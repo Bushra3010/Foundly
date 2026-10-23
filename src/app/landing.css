@@ -2953,3 +2953,99 @@
   .process-card,.pricing-card,.landing-feature { transition:none; }
   .process-card:hover,.pricing-card:hover,.landing-feature:hover { transform:none; }
 }
+
+/* ---------- Sticky header and one-screen sections ---------- */
+.foundly-landing { --lp-header: 72px; }
+
+.landing-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding-block: 12px;
+  background: color-mix(in srgb, #fdfdfb 90%, transparent);
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  /* Full-width background behind a centred header. */
+  box-shadow: 0 0 0 100vmax color-mix(in srgb, #fdfdfb 90%, transparent), 0 1px 0 100vmax #e5e6df;
+  clip-path: inset(0 -100vmax -1px);
+}
+
+.landing-section,
+.landing-products { scroll-margin-top: var(--lp-header); }
+
+@media (min-width: 1024px) and (min-height: 560px) {
+  .landing-fit {
+    min-height: calc(100svh - var(--lp-header));
+    padding: 28px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .landing-fit .fit-body { width: 100%; }
+  .landing-fit .landing-section-heading { margin-bottom: 24px; gap: 32px; }
+  .landing-fit .landing-section-heading h2 { font-size: clamp(34px, 3.2vw, 44px); }
+  .landing-fit .landing-section-heading > p { font-size: 16px; }
+  .landing-fit .landing-eyebrow { margin-bottom: 14px !important; }
+
+  /* AI answers */
+  .landing-fit .ai-window { min-height: 0; }
+  .landing-fit .ai-body { padding: 18px 24px; }
+  .landing-fit .ai-board,
+  .landing-fit .results-board { padding: 12px; }
+  .landing-fit .ai-tabs { margin-bottom: 12px; }
+  .landing-fit .ai-report { padding: 18px; }
+  .landing-fit .ai-report dl > div { padding: 8px 0; }
+  .landing-fit .ai-report-note { margin: 10px 0 12px; }
+
+  /* Results */
+  .landing-fit .results-main { padding: 20px; gap: 14px; }
+  .landing-fit .results-chart { padding: 14px 16px 6px; }
+  .landing-fit .results-chart svg { max-height: 150px; }
+  .landing-fit .results-answer { padding: 18px; }
+  .landing-fit .results-answer-text { min-height: 0; }
+  .landing-fit .results-tasks { padding: 16px 18px; }
+  .landing-fit .results-tasks ul { gap: 7px; margin-top: 10px; }
+  .landing-fit .results-foot { padding: 4px 8px 2px; }
+
+  /* Why Foundly */
+  .landing-fit .landing-feature { padding: 26px; }
+  .landing-fit .feature-top { margin-bottom: 16px; }
+  .landing-fit .feature-visual { height: 120px; margin-bottom: 20px; }
+  .landing-fit .landing-feature > p { margin-bottom: 20px; }
+
+  /* Pricing */
+  .landing-fit .pricing-card { padding: 22px 20px; }
+  .landing-fit .pricing-card-top { margin-bottom: 12px; }
+  .landing-fit .pricing-summary { min-height: 0; margin-bottom: 12px; }
+  .landing-fit .pricing-term { margin: 4px 0 14px; }
+  .landing-fit .pricing-includes { margin: 16px 0 10px; padding-top: 14px; }
+  .landing-fit .pricing-card ul { gap: 7px; }
+  .landing-fit .pricing-card li { font-size: 13.5px; line-height: 1.45; }
+  .landing-fit .pricing-footnote { padding-top: 16px; }
+}
+
+@media (max-width: 700px) {
+  .foundly-landing { --lp-header: 64px; }
+  .landing-header { padding-block: 8px; }
+}
+
+/* Every landing block fills one screen on desktop. */
+@media (min-width: 1024px) and (min-height: 560px) {
+  .landing-first { padding: 0; }
+  .landing-first .landing-hero { padding: 40px 0 36px; }
+  .landing-first .landing-audience { padding: 26px 0 28px; border-bottom: 0; }
+  .landing-products.landing-fit { padding: 24px 0; }
+  .landing-fit .landing-process { border: 0; gap: 72px; align-items: center; }
+  .landing-fit .landing-process > div:first-child { position: static; }
+  .landing-fit .landing-process ol { gap: 12px; }
+  .landing-fit .process-card { padding: 18px 22px; }
+  .landing-fit.landing-section { padding-top: 28px; padding-bottom: 28px; }
+  .landing-fit .landing-faq { align-items: center; }
+  .landing-fit .landing-faq details,
+  .landing-fit .landing-faq details:first-child { padding: 16px 20px; }
+  .landing-last {
+    min-height: calc(100svh - var(--lp-header) - var(--lp-footer, 0px));
+    padding: 24px 0;
+  }
+  .landing-last .landing-final { margin-bottom: 0; padding: 64px 30px; }
+}

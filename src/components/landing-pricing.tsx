@@ -6,7 +6,8 @@ export function LandingPricing() {
   const hasUnpricedPlans = PLANS.some((plan) => plan.key !== "free" && planPrice(plan) === null);
 
   return (
-    <section id="pricing" className="landing-pricing landing-section" aria-labelledby="pricing-title">
+    <section id="pricing" className="landing-pricing landing-section landing-fit" aria-labelledby="pricing-title">
+      <div className="fit-body">
       <div className="landing-section-heading">
         <div>
           <p className="landing-eyebrow">A LITTLE START. ROOM TO GROW.</p>
@@ -49,6 +50,7 @@ export function LandingPricing() {
         <p><Icon name="shield" size={16} /><span>You review the price before completing a paid checkout.</span></p>
         <span>AI checks use credits: one credit collects one AI answer. Allowances are capped.</span>
         {hasUnpricedPlans && <span>Paid plan prices are being finalized. You can start with Free today.</span>}
+      </div>
       </div>
     </section>
   );
