@@ -3362,17 +3362,7 @@
   .sc-caret { display: none; }
 }
 
-/* Give the FAQ the same full-screen rhythm as the other desktop sections. */
-.landing-faq-intro > p:last-child {
-  max-width: 340px;
-  margin: 24px 0 0;
-  color: var(--lp-muted);
-  font-size: 17px;
-  line-height: 1.7;
-}
-
+/* The FAQ is short: size it to its content instead of a full screen. */
 @media (min-width: 900px) and (min-height: 520px) {
-  #faq .landing-faq { gap: clamp(40px, 6vw, 96px); }
-  #faq .landing-faq > div:last-child { gap: 14px; }
-  #faq .landing-faq details { padding: clamp(18px, 2.5vh, 28px) 24px; }
+  #faq.landing-fit { min-height: 0; padding-top: 88px; padding-bottom: 88px; }
 }
