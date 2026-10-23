@@ -14,6 +14,8 @@ import {
   type Observation,
 } from "@/db/schema";
 import { hostOf } from "@/server/safe-fetch";
+import { billingEnforced, planSpec } from "@/lib/plans";
+import { effectivePlan } from "../billing/service";
 import { requireBusiness } from "../business";
 import { AppError, audit, requireRole, type Ctx } from "../context";
 import { reserveCredits, settleReservation } from "../credits";
@@ -27,6 +29,12 @@ export const MAX_SAMPLES = 3;
 const OBSERVATION_TIMEOUT_MS = 90_000;
 
 // ---------- Questions ----------
+
+/** Keywords allowed by the workspace's plan; the hard maximum while billing isn't enforced. */
+export async function questionLimit(db: DbOrTx, workspaceId: string) {
+  if (!billingEnforced()) return MAX_QUESTIONS;
+  return Math.min(planSpec(await effectivePlan(db, workspaceId)).keywords, MAX_QUESTIONS);
+}
 
 export async function listQuestions(db: DbOrTx, ctx: Ctx) {
   return db
@@ -47,8 +55,9 @@ export async function approveQuestions(db: Db, ctx: Ctx, items: NewQuestion[]) {
   const fresh = items
     .map((i) => ({ ...i, text: i.text.trim().replace(/\s+/g, " ") }))
     .filter((i) => i.text.length >= 8 && i.text.length <= 300 && !seen.has(i.text.toLowerCase()));
-  if (existing.length + fresh.length > MAX_QUESTIONS) {
-    throw new AppError("invalid", `You can track up to ${MAX_QUESTIONS} questions. Archive some first.`);
+  const limit = await questionLimit(db, ctx.workspaceId);
+  if (existing.length + fresh.length > limit) {
+    throw new AppError("invalid", `Your plan tracks up to ${limit} keywords. Archive some or upgrade for more.`, { upgrade: true });
   }
   // Discovery questions that name the business bias inclusion; keep them in the branded group.
   const name = b.name.toLowerCase();
@@ -304,7 +313,13 @@ export async function listRuns(db: DbOrTx, ctx: Ctx, limit = 10) {
   return db.select().from(monitoringRuns).where(eq(monitoringRuns.workspaceId, ctx.workspaceId)).orderBy(desc(monitoringRuns.createdAt)).limit(limit);
 }
 
-/** Cron: weekly runs for every workspace with approved questions. */
+/** Whether a plan's schedule includes this ISO week. Biweekly plans run on even weeks. */
+export function checksDue(checks: "weekly" | "biweekly" | null, now: Date) {
+  if (!checks) return false;
+  return checks === "weekly" || Number(isoWeek(now).slice(-2)) % 2 === 0;
+}
+
+/** Cron: weekly runs for every workspace with approved questions, on each plan's schedule. */
 export async function scheduleDueRuns(db: Db, now = new Date()) {
   if (enabledAdapters().length === 0) return { created: 0, skipped: "no providers" };
   const workspaces = await db
@@ -314,6 +329,7 @@ export async function scheduleDueRuns(db: Db, now = new Date()) {
   let created = 0;
   for (const { workspaceId } of workspaces) {
     try {
+      if (billingEnforced() && !checksDue(planSpec(await effectivePlan(db, workspaceId)).checks, now)) continue;
       const run = await createRun(db, { workspaceId, userId: "" }, { trigger: "scheduled", idempotencyKey: scheduledRunKey(now) });
       if (run.status === "queued") created++;
     } catch {

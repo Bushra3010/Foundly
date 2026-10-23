@@ -695,7 +695,7 @@ export type ImprovementAction = typeof improvementActions.$inferSelect;
 
 // ---------- Phase 5: billing, notifications, lifecycle, support ----------
 
-export const planEnum = pgEnum("plan", ["free", "website", "growth", "agency"]);
+export const planEnum = pgEnum("plan", ["free", "website", "growth", "pro", "agency"]);
 export const subscriptionStatusEnum = pgEnum("subscription_status", ["active", "past_due", "cancelled"]);
 
 export const subscriptions = pgTable("subscriptions", {

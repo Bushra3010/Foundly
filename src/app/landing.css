@@ -1517,6 +1517,7 @@
   border: 1px solid #e2e6d9;
   border-radius: 16px;
 }
+.pricing-card li.pricing-extra { font-weight: 600; }
 .pricing-region-bar p { margin: 0; font-size: 14px; font-weight: 600; }
 .pricing-region-bar p span { display: block; color: var(--lp-muted); font-size: 12px; font-weight: 400; }
 .pricing-region-control { display: flex; align-items: center; gap: 12px; }
@@ -2844,7 +2845,8 @@
 
 /* ---------- Premium pass: pricing ---------- */
 .pricing-card {
-  transition:transform .25s, box-shadow .25s;
+  cursor:pointer;
+  transition:transform .25s, box-shadow .25s, background .25s, border-color .25s, color .25s;
 }
 
 .pricing-card:hover {

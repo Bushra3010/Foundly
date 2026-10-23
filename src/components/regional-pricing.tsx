@@ -3,15 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icon";
-import { PLANS } from "@/lib/plans";
-import { formatRegionalPrice, pricingCountry, PRICING_COUNTRIES, PRICING_MARKETS, regionalPrice, suggestPricingCountry } from "@/lib/regional-pricing";
+import { planSpec, SALE_PLANS, type SalePlan } from "@/lib/plans";
+import { formatRegionalPrice, GEO_COUNTRY_COOKIE, pricingCountry, pricingCountryFor, PRICING_COUNTRIES, PRICING_MARKETS, regionalPrice, suggestPricingCountry } from "@/lib/regional-pricing";
 
 export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<string, number | null> }) {
   const [countryCode, setCountryCode] = useState("IN");
+  const [selected, setSelected] = useState<SalePlan>("growth");
   useEffect(() => {
     let saved: string | null = null;
     try { saved = localStorage.getItem("foundly-pricing-country"); } catch {}
-    setCountryCode(pricingCountry(saved)?.code ?? suggestPricingCountry(Intl.DateTimeFormat().resolvedOptions().timeZone, navigator.languages));
+    // A manual choice wins, then the visitor's IP location, then the device timezone.
+    const geo = document.cookie.match(new RegExp(`(?:^|; )${GEO_COUNTRY_COOKIE}=([A-Z]{2})`))?.[1];
+    setCountryCode(pricingCountry(saved)?.code ?? (geo ? pricingCountryFor(geo) : suggestPricingCountry(Intl.DateTimeFormat().resolvedOptions().timeZone, navigator.languages)));
   }, []);
   const country = pricingCountry(countryCode)!;
   const market = PRICING_MARKETS[country.market];
@@ -19,7 +22,6 @@ export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<str
     setCountryCode(code);
     try { localStorage.setItem("foundly-pricing-country", code); } catch {}
   }
-  const paidPlans = PLANS.filter((plan) => plan.key !== "free");
 
   return (
     <section id="pricing" className="landing-pricing landing-section landing-fit" aria-labelledby="pricing-title">
@@ -29,7 +31,7 @@ export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<str
           <p className="landing-eyebrow">A LITTLE START. ROOM TO GROW.</p>
           <h2 id="pricing-title">The right fit for<br />your next chapter.</h2>
         </div>
-        <p>Start with a free business profile and website preview. Find the plan that fits when you’re ready for more.</p>
+        <p>Start free with your business profile and GEO readiness score. Then choose how many keywords to track in AI answers.</p>
       </div>
       <div className="pricing-region-bar">
         <p>Monthly plans. Local prices.<span>Choose your country to see regional pricing.</span></p>
@@ -41,14 +43,16 @@ export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<str
         </div>
       </div>
       <div className="pricing-grid" aria-live="polite" aria-atomic="true">
-        {paidPlans.map((plan) => {
-          const price = countryCode === "IN" ? indiaOverrides[plan.key] ?? regionalPrice(countryCode, plan.key) : regionalPrice(countryCode, plan.key);
-          const featured = plan.key === "growth";
+        {SALE_PLANS.map((key) => {
+          const plan = planSpec(key);
+          const price = countryCode === "IN" ? indiaOverrides[key] ?? regionalPrice(countryCode, key) : regionalPrice(countryCode, key);
+          // The selected card takes the dark style; the badge marks Pro as the step up from Growth.
+          const featured = key === selected;
           return (
-            <article className={`pricing-card${featured ? " pricing-featured" : ""}`} key={plan.key} aria-labelledby={`pricing-${plan.key}`}>
+            <article className={`pricing-card${featured ? " pricing-featured" : ""}`} key={plan.key} aria-labelledby={`pricing-${plan.key}`} onClick={() => setSelected(key)} onFocus={() => setSelected(key)}>
               <div className="pricing-card-top">
-                <span className="pricing-plan-icon"><Icon name={plan.key === "website" ? "website" : plan.key === "growth" ? "improve" : "workspaces"} size={20} /></span>
-                {featured && <span className="pricing-highlight">FOR YOUR NEXT STAGE</span>}
+                <span className="pricing-plan-icon"><Icon name={plan.key === "agency" ? "workspaces" : "improve"} size={20} /></span>
+                {key === "pro" && <span className="pricing-highlight">FOR YOUR NEXT STAGE</span>}
               </div>
               <h3 id={`pricing-${plan.key}`}>{plan.name}</h3>
               <p className="pricing-summary">{plan.summary}</p>
@@ -65,6 +69,7 @@ export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<str
                 {plan.features.map((feature) => <li key={feature}><Icon name="check" size={15} /><span>{feature}</span></li>)}
                 {plan.monthlyCredits > 0 && <li><Icon name="check" size={15} /><span>{plan.monthlyCredits} AI credits per month{plan.key === "agency" ? " per business" : ""}</span></li>}
                 <li><Icon name="check" size={15} /><span>{plan.maxWorkspaces === 1 ? "1 business workspace" : `Up to ${plan.maxWorkspaces} business workspaces`}</span></li>
+                <li className="pricing-extra"><Icon name="spark" size={15} /><span>+1 keyword: {formatRegionalPrice(market.extraKeyword, market)} / month each</span></li>
               </ul>
             </article>
           );

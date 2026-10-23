@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { countryFromHeaders, GEO_COUNTRY_COOKIE } from "@/lib/regional-pricing";
 
 const SESSION_COOKIE = "abgp_session";
 const PASSTHROUGH = /^\/(_next|media|favicon\.ico|icon-|icon\.png|apple-icon\.png|sw\.js|offline\.html)/;
@@ -49,7 +50,13 @@ export function proxy(req: NextRequest) {
     url.search = "";
     return NextResponse.redirect(url);
   }
-  return NextResponse.next();
+  const res = NextResponse.next();
+  // Lets the static landing page show local prices on the first visit.
+  const country = countryFromHeaders(req.headers);
+  if (country && req.cookies.get(GEO_COUNTRY_COOKIE)?.value !== country) {
+    res.cookies.set(GEO_COUNTRY_COOKIE, country, { path: "/", maxAge: 86_400, sameSite: "lax" });
+  }
+  return res;
 }
 
 export const config = {

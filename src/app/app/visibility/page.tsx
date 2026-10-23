@@ -19,7 +19,7 @@ import {
   listCompetitors,
   listQuestions,
   listRuns,
-  MAX_QUESTIONS,
+  questionLimit,
   visibilitySummary,
 } from "@/server/monitoring/service";
 import {
@@ -61,7 +61,7 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
   const days = [7, 30, 90].includes(Number(sp.days)) ? Number(sp.days) : 30;
   const provider = ADAPTERS.some((a) => a.key === sp.provider) ? sp.provider : undefined;
   const business = await requireBusiness(db, ctx);
-  const [questions, comps, runs, balance, lastSuccess, summary, brands] = await Promise.all([
+  const [questions, comps, runs, balance, lastSuccess, summary, brands, keywordLimit] = await Promise.all([
     listQuestions(db, ctx),
     listCompetitors(db, ctx),
     listRuns(db, ctx, 5),
@@ -69,6 +69,7 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
     lastSuccessByProvider(db, ctx.workspaceId),
     visibilitySummary(db, ctx, days, provider),
     brandSpecs(db, ctx.workspaceId),
+    questionLimit(db, ctx.workspaceId),
   ]);
   const connected = ADAPTERS.filter((a) => providerState(a) === "connected");
   const tracked = new Set(questions.map((q) => q.text.toLowerCase()));
@@ -323,7 +324,7 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
       {/* ---------- Questions ---------- */}
       <section className="mt-8">
         <h2 className="mb-1 text-lg font-semibold">
-          Tracked questions ({questions.length}/{MAX_QUESTIONS})
+          Tracked keywords ({questions.length}/{keywordLimit})
         </h2>
         <p className="mb-3 text-sm text-muted">
           Only questions you approve are asked. Questions that name your business are kept in a separate group because they make a mention more likely.

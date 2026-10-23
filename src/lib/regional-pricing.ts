@@ -1,25 +1,26 @@
-import type { Plan } from "@/db/schema";
+import type { SalePlan } from "@/lib/plans";
 
-export type PaidPlan = Exclude<Plan, "free">;
 export type PricingMarket = {
   currency: string;
   locale: string;
-  monthly: Record<PaidPlan, number>;
+  monthly: Record<SalePlan, number>;
+  /** Monthly price of one keyword added to any plan. */
+  extraKeyword: number;
 };
 
 // Fixed regional list prices, not exchange-rate conversions. Amounts are major currency units.
 // Each price keeps a 90% margin at full credit use; see docs/product/regional-pricing.md.
 export const PRICING_MARKETS = {
-  IN: { currency: "INR", locale: "en-IN", monthly: { website: 799, growth: 4999, agency: 29999 } },
-  US: { currency: "USD", locale: "en-US", monthly: { website: 15, growth: 69, agency: 399 } },
-  GB: { currency: "GBP", locale: "en-GB", monthly: { website: 12, growth: 59, agency: 329 } },
-  EU: { currency: "EUR", locale: "de-DE", monthly: { website: 15, growth: 65, agency: 379 } },
-  CA: { currency: "CAD", locale: "en-CA", monthly: { website: 19, growth: 99, agency: 579 } },
-  AU: { currency: "AUD", locale: "en-AU", monthly: { website: 25, growth: 109, agency: 629 } },
-  NZ: { currency: "NZD", locale: "en-NZ", monthly: { website: 29, growth: 119, agency: 699 } },
-  AE: { currency: "AED", locale: "en-AE", monthly: { website: 49, growth: 259, agency: 1499 } },
-  SG: { currency: "SGD", locale: "en-SG", monthly: { website: 19, growth: 95, agency: 549 } },
-  ZA: { currency: "ZAR", locale: "en-ZA", monthly: { website: 199, growth: 1299, agency: 7499 } },
+  IN: { currency: "INR", locale: "en-IN", monthly: { growth: 2999, pro: 10999, agency: 29999 }, extraKeyword: 999 },
+  US: { currency: "USD", locale: "en-US", monthly: { growth: 45, pro: 159, agency: 449 }, extraKeyword: 15 },
+  GB: { currency: "GBP", locale: "en-GB", monthly: { growth: 35, pro: 129, agency: 349 }, extraKeyword: 12 },
+  EU: { currency: "EUR", locale: "de-DE", monthly: { growth: 45, pro: 149, agency: 399 }, extraKeyword: 15 },
+  CA: { currency: "CAD", locale: "en-CA", monthly: { growth: 59, pro: 219, agency: 599 }, extraKeyword: 22 },
+  AU: { currency: "AUD", locale: "en-AU", monthly: { growth: 69, pro: 249, agency: 649 }, extraKeyword: 25 },
+  NZ: { currency: "NZD", locale: "en-NZ", monthly: { growth: 79, pro: 269, agency: 729 }, extraKeyword: 27 },
+  AE: { currency: "AED", locale: "en-AE", monthly: { growth: 159, pro: 579, agency: 1599 }, extraKeyword: 59 },
+  SG: { currency: "SGD", locale: "en-SG", monthly: { growth: 59, pro: 209, agency: 589 }, extraKeyword: 21 },
+  ZA: { currency: "ZAR", locale: "en-ZA", monthly: { growth: 799, pro: 2799, agency: 7999 }, extraKeyword: 279 },
 } satisfies Record<string, PricingMarket>;
 
 export type MarketKey = keyof typeof PRICING_MARKETS;
@@ -43,8 +44,7 @@ export function pricingCountry(code: string | null | undefined) {
   return PRICING_COUNTRIES.find(country => country.code === code?.toUpperCase());
 }
 
-export function regionalPrice(countryCode: string, plan: Plan): number {
-  if (plan === "free") return 0;
+export function regionalPrice(countryCode: string, plan: SalePlan): number {
   const country = pricingCountry(countryCode);
   return PRICING_MARKETS[country?.market ?? "US"].monthly[plan];
 }
@@ -53,6 +53,27 @@ export function formatRegionalPrice(amount: number, market: PricingMarket) {
   return new Intl.NumberFormat(market.locale, {
     style: "currency", currency: market.currency, maximumFractionDigits: 0,
   }).format(amount);
+}
+
+export const GEO_COUNTRY_COOKIE = "foundly-geo-country";
+
+/**
+ * The visitor's country from the hosting platform's IP location headers
+ * (Vercel, Netlify, Cloudflare). Display only: never proof of a billing country.
+ */
+export function countryFromHeaders(headers: Headers): string | null {
+  let code = headers.get("x-vercel-ip-country") ?? headers.get("x-country") ?? headers.get("cf-ipcountry");
+  const nfGeo = headers.get("x-nf-geo");
+  if (!code && nfGeo) {
+    try { code = JSON.parse(atob(nfGeo))?.country?.code ?? null; } catch { /* Ignore a malformed header. */ }
+  }
+  code = code?.trim().toUpperCase() ?? null;
+  return code && /^[A-Z]{2}$/.test(code) && code !== "XX" ? code : null;
+}
+
+/** Maps any ISO country code to a selectable pricing country; unsupported ones use "OTHER". */
+export function pricingCountryFor(code: string) {
+  return pricingCountry(code)?.code ?? "OTHER";
 }
 
 // A device setting is a suggestion, never proof of a billing country.

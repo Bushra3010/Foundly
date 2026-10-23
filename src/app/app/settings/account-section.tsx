@@ -66,7 +66,7 @@ export async function AccountSection() {
           {sub.scheduledPlan && ` Changes to ${planSpec(sub.scheduledPlan).name} at the end of this period.`}
         </p>
         <ul className="settings-plans mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4" aria-label="Compare plans">
-          {PLANS.map((p) => {
+          {PLANS.filter((p) => !p.retired || p.key === sub.plan).map((p) => {
             const price = planPrice(p);
             const current = p.key === sub.plan;
             return (

@@ -9,6 +9,7 @@ import { toActionError, type ActionState } from "@/lib/actions";
 import { sendEmail } from "@/lib/auth/mailer";
 import { clearSessionCookie, requireCtx } from "@/lib/auth/session";
 import { LOCALE_COOKIE, parseLocale } from "@/lib/i18n";
+import { SALE_PLANS } from "@/lib/plans";
 import { revokeAllSessions, setPassword } from "@/server/auth";
 import { audit } from "@/server/context";
 import { changeRole, inviteMember, removeMember, revokeInvite, transferOwnership } from "@/server/team";
@@ -125,7 +126,7 @@ export async function transferOwnershipAction(_prev: ActionState, form: FormData
 }
 
 export async function checkoutAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  const plan = z.enum(["website", "growth", "agency"]).safeParse(form.get("plan"));
+  const plan = z.enum(SALE_PLANS).safeParse(form.get("plan"));
   if (!plan.success) return { ok: false, message: "Choose a plan." };
   let url: string;
   try {
@@ -138,7 +139,7 @@ export async function checkoutAction(_prev: ActionState, form: FormData): Promis
 }
 
 export async function downgradeAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  const plan = z.enum(["free", "website", "growth"]).safeParse(form.get("plan"));
+  const plan = z.enum(["free", ...SALE_PLANS]).safeParse(form.get("plan"));
   if (!plan.success) return { ok: false, message: "Choose a plan." };
   try {
     await scheduleDowngrade(await getDb(), await requireCtx(), plan.data);

@@ -26,7 +26,7 @@ export async function requireEntitlement(db: DbOrTx, workspaceId: string, featur
   if (!billingEnforced()) return;
   const plan = planSpec(await effectivePlan(db, workspaceId));
   if (!plan[feature]) {
-    throw new AppError("forbidden", feature === "hostedSite" ? "Publishing a website needs the Website plan or higher." : "Your own domain needs the Website plan or higher.", { upgrade: true });
+    throw new AppError("forbidden", feature === "hostedSite" ? "Publishing a website needs a paid plan." : "Your own domain needs a paid plan.", { upgrade: true });
   }
 }
 

@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { Plan } from "@/db/schema";
+import { PAID_PLANS } from "@/lib/plans";
 
 /** Normalised billing events every payment adapter produces. */
 export type BillingEvent = {
@@ -31,6 +32,7 @@ function safeEqualHex(a: string, b: string) {
 const PLAN_IDS: Partial<Record<Plan, string | undefined>> = {
   website: process.env.RAZORPAY_PLAN_WEBSITE,
   growth: process.env.RAZORPAY_PLAN_GROWTH,
+  pro: process.env.RAZORPAY_PLAN_PRO,
   agency: process.env.RAZORPAY_PLAN_AGENCY,
 };
 
@@ -86,7 +88,7 @@ export const razorpay: PaymentProvider = {
       eventId: headers.get("x-razorpay-event-id") ?? createHmac("sha256", "id").update(rawBody).digest("hex"),
       type: map[body.event] ?? "ignored",
       workspaceId: sub?.notes?.workspace_id ?? null,
-      plan: plan && ["website", "growth", "agency"].includes(plan) ? plan : null,
+      plan: plan && PAID_PLANS.includes(plan) ? plan : null,
       providerSubscriptionId: sub?.id ?? null,
       periodEnd: sub?.current_end ? new Date(sub.current_end * 1000) : null,
       raw: body,
