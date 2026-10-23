@@ -102,3 +102,36 @@ export async function sendWeeklySummaries(db: Db, weekKey: string) {
   }
   return sent;
 }
+
+/**
+ * Monthly nudge to owners whose details haven't been confirmed in 30 days.
+ * Opt-in (same preference as the weekly summary), once per month per owner.
+ */
+export async function sendConfirmReminders(db: Db, monthKey: string) {
+  const cutoff = new Date(Date.now() - 30 * 86_400_000);
+  const subscribed = await db
+    .select({ userId: notificationPrefs.userId, workspaceId: notificationPrefs.workspaceId, email: users.email })
+    .from(notificationPrefs)
+    .innerJoin(users, eq(users.id, notificationPrefs.userId))
+    .innerJoin(memberships, and(eq(memberships.userId, notificationPrefs.userId), eq(memberships.workspaceId, notificationPrefs.workspaceId)))
+    .where(and(eq(notificationPrefs.weeklySummary, true), eq(memberships.role, "owner")));
+  let sent = 0;
+  for (const s of subscribed) {
+    const [b] = await db.select({ name: businesses.name, confirmedAt: businesses.publicContactConfirmedAt }).from(businesses).where(eq(businesses.workspaceId, s.workspaceId)).limit(1);
+    if (!b || (b.confirmedAt && b.confirmedAt > cutoff)) continue;
+    const ok = await sendOnce(db, `confirm:${s.workspaceId}:${s.userId}:${monthKey}`, s.userId, "confirm_reminder", {
+      to: s.email,
+      subject: `Are ${b.name}'s details still correct?`,
+      text: [
+        `A quick monthly check keeps ${b.name} fresh for AI assistants and search engines, which favour recently confirmed details.`,
+        "",
+        `If nothing changed, one click confirms everything: ${appUrl()}/app`,
+        `If something changed, update it here: ${appUrl()}/app/business`,
+        "",
+        `Unsubscribe: ${unsubscribeLink(s.userId, s.workspaceId, "weeklySummary")}`,
+      ].join("\n"),
+    });
+    if (ok) sent += 1;
+  }
+  return sent;
+}

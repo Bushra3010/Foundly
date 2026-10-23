@@ -130,3 +130,12 @@ export function googleLocationUpdate(b: KitInput) {
   }
   return { body, updateMask: mask.join(",") };
 }
+
+/** What Foundly keeps in sync on a connected Facebook Page: about, description, phone and website. */
+export function facebookPageUpdate(b: KitInput) {
+  const fb = presenceKit(b).find((k) => k.key === "facebook")!;
+  const field = (label: string) => fb.fields.find((f) => f.label === label)?.value ?? "";
+  const body: Record<string, string> = { about: field("Short description"), description: field("About"), website: b.websiteUrl };
+  if (b.phone) body.phone = b.phone;
+  return body;
+}

@@ -12,7 +12,10 @@ import { businessDetailsSchema, fieldErrors, listingUrl, splitList } from "@/lib
 import { startClaim, verifyClaim } from "@/server/claims";
 import { addListing, confirmPublicContact, getProfile, publishProfile, unpublishProfile, updateBusinessDetails } from "@/server/business";
 import { decodeConnection } from "@/server/connect";
-import { connectGoogleLocation, disconnectGoogle, syncGoogle, syncGoogleSafe } from "@/server/google-business";
+import { connectGoogleLocation, disconnectGoogle, syncGoogle } from "@/server/google-business";
+import { connectFacebookPage, disconnectFacebook, syncFacebook } from "@/server/facebook-page";
+import { syncConnectedSafe } from "@/server/sync";
+import { decryptSecret } from "@/server/crypto";
 import { can } from "@/server/context";
 
 function lines(value: FormDataEntryValue | null) {
@@ -135,7 +138,7 @@ export async function confirmFreshAction(): Promise<ActionState> {
     if (profile?.status === "published" && can(ctx, "owner")) await publishProfile(db, ctx);
     revalidatePath("/app", "layout");
     after(() => resubmitBusiness(db, ctx));
-    after(() => syncGoogleSafe(db, ctx));
+    after(() => syncConnectedSafe(db, ctx));
     return { ok: true, message: "Thanks. Your details are marked as confirmed today." };
   } catch (err) {
     return toActionError(err);
@@ -173,8 +176,11 @@ export async function linkCandidateAction(_prev: ActionState, form: FormData): P
     await addListing(db, ctx, parsed.data);
     if (chosen?.platform === "google" && chosen.externalId && conn?.refreshToken) {
       await connectGoogleLocation(db, ctx, { locationName: chosen.externalId, mapsUrl: chosen.url, refreshToken: conn.refreshToken });
-      after(() => syncGoogleSafe(db, ctx));
     }
+    if (chosen?.platform === "facebook" && chosen.externalId && chosen.secret) {
+      await connectFacebookPage(db, ctx, { pageId: chosen.externalId, link: chosen.url, pageToken: decryptSecret(chosen.secret) });
+    }
+    if (chosen && (chosen.platform === "google" || chosen.platform === "facebook")) after(() => syncConnectedSafe(db, ctx));
     jar.delete({ name: "foundly_connect", path: "/app/presence" });
     revalidatePath("/app", "layout");
     after(() => resubmitBusiness(db, ctx));
@@ -203,6 +209,29 @@ export async function disconnectGoogleAction(): Promise<ActionState> {
     await disconnectGoogle(db, ctx);
     revalidatePath("/app", "layout");
     return { ok: true, message: "Google disconnected. Your listing stays as it is; Foundly just stops updating it." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function syncFacebookAction(): Promise<ActionState> {
+  try {
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await syncFacebook(db, ctx);
+    revalidatePath("/app/presence");
+    return { ok: true, message: "Facebook Page updated with your current details." };
+  } catch (err) {
+    revalidatePath("/app/presence");
+    return toActionError(err);
+  }
+}
+
+export async function disconnectFacebookAction(): Promise<ActionState> {
+  try {
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await disconnectFacebook(db, ctx);
+    revalidatePath("/app", "layout");
+    return { ok: true, message: "Facebook disconnected. Your Page stays as it is; Foundly just stops updating it." };
   } catch (err) {
     return toActionError(err);
   }

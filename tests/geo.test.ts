@@ -4,7 +4,8 @@ import { businessGraph, businessLlmsText, discoveryFaq, entitySentence, factsFro
 import { getBusiness, publishProfile } from "@/server/business";
 import { listPublishedProfiles } from "@/server/directory";
 import { generateSiteDraft, getPublishedSite, getSite, publishSite } from "@/server/sites";
-import { googleLocationUpdate, presenceKit } from "@/lib/presence";
+import { facebookPageUpdate, googleLocationUpdate, presenceKit } from "@/lib/presence";
+import { geoMaintenance } from "@/server/sync";
 import { makeDb, onboard, signUp } from "./helpers";
 
 const facts = {
@@ -105,6 +106,14 @@ describe("presence kit", () => {
     for (const k of kit) expect(k.fields.find((f) => f.label === "Website" || f.label === "Website link" || f.label === "Link")?.value).toBe("https://x/s/sharma");
   });
 
+  it("maps confirmed facts to a Facebook Page update within Facebook's limits", () => {
+    const body = facebookPageUpdate(kitInput);
+    expect(body.about.length).toBeLessThanOrEqual(255);
+    expect(body.about).toContain("Sharma Plumbing is a plumber in Pune");
+    expect(body.website).toBe("https://x/s/sharma");
+    expect(body.phone).toBe("+91 98765 43210");
+  });
+
   it("maps confirmed facts to a Google Business Profile update with an explicit mask", () => {
     const { body, updateMask } = googleLocationUpdate(kitInput);
     expect(updateMask).toBe("profile.description,websiteUri,phoneNumbers.primaryPhone");
@@ -135,6 +144,10 @@ describe("GEO on published businesses", () => {
     const live = await getPublishedSite(db, site.slug);
     expect(live.kind).toBe("site");
     if (live.kind === "site") expect(live.profileSlug).toBeTruthy();
+
+    const upkeep = await geoMaintenance(db);
+    expect(upkeep.businesses).toBe(1);
+    expect(upkeep.urls).toBeGreaterThan(5);
 
     const listed = await listPublishedProfiles(db);
     const mine = listed.find((r) => r.profile.name === "Sharma Plumbing")!;

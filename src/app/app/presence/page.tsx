@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { Icon } from "@/components/icon";
-import { AddListingForm, CandidatePicker, CopyField, GoogleSyncCard } from "@/components/presence-kit";
+import { AddListingForm, CandidatePicker, CopyField, SyncCard } from "@/components/presence-kit";
 import { getGoogleConnection } from "@/server/google-business";
+import { getFacebookConnection } from "@/server/facebook-page";
 import { isPlatformAdmin } from "@/lib/admin";
 import { decodeCandidates, providerConfigured, providerEnvNames, type Provider } from "@/server/connect";
 import { Notice, PageHeader } from "@/components/ui";
@@ -39,7 +40,7 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
   const ctx = await requireCtx();
   const db = await getDb();
   const b = await requireBusiness(db, ctx);
-  const [site, profile, google] = await Promise.all([getSite(db, ctx), getProfile(db, ctx), getGoogleConnection(db, ctx)]);
+  const [site, profile, google, facebook] = await Promise.all([getSite(db, ctx), getProfile(db, ctx), getGoogleConnection(db, ctx), getFacebookConnection(db, ctx)]);
   const appUrl = process.env.APP_URL ?? "http://localhost:3000";
   const live = Boolean(site?.publishedVersionId);
   const websiteUrl = live && site ? siteUrl(site.slug) : (b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`);
@@ -95,7 +96,10 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
                 </summary>
                 <div className="kit-body">
                   {platform.key === "google" && google && (
-                    <GoogleSyncCard connection={{ siteUrl: google.siteUrl, status: google.status, lastError: google.lastError, lastSyncedAt: google.lastSyncedAt?.toISOString() ?? null }} />
+                    <SyncCard provider="google" connection={{ status: google.status, lastError: google.lastError, lastSyncedAt: google.lastSyncedAt?.toISOString() ?? null }} />
+                  )}
+                  {platform.key === "facebook" && facebook && (
+                    <SyncCard provider="facebook" connection={{ status: facebook.status, lastError: facebook.lastError, lastSyncedAt: facebook.lastSyncedAt?.toISOString() ?? null }} />
                   )}
                   <div className="kit-actions">
                     {linked ? (

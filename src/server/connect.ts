@@ -9,7 +9,8 @@ import { decryptSecret, encryptSecret } from "./crypto";
  * owner's behalf. Tokens are used once and never stored.
  */
 export type Provider = "google" | "facebook";
-export type Candidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string; externalId?: string };
+/** `secret` is an encrypted per-listing token (Facebook Page tokens); Google uses one refresh token per login. */
+export type Candidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string; externalId?: string; secret?: string };
 
 const PROVIDERS: Record<Provider, { label: string; configured: () => boolean; envNames: string[] }> = {
   google: { label: "Google", configured: () => Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET), envNames: ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"] },
@@ -150,7 +151,8 @@ export function facebookAuthUrl(state: string) {
   u.searchParams.set("client_id", process.env.FACEBOOK_APP_ID!);
   u.searchParams.set("redirect_uri", callbackUrl("facebook"));
   u.searchParams.set("response_type", "code");
-  u.searchParams.set("scope", "pages_show_list,instagram_basic");
+  // pages_manage_metadata lets Foundly keep the Page's about, phone and website updated.
+  u.searchParams.set("scope", "pages_show_list,pages_read_engagement,pages_manage_metadata,instagram_basic");
   u.searchParams.set("state", state);
   return u.toString();
 }
@@ -163,21 +165,30 @@ async function facebookToken(code: string): Promise<string> {
   u.searchParams.set("code", code);
   const res = await fetch(u, { signal: AbortSignal.timeout(10_000) });
   if (!res.ok) throw new Error(`Facebook token exchange failed (${res.status})`);
-  return ((await res.json()) as { access_token: string }).access_token;
+  const short = ((await res.json()) as { access_token: string }).access_token;
+  // A long-lived user token yields Page tokens that don't expire, so syncing keeps working.
+  const l = new URL("https://graph.facebook.com/v21.0/oauth/access_token");
+  l.searchParams.set("grant_type", "fb_exchange_token");
+  l.searchParams.set("client_id", process.env.FACEBOOK_APP_ID!);
+  l.searchParams.set("client_secret", process.env.FACEBOOK_APP_SECRET!);
+  l.searchParams.set("fb_exchange_token", short);
+  const lr = await fetch(l, { signal: AbortSignal.timeout(10_000) });
+  if (!lr.ok) return short;
+  return ((await lr.json()) as { access_token: string }).access_token;
 }
 
 /** Lists the Pages this Facebook account manages, with their Instagram business accounts. */
 export async function facebookCandidates(code: string): Promise<Candidate[]> {
   const token = await facebookToken(code);
   const u = new URL("https://graph.facebook.com/v21.0/me/accounts");
-  u.searchParams.set("fields", "id,name,link,instagram_business_account{username}");
+  u.searchParams.set("fields", "id,name,link,access_token,instagram_business_account{username}");
   u.searchParams.set("access_token", token);
   const res = await fetch(u, { signal: AbortSignal.timeout(10_000) });
   if (!res.ok) throw new Error(`Facebook pages request failed (${res.status})`);
-  const data = (await res.json()) as { data?: { id: string; name: string; link?: string; instagram_business_account?: { username?: string } }[] };
+  const data = (await res.json()) as { data?: { id: string; name: string; link?: string; access_token?: string; instagram_business_account?: { username?: string } }[] };
   const out: Candidate[] = [];
   for (const page of data.data ?? []) {
-    out.push({ platform: "facebook", title: page.name, url: page.link ?? `https://www.facebook.com/${page.id}` });
+    out.push({ platform: "facebook", title: page.name, url: page.link ?? `https://www.facebook.com/${page.id}`, externalId: page.id, secret: page.access_token ? encryptSecret(page.access_token) : undefined });
     if (page.instagram_business_account?.username) {
       out.push({ platform: "instagram", title: `@${page.instagram_business_account.username}`, url: `https://www.instagram.com/${page.instagram_business_account.username}`, detail: `Linked to the ${page.name} Page` });
     }

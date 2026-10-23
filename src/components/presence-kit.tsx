@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { addListingAction, disconnectGoogleAction, linkCandidateAction, syncGoogleAction } from "@/app/app/business/actions";
+import { addListingAction, disconnectFacebookAction, disconnectGoogleAction, linkCandidateAction, syncFacebookAction, syncGoogleAction } from "@/app/app/business/actions";
 import type { KitField } from "@/lib/presence";
 import { Icon } from "./icon";
 
@@ -64,7 +64,7 @@ export function AddListingForm({ platform }: { platform: string }) {
   );
 }
 
-export type PickerCandidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string; externalId?: string };
+export type PickerCandidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string; externalId?: string; secret?: string };
 
 function LinkButton() {
   const { pending } = useFormStatus();
@@ -108,21 +108,23 @@ function Pending({ idle, busy }: { idle: string; busy: string }) {
   return <button type="submit" className="share-btn" disabled={pending}>{pending ? busy : idle}</button>;
 }
 
-/** Status and controls for a Google listing Foundly keeps updated. */
-export function GoogleSyncCard({ connection }: { connection: { siteUrl: string; status: string; lastError: string | null; lastSyncedAt: string | null } }) {
-  const [syncState, sync] = useActionState(syncGoogleAction, {});
-  const [discState, disconnect] = useActionState(disconnectGoogleAction, {});
+/** Status and controls for a connected listing Foundly keeps updated. */
+export function SyncCard({ provider, connection }: { provider: "google" | "facebook"; connection: { status: string; lastError: string | null; lastSyncedAt: string | null } }) {
+  const [syncState, sync] = useActionState(provider === "google" ? syncGoogleAction : syncFacebookAction, {});
+  const [discState, disconnect] = useActionState(provider === "google" ? disconnectGoogleAction : disconnectFacebookAction, {});
+  const label = provider === "google" ? "Google listing" : "Facebook Page";
+  const what = provider === "google" ? "Description, phone and website" : "About, description, phone and website";
   const when = connection.lastSyncedAt ? new Date(connection.lastSyncedAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : null;
   return (
     <div className="kit-sync">
       <span className="kit-title">
-        <strong>Foundly keeps this Google listing updated</strong>
+        <strong>Foundly keeps this {label} updated</strong>
         <span>
-          {connection.status === "error" ? `Last update failed: ${connection.lastError ?? "unknown error"}` : when ? `Description, phone and website last updated ${when}.` : "Connected. Your details will be pushed the next time you publish or confirm them."}
+          {connection.status === "error" ? `Last update failed: ${connection.lastError ?? "unknown error"}` : when ? `${what} last updated ${when}. Also refreshed every Monday and whenever you publish.` : "Connected. Your details will be pushed the next time you publish or confirm them, and every Monday."}
         </span>
         {(syncState.message || discState.message) && <span className={syncState.ok || discState.ok ? "kit-ok" : "start-error"}>{syncState.message ?? discState.message}</span>}
       </span>
-      <form action={sync}><Pending idle="Update Google now" busy="Updating…" /></form>
+      <form action={sync}><Pending idle={`Update ${provider === "google" ? "Google" : "Facebook"} now`} busy="Updating…" /></form>
       <form action={disconnect}><Pending idle="Disconnect" busy="…" /></form>
     </div>
   );
