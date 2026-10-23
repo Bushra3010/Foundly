@@ -1,29 +1,34 @@
 "use client";
 
 import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
-import { SubmitButton } from "@/components/submit-button";
-import { Notice } from "@/components/ui";
+import { Icon } from "@/components/icon";
 import type { ActionState } from "@/lib/actions";
 import { completeSignIn } from "@/app/login/actions";
+
+function Submit() {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" className="start-button" disabled={pending} aria-disabled={pending} autoFocus>
+      {pending ? <><span className="start-spinner" aria-hidden="true" />Opening…</> : <>Continue <Icon name="arrow" size={18} /></>}
+    </button>
+  );
+}
 
 export function VerifyForm({ token, next }: { token: string; next?: string }) {
   const [state, action] = useActionState<ActionState, FormData>(completeSignIn, {});
   return (
-    <form action={action} className="space-y-4">
+    <form action={action} className="start-form">
       <input type="hidden" name="token" value={token} />
       {next && <input type="hidden" name="next" value={next} />}
       {state.message && (
-        <Notice tone="err">
+        <p className="start-message err" role="alert">
           {state.message}{" "}
-          <Link href="/login" className="font-semibold underline">
-            Get a new link
-          </Link>
-        </Notice>
+          <Link href="/login">Get a new link</Link>
+        </p>
       )}
-      <SubmitButton className="w-full" pendingLabel="Signing in…">
-        Continue
-      </SubmitButton>
+      <Submit />
     </form>
   );
 }

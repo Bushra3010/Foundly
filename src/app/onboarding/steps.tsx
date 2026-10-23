@@ -1,179 +1,113 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { SubmitButton } from "@/components/submit-button";
-import { Checkbox, Notice, TextArea, TextField } from "@/components/ui";
+import { useFormStatus } from "react-dom";
+import { Icon } from "@/components/icon";
 import type { ActionState } from "@/lib/actions";
-import {
-  confirmReviewAction,
-  finishWithExistingSiteAction,
-  generateFirstSiteAction,
-  saveBasicsAction,
-  saveOfferAction,
-  saveWebsiteChoiceAction,
-} from "./actions";
+import { finishSetupAction, saveAboutAction } from "./actions";
 
-function FormMessage({ state }: { state: ActionState }) {
-  return state.message ? <Notice tone={state.ok ? "ok" : "err"}>{state.message}</Notice> : null;
+function Field({
+  label,
+  name,
+  hint,
+  error,
+  ...props
+}: { label: string; name: string; hint?: string; error?: string[] } & Omit<React.ComponentProps<"input">, "name">) {
+  return (
+    <label className="start-field" htmlFor={name}>
+      <span className="start-label">{label}</span>
+      <input
+        id={name}
+        name={name}
+        aria-invalid={error?.length ? true : undefined}
+        aria-describedby={error?.length ? `${name}-error` : hint ? `${name}-hint` : undefined}
+        {...props}
+      />
+      {error?.length ? (
+        <span className="start-error" id={`${name}-error`}>{error[0]}</span>
+      ) : hint ? (
+        <span className="start-hint" id={`${name}-hint`}>{hint}</span>
+      ) : null}
+    </label>
+  );
 }
 
-export function BasicsStep({ initial }: { initial: Record<string, string> }) {
-  const [state, action] = useActionState(saveBasicsAction, {});
+function Submit({ children, pending: pendingLabel, className = "" }: { children: React.ReactNode; pending: string; className?: string }) {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" className={`start-button ${className}`} disabled={pending} aria-disabled={pending}>
+      {pending ? <><span className="start-spinner" aria-hidden="true" />{pendingLabel}</> : children}
+    </button>
+  );
+}
+
+function Message({ state }: { state: ActionState }) {
+  return state.message ? <p className={`start-message ${state.ok ? "ok" : "err"}`} role="alert">{state.message}</p> : null;
+}
+
+export function AboutStep({ initial }: { initial: Record<string, string> }) {
+  const [state, action] = useActionState(saveAboutAction, {});
   const v = { ...initial, ...state.values };
   const e = state.fieldErrors ?? {};
   return (
-    <form action={action} className="space-y-5" noValidate>
-      <TextField label="Business name" name="name" required autoComplete="organization" defaultValue={v.name} errors={e.name} />
-      <TextField
-        label="What kind of business is it?"
-        name="category"
-        hint="For example: plumber, tour operator, dental clinic"
-        required
-        defaultValue={v.category}
-        errors={e.category}
-      />
-      <TextField label="City" name="city" required autoComplete="address-level2" defaultValue={v.city} errors={e.city} />
-      <fieldset className="space-y-4">
-        <legend className="text-sm font-semibold">How can customers contact you? Add at least one.</legend>
-        <TextField label="Phone" name="phone" type="tel" optional autoComplete="tel" defaultValue={v.phone} errors={e.phone} />
-        <TextField label="WhatsApp number" name="whatsapp" type="tel" optional defaultValue={v.whatsapp} errors={e.whatsapp} />
-        <TextField label="Email" name="email" type="email" optional autoComplete="email" defaultValue={v.email} errors={e.email} />
-      </fieldset>
-      <FormMessage state={state} />
-      <SubmitButton>Save and continue</SubmitButton>
+    <form action={action} className="start-form" noValidate>
+      <input type="hidden" name="email" value={v.email ?? ""} />
+      <Field label="Business name" name="name" required autoComplete="organization" placeholder="The Sunday Studio" defaultValue={v.name} error={e.name} autoFocus />
+      <div className="start-row">
+        <Field label="What do you do?" name="category" required placeholder="Interior designer" defaultValue={v.category} error={e.category} />
+        <Field label="City" name="city" required autoComplete="address-level2" placeholder="Pune" defaultValue={v.city} error={e.city} />
+      </div>
+      <Field label="Main services" name="services" required placeholder="Home styling, space planning" hint="Separate with commas" defaultValue={v.services} error={e.services} />
+      <Field label="Phone number" name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="+91 98765 43210" defaultValue={v.phone} error={e.phone ?? e.whatsapp} />
+      <label className="start-check">
+        <input type="checkbox" name="onWhatsapp" defaultChecked={v.onWhatsapp === "on"} />
+        <span>Customers can reach me on WhatsApp at this number</span>
+      </label>
+      <Message state={state} />
+      <Submit pending="Saving…">Continue <Icon name="arrow" size={18} /></Submit>
     </form>
   );
 }
 
-export function WebsiteChoiceStep({ initial }: { initial: { hasWebsite?: "yes" | "no"; websiteUrl?: string } }) {
-  const [state, action] = useActionState(saveWebsiteChoiceAction, {});
-  const [choice, setChoice] = useState(state.values?.hasWebsite ?? initial.hasWebsite ?? "");
+export function FinishStep({ requestId }: { requestId: string }) {
+  const [state, action] = useActionState(finishSetupAction, {});
+  const [existing, setExisting] = useState(state.values?.choice === "existing");
   const e = state.fieldErrors ?? {};
   return (
-    <form action={action} className="space-y-5" noValidate>
-      <fieldset className="space-y-3">
-        <legend className="text-sm font-semibold">Does your business already have a website?</legend>
-        {[
-          ["no", "Create one for me", "We'll build an editable website from the details you confirm."],
-          ["yes", "I have one", "We'll keep your website as it is. Nothing is changed without your approval."],
-        ].map(([value, label, hint]) => (
-          <label
-            key={value}
-            className="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border border-border bg-surface p-4 has-[:checked]:border-brand"
-          >
-            <input
-              type="radio"
-              name="hasWebsite"
-              value={value}
-              checked={choice === value}
-              onChange={() => setChoice(value)}
-              className="mt-1 size-5 accent-[var(--brand)]"
-            />
-            <span>
-              <span className="font-semibold">{label}</span>
-              <span className="block text-sm text-muted">{hint}</span>
-            </span>
+    <div className="start-choices">
+      <form action={action}>
+        <input type="hidden" name="choice" value="create" />
+        <input type="hidden" name="requestId" value={requestId} />
+        <Message state={!existing ? state : {}} />
+        <Submit pending="Building your website…" className="start-choice-primary">
+          <span className="start-choice-icon"><Icon name="website" size={22} /></span>
+          <span className="start-choice-text">
+            <strong>Create my website</strong>
+            <span>Ready in a few seconds. Only you can see it until you publish.</span>
+          </span>
+          <Icon name="arrow" size={20} />
+        </Submit>
+      </form>
+
+      {!existing ? (
+        <button type="button" className="start-link" onClick={() => setExisting(true)}>
+          I already have a website
+        </button>
+      ) : (
+        <form action={action} className="start-existing" noValidate>
+          <input type="hidden" name="choice" value="existing" />
+          <Field label="Your website address" name="websiteUrl" type="url" inputMode="url" placeholder="example.com" defaultValue={state.values?.websiteUrl} error={e.websiteUrl} autoFocus />
+          <label className="start-check">
+            <input type="checkbox" name="publishProfile" defaultChecked />
+            <span>Also list my business in the Foundly directory</span>
           </label>
-        ))}
-        {e.hasWebsite && <p className="text-sm font-medium text-err-fg">Choose one option</p>}
-      </fieldset>
-      {choice === "yes" && (
-        <TextField
-          label="Website address"
-          name="websiteUrl"
-          type="url"
-          inputMode="url"
-          placeholder="example.com"
-          defaultValue={state.values?.websiteUrl ?? initial.websiteUrl}
-          errors={e.websiteUrl}
-        />
+          <Message state={state} />
+          <div className="start-existing-actions">
+            <Submit pending="Finishing…">Finish <Icon name="arrow" size={18} /></Submit>
+            <button type="button" className="start-link" onClick={() => setExisting(false)}>Back</button>
+          </div>
+        </form>
       )}
-      <FormMessage state={state} />
-      <SubmitButton>Save and continue</SubmitButton>
-    </form>
-  );
-}
-
-export function OfferStep({ initial }: { initial: Record<string, string> }) {
-  const [state, action] = useActionState(saveOfferAction, {});
-  const v = { ...initial, ...state.values };
-  const e = state.fieldErrors ?? {};
-  return (
-    <form action={action} className="space-y-5" noValidate>
-      <TextArea
-        label="Services you offer"
-        name="services"
-        hint="One per line. You can add descriptions later."
-        required
-        defaultValue={v.services}
-        errors={e.services}
-      />
-      <TextField
-        label="Areas you serve"
-        name="serviceAreas"
-        hint="Separate with commas, e.g. Kothrud, Baner, Aundh"
-        optional
-        defaultValue={v.serviceAreas}
-        errors={e.serviceAreas}
-      />
-      <TextField
-        label="Who are your customers?"
-        name="audience"
-        hint="e.g. homeowners, families planning holidays"
-        optional
-        defaultValue={v.audience}
-        errors={e.audience}
-      />
-      <FormMessage state={state} />
-      <SubmitButton>Save and continue</SubmitButton>
-    </form>
-  );
-}
-
-export function ReviewStep() {
-  const [state, action] = useActionState(confirmReviewAction, {});
-  return (
-    <form action={action} className="space-y-4">
-      <Checkbox
-        name="confirmContact"
-        label="These details are correct, and the contact details above can be shown publicly"
-        hint="Nothing is published yet. You'll preview everything before it goes live."
-      />
-      {state.fieldErrors?.confirmContact && (
-        <p className="text-sm font-medium text-err-fg">{state.fieldErrors.confirmContact[0]}</p>
-      )}
-      <FormMessage state={state} />
-      <SubmitButton>Confirm details</SubmitButton>
-    </form>
-  );
-}
-
-export function GenerateStep({ requestId }: { requestId: string }) {
-  const [state, action] = useActionState(generateFirstSiteAction, {});
-  return (
-    <form action={action} className="space-y-4">
-      <input type="hidden" name="requestId" value={requestId} />
-      <FormMessage state={state} />
-      <SubmitButton pendingLabel="Building your private preview…">Generate website</SubmitButton>
-      <p className="text-sm text-muted" aria-live="polite">
-        This creates a private preview. It won&apos;t be public until you select Publish.
-      </p>
-    </form>
-  );
-}
-
-export function ExistingSiteFinishStep() {
-  const [state, action] = useActionState(finishWithExistingSiteAction, {});
-  return (
-    <form action={action} className="space-y-4">
-      <Checkbox
-        name="publishProfile"
-        defaultChecked
-        label="Publish my business profile in the directory"
-        hint="Shows the details you confirmed. You can unpublish it at any time."
-      />
-      <FormMessage state={state} />
-      <SubmitButton>Finish setup</SubmitButton>
-    </form>
+    </div>
   );
 }

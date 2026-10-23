@@ -9,7 +9,7 @@ import { toActionError, type ActionState } from "@/lib/actions";
 import { sendEmail } from "@/lib/auth/mailer";
 import { clearSessionCookie, requireCtx } from "@/lib/auth/session";
 import { LOCALE_COOKIE, parseLocale } from "@/lib/i18n";
-import { revokeAllSessions } from "@/server/auth";
+import { revokeAllSessions, setPassword } from "@/server/auth";
 import { audit } from "@/server/context";
 import { changeRole, inviteMember, removeMember, revokeInvite, transferOwnership } from "@/server/team";
 import { cancelSubscription, scheduleDowngrade, startCheckout } from "@/server/billing/service";
@@ -26,6 +26,24 @@ export async function signOutEverywhereAction() {
   await audit(db, ctx, "sessions.revoked_all");
   await clearSessionCookie();
   redirect("/login");
+}
+
+export async function setPasswordAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const next = String(form.get("newPassword") ?? "");
+  const confirm = String(form.get("confirmPassword") ?? "");
+  const current = String(form.get("currentPassword") ?? "") || undefined;
+  if (next.length < 8) return { ok: false, message: "Use at least 8 characters for your new password." };
+  if (next !== confirm) return { ok: false, message: "The two new passwords don't match." };
+  try {
+    const ctx = await requireCtx();
+    const db = await getDb();
+    await setPassword(db, ctx.userId, next, current);
+    await audit(db, ctx, "account.password_set");
+  } catch (err) {
+    // Never echo password fields back to the page.
+    return toActionError(err);
+  }
+  return { ok: true, message: "Password saved. Use it next time you log in." };
 }
 
 export async function setLanguageAction(_prev: ActionState, form: FormData): Promise<ActionState> {

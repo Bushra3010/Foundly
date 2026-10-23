@@ -80,7 +80,7 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
 
   return (
     <>
-      <PageHeader
+      <PageHeader icon="visibility"
         title={t(locale, "nav.visibility")}
         description="How supported AI answers respond to the questions you track. These are observations of a sample of answers, not the full behaviour of any AI service."
       />

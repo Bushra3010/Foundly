@@ -8,12 +8,14 @@ import { getLocale } from "@/lib/locale";
 import { signOut } from "@/app/login/actions";
 import { can } from "@/server/context";
 import { listMembers, listPendingInvites } from "@/server/team";
+import { hasPassword } from "@/server/auth";
 import {
   changeRoleAction,
   inviteAction,
   removeMemberAction,
   revokeInviteAction,
   setLanguageAction,
+  setPasswordAction,
   signOutEverywhereAction,
   transferOwnershipAction,
 } from "./actions";
@@ -28,12 +30,16 @@ export default async function SettingsPage() {
   const ctx = await requireCtx();
   const locale = await getLocale();
   const db = await getDb();
-  const [members, invites] = await Promise.all([listMembers(db, ctx), can(ctx, "owner") ? listPendingInvites(db, ctx) : []]);
+  const [members, invites, passwordSet] = await Promise.all([
+    listMembers(db, ctx),
+    can(ctx, "owner") ? listPendingInvites(db, ctx) : [],
+    hasPassword(db, ctx.userId),
+  ]);
   const isOwner = can(ctx, "owner");
 
   return (
     <>
-      <PageHeader title={t(locale, "nav.settings")} />
+      <PageHeader icon="settings" title={t(locale, "nav.settings")} />
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <h2 className="font-semibold">Your account</h2>
@@ -49,6 +55,18 @@ export default async function SettingsPage() {
               <SubmitButton variant="secondary">Sign out on all devices</SubmitButton>
             </form>
           </div>
+        </Card>
+
+        <Card>
+          <h2 className="font-semibold">Password</h2>
+          <p className="mt-1 mb-3 text-sm text-muted">
+            {passwordSet ? "Change the password you use to log in." : "Add a password so you can log in with your email and password."}
+          </p>
+          <ActionForm action={setPasswordAction} submitLabel={passwordSet ? "Change password" : "Save password"} variant="secondary">
+            {passwordSet && <TextField label="Current password" name="currentPassword" type="password" autoComplete="current-password" />}
+            <TextField label="New password" name="newPassword" type="password" autoComplete="new-password" hint="At least 8 characters" />
+            <TextField label="Confirm new password" name="confirmPassword" type="password" autoComplete="new-password" />
+          </ActionForm>
         </Card>
 
         <Card>

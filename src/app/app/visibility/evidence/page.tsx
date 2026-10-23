@@ -39,7 +39,7 @@ export default async function EvidencePage({ searchParams }: { searchParams: Pro
 
   return (
     <>
-      <PageHeader
+      <PageHeader icon="visibility"
         title={metric ? METRIC_TITLE[metric] ?? "Saved answers" : "Saved answers"}
         description={`${rows.length} of ${all.length} saved attempts match these filters${filters.from ? ` (${filters.from.toLocaleDateString("en-IN")} – ${filters.to?.toLocaleDateString("en-IN")})` : ""}.`}
         actions={

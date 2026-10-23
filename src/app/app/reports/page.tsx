@@ -8,7 +8,7 @@ export default async function ReportsPage() {
   const ctx = await requireCtx();
   return (
     <>
-      <PageHeader title="Reports" description="History and exports for your business." />
+      <PageHeader icon="reports" title="Reports" description="History and exports for your business." />
       <div className="grid gap-4 md:grid-cols-2">
         <EmptyState title="No visibility reports yet">
           Reports appear after your first AI visibility checks complete. We never show sample data as your results.

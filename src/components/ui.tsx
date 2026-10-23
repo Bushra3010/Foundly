@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import { Icon } from "./icon";
 
 export function cx(...classes: (string | false | null | undefined)[]) {
   return classes.filter(Boolean).join(" ");
@@ -19,7 +20,7 @@ export function buttonClass(
   variant: ButtonVariant = "primary",
   extra?: string,
 ) {
-  return cx(buttonBase, variants[variant], extra);
+  return cx(buttonBase, `ui-button-${variant}`, variants[variant], extra);
 }
 
 export function Button({
@@ -54,15 +55,23 @@ export function PageHeader({
   title,
   description,
   actions,
+  icon,
 }: {
   title: string;
   description?: ReactNode;
   actions?: ReactNode;
+  /** Icon name from the shared icon set, shown in a badge beside the title. */
+  icon?: string;
 }) {
   return (
     <header className="page-header mb-8 flex flex-wrap items-start justify-between gap-4">
       <div className="min-w-0">
         <h1 className="text-xl font-medium tracking-tight sm:text-2xl">
+          {icon && (
+            <span className="page-icon" aria-hidden="true">
+              <Icon name={icon} size={22} />
+            </span>
+          )}
           {title}
         </h1>
         {description && (
@@ -105,7 +114,8 @@ export function Badge({
   return (
     <span
       className={cx(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
+        "ui-badge inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
+        `ui-badge-${tone}`,
         toneClass[tone],
       )}
     >
@@ -127,7 +137,7 @@ export function Notice({
   return (
     <div
       role={tone === "err" ? "alert" : "status"}
-      className={cx("rounded-lg p-4 text-sm", toneClass[tone])}
+      className={cx("ui-notice rounded-lg p-4 text-sm", `ui-notice-${tone}`, toneClass[tone])}
     >
       {title && <p className="font-semibold">{title}</p>}
       {children && <div className={title ? "mt-1" : undefined}>{children}</div>}
@@ -145,7 +155,7 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center">
+    <div className="ui-empty rounded-xl border border-dashed border-border bg-surface p-8 text-center">
       <h2 className="text-lg font-semibold">{title}</h2>
       {children && (
         <div className="mx-auto mt-2 max-w-md text-muted">{children}</div>
@@ -175,8 +185,8 @@ function FieldShell({
   children,
 }: FieldProps & { children: ReactNode }) {
   return (
-    <div className="space-y-1.5">
-      <label htmlFor={name} className="block text-sm font-semibold">
+    <div className="ui-field space-y-1.5">
+      <label htmlFor={name} className="ui-label block text-sm font-semibold">
         {label}{" "}
         {optional && <span className="font-normal text-muted">(optional)</span>}
       </label>
@@ -258,7 +268,7 @@ export function Checkbox({
   "name" | "type"
 >) {
   return (
-    <label className="flex min-h-11 cursor-pointer items-start gap-3 py-2">
+    <label className="ui-check flex min-h-11 cursor-pointer items-start gap-3 py-2">
       <input
         type="checkbox"
         name={name}
@@ -275,7 +285,7 @@ export function Checkbox({
 
 export function DefinitionList({ items }: { items: [string, ReactNode][] }) {
   return (
-    <dl className="divide-y divide-border">
+    <dl className="ui-dl divide-y divide-border">
       {items.map(([k, v]) => (
         <div key={k} className="grid gap-1 py-3 sm:grid-cols-3 sm:gap-4">
           <dt className="text-sm font-semibold text-muted">{k}</dt>

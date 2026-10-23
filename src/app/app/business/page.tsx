@@ -18,7 +18,7 @@ export default async function BusinessPage() {
 
   return (
     <>
-      <PageHeader
+      <PageHeader icon="business"
         title="My Business"
         description="These facts are the single source for your website and public profile. Only what you confirm is shown publicly."
         actions={

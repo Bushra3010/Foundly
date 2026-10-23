@@ -15,92 +15,80 @@ import {
 } from "@/server/business";
 import { generateSiteDraft } from "@/server/sites";
 
-export async function saveBasicsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+/**
+ * Screen 1 of 2: everything we need in one short form.
+ * Saves the basics and services together, then moves to the website choice.
+ */
+export async function saveAboutAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const values = formValues(form);
-  const parsed = basicsSchema.safeParse(values);
-  if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
-  if (!parsed.data.phone && !parsed.data.whatsapp && !parsed.data.email) {
-    return { ok: false, fieldErrors: { phone: ["Add at least one way for customers to contact you"] }, values };
-  }
-  try {
-    const ctx = await requireCtx();
-    await saveBasics(await getDb(), ctx, parsed.data);
-  } catch (err) {
-    return toActionError(err, values);
-  }
-  redirect("/onboarding?step=3");
-}
-
-export async function saveWebsiteChoiceAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  const values = formValues(form);
-  const parsed = websiteChoiceSchema.safeParse(values);
-  if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
-  try {
-    const ctx = await requireCtx();
-    const hasWebsite = parsed.data.hasWebsite === "yes";
-    await saveWebsiteChoice(await getDb(), ctx, hasWebsite, hasWebsite && "websiteUrl" in parsed.data ? (parsed.data.websiteUrl ?? null) : null);
-  } catch (err) {
-    return toActionError(err, values);
-  }
-  redirect("/onboarding?step=4");
-}
-
-export async function saveOfferAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  const values = formValues(form);
-  const parsed = offerSchema.safeParse({
-    services: splitList(form.get("services")).map((name) => ({ name })),
-    audience: values.audience ?? "",
-    serviceAreas: splitList(form.get("serviceAreas")),
+  const phone = values.phone ?? "";
+  const basics = basicsSchema.safeParse({
+    name: values.name ?? "",
+    category: values.category ?? "",
+    city: values.city ?? "",
+    phone,
+    whatsapp: values.onWhatsapp === "on" ? phone : "",
+    email: values.email ?? "",
   });
-  if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
-  try {
-    const ctx = await requireCtx();
-    await saveOffer(await getDb(), ctx, parsed.data);
-  } catch (err) {
-    return toActionError(err, values);
+  const offer = offerSchema.safeParse({
+    services: splitList(form.get("services")).map((name) => ({ name })),
+    audience: "",
+    serviceAreas: [],
+  });
+  if (!basics.success || !offer.success) {
+    return {
+      ok: false,
+      fieldErrors: {
+        ...(basics.success ? {} : fieldErrors(basics.error)),
+        ...(offer.success ? {} : fieldErrors(offer.error)),
+      },
+      values,
+    };
   }
-  redirect("/onboarding?step=5");
-}
-
-export async function confirmReviewAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  const values = formValues(form);
-  if (form.get("confirmContact") !== "on") {
-    return { ok: false, fieldErrors: { confirmContact: ["Confirm the details are correct to continue"] }, values };
+  if (!basics.data.phone && !basics.data.email) {
+    return { ok: false, fieldErrors: { phone: ["Add a phone number so customers can reach you"] }, values };
   }
-  try {
-    const ctx = await requireCtx();
-    await confirmReview(await getDb(), ctx, false);
-  } catch (err) {
-    return toActionError(err, values);
-  }
-  redirect("/onboarding?step=6");
-}
-
-/** Step 6, no website: one action builds a private preview. Publishing is separate. */
-export async function generateFirstSiteAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   try {
     const ctx = await requireCtx();
     const db = await getDb();
-    const job = await generateSiteDraft(db, ctx, { requestId: String(form.get("requestId") ?? "") });
-    if (job.status === "failed") {
-      return { ok: false, message: "We couldn't build your preview this time. Your answers are saved — try again." };
+    await saveBasics(db, ctx, basics.data);
+    await saveOffer(db, ctx, offer.data);
+  } catch (err) {
+    return toActionError(err, values);
+  }
+  redirect("/onboarding?step=2");
+}
+
+/**
+ * Screen 2 of 2: one click. Either build a private website preview, or save an
+ * existing website. Choosing an option confirms the details shown on screen.
+ */
+export async function finishSetupAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const values = formValues(form);
+  const choice = values.choice;
+  let destination = "/app";
+  try {
+    const ctx = await requireCtx();
+    const db = await getDb();
+    if (choice === "existing") {
+      const parsed = websiteChoiceSchema.safeParse({ hasWebsite: "yes", websiteUrl: values.websiteUrl ?? "" });
+      if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
+      const url = "websiteUrl" in parsed.data ? (parsed.data.websiteUrl ?? null) : null;
+      await saveWebsiteChoice(db, ctx, true, url);
+      await confirmReview(db, ctx, false);
+      if (values.publishProfile === "on") await publishProfile(db, ctx);
+    } else {
+      await saveWebsiteChoice(db, ctx, false, null);
+      await confirmReview(db, ctx, false);
+      const job = await generateSiteDraft(db, ctx, { requestId: String(form.get("requestId") ?? "") });
+      if (job.status === "failed") {
+        return { ok: false, message: "We couldn't build your website this time. Your details are saved. Try again.", values };
+      }
+      destination = "/app/website?generated=1";
     }
     await completeOnboarding(db, ctx);
   } catch (err) {
-    return toActionError(err);
+    return toActionError(err, values);
   }
-  redirect("/app/website?generated=1");
-}
-
-/** Step 6, existing website: publish the directory profile (optional) and finish. */
-export async function finishWithExistingSiteAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  try {
-    const ctx = await requireCtx();
-    const db = await getDb();
-    if (form.get("publishProfile") === "on") await publishProfile(db, ctx);
-    await completeOnboarding(db, ctx);
-  } catch (err) {
-    return toActionError(err);
-  }
-  redirect("/app");
+  redirect(destination);
 }

@@ -1,8 +1,7 @@
 import { and, count, desc, eq, gte } from "drizzle-orm";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
-import { WorkspaceTools } from "@/components/workspace-tools";
-import { Badge, Card } from "@/components/ui";
+import { Badge } from "@/components/ui";
 import { getDb } from "@/db";
 import { auditEvents, leads } from "@/db/schema";
 import { requireCtx } from "@/lib/auth/session";
@@ -35,6 +34,7 @@ const ACTIVITY_TEXT: Record<string, string> = {
   "monitoring.run_created": "AI visibility check started",
   "action.applied": "Improvement applied",
   "team.joined": "Someone joined your team",
+  "account.password_set": "Password updated",
 };
 
 export default async function HomePage() {
@@ -140,213 +140,169 @@ export default async function HomePage() {
   ];
   const completed = setupSteps.filter((step) => step.done).length;
 
-  return (
-    <>
-      <header className="dashboard-heading">
-        <h1>What would you like to work on?</h1>
-        <p>{business.name} · Your business workspace</p>
-      </header>
-      <WorkspaceTools />
-      <div className="section-heading overview-heading">
-        <h2>Overview</h2>
-        <Link href="/app/reports">
-          View reports <Icon name="arrow" size={13} />
-        </Link>
-      </div>
+  const [focus, ...moreActions] = actions;
+  const mentionRate = vm.valid > 0 && vm.mention.rate !== null ? Math.round(vm.mention.rate * 100) : null;
+  const ringR = 34;
+  const ringC = 2 * Math.PI * ringR;
 
-      <section aria-label="Business overview" className="dashboard-metrics">
-        <Card className="metric-card">
-          <div className="metric-label">
-            <span>Website status</span>
-            <span className="metric-icon">
-              <Icon name="website" />
-            </span>
+  return (
+    <div className="dash">
+      <header className="dash-hero">
+        <div className="dash-hero-text">
+          <span className="dash-eyebrow">Welcome back</span>
+          <h1>{business.name}</h1>
+          <p>{[business.category, business.city].filter(Boolean).join(" · ")}</p>
+        </div>
+        <div className="dash-hero-actions">
+          <span className={`dash-status ${live ? "live" : site ? "draft" : ""}`}>
+            <span aria-hidden="true" />
+            {live ? "Website live" : site ? "Draft ready" : business.hasWebsite ? "Website connected" : "No website yet"}
+          </span>
+          {live && site ? (
+            <a href={`/s/${site.slug}`} target="_blank" rel="noreferrer" className="dash-btn ghost">
+              <Icon name="globe" size={16} /> View website
+            </a>
+          ) : (
+            <Link href="/app/website" className="dash-btn ghost">
+              <Icon name="website" size={16} /> Open website
+            </Link>
+          )}
+        </div>
+      </header>
+
+      <section className="dash-focus" aria-label="Your next step">
+        <div className="dash-focus-main">
+          {focus ? (
+            <>
+              <span className="dash-focus-label"><Icon name="spark" size={14} /> Your next step</span>
+              <h2>{focus.title}</h2>
+              <p>{focus.body}</p>
+              <Link href={focus.href} className="dash-btn lime">
+                {focus.cta} <Icon name="arrow" size={17} />
+              </Link>
+            </>
+          ) : (
+            <>
+              <span className="dash-focus-label"><Icon name="check" size={14} /> All caught up</span>
+              <h2>Everything is in place.</h2>
+              <p>Come back to check new enquiries and your latest AI visibility results.</p>
+              <Link href="/app/visibility" className="dash-btn lime">
+                See AI visibility <Icon name="arrow" size={17} />
+              </Link>
+            </>
+          )}
+        </div>
+        <div className="dash-setup">
+          <div className="dash-ring" role="progressbar" aria-label="Setup progress" aria-valuenow={completed} aria-valuemin={0} aria-valuemax={4}>
+            <svg viewBox="0 0 80 80" aria-hidden="true">
+              <circle cx="40" cy="40" r={ringR} className="dash-ring-track" />
+              <circle cx="40" cy="40" r={ringR} className="dash-ring-fill" strokeDasharray={ringC} strokeDashoffset={ringC * (1 - completed / 4)} />
+            </svg>
+            <span><strong>{completed}</strong>/4</span>
           </div>
-          <div className="metric-value">
-            {live
-              ? "Live"
-              : site
-                ? "Draft"
-                : business.hasWebsite
-                  ? "Connected"
-                  : "Not created"}
-            <span className={`metric-status-dot ${live ? "live" : ""}`} />
-          </div>
-          <p className="metric-detail">
-            {live
-              ? `Published · version ${live.versionNumber}`
-              : site
-                ? "Your next step: review and publish"
-                : "Your home on the internet"}
-          </p>
-          <Link href="/app/website" className="metric-link">
-            Manage website
-            <Icon name="arrow" size={15} />
-          </Link>
-        </Card>
-        <Card className="metric-card">
-          <div className="metric-label">
-            <span>AI mention rate</span>
-            <span className="metric-icon violet">
-              <Icon name="visibility" />
-            </span>
-          </div>
-          <div className="metric-value">
-            {vm.valid > 0 && vm.mention.rate !== null
-              ? `${Math.round(vm.mention.rate * 100)}%`
-              : "—"}
-            <span className="metric-period">Last 30 days</span>
-          </div>
-          <p className="metric-detail">
+          <ul>
+            {setupSteps.map((step) => (
+              <li key={step.label}>
+                <Link href={step.href} className={step.done ? "done" : ""}>
+                  <span className="dash-tick" aria-hidden="true">{step.done && <Icon name="check" size={11} />}</span>
+                  {step.label}
+                  <span className="sr-only">{step.done ? " (done)" : " (to do)"}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="dash-kpis" aria-label="Business overview">
+        <Link href="/app/website" className="dash-kpi">
+          <span className="dash-kpi-icon peach"><Icon name="website" size={19} /></span>
+          <span className="dash-kpi-label">Website</span>
+          <strong className="dash-kpi-value">
+            {live ? "Live" : site ? "Draft" : business.hasWebsite ? "Connected" : "Not created"}
+          </strong>
+          <span className="dash-kpi-detail">
+            {live ? `Published · version ${live.versionNumber}` : site ? "Review and publish when ready" : business.hasWebsite ? (business.websiteUrl ?? "Your own website") : "Your home on the internet"}
+          </span>
+          <span className="dash-kpi-link">Manage website <Icon name="arrow" size={14} /></span>
+        </Link>
+        <Link href="/app/visibility" className="dash-kpi">
+          <span className="dash-kpi-icon lilac"><Icon name="visibility" size={19} /></span>
+          <span className="dash-kpi-label">AI mention rate <em>30 days</em></span>
+          <strong className="dash-kpi-value">{mentionRate === null ? "—" : `${mentionRate}%`}</strong>
+          <span className="dash-kpi-detail">
             {vm.valid > 0
               ? `${vm.mention.numerator} of ${vm.mention.denominator} answers${vm.smallSample ? " · small sample" : ""}`
               : "Run a check to see your first results"}
-          </p>
-          <Link href="/app/visibility" className="metric-link">
-            {vm.valid > 0 ? "See the evidence" : "Explore AI visibility"}
-            <Icon name="arrow" size={15} />
-          </Link>
-        </Card>
-        <Card className="metric-card">
-          <div className="metric-label">
-            <span>Customer enquiries</span>
-            <span className="metric-icon amber">
-              <Icon name="leads" />
-            </span>
-          </div>
-          <div className="metric-value">
-            {weekLeads}
-            <span className="metric-period">Last 7 days</span>
-          </div>
-          <p className="metric-detail">
-            {newLeads} {newLeads === 1 ? "enquiry" : "enquiries"} awaiting your
-            reply
-          </p>
-          <Link href="/app/leads" className="metric-link">
-            Open your inbox
-            <Icon name="arrow" size={15} />
-          </Link>
-        </Card>
+          </span>
+          {mentionRate !== null && (
+            <span className="dash-kpi-meter" aria-hidden="true"><span style={{ width: `${mentionRate}%` }} /></span>
+          )}
+          <span className="dash-kpi-link">{vm.valid > 0 ? "See the evidence" : "Explore AI visibility"} <Icon name="arrow" size={14} /></span>
+        </Link>
+        <Link href="/app/leads" className="dash-kpi">
+          <span className="dash-kpi-icon amber"><Icon name="leads" size={19} /></span>
+          <span className="dash-kpi-label">Enquiries <em>7 days</em></span>
+          <strong className="dash-kpi-value">{weekLeads}</strong>
+          <span className="dash-kpi-detail">
+            {newLeads > 0 ? `${newLeads} waiting for your reply` : "No enquiries waiting"}
+          </span>
+          {newLeads > 0 && <span className="dash-kpi-badge">{newLeads} new</span>}
+          <span className="dash-kpi-link">Open inbox <Icon name="arrow" size={14} /></span>
+        </Link>
       </section>
 
-      <div className="dashboard-lower">
-        <section>
-          <div className="section-heading">
-            <h2>Next steps</h2>
-            <span className="text-xs text-muted">Recommended for you</span>
+      <div className="dash-lower">
+        <section className="dash-panel" aria-labelledby="dash-more">
+          <div className="dash-panel-head">
+            <h2 id="dash-more">More ways to grow</h2>
+            <span>{moreActions.length > 0 ? `${Math.min(moreActions.length, 3)} suggestions` : "Nothing pending"}</span>
           </div>
-          <Card className="action-list">
-            {actions.length === 0 ? (
-              <div className="p-6">
-                <Badge tone="ok">You’re all caught up</Badge>
-                <p className="mt-3 text-sm text-muted">
-                  Come back to review your latest results.
-                </p>
-              </div>
-            ) : (
-              <ol>
-                {actions.slice(0, 3).map((a, i) => (
-                  <li key={a.title}>
-                    <Link href={a.href} className="action-row">
-                      <span className="action-number">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-sm font-semibold">
-                          {a.title}
-                        </span>
-                        <span className="mt-1 block text-xs leading-relaxed text-muted">
-                          {a.body}
-                        </span>
-                      </span>
-                      <Icon
-                        name="arrow"
-                        size={18}
-                        className="shrink-0 text-brand"
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ol>
-            )}
-          </Card>
-          <div className="section-heading mt-7">
-            <h2>Recent activity</h2>
-            <Icon name="clock" size={17} className="text-muted" />
-          </div>
-          <Card className="activity-card">
-            <ul>
-              {activity.map((e) => (
-                <li key={e.id} className="activity-row">
-                  <span className="activity-dot">
-                    <Icon name="check" size={12} />
-                  </span>
-                  <span className="min-w-0 flex-1 text-sm">
-                    {ACTIVITY_TEXT[e.action] ?? e.action}
-                  </span>
-                  <time
-                    className="text-xs text-muted"
-                    dateTime={e.createdAt.toISOString()}
-                  >
-                    {e.createdAt.toLocaleString("en-IN", {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    })}
-                  </time>
-                </li>
-              ))}
-            </ul>
-            {activity.length === 0 && (
-              <p className="py-3 text-sm text-muted">
-                Your business journey starts here. Updates will appear as you
-                go.
-              </p>
-            )}
-          </Card>
-        </section>
-        <aside>
-          <div className="section-heading">
-            <h2>Your setup</h2>
-            <span className="text-xs font-semibold text-brand">
-              {completed} / 4
-            </span>
-          </div>
-          <Card className="foundation-card">
-            <span className="foundation-icon">
-              <Icon name="business" size={24} />
-            </span>
-            <h3 className="mt-4 text-lg font-semibold">Complete your setup</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              Help customers find accurate information about your business.
+          {moreActions.length === 0 ? (
+            <p className="dash-empty">
+              <Badge tone="ok">You’re all caught up</Badge>
+              <span>New suggestions will appear here as your business grows.</span>
             </p>
-            <div
-              className="setup-progress"
-              role="progressbar"
-              aria-label="Business setup"
-              aria-valuenow={completed}
-              aria-valuemin={0}
-              aria-valuemax={4}
-            >
-              <span style={{ width: `${completed * 25}%` }} />
-            </div>
-            <ul className="setup-list">
-              {setupSteps.map((step) => (
-                <li key={step.label}>
-                  <Link href={step.href}>
-                    <span
-                      className={step.done ? "setup-check done" : "setup-check"}
-                    >
-                      {step.done && <Icon name="check" size={12} />}
+          ) : (
+            <ul className="dash-todo">
+              {moreActions.slice(0, 3).map((a) => (
+                <li key={a.title}>
+                  <Link href={a.href}>
+                    <span className="dash-todo-dot" aria-hidden="true" />
+                    <span className="dash-todo-text">
+                      <strong>{a.title}</strong>
+                      <span>{a.body}</span>
                     </span>
-                    <span>{step.label}</span>
-                    <Icon name="chevron" size={14} />
+                    <span className="dash-todo-cta">{a.cta}</span>
                   </Link>
                 </li>
               ))}
             </ul>
-          </Card>
-        </aside>
+          )}
+        </section>
+
+        <section className="dash-panel" aria-labelledby="dash-activity">
+          <div className="dash-panel-head">
+            <h2 id="dash-activity">Recent activity</h2>
+            <Link href="/app/reports">Reports <Icon name="arrow" size={13} /></Link>
+          </div>
+          {activity.length === 0 ? (
+            <p className="dash-empty"><span>Your business journey starts here. Updates will appear as you go.</span></p>
+          ) : (
+            <ul className="dash-activity">
+              {activity.slice(0, 5).map((e) => (
+                <li key={e.id}>
+                  <span className="dash-activity-dot" aria-hidden="true" />
+                  <span className="dash-activity-text">{ACTIVITY_TEXT[e.action] ?? e.action}</span>
+                  <time dateTime={e.createdAt.toISOString()}>
+                    {e.createdAt.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}
+                  </time>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
-    </>
+    </div>
   );
 }

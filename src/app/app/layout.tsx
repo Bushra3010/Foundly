@@ -8,6 +8,7 @@ import { isPlatformAdmin } from "@/lib/admin";
 import { requireCtx } from "@/lib/auth/session";
 import { getLocale } from "@/lib/locale";
 import { getBusiness } from "@/server/business";
+import "./dashboard.css";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 

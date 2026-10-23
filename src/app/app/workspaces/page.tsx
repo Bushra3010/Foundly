@@ -12,7 +12,7 @@ export default async function WorkspacesPage() {
   const rows = await listUserWorkspaces(await getDb(), ctx.userId);
   return (
     <>
-      <PageHeader
+      <PageHeader icon="workspaces"
         title="Workspaces"
         description="Each workspace holds one business with its own website, leads and team. Agencies can manage several here."
       />

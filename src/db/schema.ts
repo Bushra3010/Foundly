@@ -26,6 +26,8 @@ export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   email: text("email").notNull().unique(),
   name: text("name"),
+  /** scrypt hash ("scrypt$N$r$p$salt$hash"). Null for accounts that only use email links. */
+  passwordHash: text("password_hash"),
   createdAt: createdAt(),
 });
 

@@ -32,7 +32,7 @@ export function LandingPricing() {
                 {price !== null && <span>/ month</span>}
               </div>
               <p className="pricing-term">{free ? "A free place to begin" : price === null ? "Monthly pricing to be announced" : "Billed monthly in INR"}</p>
-              <Link href={free ? "/login" : "/login?next=%2Fapp%2Fsettings"} className={`landing-button${featured ? "" : " secondary"}`} aria-label={free ? "Get started with the Free plan" : `Explore the ${plan.name} plan`}>
+              <Link href={free ? "/signup" : "/signup?next=%2Fapp%2Fsettings"} className={`landing-button${featured ? "" : " secondary"}`} aria-label={free ? "Get started with the Free plan" : `Explore the ${plan.name} plan`}>
                 {free ? "Start for free" : `Explore ${plan.name}`}<Icon name="arrow" size={16} />
               </Link>
               <div className="pricing-includes">{free ? "YOUR STARTING POINT" : "WHAT’S INCLUDED"}</div>

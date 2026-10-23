@@ -16,7 +16,7 @@ export function PublicHeader() {
             Directory
           </Link>
           <Link
-            href="/login"
+            href="/signup"
             className="inline-flex min-h-11 items-center px-3 font-medium"
           >
             List your business

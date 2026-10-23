@@ -56,7 +56,7 @@ tests/               phase-by-phase domain tests
 
 ## Deviations from the PRD's proposed stack
 
-- **Auth:** the app has its own magic-link sessions instead of Supabase Auth, so it runs without credentials. Isolation is enforced in the data layer and covered by tests. If you deploy on Supabase, also add row-level security (RLS) policies keyed on `workspace_id` as defence in depth.
+- **Auth:** the app has its own magic-link sessions instead of Supabase Auth, so it runs without credentials. Isolation is enforced in the data layer and covered by tests. Migration `0007_enable_rls` turns on row-level security (RLS) for every table with no policies, so Supabase's public Data API can't read or write app data. The app connects as the table owner and is unaffected. Add policies keyed on `workspace_id` only if you ever need the Data API.
 - **Jobs:** background work runs through `after()`, with durable state rows (`jobs`, `monitoring_runs`, `audits`). Hourly and daily crons resume and schedule work. For higher volume, move execution to a queue (for example Vercel Queues); the run functions are already idempotent.
 - **Rate limiting** is in-process. Use a shared store before running more than one instance.
 - **Media** is stored on the local filesystem (`UPLOADS_DIR`). Use object storage in production.

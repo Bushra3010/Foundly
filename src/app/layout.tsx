@@ -6,10 +6,10 @@ import "./globals.css";
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: { default: "Growth Platform", template: "%s · Growth Platform" },
+  title: { default: "Foundly", template: "%s · Foundly" },
   description:
     "Create an accurate online presence for your business and see how supported AI answers mention it.",
-  applicationName: "Growth Platform",
+  applicationName: "Foundly",
   metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3000"),
 };
 

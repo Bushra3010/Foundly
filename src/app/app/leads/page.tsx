@@ -19,7 +19,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
 
   return (
     <>
-      <PageHeader
+      <PageHeader icon="leads"
         title="Leads"
         description="Enquiries sent through your website's contact form."
         actions={

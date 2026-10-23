@@ -58,7 +58,7 @@ export default async function ImprovePage() {
 
   return (
     <>
-      <PageHeader
+      <PageHeader icon="improve"
         title={t(locale, "nav.improve")}
         description="Small, specific changes that make your information clearer for customers. They can make pages more useful; they can't guarantee that any AI service will mention you."
         actions={

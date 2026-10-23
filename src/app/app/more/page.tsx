@@ -11,8 +11,8 @@ export default async function MorePage() {
   const locale = await getLocale();
   return (
     <>
-      <PageHeader title={t(locale, "nav.more")} />
-      <ul className="divide-y divide-border rounded-xl border border-border bg-surface">
+      <PageHeader icon="more" title={t(locale, "nav.more")} />
+      <ul className="more-list">
         {[
           ...NAV.filter(
             (i) =>
@@ -23,13 +23,10 @@ export default async function MorePage() {
           <li key={item.href}>
             <Link
               href={item.href}
-              className="flex min-h-14 items-center gap-3 px-4 font-medium"
             >
-              <Icon name={item.href} />
+              <span className="more-icon" aria-hidden="true"><Icon name={item.href} size={19} /></span>
               {item.label}
-              <span aria-hidden="true" className="ml-auto text-muted">
-                ›
-              </span>
+              <Icon name="chevron" size={16} className="more-chevron" />
             </Link>
           </li>
         ))}
