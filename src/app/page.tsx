@@ -29,14 +29,14 @@ export default function Home() {
   return (
     <div className="foundly-landing">
       <div className="landing-announcement"><span className="announcement-dot" /> Your next chapter starts with being found. <a href="#products">Meet Foundly <span aria-hidden="true">↗</span></a></div>
-      <header className="landing-header">
+      <div className="landing-header-bar"><header className="landing-header">
         <Link href="/" aria-label="Foundly home"><Brand /></Link>
         <nav className="landing-desktop-nav" aria-label="Main">
           <a href="#products">Products</a><a href="#ai-answers">AI answers</a><a href="#results">Results</a><a href="#why-foundly">Why Foundly</a><a href="#how-it-works">How it works</a><a href="#pricing">Pricing</a><Link href="/directory">Directory</Link>
         </nav>
         <div className="landing-auth"><Link href="/login" className="landing-login">Log in</Link><Link href="/signup" className="landing-button small">Get started <Icon name="arrow" size={16} /></Link></div>
         <details className="landing-mobile-menu"><summary>Menu <Icon name="down" size={15} /></summary><nav aria-label="Mobile navigation"><a href="#products">Products</a><a href="#ai-answers">AI answers</a><a href="#results">Results</a><a href="#why-foundly">Why Foundly</a><a href="#how-it-works">How it works</a><a href="#pricing">Pricing</a><Link href="/directory">Directory</Link><Link href="/login">Log in</Link></nav></details>
-      </header>
+      </header></div>
       <main id="main" className="landing-main">
         <div className="landing-fit landing-first"><div className="fit-body"><section className="landing-hero" aria-labelledby="hero-title">
           <div><p className="landing-eyebrow"><span /> SMALL BUSINESS. BIG POSSIBILITIES.</p><h1 id="hero-title">Good businesses<br />deserve to be <span className="hero-found">found<svg viewBox="0 0 330 18" aria-hidden="true"><path d="M4 13 Q150 -2 326 7" /></svg></span>.</h1></div>

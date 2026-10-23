@@ -3,12 +3,13 @@
 import { useEffect } from "react";
 
 const MIN_ZOOM = 0.72;
-const DESKTOP = "(min-width: 1024px) and (min-height: 560px)";
+const DESKTOP = "(min-width: 900px) and (min-height: 520px)";
 
 /**
- * On desktop, each `.landing-fit` section fills one screen below the sticky
- * header. When its content is still taller than that, the content is zoomed
- * down a little (never below MIN_ZOOM) so the whole section fits in one view.
+ * On desktop, no `.landing-fit` section may be taller than one screen below
+ * the sticky header. When its content is, the content is zoomed down a little
+ * (never below MIN_ZOOM) so the whole section fits in one view. Sections are
+ * otherwise only as tall as their content, with no filler space.
  * Phones keep normal scrolling.
  */
 export function FitSections() {
@@ -19,7 +20,7 @@ export function FitSections() {
 
     const root = document.querySelector<HTMLElement>(".foundly-landing");
     const fit = () => {
-      const header = document.querySelector<HTMLElement>(".landing-header")?.getBoundingClientRect().height ?? 72;
+      const header = document.querySelector<HTMLElement>(".landing-header-bar")?.getBoundingClientRect().height ?? 72;
       const footer = document.querySelector<HTMLElement>(".landing-footer")?.getBoundingClientRect().height ?? 0;
       // Anchors and section heights use the real header and footer sizes.
       root?.style.setProperty("--lp-header", `${Math.round(header)}px`);
@@ -42,10 +43,12 @@ export function FitSections() {
       }
     };
 
+    // A short timeout rather than requestAnimationFrame, which never fires in
+    // background tabs and would leave sections unfitted until the tab is shown.
     let frame = 0;
     const schedule = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(fit);
+      window.clearTimeout(frame);
+      frame = window.setTimeout(fit, 30);
     };
     schedule();
     const ro = new ResizeObserver(schedule);
@@ -54,7 +57,7 @@ export function FitSections() {
     media.addEventListener("change", schedule);
     document.fonts?.ready.then(schedule).catch(() => {});
     return () => {
-      cancelAnimationFrame(frame);
+      window.clearTimeout(frame);
       ro.disconnect();
       window.removeEventListener("resize", schedule);
       media.removeEventListener("change", schedule);
