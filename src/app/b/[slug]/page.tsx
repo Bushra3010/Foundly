@@ -5,7 +5,7 @@ import { PublicHeader } from "@/components/public-header";
 import { Badge, Card } from "@/components/ui";
 import { getDb } from "@/db";
 import { jsonLdScript, phoneDigits } from "@/lib/profile";
-import { businessGraph } from "@/lib/geo";
+import { businessGraph, entitySentence, listingLabel } from "@/lib/geo";
 import { getPublicProfile } from "@/server/directory";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -94,6 +94,28 @@ export default async function ProfilePage({ params }: Props) {
           )}
         </div>
 
+        <Card className="mt-6">
+          <p className="text-lg">{entitySentence(p)}</p>
+          {(p.foundedYear || p.projectsCompleted || p.teamSize || p.credentials) && (
+            <dl className="mt-4 grid gap-3 sm:grid-cols-3">
+              {p.foundedYear && (<div><dt className="text-sm text-muted">In business since</dt><dd className="text-xl font-bold">{p.foundedYear}</dd></div>)}
+              {p.projectsCompleted && (<div><dt className="text-sm text-muted">Projects completed</dt><dd className="text-xl font-bold">{p.projectsCompleted.toLocaleString("en-IN")}+</dd></div>)}
+              {p.teamSize && (<div><dt className="text-sm text-muted">Team</dt><dd className="text-xl font-bold">{p.teamSize}</dd></div>)}
+              {p.credentials && (<div className="sm:col-span-3"><dt className="text-sm text-muted">Credentials</dt><dd className="font-semibold">{p.credentials}</dd></div>)}
+            </dl>
+          )}
+          {p.listings.length > 0 && (
+            <p className="mt-4 text-sm text-muted">
+              Also on:{" "}
+              {p.listings.map((u, i) => (
+                <span key={u}>
+                  {i > 0 && " · "}
+                  <a href={u} rel="noopener noreferrer nofollow" target="_blank" className="underline">{listingLabel(u)}</a>
+                </span>
+              ))}
+            </p>
+          )}
+        </Card>
         {p.description && (
           <Card className="mt-6">
             <h2 className="text-lg font-semibold">About</h2>

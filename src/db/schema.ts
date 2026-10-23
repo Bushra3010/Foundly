@@ -115,6 +115,13 @@ export const businesses = pgTable(
     aliases: jsonb("aliases").$type<string[]>().notNull().default([]),
     /** Domains the business owns, besides its website, for citation matching. */
     ownedDomains: jsonb("owned_domains").$type<string[]>().notNull().default([]),
+    /** Verifiable specifics the owner supplies. AI answers favour businesses that state them. */
+    foundedYear: integer("founded_year"),
+    teamSize: integer("team_size"),
+    projectsCompleted: integer("projects_completed"),
+    credentials: text("credentials"),
+    /** Where else the business is listed (Google Business Profile, Justdial, Instagram...). */
+    listings: jsonb("listings").$type<string[]>().notNull().default([]),
     hasWebsite: boolean("has_website"),
     onboardingStep: integer("onboarding_step").notNull().default(2),
     onboardingCompletedAt: timestamp("onboarding_completed_at", { withTimezone: true }),

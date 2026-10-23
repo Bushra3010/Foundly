@@ -211,6 +211,8 @@
 .fs-footer p { margin: 0; font-size: 15px; }
 .fs-footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; }
 .fs-footer a:hover { color: #fff; }
+.fs-footer-links { width: 100%; font-size: 14px; color: #c9cbd0; margin: 0; }
+.fs-footer-links a { text-decoration: underline; text-underline-offset: 3px; }
 .fs-footer-copy { width: 100%; padding-top: 20px; margin-top: 8px; border-top: 1px solid #2a2c2f; font-size: 13.5px; color: #8d9096; }
 
 /* Floating WhatsApp on phones */

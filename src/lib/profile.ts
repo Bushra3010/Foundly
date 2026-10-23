@@ -17,6 +17,11 @@ export type PublicProfile = {
   hours: { days: string; hours: string }[];
   services: { name: string; description?: string }[];
   serviceAreas: string[];
+  foundedYear?: number;
+  teamSize?: number;
+  projectsCompleted?: number;
+  credentials?: string;
+  listings: string[];
   updatedAt: string;
 };
 
@@ -39,6 +44,11 @@ export function toPublicProfile(b: Business, now = new Date()): PublicProfile {
     hours: b.hours,
     services: b.services,
     serviceAreas: b.serviceAreas,
+    foundedYear: b.foundedYear ?? undefined,
+    teamSize: b.teamSize ?? undefined,
+    projectsCompleted: b.projectsCompleted ?? undefined,
+    credentials: opt(b.credentials),
+    listings: b.listings ?? [],
     updatedAt: now.toISOString(),
   };
 }

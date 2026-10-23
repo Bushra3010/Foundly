@@ -58,6 +58,66 @@ export function titleCase(s: string): string {
 
 type Faq = { question: string; answer: string };
 
+/** Where AI assistants look for corroboration. Order matters: it is the suggested order for owners. */
+export const LISTING_SITES = [
+  { key: "google", label: "Google Business Profile", match: /(google\.[a-z.]+\/maps|maps\.app\.goo\.gl|g\.page|business\.google|share\.google)/i, create: "https://business.google.com/create", why: "Gemini and Google's AI answers read it first for local businesses" },
+  { key: "bing", label: "Bing Places", match: /bingplaces\.com|bing\.com\/maps/i, create: "https://www.bingplaces.com", why: "Feeds Copilot and ChatGPT search" },
+  { key: "justdial", label: "Justdial", match: /justdial\.com/i, create: "https://www.justdial.com/free-listing", why: "India's most-cited local directory in AI answers" },
+  { key: "instagram", label: "Instagram", match: /instagram\.com/i, create: "https://www.instagram.com", why: "Shows your work and confirms you are active" },
+  { key: "facebook", label: "Facebook", match: /facebook\.com|fb\.com/i, create: "https://www.facebook.com/pages/create", why: "Another source with the same name, phone and address" },
+  { key: "indiamart", label: "IndiaMART", match: /indiamart\.com/i, create: "https://seller.indiamart.com", why: "Widely crawled business listings" },
+  { key: "sulekha", label: "Sulekha", match: /sulekha\.com/i, create: "https://www.sulekha.com", why: "Local services directory" },
+  { key: "linkedin", label: "LinkedIn", match: /linkedin\.com/i, create: "https://www.linkedin.com/company/setup/new/", why: "Confirms the business and its people" },
+] as const;
+
+export function listingLabel(url: string): string {
+  const site = LISTING_SITES.find((l) => l.match.test(url));
+  if (site) return site.label;
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+export function listingStatus(listings: string[]) {
+  return LISTING_SITES.map((site) => ({ ...site, url: listings.find((u) => site.match.test(u)) ?? null }));
+}
+
+type EntityFacts = {
+  name: string;
+  category: string;
+  city: string;
+  serviceAreas: string[];
+  foundedYear?: number;
+  teamSize?: number;
+  projectsCompleted?: number;
+  credentials?: string;
+};
+
+/**
+ * The one sentence an AI assistant would quote: who, what, where, since when,
+ * how much experience. Only confirmed facts; every clause is optional.
+ */
+export function entitySentence(f: EntityFacts): string {
+  const areas = f.serviceAreas.filter((a) => a.trim().toLowerCase() !== f.city.trim().toLowerCase()).slice(0, 5);
+  let out = `${f.name} is ${withArticle(f.category.toLowerCase())} in ${f.city}`;
+  if (areas.length) out += `, serving ${listToText(areas)}`;
+  out += ".";
+  const proof: string[] = [];
+  if (f.foundedYear) proof.push(`in business since ${f.foundedYear}`);
+  if (f.projectsCompleted) proof.push(`${f.projectsCompleted.toLocaleString("en-IN")}+ projects completed`);
+  if (f.teamSize) proof.push(`a team of ${f.teamSize}`);
+  if (proof.length) out += ` ${titleCase(proof[0].charAt(0)) + proof[0].slice(1)}${proof.length > 1 ? `, ${listToText(proof.slice(1))}` : ""}.`;
+  if (f.credentials) out += ` ${f.credentials.trim().replace(/\.$/, "")}.`;
+  return out;
+}
+
+function listToText(items: string[]): string {
+  if (items.length <= 1) return items.join("");
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+}
+
 type BusinessForLd = Pick<
   PublicProfile,
   "name" | "category" | "city" | "region" | "country" | "address" | "phone" | "whatsapp" | "email" | "hours" | "serviceAreas" | "services"
@@ -67,6 +127,11 @@ type BusinessForLd = Pick<
   profileUrl?: string;
   bookingUrl?: string;
   sameAs?: string[];
+  foundedYear?: number;
+  teamSize?: number;
+  projectsCompleted?: number;
+  credentials?: string;
+  listings?: string[];
 };
 
 /**
@@ -89,11 +154,15 @@ export function businessGraph(b: BusinessForLd, faq: Faq[] = []) {
     },
   };
   if (b.category) business.additionalType = b.category;
-  if (b.description) business.description = b.description;
+  // A quotable summary first, then the owner's own words.
+  business.description = [entitySentence(b), b.description].filter(Boolean).join(" ");
+  if (b.foundedYear) business.foundingDate = String(b.foundedYear);
+  if (b.teamSize) business.numberOfEmployees = { "@type": "QuantitativeValue", value: b.teamSize };
+  if (b.credentials) business.award = b.credentials;
   if (b.url) business.url = b.url;
   if (b.phone) business.telephone = b.phone;
   if (b.email) business.email = b.email;
-  const sameAs = [...(b.sameAs ?? []), ...(b.profileUrl && b.profileUrl !== b.url ? [b.profileUrl] : [])].filter(Boolean);
+  const sameAs = [...(b.listings ?? []), ...(b.sameAs ?? []), ...(b.profileUrl && b.profileUrl !== b.url ? [b.profileUrl] : [])].filter(Boolean);
   if (sameAs.length) business.sameAs = Array.from(new Set(sameAs));
   const areas = b.serviceAreas.length ? b.serviceAreas : [b.city];
   business.areaServed = areas.map((name) => ({ "@type": "Place", name }));
@@ -145,6 +214,11 @@ export function businessLlmsText(
   p: Pick<PublicProfile, "name" | "category" | "city" | "region" | "address" | "phone" | "whatsapp" | "email" | "hours" | "serviceAreas" | "services" | "updatedAt"> & {
     description?: string;
     bookingUrl?: string;
+    foundedYear?: number;
+    teamSize?: number;
+    projectsCompleted?: number;
+    credentials?: string;
+    listings?: string[];
   },
   links: { website?: string; profile?: string },
   faq: Faq[] = [],
@@ -152,7 +226,7 @@ export function businessLlmsText(
   const lines: string[] = [];
   const place = [p.city, p.region].filter(Boolean).join(", ");
   lines.push(`# ${p.name}`, "");
-  lines.push(`> ${p.name} is ${withArticle(p.category.toLowerCase())} in ${place}.${p.description ? ` ${p.description.split("\n")[0].trim()}` : ""}`, "");
+  lines.push(`> ${entitySentence(p)}${p.description ? ` ${p.description.split("\n")[0].trim()}` : ""}`, "");
   lines.push("## Facts", "");
   lines.push(`- Business: ${p.name}`);
   lines.push(`- Type: ${p.category}`);
@@ -163,6 +237,11 @@ export function businessLlmsText(
   if (p.email) lines.push(`- Email: ${p.email}`);
   if (p.bookingUrl) lines.push(`- Book online: ${p.bookingUrl}`);
   if (p.hours.length) lines.push(`- Opening hours: ${p.hours.map((h) => `${h.days} ${h.hours}`).join("; ")}`);
+  if (p.foundedYear) lines.push(`- In business since: ${p.foundedYear}`);
+  if (p.projectsCompleted) lines.push(`- Projects completed: ${p.projectsCompleted.toLocaleString("en-IN")}+`);
+  if (p.teamSize) lines.push(`- Team size: ${p.teamSize}`);
+  if (p.credentials) lines.push(`- Credentials: ${p.credentials}`);
+  if (p.listings?.length) lines.push(`- Also listed on: ${p.listings.map((u) => `${listingLabel(u)} (${u})`).join(", ")}`);
   lines.push(`- Details confirmed by the owner, last updated ${p.updatedAt.slice(0, 10)}`);
   if (p.services.length) {
     lines.push("", "## Services", "");
@@ -183,15 +262,14 @@ export function businessLlmsText(
  * Questions people actually type into AI assistants, answered only with the
  * owner's confirmed facts. Used on the website's FAQ.
  */
-export function discoveryFaq(f: {
-  name: string;
-  category: string;
-  city: string;
-  serviceAreas: string[];
-  services: { name: string; description?: string }[];
-}): Faq[] {
+export function discoveryFaq(f: EntityFacts & { services: { name: string; description?: string }[] }): Faq[] {
   const out: Faq[] = [];
   const areas = f.serviceAreas.length ? ` across ${f.serviceAreas.slice(0, 4).join(", ")}` : "";
+  const proof = [
+    f.foundedYear ? `in business since ${f.foundedYear}` : "",
+    f.projectsCompleted ? `${f.projectsCompleted.toLocaleString("en-IN")}+ projects completed` : "",
+  ].filter(Boolean);
+  const proofText = proof.length ? ` ${titleCase(proof[0].charAt(0)) + proof[0].slice(1)}${proof[1] ? `, ${proof[1]}` : ""}.` : "";
   for (const s of f.services.slice(0, 2)) {
     const service = s.name.trim();
     out.push({
@@ -202,8 +280,16 @@ export function discoveryFaq(f: {
   if (f.category) {
     out.push({
       question: `Is ${f.name} ${withArticle(f.category.toLowerCase())} in ${f.city}?`,
-      answer: `Yes. ${f.name} is ${withArticle(f.category.toLowerCase())} based in ${f.city}${areas}.`,
+      answer: `Yes. ${f.name} is ${withArticle(f.category.toLowerCase())} based in ${f.city}${areas}.${proofText}`,
     });
+  }
+  if (f.foundedYear || f.projectsCompleted || f.teamSize) {
+    const bits = [
+      f.foundedYear ? `${f.name} has been in business since ${f.foundedYear}` : `${f.name} is based in ${f.city}`,
+      f.projectsCompleted ? `has completed ${f.projectsCompleted.toLocaleString("en-IN")}+ projects` : "",
+      f.teamSize ? `works as a team of ${f.teamSize}` : "",
+    ].filter(Boolean);
+    out.push({ question: `How experienced is ${f.name}?`, answer: `${listToText(bits)}.${f.credentials ? ` ${f.credentials.trim().replace(/\.$/, "")}.` : ""}` });
   }
   return out;
 }
@@ -212,6 +298,9 @@ export type ReadinessItem = { key: string; label: string; why: string; done: boo
 
 /** How ready a business is to be found and cited by AI assistants, with next steps. */
 export function geoReadiness(input: {
+  foundedYear?: number | null;
+  projectsCompleted?: number | null;
+  listings?: string[];
   description?: string | null;
   services: { name: string; description?: string }[];
   serviceAreas: string[];
@@ -260,6 +349,27 @@ export function geoReadiness(input: {
       why: "AI answers show a way to reach you",
       done: Boolean(input.phone || input.whatsapp),
       href: "/app/business",
+    },
+    {
+      key: "proof",
+      label: "Add your start year and projects completed",
+      why: "AI answers favour businesses that state specifics",
+      done: Boolean(input.foundedYear || input.projectsCompleted),
+      href: "/app/business#proof",
+    },
+    {
+      key: "google",
+      label: "Link your Google Business Profile",
+      why: "Gemini and Google read it first for local businesses",
+      done: (input.listings ?? []).some((u) => LISTING_SITES[0].match.test(u)),
+      href: "/app/business#listings",
+    },
+    {
+      key: "listings",
+      label: "Be listed in 2 more places with the same details",
+      why: "AI trusts facts it sees on several sites",
+      done: (input.listings ?? []).filter((u) => !LISTING_SITES[0].match.test(u)).length >= 2,
+      href: "/app/business#listings",
     },
     {
       key: "site",

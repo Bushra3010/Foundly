@@ -1,3 +1,4 @@
+import { listingStatus } from "@/lib/geo";
 import { Badge, Card, DefinitionList, LinkButton, Notice, PageHeader } from "@/components/ui";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
@@ -66,6 +67,11 @@ export default async function BusinessPage() {
               email: b.email ?? "",
               websiteUrl: b.websiteUrl ?? "",
               bookingUrl: b.bookingUrl ?? "",
+              foundedYear: b.foundedYear ? String(b.foundedYear) : "",
+              teamSize: b.teamSize ? String(b.teamSize) : "",
+              projectsCompleted: b.projectsCompleted ? String(b.projectsCompleted) : "",
+              credentials: b.credentials ?? "",
+              listings: b.listings.join("\n"),
             }}
           />
         </Card>
@@ -92,6 +98,30 @@ export default async function BusinessPage() {
                 <ProfilePublishForm published={published} />
               </div>
             )}
+          </Card>
+          <Card>
+            <h2 className="font-semibold">Get listed where AI looks</h2>
+            <p className="mt-1 text-sm text-muted">
+              AI assistants trust a business they see in several places with the same name, phone and address. Create these listings with exactly the details above, then paste each link under “Your other listings”.
+            </p>
+            <ul className="mt-3 space-y-2">
+              {listingStatus(b.listings).map((l) => (
+                <li key={l.key} className="flex items-start gap-3 text-sm">
+                  <span className={`mt-0.5 inline-grid size-5 shrink-0 place-items-center rounded-full ${l.url ? "bg-ok-bg text-ok-fg" : "border border-border text-muted"}`} aria-hidden="true">
+                    {l.url ? "✓" : ""}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="font-semibold">{l.label}</span>
+                    {l.url ? (
+                      <a href={l.url} target="_blank" rel="noopener noreferrer" className="ml-2 underline">View</a>
+                    ) : (
+                      <a href={l.create} target="_blank" rel="noopener noreferrer" className="ml-2 underline">Create</a>
+                    )}
+                    <span className="block text-muted">{l.why}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </Card>
           <ClaimsCard claims={claims} websiteUrl={b.websiteUrl} isOwner={can(ctx, "owner")} />
           <Card>

@@ -96,6 +96,11 @@ export const siteFacts = z.object({
   websiteUrl: z.url().optional(),
   hours: z.array(z.object({ days: text(60), hours: text(60) })),
   serviceAreas: z.array(text(80)),
+  foundedYear: z.number().int().optional(),
+  teamSize: z.number().int().optional(),
+  projectsCompleted: z.number().int().optional(),
+  credentials: text(300).optional(),
+  listings: z.array(z.url()).max(10).optional(),
 });
 
 export const siteContent = z.object({

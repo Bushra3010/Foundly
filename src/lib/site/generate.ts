@@ -1,4 +1,4 @@
-import { discoveryFaq } from "@/lib/geo";
+import { discoveryFaq, entitySentence } from "@/lib/geo";
 import type { Business } from "@/db/schema";
 import { siteContent, type Block, type SiteContent, type SiteFacts } from "./content";
 
@@ -89,6 +89,11 @@ export function factsFromBusiness(b: Business): SiteFacts {
     websiteUrl: opt(b.websiteUrl),
     hours: b.hours,
     serviceAreas: b.serviceAreas,
+    foundedYear: b.foundedYear ?? undefined,
+    teamSize: b.teamSize ?? undefined,
+    projectsCompleted: b.projectsCompleted ?? undefined,
+    credentials: opt(b.credentials),
+    listings: b.listings?.length ? b.listings : undefined,
   };
 }
 
@@ -115,7 +120,8 @@ export function buildBlock(type: Block["type"], b: Business, id: string): Block 
         id,
         type: "hero",
         heading: f.name,
-        subheading: `${f.category} in ${f.city}${b.services.length ? ` — ${listToText(b.services.slice(0, 3).map((s) => s.name))}` : ""}.`,
+        // One quotable sentence: who, what, where, since when. Then the services.
+        subheading: `${entitySentence(f)}${b.services.length ? ` ${listToText(b.services.slice(0, 3).map((s) => s.name.trim()))}.` : ""}`.slice(0, 300),
         ctaLabel: f.bookingUrl ? "Book now" : "Get in touch",
       };
     case "services":
@@ -131,13 +137,7 @@ export function buildBlock(type: Block["type"], b: Business, id: string): Block 
       return { id, type: "about", heading: `About ${f.name}`, body: b.description.trim() };
     case "faq": {
       // Questions people ask AI assistants come first, answered from confirmed facts only.
-      const items: { question: string; answer: string }[] = discoveryFaq({
-        name: f.name,
-        category: f.category,
-        city: f.city,
-        serviceAreas: f.serviceAreas,
-        services: b.services,
-      });
+      const items: { question: string; answer: string }[] = discoveryFaq({ ...f, services: b.services });
       items.push({
         question: `Which areas does ${f.name} serve?`,
         answer: `We serve ${where}.`,
@@ -209,10 +209,9 @@ export function generateSite(b: Business): SiteContent {
     templateKey,
     theme: THEMES[templateKey],
     seo: {
-      title: `${f.name} — ${f.category} in ${f.city}`.slice(0, 70),
-      description: `${f.name}: ${f.category} in ${f.city}. ${b.services.length ? `Services: ${b.services.map((s) => s.name).join(", ")}.` : ""}`
-        .trim()
-        .slice(0, 170),
+      // Phrased the way people search and AI assistants query: "<category> in <city>".
+      title: `${f.category} in ${f.city} | ${f.name}`.slice(0, 70),
+      description: `${entitySentence(f)}${b.services.length ? ` ${listToText(b.services.slice(0, 4).map((s) => s.name.trim()))}.` : ""}`.trim().slice(0, 170),
     },
     facts: f,
     pages: pages.filter((p) => p.blocks.length > 0),

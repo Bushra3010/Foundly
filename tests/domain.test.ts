@@ -196,7 +196,7 @@ describe("drafts and publishing", () => {
       services: b.services,
       serviceAreas: b.serviceAreas,
       hours: [],
-      expectedVersion: b.version,
+      foundedYear: null, teamSize: null, projectsCompleted: null, credentials: null, listings: [], expectedVersion: b.version,
     });
     const site = (await getSite(db, alice))!;
     await expectCode(publishSite(db, alice, site.draftRevision), "precondition_failed");

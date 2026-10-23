@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
-import { businessGraph, businessLlmsText, discoveryFaq, factsFromSiteContent, geoReadiness, pluralCategory, slugify } from "@/lib/geo";
+import { businessGraph, businessLlmsText, discoveryFaq, entitySentence, factsFromSiteContent, geoReadiness, listingLabel, pluralCategory, slugify } from "@/lib/geo";
 import { getBusiness, publishProfile } from "@/server/business";
 import { listPublishedProfiles } from "@/server/directory";
 import { generateSiteDraft, getPublishedSite, getSite, publishSite } from "@/server/sites";
@@ -28,12 +28,24 @@ describe("GEO helpers", () => {
     expect(pluralCategory("Cleaning services")).toBe("Cleaning services");
   });
 
+  it("writes one quotable sentence from confirmed facts only", () => {
+    expect(entitySentence(facts)).toBe("Sharma Plumbing is a plumber in Pune, serving Kothrud and Baner.");
+    expect(entitySentence({ ...facts, foundedYear: 2015, projectsCompleted: 1200, teamSize: 6, credentials: "Licensed by PMC" })).toBe(
+      "Sharma Plumbing is a plumber in Pune, serving Kothrud and Baner. In business since 2015, 1,200+ projects completed and a team of 6. Licensed by PMC.",
+    );
+    expect(listingLabel("https://www.google.com/maps/place/Sharma+Plumbing")).toBe("Google Business Profile");
+    expect(listingLabel("https://www.justdial.com/Pune/Sharma-Plumbing")).toBe("Justdial");
+    expect(listingLabel("https://example.org/x")).toBe("example.org");
+  });
+
   it("structured data lists services, areas and FAQs, and never invents ratings or prices", () => {
-    const ld = businessGraph({ ...facts, url: "https://foundly.co.in/s/sharma" }, [{ question: "Q?", answer: "A." }]);
+    const ld = businessGraph({ ...facts, url: "https://foundly.co.in/s/sharma", foundedYear: 2015, listings: ["https://www.google.com/maps/place/Sharma+Plumbing"] }, [{ question: "Q?", answer: "A." }]);
     const json = JSON.stringify(ld);
     const graph = ld["@graph"] as Record<string, unknown>[];
     expect(graph[0]["@type"]).toBe("LocalBusiness");
     expect(graph[0].knowsAbout).toEqual(["Leak repair", "Bathroom fitting"]);
+    expect(graph[0].foundingDate).toBe("2015");
+    expect(graph[0].sameAs).toContain("https://www.google.com/maps/place/Sharma+Plumbing");
     expect(json).toContain("Kothrud");
     expect(graph[1]["@type"]).toBe("FAQPage");
     expect(json).not.toMatch(/aggregateRating|reviewRating|priceRange|"best"/i);
@@ -67,9 +79,10 @@ describe("GEO helpers", () => {
       profilePublished: false,
       verified: false,
     });
-    expect(r.total).toBe(10);
+    expect(r.total).toBe(13);
     expect(r.done).toBe(3); // areas, hours, contact
-    expect(r.score).toBe(30);
+    expect(r.score).toBe(23);
+    expect(r.items.find((i) => i.key === "google")?.done).toBe(false);
     expect(r.items.find((i) => i.key === "site")?.href).toBe("/app/website");
   });
 });

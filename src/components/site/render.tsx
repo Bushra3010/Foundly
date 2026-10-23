@@ -1,5 +1,6 @@
 import type { Block, PageKey, SiteContent } from "@/lib/site/content";
 import { phoneDigits } from "@/lib/profile";
+import { listingLabel } from "@/lib/geo";
 import { LeadForm } from "./lead-form";
 import "./site.css";
 
@@ -13,12 +14,15 @@ export function SiteRenderer({
   basePath,
   siteSlug,
   mode,
+  publishedAt,
 }: {
   content: SiteContent;
   pageKey: PageKey;
   basePath: string;
   siteSlug: string;
   mode: "preview" | "live";
+  /** When this version went live; shown so readers and crawlers know the facts are current. */
+  publishedAt?: Date;
 }) {
   const page = content.pages.find((p) => p.key === pageKey) ?? content.pages[0];
   const { primary, accent } = content.theme;
@@ -75,7 +79,21 @@ export function SiteRenderer({
               </a>
             ))}
           </nav>
-          <p className="fs-footer-copy">© {new Date().getFullYear()} {f.name}</p>
+          {f.listings && f.listings.length > 0 && (
+            <p className="fs-footer-links">
+              Find us on:{" "}
+              {f.listings.map((u, i) => (
+                <span key={u}>
+                  {i > 0 && " · "}
+                  <a href={u} rel="noopener noreferrer">{listingLabel(u)}</a>
+                </span>
+              ))}
+            </p>
+          )}
+          <p className="fs-footer-copy">
+            © {new Date().getFullYear()} {f.name}
+            {publishedAt && ` · Details confirmed by the owner, updated ${publishedAt.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}`}
+          </p>
         </div>
       </footer>
       {wa && (
@@ -95,6 +113,7 @@ const ICON = {
   pin: "M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Zm0-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
   clock: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-5v5l3 2",
   arrow: "M4 12h16m-6-6 6 6-6 6",
+  check: "m5 12 4 4L19 6",
 };
 
 function Svg({ d, size = 20 }: { d: string; size?: number }) {
@@ -186,8 +205,10 @@ function BlockView({
                 </a>
               ) : null}
             </div>
-            {(f.serviceAreas.length > 0 || f.hours.length > 0) && (
+            {(f.serviceAreas.length > 0 || f.hours.length > 0 || f.foundedYear || f.projectsCompleted) && (
               <div className="fs-trust">
+                {f.foundedYear && <span><Svg d={ICON.calendar} size={17} /> Since {f.foundedYear}</span>}
+                {f.projectsCompleted && <span><Svg d={ICON.check} size={17} /> {f.projectsCompleted.toLocaleString("en-IN")}+ projects</span>}
                 {f.serviceAreas.length > 0 && (
                   <span><Svg d={ICON.pin} size={17} /> Serving {f.serviceAreas.slice(0, 4).join(", ")}</span>
                 )}

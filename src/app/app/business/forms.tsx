@@ -64,6 +64,27 @@ export function DetailsForm({ initial, disabled }: { initial: Record<string, str
         <TextField label="Booking or payment page" name="bookingUrl" optional inputMode="url" hint="A link to where customers already book or pay." defaultValue={v.bookingUrl} errors={e.bookingUrl} />
       </fieldset>
 
+      <fieldset disabled={disabled} className="space-y-5" id="proof">
+        <legend className="mb-1 text-lg font-semibold">Proof and experience</legend>
+        <p className="text-sm text-muted">
+          AI assistants and search engines favour businesses that state specifics. Only add numbers you can stand behind; they appear on your website and profile.
+        </p>
+        <div className="grid gap-5 sm:grid-cols-3">
+          <TextField label="In business since" name="foundedYear" optional inputMode="numeric" placeholder="2019" defaultValue={v.foundedYear} errors={e.foundedYear} />
+          <TextField label="Projects or customers" name="projectsCompleted" optional inputMode="numeric" placeholder="350" hint="Completed so far" defaultValue={v.projectsCompleted} errors={e.projectsCompleted} />
+          <TextField label="Team size" name="teamSize" optional inputMode="numeric" placeholder="4" defaultValue={v.teamSize} errors={e.teamSize} />
+        </div>
+        <TextField label="Credentials" name="credentials" optional hint="Licences, certifications or memberships, e.g. “Registered with the Council of Architecture”." defaultValue={v.credentials} errors={e.credentials} />
+      </fieldset>
+
+      <fieldset disabled={disabled} className="space-y-5" id="listings">
+        <legend className="mb-1 text-lg font-semibold">Your other listings</legend>
+        <p className="text-sm text-muted">
+          Paste links to your business on Google Maps, Justdial, Instagram, Facebook and similar sites. AI assistants trust details they see in several places, and these links tell them it is the same business.
+        </p>
+        <TextArea label="Links" name="listings" optional rows={4} hint="One link per line. Up to 10." defaultValue={v.listings} errors={e.listings} />
+      </fieldset>
+
       <Message state={state} />
       {!disabled && <SubmitButton>Save details</SubmitButton>}
     </form>

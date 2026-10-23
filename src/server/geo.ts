@@ -14,6 +14,9 @@ export async function readinessFor(db: DbOrTx, ctx: Ctx, business: Business) {
     .flatMap((pg) => pg.blocks)
     .reduce((n, b) => n + (b.type === "faq" ? b.items.length : 0), 0);
   return geoReadiness({
+    foundedYear: business.foundedYear,
+    projectsCompleted: business.projectsCompleted,
+    listings: business.listings,
     description: business.description,
     services: business.services,
     serviceAreas: business.serviceAreas,

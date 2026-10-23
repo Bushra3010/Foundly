@@ -26,7 +26,7 @@ export async function LiveSitePage({ slug, page }: { slug: string; page?: string
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ld) }} />
-      <SiteRenderer content={site.content} pageKey={site.key} basePath={base} siteSlug={site.slug} mode="live" />
+      <SiteRenderer content={site.content} pageKey={site.key} basePath={base} siteSlug={site.slug} mode="live" publishedAt={site.publishedAt} />
     </>
   );
 }

@@ -41,6 +41,7 @@ export async function saveDetailsAction(_prev: ActionState, form: FormData): Pro
     services: parseServices(form.get("services")),
     serviceAreas: splitList(form.get("serviceAreas")),
     hours: parseHours(form.get("hours")),
+    listings: lines(form.get("listings")),
     expectedVersion: Number(values.expectedVersion),
   });
   if (!parsed.success) {

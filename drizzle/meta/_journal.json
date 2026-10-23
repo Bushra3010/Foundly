@@ -57,6 +57,13 @@
       "when": 1792749137175,
       "tag": "0007_enable_rls",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792785479771,
+      "tag": "0008_business_proof_and_listings",
+      "breakpoints": true
     }
   ]
 }

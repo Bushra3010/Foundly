@@ -9,6 +9,23 @@ const optionalText = (max: number) =>
     .nullable()
     .optional();
 
+/** Whole number from a text input; empty means "not given". */
+const optionalCount = (min: number, max: number, message: string) =>
+  z
+    .string()
+    .trim()
+    .transform((s) => (s === "" ? null : Number(s.replace(/[,+\s]/g, ""))))
+    .nullable()
+    .optional()
+    .refine((n) => n == null || (Number.isInteger(n) && n >= min && n <= max), message)
+    .transform((n) => n ?? null);
+
+const listingUrl = z
+  .string()
+  .trim()
+  .transform((s) => (/^https?:\/\//i.test(s) ? s : `https://${s}`))
+  .refine((s) => z.url({ protocol: /^https?$/ }).safeParse(s).success, "Enter a web address like instagram.com/yourbusiness");
+
 const phone = z
   .string()
   .trim()
@@ -75,6 +92,11 @@ export const businessDetailsSchema = basicsSchema.extend({
   services: servicesSchema,
   serviceAreas: z.array(z.string().trim().min(1).max(80)).max(30),
   hours: z.array(z.object({ days: z.string().trim().min(1).max(60), hours: z.string().trim().min(1).max(60) })).max(14),
+  foundedYear: optionalCount(1800, new Date().getFullYear(), "Enter the year you started, like 2019"),
+  teamSize: optionalCount(1, 100000, "Enter how many people work with you"),
+  projectsCompleted: optionalCount(1, 10000000, "Enter a whole number, like 350"),
+  credentials: optionalText(300),
+  listings: z.array(listingUrl).max(10, "Add up to 10 links"),
   expectedVersion: z.number().int(),
 });
 
