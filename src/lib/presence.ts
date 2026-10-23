@@ -113,3 +113,20 @@ export function presenceKit(b: KitInput): KitPlatform[] {
     ]),
   ].map((p) => ({ ...p, fields: p.fields.concat({ label: "Foundly profile (optional link)", value: b.profileUrl, hint: `Mentions ${areas[0]} and your services; some platforms allow a second link` }) }));
 }
+
+/**
+ * What Foundly keeps in sync on a connected Google Business Profile: the
+ * description, primary phone and website. Hours and categories stay as the
+ * owner set them on Google, since free-text hours can't be mapped safely.
+ */
+export function googleLocationUpdate(b: KitInput) {
+  const google = presenceKit(b).find((k) => k.key === "google")!;
+  const description = google.fields.find((f) => f.label === "Description")!.value;
+  const body: Record<string, unknown> = { profile: { description }, websiteUri: b.websiteUrl };
+  const mask = ["profile.description", "websiteUri"];
+  if (b.phone) {
+    body.phoneNumbers = { primaryPhone: b.phone };
+    mask.push("phoneNumbers.primaryPhone");
+  }
+  return { body, updateMask: mask.join(",") };
+}

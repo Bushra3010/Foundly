@@ -1,5 +1,6 @@
 import "server-only";
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { decryptSecret, encryptSecret } from "./crypto";
 
 /**
  * "Connect" for listings the owner already has. The owner signs in with the
@@ -8,7 +9,7 @@ import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
  * owner's behalf. Tokens are used once and never stored.
  */
 export type Provider = "google" | "facebook";
-export type Candidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string };
+export type Candidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string; externalId?: string };
 
 const PROVIDERS: Record<Provider, { label: string; configured: () => boolean; envNames: string[] }> = {
   google: { label: "Google", configured: () => Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET), envNames: ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"] },
@@ -60,9 +61,23 @@ export function readState(state: string): { provider: Provider; workspaceId: str
 }
 
 /** Candidates travel from the callback to the picker in a short-lived signed cookie. */
-export function encodeCandidates(c: Candidate[]) {
-  const payload = Buffer.from(JSON.stringify({ c, exp: Date.now() + 15 * 60_000 })).toString("base64url");
+export function encodeCandidates(c: Candidate[], refreshToken?: string) {
+  const payload = Buffer.from(JSON.stringify({ c, t: refreshToken ? encryptSecret(refreshToken) : undefined, exp: Date.now() + 15 * 60_000 })).toString("base64url");
   return `${payload}.${sign(payload)}`;
+}
+export function decodeConnection(value: string | undefined): { candidates: Candidate[]; refreshToken?: string } | null {
+  if (!value) return null;
+  const [payload, sig] = value.split(".");
+  if (!payload || !sig) return null;
+  const want = sign(payload);
+  if (want.length !== sig.length || !timingSafeEqual(Buffer.from(want), Buffer.from(sig))) return null;
+  try {
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString()) as { c: Candidate[]; t?: string; exp: number };
+    if (data.exp <= Date.now()) return null;
+    return { candidates: data.c, refreshToken: data.t ? decryptSecret(data.t) : undefined };
+  } catch {
+    return null;
+  }
 }
 export function decodeCandidates(value: string | undefined): Candidate[] | null {
   if (!value) return null;
@@ -86,13 +101,14 @@ export function googleAuthUrl(state: string) {
   u.searchParams.set("redirect_uri", callbackUrl("google"));
   u.searchParams.set("response_type", "code");
   u.searchParams.set("scope", "https://www.googleapis.com/auth/business.manage");
-  u.searchParams.set("access_type", "online");
-  u.searchParams.set("prompt", "select_account");
+  // Offline access returns a refresh token, so Foundly can keep the listing updated later.
+  u.searchParams.set("access_type", "offline");
+  u.searchParams.set("prompt", "consent select_account");
   u.searchParams.set("state", state);
   return u.toString();
 }
 
-async function googleToken(code: string): Promise<string> {
+async function googleToken(code: string): Promise<{ access: string; refresh?: string }> {
   const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -100,13 +116,14 @@ async function googleToken(code: string): Promise<string> {
     signal: AbortSignal.timeout(10_000),
   });
   if (!res.ok) throw new Error(`Google token exchange failed (${res.status})`);
-  return ((await res.json()) as { access_token: string }).access_token;
+  const data = (await res.json()) as { access_token: string; refresh_token?: string };
+  return { access: data.access_token, refresh: data.refresh_token };
 }
 
-/** Lists the Business Profile locations this Google account manages. */
-export async function googleCandidates(code: string): Promise<Candidate[]> {
+/** Lists the Business Profile locations this Google account manages, plus the refresh token for later syncing. */
+export async function googleCandidates(code: string): Promise<{ candidates: Candidate[]; refreshToken?: string }> {
   const token = await googleToken(code);
-  const h = { Authorization: `Bearer ${token}` };
+  const h = { Authorization: `Bearer ${token.access}` };
   const accRes = await fetch("https://mybusinessaccountmanagement.googleapis.com/v1/accounts", { headers: h, signal: AbortSignal.timeout(10_000) });
   if (!accRes.ok) throw new Error(`Google accounts request failed (${accRes.status}). The Business Profile API must be enabled and approved for this app.`);
   const accounts = ((await accRes.json()) as { accounts?: { name: string }[] }).accounts ?? [];
@@ -120,10 +137,10 @@ export async function googleCandidates(code: string): Promise<Candidate[]> {
     const data = (await res.json()) as { locations?: { name: string; title: string; storefrontAddress?: { locality?: string; addressLines?: string[] }; metadata?: { mapsUri?: string }; websiteUri?: string }[] };
     for (const loc of data.locations ?? []) {
       if (!loc.metadata?.mapsUri) continue;
-      out.push({ platform: "google", title: loc.title, url: loc.metadata.mapsUri, detail: [loc.storefrontAddress?.addressLines?.[0], loc.storefrontAddress?.locality].filter(Boolean).join(", ") || undefined });
+      out.push({ platform: "google", title: loc.title, url: loc.metadata.mapsUri, detail: [loc.storefrontAddress?.addressLines?.[0], loc.storefrontAddress?.locality].filter(Boolean).join(", ") || undefined, externalId: loc.name });
     }
   }
-  return out;
+  return { candidates: out, refreshToken: token.refresh };
 }
 
 // ---------- Facebook Pages + Instagram business accounts ----------
@@ -168,6 +185,6 @@ export async function facebookCandidates(code: string): Promise<Candidate[]> {
   return out;
 }
 
-export async function candidatesFor(p: Provider, code: string) {
-  return p === "google" ? googleCandidates(code) : facebookCandidates(code);
+export async function candidatesFor(p: Provider, code: string): Promise<{ candidates: Candidate[]; refreshToken?: string }> {
+  return p === "google" ? googleCandidates(code) : { candidates: await facebookCandidates(code) };
 }

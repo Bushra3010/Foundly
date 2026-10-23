@@ -20,10 +20,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
   const code = url.searchParams.get("code");
   if (!code) return back("invalid");
   try {
-    const candidates = await candidatesFor(provider as Provider, code);
+    const { candidates, refreshToken } = await candidatesFor(provider as Provider, code);
     if (candidates.length === 0) return back("none");
     const res = back(provider);
-    res.cookies.set(CANDIDATES_COOKIE, encodeCandidates(candidates), { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/app/presence", maxAge: 15 * 60 });
+    res.cookies.set(CANDIDATES_COOKIE, encodeCandidates(candidates, refreshToken), { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/app/presence", maxAge: 15 * 60 });
     return res;
   } catch (err) {
     console.error("[connect]", provider, err);

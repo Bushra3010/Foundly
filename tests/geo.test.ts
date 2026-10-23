@@ -4,6 +4,7 @@ import { businessGraph, businessLlmsText, discoveryFaq, entitySentence, factsFro
 import { getBusiness, publishProfile } from "@/server/business";
 import { listPublishedProfiles } from "@/server/directory";
 import { generateSiteDraft, getPublishedSite, getSite, publishSite } from "@/server/sites";
+import { googleLocationUpdate, presenceKit } from "@/lib/presence";
 import { makeDb, onboard, signUp } from "./helpers";
 
 const facts = {
@@ -86,6 +87,30 @@ describe("GEO helpers", () => {
     expect(geoReadiness({ services: [], serviceAreas: [], hours: [], sitePublished: false, siteCurrent: false, faqCount: 0, profilePublished: false, verified: false, confirmedAt: new Date() }).items.find((i) => i.key === "confirmed")?.done).toBe(true);
     expect(r.items.find((i) => i.key === "google")?.done).toBe(false);
     expect(r.items.find((i) => i.key === "site")?.href).toBe("/app/website");
+  });
+});
+
+describe("presence kit", () => {
+  const kitInput = { ...facts, updatedAt: "2026-10-24T00:00:00Z", websiteUrl: "https://x/s/sharma", profileUrl: "https://x/b/sharma" };
+
+  it("writes the same facts for every platform within each platform's limits", () => {
+    const kit = presenceKit(kitInput);
+    expect(kit.map((k) => k.key).slice(0, 3)).toEqual(["google", "justdial", "bing"]);
+    const google = kit.find((k) => k.key === "google")!;
+    const desc = google.fields.find((f) => f.label === "Description")!;
+    expect(desc.value.length).toBeLessThanOrEqual(750);
+    expect(desc.value).toContain("Sharma Plumbing is a plumber in Pune");
+    const bio = kit.find((k) => k.key === "instagram")!.fields.find((f) => f.label === "Bio")!;
+    expect(bio.value.length).toBeLessThanOrEqual(150);
+    for (const k of kit) expect(k.fields.find((f) => f.label === "Website" || f.label === "Website link" || f.label === "Link")?.value).toBe("https://x/s/sharma");
+  });
+
+  it("maps confirmed facts to a Google Business Profile update with an explicit mask", () => {
+    const { body, updateMask } = googleLocationUpdate(kitInput);
+    expect(updateMask).toBe("profile.description,websiteUri,phoneNumbers.primaryPhone");
+    expect(body.websiteUri).toBe("https://x/s/sharma");
+    expect((body.phoneNumbers as { primaryPhone: string }).primaryPhone).toBe("+91 98765 43210");
+    expect(JSON.stringify(body)).not.toMatch(/rating|price/i);
   });
 });
 

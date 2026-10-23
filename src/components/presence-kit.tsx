@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { addListingAction, linkCandidateAction } from "@/app/app/business/actions";
+import { addListingAction, disconnectGoogleAction, linkCandidateAction, syncGoogleAction } from "@/app/app/business/actions";
 import type { KitField } from "@/lib/presence";
 import { Icon } from "./icon";
 
@@ -64,7 +64,7 @@ export function AddListingForm({ platform }: { platform: string }) {
   );
 }
 
-export type PickerCandidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string };
+export type PickerCandidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string; externalId?: string };
 
 function LinkButton() {
   const { pending } = useFormStatus();
@@ -86,6 +86,7 @@ export function CandidatePicker({ candidates, label }: { candidates: PickerCandi
           <li key={c.url}>
             <form action={action}>
               <input type="hidden" name="url" value={c.url} />
+              {c.externalId && <input type="hidden" name="externalId" value={c.externalId} />}
               <span className="kit-title">
                 <strong>{c.title}</strong>
                 <span>{c.detail ?? c.url.replace(/^https?:\/\//, "")}</span>
@@ -99,5 +100,30 @@ export function CandidatePicker({ candidates, label }: { candidates: PickerCandi
       {state.message && <p className="start-error">{state.message}</p>}
       <p className="kit-hint">Not here? The listing may belong to another account. Log in with that account, or paste the link on the platform&apos;s card below.</p>
     </section>
+  );
+}
+
+function Pending({ idle, busy }: { idle: string; busy: string }) {
+  const { pending } = useFormStatus();
+  return <button type="submit" className="share-btn" disabled={pending}>{pending ? busy : idle}</button>;
+}
+
+/** Status and controls for a Google listing Foundly keeps updated. */
+export function GoogleSyncCard({ connection }: { connection: { siteUrl: string; status: string; lastError: string | null; lastSyncedAt: string | null } }) {
+  const [syncState, sync] = useActionState(syncGoogleAction, {});
+  const [discState, disconnect] = useActionState(disconnectGoogleAction, {});
+  const when = connection.lastSyncedAt ? new Date(connection.lastSyncedAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : null;
+  return (
+    <div className="kit-sync">
+      <span className="kit-title">
+        <strong>Foundly keeps this Google listing updated</strong>
+        <span>
+          {connection.status === "error" ? `Last update failed: ${connection.lastError ?? "unknown error"}` : when ? `Description, phone and website last updated ${when}.` : "Connected. Your details will be pushed the next time you publish or confirm them."}
+        </span>
+        {(syncState.message || discState.message) && <span className={syncState.ok || discState.ok ? "kit-ok" : "start-error"}>{syncState.message ?? discState.message}</span>}
+      </span>
+      <form action={sync}><Pending idle="Update Google now" busy="Updating…" /></form>
+      <form action={disconnect}><Pending idle="Disconnect" busy="…" /></form>
+    </div>
   );
 }

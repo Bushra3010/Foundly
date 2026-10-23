@@ -64,6 +64,13 @@
       "when": 1792785479771,
       "tag": "0008_business_proof_and_listings",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792788520438,
+      "tag": "0009_integrations_last_synced",
+      "breakpoints": true
     }
   ]
 }

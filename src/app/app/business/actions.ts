@@ -11,6 +11,8 @@ import { requireCtx } from "@/lib/auth/session";
 import { businessDetailsSchema, fieldErrors, listingUrl, splitList } from "@/lib/validation";
 import { startClaim, verifyClaim } from "@/server/claims";
 import { addListing, confirmPublicContact, getProfile, publishProfile, unpublishProfile, updateBusinessDetails } from "@/server/business";
+import { decodeConnection } from "@/server/connect";
+import { connectGoogleLocation, disconnectGoogle, syncGoogle, syncGoogleSafe } from "@/server/google-business";
 import { can } from "@/server/context";
 
 function lines(value: FormDataEntryValue | null) {
@@ -133,6 +135,7 @@ export async function confirmFreshAction(): Promise<ActionState> {
     if (profile?.status === "published" && can(ctx, "owner")) await publishProfile(db, ctx);
     revalidatePath("/app", "layout");
     after(() => resubmitBusiness(db, ctx));
+    after(() => syncGoogleSafe(db, ctx));
     return { ok: true, message: "Thanks. Your details are marked as confirmed today." };
   } catch (err) {
     return toActionError(err);
@@ -158,16 +161,49 @@ export async function addListingAction(_prev: ActionState, form: FormData): Prom
 /** Presence kit: link a listing found through the platform's own login. */
 export async function linkCandidateAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const url = String(form.get("url") ?? "");
+  const externalId = String(form.get("externalId") ?? "");
   const parsed = listingUrl.safeParse(url);
   if (!parsed.success) return { ok: false, message: "That listing link looks wrong. Try connecting again." };
   try {
     const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    const jar = await cookies();
+    const conn = decodeConnection(jar.get("foundly_connect")?.value);
+    // Only a candidate that came from this owner's own Google login can be connected for syncing.
+    const chosen = conn?.candidates.find((c) => c.url === parsed.data && c.externalId === externalId);
     await addListing(db, ctx, parsed.data);
-    (await cookies()).delete({ name: "foundly_connect", path: "/app/presence" });
+    if (chosen?.platform === "google" && chosen.externalId && conn?.refreshToken) {
+      await connectGoogleLocation(db, ctx, { locationName: chosen.externalId, mapsUrl: chosen.url, refreshToken: conn.refreshToken });
+      after(() => syncGoogleSafe(db, ctx));
+    }
+    jar.delete({ name: "foundly_connect", path: "/app/presence" });
     revalidatePath("/app", "layout");
     after(() => resubmitBusiness(db, ctx));
   } catch (err) {
     return toActionError(err);
   }
   redirect("/app/presence?connect=linked");
+}
+
+/** "Update Google now": pushes the confirmed facts to the connected listing. */
+export async function syncGoogleAction(): Promise<ActionState> {
+  try {
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await syncGoogle(db, ctx);
+    revalidatePath("/app/presence");
+    return { ok: true, message: "Google Business Profile updated with your current details." };
+  } catch (err) {
+    revalidatePath("/app/presence");
+    return toActionError(err);
+  }
+}
+
+export async function disconnectGoogleAction(): Promise<ActionState> {
+  try {
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await disconnectGoogle(db, ctx);
+    revalidatePath("/app", "layout");
+    return { ok: true, message: "Google disconnected. Your listing stays as it is; Foundly just stops updating it." };
+  } catch (err) {
+    return toActionError(err);
+  }
 }

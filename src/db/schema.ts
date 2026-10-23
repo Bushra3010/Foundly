@@ -797,6 +797,7 @@ export const integrations = pgTable(
     secretEncrypted: text("secret_encrypted").notNull(),
     status: text("status").notNull().default("connected"),
     lastError: text("last_error"),
+    lastSyncedAt: timestamp("last_synced_at", { withTimezone: true }),
     connectedBy: uuid("connected_by").references(() => users.id),
     createdAt: createdAt(),
   },
