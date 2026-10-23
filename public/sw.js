@@ -2,11 +2,11 @@
 // It never caches signed-in pages or API responses.
 const OFFLINE = "/offline.html";
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open("shell-v1").then((c) => c.addAll([OFFLINE, "/icon-192.png"])));
+  e.waitUntil(caches.open("shell-v2").then((c) => c.addAll([OFFLINE, "/icon-192.png"])));
   self.skipWaiting();
 });
 self.addEventListener("activate", (e) => {
-  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== "shell-v1").map((k) => caches.delete(k)))));
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== "shell-v2").map((k) => caches.delete(k)))));
   self.clients.claim();
 });
 self.addEventListener("fetch", (e) => {

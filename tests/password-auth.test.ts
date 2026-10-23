@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { beforeAll, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
 import { memberships, users } from "@/db/schema";
-import { createLoginToken, consumeLoginToken, hasPassword, setPassword, signInWithPassword, signUpWithPassword, userForSession } from "@/server/auth";
+import { accountExists, createLoginToken, consumeLoginToken, hasPassword, resetPasswordWithToken, setPassword, signInWithPassword, signUpWithPassword, userForSession } from "@/server/auth";
 import { AppError } from "@/server/context";
 import { hashPassword, verifyPassword } from "@/server/password";
 import { makeDb } from "./helpers";
@@ -81,5 +81,28 @@ describe("password accounts", () => {
     const token = await createLoginToken(db, "dina@example.com");
     const { isNew } = await consumeLoginToken(db, token);
     expect(isNew).toBe(false);
+  });
+});
+
+describe("password reset", () => {
+  it("sets a new password from a single-use link and signs out other sessions", async () => {
+    const { sessionToken: oldSession } = await signUpWithPassword(db, "fern@example.com", "old-password-1");
+    expect(await accountExists(db, "fern@example.com")).toBe(true);
+    expect(await accountExists(db, "ghost@example.com")).toBe(false);
+
+    const token = await createLoginToken(db, "fern@example.com");
+    await expectCode(resetPasswordWithToken(db, token, "short"), "invalid");
+    const { sessionToken } = await resetPasswordWithToken(db, token, "new-password-2");
+
+    expect(await userForSession(db, oldSession)).toBeNull();
+    expect((await userForSession(db, sessionToken))?.email).toBe("fern@example.com");
+    await expectCode(signInWithPassword(db, "fern@example.com", "old-password-1"), "invalid");
+    await signInWithPassword(db, "fern@example.com", "new-password-2");
+    await expectCode(resetPasswordWithToken(db, token, "another-pass-3"), "invalid");
+  });
+
+  it("refuses a link for an email with no account", async () => {
+    const token = await createLoginToken(db, "nobody-here@example.com");
+    await expectCode(resetPasswordWithToken(db, token, "whatever-pass"), "invalid");
   });
 });

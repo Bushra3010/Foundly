@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 const SESSION_COOKIE = "abgp_session";
-const PASSTHROUGH = /^\/(_next|media|favicon\.ico|icon-|sw\.js|offline\.html)/;
+const PASSTHROUGH = /^\/(_next|media|favicon\.ico|icon-|icon\.png|apple-icon\.png|sw\.js|offline\.html)/;
+const PROTECTED = /^\/(app|onboarding|admin)(\/|$)/;
 
 function rewriteToSite(req: NextRequest, pathname: string, base: string, target: string) {
   const url = req.nextUrl.clone();
@@ -37,7 +38,8 @@ export function proxy(req: NextRequest) {
     return rewriteToSite(req, pathname, "", `/d/${host}${sub}`);
   }
 
-  if ((pathname.startsWith("/app") || pathname.startsWith("/onboarding") || pathname.startsWith("/admin")) && !req.cookies.has(SESSION_COOKIE)) {
+  // Whole path segments only, so files like /apple-icon.png are never caught.
+  if (PROTECTED.test(pathname) && !req.cookies.has(SESSION_COOKIE)) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
     url.search = "";

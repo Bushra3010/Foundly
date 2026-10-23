@@ -5,11 +5,11 @@ import { redirect } from "next/navigation";
 import { getDb } from "@/db";
 import type { ActionState } from "@/lib/actions";
 import { toActionError } from "@/lib/actions";
-import { safeNextPath, sendSignInEmail } from "@/lib/auth/mailer";
+import { safeNextPath, sendPasswordResetEmail } from "@/lib/auth/mailer";
 import { clearSessionCookie, readSessionToken, setSessionCookie } from "@/lib/auth/session";
 import { rateLimit } from "@/lib/rate-limit";
 import { fieldErrors, loginSchema, type FieldErrors } from "@/lib/validation";
-import { consumeLoginToken, contextForUser, createLoginToken, revokeSession, signInWithPassword, signUpWithPassword } from "@/server/auth";
+import { accountExists, consumeLoginToken, contextForUser, createLoginToken, resetPasswordWithToken, revokeSession, signInWithPassword, signUpWithPassword } from "@/server/auth";
 import { getBusiness } from "@/server/business";
 
 export type SignInState = ActionState & { devLink?: string };
@@ -80,37 +80,6 @@ export async function logInAction(_prev: ActionState, form: FormData): Promise<A
   redirect(destination);
 }
 
-export async function requestSignIn(_prev: SignInState, form: FormData): Promise<SignInState> {
-  const values = { email: String(form.get("email") ?? "") };
-  const parsed = loginSchema.safeParse(values);
-  if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
-
-  const h = await headers();
-  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  if (!rateLimit(`login:ip:${ip}`, 10, 15 * 60_000) || !rateLimit(`login:email:${parsed.data.email}`, 5, 15 * 60_000)) {
-    return { ok: false, message: "Too many sign-in requests. Wait 15 minutes and try again.", values };
-  }
-
-  try {
-    const token = await createLoginToken(await getDb(), parsed.data.email);
-    const origin = process.env.APP_URL ?? `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host")}`;
-    const next = safeNextPath(String(form.get("next") ?? ""));
-    const link = `${origin}/auth/verify?token=${encodeURIComponent(token)}${next ? `&next=${encodeURIComponent(next)}` : ""}`;
-    const { delivered } = await sendSignInEmail({ to: parsed.data.email, link });
-    return {
-      ok: true,
-      message: delivered
-        ? `We sent a sign-in link to ${parsed.data.email}. It works once and expires in 15 minutes.`
-        : "Your sign-in link is ready below. It works once and expires in 15 minutes.",
-      // Only shown when no mail provider is configured in development.
-      devLink: !delivered && process.env.NODE_ENV !== "production" ? link : undefined,
-      values,
-    };
-  } catch (err) {
-    return toActionError(err, values);
-  }
-}
-
 export async function completeSignIn(_prev: ActionState, form: FormData): Promise<ActionState> {
   const token = String(form.get("token") ?? "");
   let destination = "/app";
@@ -134,4 +103,50 @@ export async function signOut() {
   if (token) await revokeSession(await getDb(), token);
   await clearSessionCookie();
   redirect("/login");
+}
+
+/**
+ * Step 1 of a reset: email a single-use link. The reply is the same whether or
+ * not the account exists, so the form can't be used to discover accounts.
+ */
+export async function requestPasswordResetAction(_prev: SignInState, form: FormData): Promise<SignInState> {
+  const values = { email: String(form.get("email") ?? "") };
+  const parsed = loginSchema.safeParse(values);
+  if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
+  const ip = await clientIp();
+  if (!rateLimit(`reset:ip:${ip}`, 10, 15 * 60_000) || !rateLimit(`reset:email:${parsed.data.email}`, 3, 15 * 60_000)) {
+    return { ok: false, message: "Too many reset requests. Wait 15 minutes and try again.", values };
+  }
+  const sent = { ok: true, message: `If ${parsed.data.email} has a Foundly account, a reset link is on its way. It works once and expires in 15 minutes.`, values };
+  try {
+    const db = await getDb();
+    if (!(await accountExists(db, parsed.data.email))) return sent;
+    const token = await createLoginToken(db, parsed.data.email);
+    const h = await headers();
+    const origin = process.env.APP_URL ?? `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host")}`;
+    const link = `${origin}/reset-password?token=${encodeURIComponent(token)}`;
+    const { delivered } = await sendPasswordResetEmail({ to: parsed.data.email, link });
+    return { ...sent, devLink: !delivered && process.env.NODE_ENV !== "production" ? link : undefined };
+  } catch (err) {
+    console.error(err);
+    return { ok: false, message: "We couldn't send the email right now. Try again in a few minutes.", values };
+  }
+}
+
+/** Step 2: the link's page posts the token with the new password. */
+export async function resetPasswordAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const token = String(form.get("token") ?? "");
+  const password = String(form.get("password") ?? "");
+  const confirm = String(form.get("confirm") ?? "");
+  if (password.length < 8) return { ok: false, fieldErrors: { password: ["Use at least 8 characters"] } };
+  if (password !== confirm) return { ok: false, fieldErrors: { confirm: ["The two passwords don't match"] } };
+  let destination: string;
+  try {
+    const { userId, sessionToken } = await resetPasswordWithToken(await getDb(), token, password);
+    await setSessionCookie(sessionToken);
+    destination = await destinationFor(userId, null);
+  } catch (err) {
+    return toActionError(err);
+  }
+  redirect(destination);
 }

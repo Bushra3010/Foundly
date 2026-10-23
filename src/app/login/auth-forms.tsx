@@ -5,8 +5,7 @@ import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
 import type { ActionState } from "@/lib/actions";
-import { logInAction, signUpAction } from "./actions";
-import { LoginForm as EmailLinkForm } from "./login-form";
+import { logInAction, requestPasswordResetAction, resetPasswordAction, signUpAction } from "./actions";
 
 function Submit({ label, pending }: { label: string; pending: string }) {
   const { pending: busy } = useFormStatus();
@@ -90,27 +89,62 @@ export function SignUpForm({ next }: { next?: string }) {
 
 export function LogInForm({ next }: { next?: string }) {
   const [state, action] = useActionState(logInAction, {});
-  const [linkMode, setLinkMode] = useState(false);
   const e = state.fieldErrors ?? {};
-
-  if (linkMode) {
-    return (
-      <div className="start-form">
-        <p className="start-note">Forgot your password? We’ll email you a one-time link to sign in. You can set a new password in Settings.</p>
-        <EmailLinkForm next={next} />
-        <button type="button" className="start-link" onClick={() => setLinkMode(false)}>Back to password</button>
-      </div>
-    );
-  }
-
   return (
     <form action={action} className="start-form" noValidate>
       {next && <input type="hidden" name="next" value={next} />}
       <EmailField defaultValue={state.values?.email} error={e.email?.[0]} autoFocus />
       <PasswordField autoComplete="current-password" error={e.password?.[0]} />
-      <button type="button" className="start-forgot" onClick={() => setLinkMode(true)}>Forgot password?</button>
+      <Link href="/forgot-password" className="start-forgot">Forgot password?</Link>
       <Message state={state} />
       <Submit label="Log in" pending="Logging in…" />
+    </form>
+  );
+}
+
+export function ForgotPasswordForm() {
+  const [state, action] = useActionState(requestPasswordResetAction, {});
+  const e = state.fieldErrors ?? {};
+  if (state.ok) {
+    return (
+      <div className="start-sent">
+        <span className="start-sent-icon"><Icon name="leads" size={24} /></span>
+        <strong>Check your email</strong>
+        <p>{state.message}</p>
+        {state.devLink && (
+          <a className="start-button" href={state.devLink}>Open reset link (development only) <Icon name="arrow" size={18} /></a>
+        )}
+        <Link href="/login" className="start-link">Back to log in</Link>
+      </div>
+    );
+  }
+  return (
+    <form action={action} className="start-form" noValidate>
+      <EmailField defaultValue={state.values?.email} error={e.email?.[0]} autoFocus />
+      <Message state={state} />
+      <Submit label="Send reset link" pending="Sending…" />
+    </form>
+  );
+}
+
+export function ResetPasswordForm({ token }: { token: string }) {
+  const [state, action] = useActionState(resetPasswordAction, {});
+  const e = state.fieldErrors ?? {};
+  return (
+    <form action={action} className="start-form" noValidate>
+      <input type="hidden" name="token" value={token} />
+      <PasswordField autoComplete="new-password" label="New password" error={e.password?.[0]} hint="At least 8 characters" />
+      <label className="start-field" htmlFor="confirm">
+        <span className="start-label">Confirm new password</span>
+        <input id="confirm" name="confirm" type="password" autoComplete="new-password" required aria-invalid={e.confirm ? true : undefined} aria-describedby={e.confirm ? "confirm-error" : undefined} />
+        {e.confirm && <span className="start-error" id="confirm-error">{e.confirm[0]}</span>}
+      </label>
+      {state.message && (
+        <p className="start-message err" role="alert">
+          {state.message} <Link href="/forgot-password">Get a new link</Link>
+        </p>
+      )}
+      <Submit label="Save new password" pending="Saving…" />
     </form>
   );
 }

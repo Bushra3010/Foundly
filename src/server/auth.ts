@@ -139,6 +139,34 @@ export async function setPassword(db: Db, userId: string, newPassword: string, c
   await db.update(users).set({ passwordHash: await hashPassword(newPassword) }).where(eq(users.id, userId));
 }
 
+/** True when an account exists for this email. Used only to decide whether to send a reset email. */
+export async function accountExists(db: Db, email: string): Promise<boolean> {
+  const [row] = await db.select({ id: users.id }).from(users).where(eq(users.email, email));
+  return Boolean(row);
+}
+
+/**
+ * Completes a password reset from an emailed link. The token is single use and
+ * short lived. Every existing session is signed out, then a fresh one is made.
+ */
+export async function resetPasswordWithToken(db: Db, raw: string, newPassword: string) {
+  checkPasswordShape(newPassword);
+  const passwordHash = await hashPassword(newPassword);
+  return db.transaction(async (tx) => {
+    const [token] = await tx
+      .update(loginTokens)
+      .set({ usedAt: new Date() })
+      .where(and(eq(loginTokens.tokenHash, hashToken(raw)), isNull(loginTokens.usedAt), gt(loginTokens.expiresAt, new Date())))
+      .returning();
+    if (!token) throw new AppError("invalid", "This reset link has expired or was already used. Request a new one.");
+    const [user] = await tx.update(users).set({ passwordHash }).where(eq(users.email, token.email)).returning({ id: users.id });
+    if (!user) throw new AppError("invalid", "This reset link has expired or was already used. Request a new one.");
+    await tx.update(sessions).set({ revokedAt: new Date() }).where(and(eq(sessions.userId, user.id), isNull(sessions.revokedAt)));
+    const sessionToken = await createSession(tx, user.id);
+    return { userId: user.id, sessionToken };
+  });
+}
+
 export type SessionUser = { id: string; email: string; name: string | null };
 
 export async function userForSession(db: Db, raw: string): Promise<SessionUser | null> {
