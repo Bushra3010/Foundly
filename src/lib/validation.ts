@@ -20,7 +20,7 @@ const optionalCount = (min: number, max: number, message: string) =>
     .refine((n) => n == null || (Number.isInteger(n) && n >= min && n <= max), message)
     .transform((n) => n ?? null);
 
-const listingUrl = z
+export const listingUrl = z
   .string()
   .trim()
   .transform((s) => (/^https?:\/\//i.test(s) ? s : `https://${s}`))

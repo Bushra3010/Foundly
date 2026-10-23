@@ -6,9 +6,9 @@ import { resubmitBusiness } from "@/server/indexnow";
 import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
-import { businessDetailsSchema, fieldErrors, splitList } from "@/lib/validation";
+import { businessDetailsSchema, fieldErrors, listingUrl, splitList } from "@/lib/validation";
 import { startClaim, verifyClaim } from "@/server/claims";
-import { confirmPublicContact, getProfile, publishProfile, unpublishProfile, updateBusinessDetails } from "@/server/business";
+import { addListing, confirmPublicContact, getProfile, publishProfile, unpublishProfile, updateBusinessDetails } from "@/server/business";
 import { can } from "@/server/context";
 
 function lines(value: FormDataEntryValue | null) {
@@ -134,5 +134,21 @@ export async function confirmFreshAction(): Promise<ActionState> {
     return { ok: true, message: "Thanks. Your details are marked as confirmed today." };
   } catch (err) {
     return toActionError(err);
+  }
+}
+
+/** Presence kit: the owner pastes the link of a listing they just created. */
+export async function addListingAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const values = { url: String(form.get("url") ?? "") };
+  const parsed = listingUrl.safeParse(values.url);
+  if (!parsed.success) return { ok: false, fieldErrors: { url: ["Enter a web address like instagram.com/yourbusiness"] }, values };
+  try {
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await addListing(db, ctx, parsed.data);
+    revalidatePath("/app", "layout");
+    after(() => resubmitBusiness(db, ctx));
+    return { ok: true, message: "Linked. It now appears on your website and profile." };
+  } catch (err) {
+    return toActionError(err, values);
   }
 }

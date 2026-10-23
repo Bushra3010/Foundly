@@ -1449,3 +1449,39 @@
 .geo-fresh { display: flex; align-items: center; gap: 14px; margin-top: 14px; padding: 12px 14px; border-radius: 14px; border: 1px dashed var(--d-line); }
 .geo-fresh .share-btn { flex-shrink: 0; }
 @media (max-width: 640px) { .geo-fresh { flex-direction: column; align-items: stretch; } }
+
+/* ---------- Presence kit ---------- */
+.kit-progress { margin-bottom: 18px; }
+.kit-progress-bar { height: 8px; border-radius: 8px; background: var(--d-soft); overflow: hidden; }
+.kit-progress-bar span { display: block; height: 100%; border-radius: 8px; background: linear-gradient(90deg, #a4cd48, #6f8a4f); }
+.kit-progress p { margin: 10px 0 0; font-size: 14.5px; color: var(--d-muted); }
+.kit-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.kit-card { border-radius: 20px; background: var(--d-card); border: 1px solid var(--d-line); box-shadow: var(--d-shadow); }
+.kit-card.done { border-color: #b9d7b9; }
+.kit-card summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 18px 20px; }
+.kit-card summary::-webkit-details-marker { display: none; }
+.kit-num { width: 32px; height: 32px; flex-shrink: 0; display: grid; place-items: center; border-radius: 10px; background: var(--d-soft); font-weight: 700; font-size: 14px; }
+.kit-card.done .kit-num { background: #e3f1e3; color: #2f6b3b; }
+.kit-title { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.kit-title strong { font-size: 16px; font-weight: 700; }
+.kit-title span { font-size: 13.5px; color: var(--d-muted); }
+.kit-create { background: var(--d-ink); color: var(--d-bg); border-color: var(--d-ink); }
+.kit-body { padding: 0 20px 20px; border-top: 1px solid var(--d-line); }
+.kit-steps { margin: 16px 0 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14.5px; }
+.kit-fields { display: grid; gap: 12px; margin-top: 18px; }
+.kit-field { display: grid; gap: 6px; }
+.kit-field-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.kit-label { font-size: 13px; font-weight: 700; color: var(--d-muted); display: inline-flex; gap: 8px; align-items: baseline; }
+.kit-label em { font-style: normal; font-weight: 600; font-size: 12px; opacity: .8; }
+.kit-copy { min-height: 34px; padding: 0 12px; font-size: 13px; }
+.kit-value { margin: 0; padding: 12px 14px; border-radius: 12px; background: var(--d-soft); border: 1px solid var(--d-line); font: inherit; font-size: 14.5px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+.kit-inline { display: block; }
+.kit-hint { font-size: 12.5px; color: var(--d-muted); }
+.kit-link-form { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--d-line); display: grid; gap: 8px; }
+.kit-link-row { display: flex; gap: 8px; }
+.app-shell .app-main .kit-link-row input { flex: 1; min-width: 0; }
+.kit-ok { font-size: 13.5px; font-weight: 600; color: #2f6b3b; }
+@media (max-width: 640px) { .kit-card summary { flex-wrap: wrap; } .kit-link-row { flex-direction: column; } }
+.kit-toggle { color: var(--d-muted); transition: transform .2s; }
+.kit-card details[open] .kit-toggle { transform: rotate(180deg); }
+.kit-actions { padding-top: 16px; }

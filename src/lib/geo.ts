@@ -71,6 +71,8 @@ export const LISTING_SITES = [
   { key: "linkedin", label: "LinkedIn", match: /linkedin\.com/i, create: "https://www.linkedin.com/company/setup/new/", why: "Confirms the business and its people" },
 ] as const;
 
+export type ListingSiteKey = (typeof LISTING_SITES)[number]["key"];
+
 export function listingLabel(url: string): string {
   const site = LISTING_SITES.find((l) => l.match.test(url));
   if (site) return site.label;
@@ -114,7 +116,7 @@ export function entitySentence(f: EntityFacts): string {
   return out;
 }
 
-function listToText(items: string[]): string {
+export function listToText(items: string[]): string {
   if (items.length <= 1) return items.join("");
   return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 }
@@ -403,14 +405,14 @@ export function geoReadiness(input: {
       label: "Link your Google Business Profile",
       why: "Gemini and Google read it first for local businesses",
       done: (input.listings ?? []).some((u) => LISTING_SITES[0].match.test(u)),
-      href: "/app/business#listings",
+      href: "/app/presence",
     },
     {
       key: "listings",
       label: "Be listed in 2 more places with the same details",
       why: "AI trusts facts it sees on several sites",
       done: (input.listings ?? []).filter((u) => !LISTING_SITES[0].match.test(u)).length >= 2,
-      href: "/app/business#listings",
+      href: "/app/presence",
     },
     {
       key: "site",

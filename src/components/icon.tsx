@@ -10,6 +10,7 @@ const paths: Record<string, string> = {
   visibility:
     "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12ZM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z",
   improve: "m4 17 6-6 4 4 7-10m-6 0h6v6",
+  presence: "M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Zm0-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
   leads: "M3 5h18v14H3V5Zm0 1 9 7 9-7",
   reports: "M5 3h14v18H5V3Zm4 5h6m-6 4h6m-6 4h3",
   settings: "M4 7h16M4 17h16M8 4v6m8 4v6",

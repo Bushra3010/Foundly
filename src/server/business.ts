@@ -104,6 +104,14 @@ export async function confirmReview(db: Db, ctx: Ctx, showAddress: boolean) {
   });
 }
 
+/** Records where else the business is listed. Duplicates are ignored. */
+export async function addListing(db: Db, ctx: Ctx, url: string) {
+  const b = await requireBusiness(db, ctx);
+  if (b.listings.includes(url)) return b;
+  if (b.listings.length >= 10) throw new AppError("invalid", "You can add up to 10 listing links. Remove one in My Business first.");
+  return patch(db, ctx, { listings: [...b.listings, url] });
+}
+
 export async function completeOnboarding(db: Db, ctx: Ctx) {
   return patch(db, ctx, { onboardingCompletedAt: new Date() }, false);
 }

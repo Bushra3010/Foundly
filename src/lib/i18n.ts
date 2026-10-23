@@ -14,6 +14,7 @@ const dict = {
   "nav.website": { en: "My Website", hi: "मेरी वेबसाइट" },
   "nav.visibility": { en: "AI Visibility", hi: "AI में दिखना" },
   "nav.improve": { en: "Improve My Business", hi: "व्यवसाय सुधारें" },
+  "nav.presence": { en: "Get listed", hi: "लिस्टिंग" },
   "nav.leads": { en: "Leads", hi: "पूछताछ" },
   "nav.reports": { en: "Reports", hi: "रिपोर्ट" },
   "nav.settings": { en: "Settings", hi: "सेटिंग्स" },
