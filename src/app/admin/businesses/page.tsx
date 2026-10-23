@@ -10,7 +10,7 @@ export default async function AdminBusinesses({ searchParams }: { searchParams: 
   const rows = await searchBusinesses(await getDb(), q.slice(0, 80));
   return (
     <>
-      <PageHeader title="Businesses" description="Moderation changes need a reason and are recorded." />
+      <PageHeader icon="business" title="Businesses" description="Moderation changes need a reason and are recorded." />
       <form className="mb-4 flex gap-2" role="search">
         <label htmlFor="q" className="sr-only">
           Search

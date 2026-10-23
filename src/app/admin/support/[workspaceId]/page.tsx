@@ -13,7 +13,7 @@ export default async function SupportPage({ params }: { params: Promise<{ worksp
   if (!grant) {
     return (
       <>
-        <PageHeader title="Support access" description={`Workspace ${workspaceId}`} />
+        <PageHeader icon="shield" title="Support access" description={`Workspace ${workspaceId}`} />
         <Card className="max-w-lg">
           <p className="mb-3 text-sm text-muted">Access is read-only, time-limited, and recorded with your reason. Lead messages and secrets are never shown.</p>
           <ActionForm action={grantAccessAction} submitLabel="Open support view">
@@ -28,7 +28,7 @@ export default async function SupportPage({ params }: { params: Promise<{ worksp
   const v = await supportView(db, admin, workspaceId);
   return (
     <>
-      <PageHeader title={v.business?.name ?? "Workspace"} description={`Support view · expires ${grant.expiresAt.toLocaleString("en-IN")} · reason: ${grant.reason}`} />
+      <PageHeader icon="shield" title={v.business?.name ?? "Workspace"} description={`Support view · expires ${grant.expiresAt.toLocaleString("en-IN")} · reason: ${grant.reason}`} />
       <Notice tone="warn">Read-only. Everything you open here is logged.</Notice>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <Card>

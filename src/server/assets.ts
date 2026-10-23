@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { and, desc, eq } from "drizzle-orm";
 import type { Db } from "@/db";
@@ -24,10 +24,50 @@ function storageRoot() {
   return process.env.UPLOADS_DIR || path.join(process.cwd(), ".data", "uploads");
 }
 
-function objectPath(workspaceId: string, id: string) {
-  // Ids are server-generated UUIDs; validate anyway before touching the filesystem.
+function objectKey(workspaceId: string, id: string) {
+  // Ids are server-generated UUIDs; validate anyway before touching storage.
   if (!/^[0-9a-f-]{36}$/.test(workspaceId) || !/^[0-9a-f-]{36}$/.test(id)) throw new AppError("invalid", "Bad asset id");
-  return path.join(storageRoot(), workspaceId, id);
+  return `${workspaceId}/${id}`;
+}
+
+/**
+ * Serverless hosts have no persistent disk. On Netlify, photos go to Netlify
+ * Blobs; everywhere else they go to UPLOADS_DIR (or .data/uploads locally).
+ */
+function onNetlify() {
+  return Boolean(process.env.NETLIFY_BLOBS_CONTEXT || process.env.NETLIFY === "true");
+}
+
+async function blobStore() {
+  const { getStore } = await import("@netlify/blobs");
+  return getStore({ name: "uploads", consistency: "strong" });
+}
+
+async function putObject(key: string, bytes: Buffer, contentType: string) {
+  if (onNetlify()) {
+    const ab = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
+    await (await blobStore()).set(key, ab, { metadata: { contentType } });
+    return;
+  }
+  const p = path.join(storageRoot(), key);
+  await mkdir(path.dirname(p), { recursive: true });
+  await writeFile(p, bytes);
+}
+
+async function getObject(key: string): Promise<Buffer | null> {
+  if (onNetlify()) {
+    const data = await (await blobStore()).get(key, { type: "arrayBuffer" });
+    return data ? Buffer.from(data) : null;
+  }
+  return readFile(path.join(storageRoot(), key)).catch(() => null);
+}
+
+async function deleteObject(key: string) {
+  if (onNetlify()) {
+    await (await blobStore()).delete(key);
+    return;
+  }
+  await unlink(path.join(storageRoot(), key)).catch(() => undefined);
 }
 
 export async function saveUpload(db: Db, ctx: Ctx, file: { bytes: Buffer; name: string }, rightsConfirmed: boolean) {
@@ -49,9 +89,7 @@ export async function saveUpload(db: Db, ctx: Ctx, file: { bytes: Buffer; name: 
       originalName: file.name.slice(0, 200),
     })
     .returning();
-  const p = objectPath(ctx.workspaceId, row.id);
-  await mkdir(path.dirname(p), { recursive: true });
-  await writeFile(p, file.bytes);
+  await putObject(objectKey(ctx.workspaceId, row.id), file.bytes, contentType);
   await audit(db, ctx, "asset.uploaded", row.id, { bytes: row.bytes, contentType });
   return row;
 }
@@ -65,12 +103,14 @@ export async function readAsset(db: Db, id: string) {
   if (!/^[0-9a-f-]{36}$/.test(id)) return null;
   const [row] = await db.select().from(assets).where(eq(assets.id, id));
   if (!row) return null;
-  return { row, bytes: await readFile(objectPath(row.workspaceId, row.id)) };
+  const bytes = await getObject(objectKey(row.workspaceId, row.id));
+  return bytes ? { row, bytes } : null;
 }
 
 export async function deleteAsset(db: Db, ctx: Ctx, id: string) {
   requireRole(ctx, "editor");
-  await db.delete(assets).where(and(eq(assets.id, id), eq(assets.workspaceId, ctx.workspaceId)));
+  const [row] = await db.delete(assets).where(and(eq(assets.id, id), eq(assets.workspaceId, ctx.workspaceId))).returning();
+  if (row) await deleteObject(objectKey(row.workspaceId, row.id));
 }
 
 export function assetUrl(id: string) {

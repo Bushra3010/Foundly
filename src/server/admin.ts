@@ -8,12 +8,14 @@ import {
   customDomains,
   jobs,
   leads,
+  memberships,
   monitoringRuns,
   observations,
   ownershipClaims,
   sites,
   subscriptions,
   supportGrants,
+  users,
   workspaces,
 } from "@/db/schema";
 import { isPlatformAdmin } from "@/lib/admin";
@@ -59,6 +61,47 @@ export async function overview(db: Db) {
     db.select({ plan: subscriptions.plan, n: count() }).from(subscriptions).groupBy(subscriptions.plan),
   ]);
   return { workspaces: ws.n, published: published.n, failedRuns: failedRuns.n, failedAudits: failedAudits.n, failedJobs: failedJobs.n, providerHealth, pendingDomains: pendingDomains.n, disputes: disputes.n, plans };
+}
+
+/** People and growth at a glance for the admin home. */
+export async function userStats(db: Db) {
+  const week = new Date(Date.now() - 7 * 86_400_000);
+  const [[total], [recent], [withPassword], [biz], [onboarded], [newLeads]] = await Promise.all([
+    db.select({ n: count() }).from(users),
+    db.select({ n: count() }).from(users).where(gte(users.createdAt, week)),
+    db.select({ n: count() }).from(users).where(sql`${users.passwordHash} is not null`),
+    db.select({ n: count() }).from(businesses),
+    db.select({ n: count() }).from(businesses).where(sql`${businesses.onboardingCompletedAt} is not null`),
+    db.select({ n: count() }).from(leads).where(gte(leads.createdAt, week)),
+  ]);
+  return { users: total.n, signups7d: recent.n, withPassword: withPassword.n, businesses: biz.n, onboarded: onboarded.n, leads7d: newLeads.n };
+}
+
+/** Accounts with the business they own, newest first. Never returns password hashes. */
+export async function listUsers(db: Db, q: string, limit = 100) {
+  const pattern = `%${q.replace(/[%_\\]/g, (c) => `\\${c}`)}%`;
+  return db
+    .select({
+      id: users.id,
+      email: users.email,
+      createdAt: users.createdAt,
+      hasPassword: sql<boolean>`${users.passwordHash} is not null`,
+      workspaceId: memberships.workspaceId,
+      role: memberships.role,
+      business: businesses.name,
+      city: businesses.city,
+      onboarded: sql<boolean>`${businesses.onboardingCompletedAt} is not null`,
+      plan: subscriptions.plan,
+      live: sql<boolean>`${sites.publishedVersionId} is not null`,
+    })
+    .from(users)
+    .leftJoin(memberships, eq(memberships.userId, users.id))
+    .leftJoin(businesses, eq(businesses.workspaceId, memberships.workspaceId))
+    .leftJoin(subscriptions, eq(subscriptions.workspaceId, memberships.workspaceId))
+    .leftJoin(sites, eq(sites.workspaceId, memberships.workspaceId))
+    .where(q ? or(ilike(users.email, pattern), ilike(businesses.name, pattern), ilike(businesses.city, pattern)) : undefined)
+    .orderBy(desc(users.createdAt))
+    .limit(limit);
 }
 
 export async function searchBusinesses(db: Db, q: string) {

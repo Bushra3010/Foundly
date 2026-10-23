@@ -8,7 +8,7 @@ export default async function AdminClaims() {
   const rows = await listClaimsForReview(await getDb());
   return (
     <>
-      <PageHeader title="Ownership claims" description="Disputed claims and manual-review requests. A duplicate claim never replaces an existing owner automatically." />
+      <PageHeader icon="shield" title="Ownership claims" description="Disputed claims and manual-review requests. A duplicate claim never replaces an existing owner automatically." />
       {rows.length === 0 ? (
         <EmptyState title="Nothing to review" />
       ) : (

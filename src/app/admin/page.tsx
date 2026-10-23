@@ -1,17 +1,22 @@
 import Link from "next/link";
 import { ActionForm } from "@/components/action-form";
-import { Card, PageHeader } from "@/components/ui";
+import { Badge, Card, PageHeader } from "@/components/ui";
+import { Icon } from "@/components/icon";
 import { getDb } from "@/db";
-import { failedWork, overview, recentAudit } from "@/server/admin";
+import { failedWork, listUsers, overview, recentAudit, userStats } from "@/server/admin";
 import { ADAPTERS, providerState } from "@/server/monitoring/registry";
 import { resumeRunAction } from "./actions";
 
 export default async function AdminHome() {
   const db = await getDb();
-  const [o, work, events] = await Promise.all([overview(db), failedWork(db), recentAudit(db, 40)]);
-  const stats: [string, number][] = [
-    ["Workspaces", o.workspaces],
-    ["Live websites", o.published],
+  const [o, work, events, people, latest] = await Promise.all([overview(db), failedWork(db), recentAudit(db, 40), userStats(db), listUsers(db, "", 6)]);
+  const growth = [
+    { label: "Users", value: people.users, detail: `${people.signups7d} new this week`, icon: "workspaces", tone: "lilac" },
+    { label: "Businesses set up", value: people.onboarded, detail: `${people.businesses - people.onboarded} still onboarding`, icon: "business", tone: "peach" },
+    { label: "Live websites", value: o.published, detail: `${o.workspaces} workspaces in total`, icon: "website", tone: "sage" },
+    { label: "Enquiries this week", value: people.leads7d, detail: "Across all businesses", icon: "leads", tone: "amber" },
+  ];
+  const health: [string, number][] = [
     ["Failed checks (24h)", o.failedRuns],
     ["Failed audits (24h)", o.failedAudits],
     ["Failed generation jobs", o.failedJobs],
@@ -20,17 +25,56 @@ export default async function AdminHome() {
   ];
   return (
     <>
-      <PageHeader title="Overview" />
-      <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        {stats.map(([k, v]) => (
-          <li key={k}>
-            <Card>
-              <p className="text-sm text-muted">{k}</p>
-              <p className="text-2xl font-bold">{v}</p>
-            </Card>
-          </li>
+      <PageHeader icon="shield" title="Admin overview" description="Who is signing up, what they've built, and anything that needs attention." />
+      <section className="dash-kpis admin-kpis" aria-label="Growth">
+        {growth.map((g) => (
+          <div key={g.label} className="dash-kpi">
+            <span className={`dash-kpi-icon ${g.tone}`}><Icon name={g.icon} size={19} /></span>
+            <span className="dash-kpi-label">{g.label}</span>
+            <strong className="dash-kpi-value">{g.value}</strong>
+            <span className="dash-kpi-detail">{g.detail}</span>
+          </div>
         ))}
-      </ul>
+      </section>
+
+      <div className="dash-lower admin-lower">
+        <section className="dash-panel" aria-labelledby="latest-signups">
+          <div className="dash-panel-head">
+            <h2 id="latest-signups">Latest sign-ups</h2>
+            <Link href="/admin/users">All users <Icon name="arrow" size={13} /></Link>
+          </div>
+          {latest.length === 0 ? (
+            <p className="dash-empty"><span>No sign-ups yet.</span></p>
+          ) : (
+            <ul className="dash-activity">
+              {latest.map((u) => (
+                <li key={`${u.id}-${u.workspaceId ?? ""}`}>
+                  <span className="admin-avatar" aria-hidden="true">{u.email.slice(0, 1).toUpperCase()}</span>
+                  <span className="dash-activity-text">
+                    {u.email}
+                    <span className="admin-sub">{u.business ?? "Not set up yet"}</span>
+                  </span>
+                  {u.live ? <Badge tone="ok">Live</Badge> : u.onboarded ? <Badge tone="info">Set up</Badge> : <Badge tone="warn">Onboarding</Badge>}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+        <section className="dash-panel" aria-labelledby="health">
+          <div className="dash-panel-head">
+            <h2 id="health">System health</h2>
+            <span>{health.every(([, n]) => n === 0) ? "All clear" : "Needs a look"}</span>
+          </div>
+          <ul className="admin-health">
+            {health.map(([k, v]) => (
+              <li key={k} className={v > 0 ? "warn" : ""}>
+                <span>{k}</span>
+                <strong>{v}</strong>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
         <Card>
