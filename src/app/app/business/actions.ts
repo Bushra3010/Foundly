@@ -1,5 +1,7 @@
 "use server";
 
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { resubmitBusiness } from "@/server/indexnow";
@@ -151,4 +153,21 @@ export async function addListingAction(_prev: ActionState, form: FormData): Prom
   } catch (err) {
     return toActionError(err, values);
   }
+}
+
+/** Presence kit: link a listing found through the platform's own login. */
+export async function linkCandidateAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const url = String(form.get("url") ?? "");
+  const parsed = listingUrl.safeParse(url);
+  if (!parsed.success) return { ok: false, message: "That listing link looks wrong. Try connecting again." };
+  try {
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    await addListing(db, ctx, parsed.data);
+    (await cookies()).delete({ name: "foundly_connect", path: "/app/presence" });
+    revalidatePath("/app", "layout");
+    after(() => resubmitBusiness(db, ctx));
+  } catch (err) {
+    return toActionError(err);
+  }
+  redirect("/app/presence?connect=linked");
 }

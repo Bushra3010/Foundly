@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { addListingAction } from "@/app/app/business/actions";
+import { addListingAction, linkCandidateAction } from "@/app/app/business/actions";
 import type { KitField } from "@/lib/presence";
 import { Icon } from "./icon";
 
@@ -61,5 +61,43 @@ export function AddListingForm({ platform }: { platform: string }) {
       {state.fieldErrors?.url && <span className="start-error">{state.fieldErrors.url[0]}</span>}
       {state.message && <span className={state.ok ? "kit-ok" : "start-error"}>{state.message}</span>}
     </form>
+  );
+}
+
+export type PickerCandidate = { platform: "google" | "facebook" | "instagram"; title: string; url: string; detail?: string };
+
+function LinkButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" className="share-btn kit-create" disabled={pending}>
+      {pending ? "Linking…" : "Link this"}
+    </button>
+  );
+}
+
+/** After the platform login: the listings that account manages, one click to link. */
+export function CandidatePicker({ candidates, label }: { candidates: PickerCandidate[]; label: string }) {
+  const [state, action] = useActionState(linkCandidateAction, {});
+  return (
+    <section className="kit-picker" aria-labelledby="picker-title">
+      <h2 id="picker-title">Found on {label}. Which one is this business?</h2>
+      <ul>
+        {candidates.map((c) => (
+          <li key={c.url}>
+            <form action={action}>
+              <input type="hidden" name="url" value={c.url} />
+              <span className="kit-title">
+                <strong>{c.title}</strong>
+                <span>{c.detail ?? c.url.replace(/^https?:\/\//, "")}</span>
+              </span>
+              <span className="kit-pill">{c.platform === "instagram" ? "Instagram" : c.platform === "facebook" ? "Facebook Page" : "Google Business Profile"}</span>
+              <LinkButton />
+            </form>
+          </li>
+        ))}
+      </ul>
+      {state.message && <p className="start-error">{state.message}</p>}
+      <p className="kit-hint">Not here? The listing may belong to another account. Log in with that account, or paste the link on the platform&apos;s card below.</p>
+    </section>
   );
 }

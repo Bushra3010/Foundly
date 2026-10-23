@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { Icon } from "@/components/icon";
-import { AddListingForm, CopyField } from "@/components/presence-kit";
+import { AddListingForm, CandidatePicker, CopyField } from "@/components/presence-kit";
+import { isPlatformAdmin } from "@/lib/admin";
+import { decodeCandidates, providerConfigured, providerEnvNames, type Provider } from "@/server/connect";
 import { Notice, PageHeader } from "@/components/ui";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
@@ -18,7 +21,20 @@ export const metadata = { title: "Get listed" };
  * limits, deep links, progress) and leaves the owner only the steps platforms
  * require a human for: signing in, verification codes and the final click.
  */
-export default async function PresencePage() {
+const CONNECT_MESSAGES: Record<string, { tone: "ok" | "warn" | "err" | "info"; text: string }> = {
+  linked: { tone: "ok", text: "Linked. It now appears on your website and profile, and search engines have been told." },
+  none: { tone: "warn", text: "That account doesn't manage any listings yet. Create one with the steps below, or log in with the account that owns it." },
+  denied: { tone: "info", text: "No problem, nothing was connected. You can paste the link instead." },
+  failed: { tone: "err", text: "We couldn't read your listings from that account right now. Paste the link instead, or try again later." },
+  invalid: { tone: "err", text: "That connection attempt expired. Start again from the Connect button." },
+  unavailable: { tone: "info", text: "Connecting isn't switched on yet. Paste the link instead." },
+};
+
+/** Which platforms get a Connect button, and through which login. */
+const CONNECT_VIA: Partial<Record<string, Provider>> = { google: "google", facebook: "facebook", instagram: "facebook" };
+
+export default async function PresencePage({ searchParams }: { searchParams: Promise<{ connect?: string }> }) {
+  const { connect } = await searchParams;
   const ctx = await requireCtx();
   const db = await getDb();
   const b = await requireBusiness(db, ctx);
@@ -31,6 +47,9 @@ export default async function PresencePage() {
   const status = listingStatus(b.listings);
   const done = status.filter((s) => s.url).length;
   const next = status.find((s) => !s.url);
+  const candidates = connect === "google" || connect === "facebook" ? decodeCandidates((await cookies()).get("foundly_connect")?.value) : null;
+  const message = connect && CONNECT_MESSAGES[connect];
+  const admin = isPlatformAdmin(ctx.user.email);
 
   return (
     <>
@@ -46,6 +65,12 @@ export default async function PresencePage() {
           {next ? <>Next: <a href={`#${next.key}`} className="underline">{next.label}</a>.</> : "All done. Keep them updated when your details change."}
         </p>
       </div>
+      {message && (
+        <div className="mb-5">
+          <Notice tone={message.tone}>{message.text}</Notice>
+        </div>
+      )}
+      {candidates && candidates.length > 0 && <CandidatePicker candidates={candidates} label={connect === "google" ? "Google" : "Facebook"} />}
       {!live && (
         <div className="mb-5">
           <Notice tone="warn" title="Publish your website first">
@@ -72,9 +97,19 @@ export default async function PresencePage() {
                     {linked ? (
                       <a href={linked} target="_blank" rel="noopener noreferrer" className="share-btn">Open your listing</a>
                     ) : (
-                      <a href={platform.create} target="_blank" rel="noopener noreferrer" className="share-btn kit-create">
-                        Create on {platform.label} <Icon name="arrow" size={14} />
-                      </a>
+                      <>
+                        {CONNECT_VIA[platform.key] && providerConfigured(CONNECT_VIA[platform.key]!) && (
+                          <a href={`/api/connect/${CONNECT_VIA[platform.key]}/start`} className="share-btn kit-create">
+                            Already have it? Connect with {CONNECT_VIA[platform.key] === "google" ? "Google" : "Facebook"} <Icon name="arrow" size={14} />
+                          </a>
+                        )}
+                        <a href={platform.create} target="_blank" rel="noopener noreferrer" className={`share-btn${CONNECT_VIA[platform.key] && providerConfigured(CONNECT_VIA[platform.key]!) ? "" : " kit-create"}`}>
+                          Create on {platform.label} <Icon name="arrow" size={14} />
+                        </a>
+                        {CONNECT_VIA[platform.key] && !providerConfigured(CONNECT_VIA[platform.key]!) && admin && (
+                          <span className="kit-hint">Admin: set {providerEnvNames(CONNECT_VIA[platform.key]!).join(" and ")} to enable one-click connect.</span>
+                        )}
+                      </>
                     )}
                   </div>
                   <ol className="kit-steps">
