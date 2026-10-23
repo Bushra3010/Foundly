@@ -51,11 +51,11 @@ export function SidebarNav({
 
 export function BottomNav({ locale }: { locale: Locale }) {
   const pathname = usePathname();
-  const moreActive = !MOBILE_NAV.slice(0, 3).some((i) =>
+  const moreActive = !MOBILE_NAV.filter((i) => i.href !== "/app/more").some((i) =>
     isActive(pathname, i.href),
   );
   return (
-    <ul className="grid grid-cols-4">
+    <ul className="grid grid-cols-5">
       {MOBILE_NAV.map((item) => {
         const active =
           item.href === "/app/more"

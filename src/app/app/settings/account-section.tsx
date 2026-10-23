@@ -65,7 +65,7 @@ export async function AccountSection() {
           {sub.currentPeriodEnd && ` Renews ${sub.currentPeriodEnd.toLocaleDateString("en-IN")}.`}
           {sub.scheduledPlan && ` Changes to ${planSpec(sub.scheduledPlan).name} at the end of this period.`}
         </p>
-        <ul className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <ul className="settings-plans mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4" aria-label="Compare plans">
           {PLANS.map((p) => {
             const price = planPrice(p);
             const current = p.key === sub.plan;
@@ -165,42 +165,44 @@ export async function AccountSection() {
         )}
       </Card>
 
-      <Card>
-        <h2 className="font-semibold">Email notifications</h2>
-        <ActionForm action={savePrefsAction} submitLabel="Save" variant="secondary">
-          <Checkbox name="leadAlerts" label="Tell me when a new enquiry arrives" defaultChecked={prefs.leadAlerts} />
-          <Checkbox name="weeklySummary" label="Send me a weekly summary" hint="New enquiries, AI visibility and tasks. Off unless you turn it on." defaultChecked={prefs.weeklySummary} />
-        </ActionForm>
-        <p className="mt-2 text-xs text-muted">Security and billing messages are always sent.</p>
-      </Card>
+      <div className="grid content-start gap-4">
+        <Card>
+          <h2 className="font-semibold">Email notifications</h2>
+          <ActionForm action={savePrefsAction} submitLabel="Save" variant="secondary">
+            <Checkbox name="leadAlerts" label="Tell me when a new enquiry arrives" defaultChecked={prefs.leadAlerts} />
+            <Checkbox name="weeklySummary" label="Send me a weekly summary" hint="New enquiries, AI visibility and tasks. Off unless you turn it on." defaultChecked={prefs.weeklySummary} />
+          </ActionForm>
+          <p className="mt-2 text-xs text-muted">Security and billing messages are always sent.</p>
+        </Card>
 
-      <Card>
-        <h2 className="font-semibold">Delete</h2>
-        {deletions.map((d) => (
-          <div key={d.id} className="mt-3">
-            <Notice tone="warn" title={`${d.kind === "website" ? "Website" : "Account"} deletion scheduled for ${d.scheduledFor.toLocaleDateString("en-IN")}`}>
-              <ActionForm action={cancelDeletionAction} submitLabel="Cancel deletion" variant="secondary">
-                <input type="hidden" name="requestId" value={d.id} />
+        <Card>
+          <h2 className="font-semibold">Delete</h2>
+          {deletions.map((d) => (
+            <div key={d.id} className="mt-3">
+              <Notice tone="warn" title={`${d.kind === "website" ? "Website" : "Account"} deletion scheduled for ${d.scheduledFor.toLocaleDateString("en-IN")}`}>
+                <ActionForm action={cancelDeletionAction} submitLabel="Cancel deletion" variant="secondary">
+                  <input type="hidden" name="requestId" value={d.id} />
+                </ActionForm>
+              </Notice>
+            </div>
+          ))}
+          <p className="mt-2 text-sm text-muted">
+            These are separate. Deleting your website takes it offline now and removes it from the directory; your account and leads stay. Deleting your account removes your access and any workspace only you use. Both can be cancelled for {RECOVERY_DAYS} days. Download your data from Reports first.
+          </p>
+          {isOwner && (
+            <div className="mt-3">
+              <ActionForm action={deleteWebsiteAction} submitLabel="Delete website" variant="danger">
+                <TextField label="Type DELETE WEBSITE to confirm" name="confirm" autoComplete="off" />
               </ActionForm>
-            </Notice>
-          </div>
-        ))}
-        <p className="mt-2 text-sm text-muted">
-          These are separate. Deleting your website takes it offline now and removes it from the directory; your account and leads stay. Deleting your account removes your access and any workspace only you use. Both can be cancelled for {RECOVERY_DAYS} days. Download your data from Reports first.
-        </p>
-        {isOwner && (
-          <div className="mt-3">
-            <ActionForm action={deleteWebsiteAction} submitLabel="Delete website" variant="danger">
-              <TextField label="Type DELETE WEBSITE to confirm" name="confirm" autoComplete="off" />
+            </div>
+          )}
+          <div className="mt-4">
+            <ActionForm action={deleteAccountAction} submitLabel="Delete my account" variant="danger">
+              <TextField label="Type DELETE ACCOUNT to confirm" name="confirm" autoComplete="off" />
             </ActionForm>
           </div>
-        )}
-        <div className="mt-4">
-          <ActionForm action={deleteAccountAction} submitLabel="Delete my account" variant="danger">
-            <TextField label="Type DELETE ACCOUNT to confirm" name="confirm" autoComplete="off" />
-          </ActionForm>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </>
   );
 }

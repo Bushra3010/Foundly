@@ -14,6 +14,7 @@ export const NAV: { href: string; key: MessageKey; icon: string }[] = [
 export const MOBILE_NAV: { href: string; key: MessageKey; icon: string }[] = [
   { href: "/app", key: "nav.home", icon: "⌂" },
   { href: "/app/website", key: "nav.websiteShort", icon: "◧" },
+  { href: "/app/leads", key: "nav.leads", icon: "✉" },
   { href: "/app/visibility", key: "nav.visibilityShort", icon: "◎" },
   { href: "/app/more", key: "nav.more", icon: "☰" },
 ];

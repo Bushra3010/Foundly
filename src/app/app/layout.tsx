@@ -46,8 +46,12 @@ export default async function AppLayout({
       </aside>
       <div className="app-content">
         <header className="app-topbar">
-          <Link href="/app" className="mobile-brand">
-            <Brand />
+          <Link href="/app" className="mobile-brand mobile-workspace" aria-label={`${business.name} home`}>
+            <span className="mobile-workspace-avatar" aria-hidden="true">{business.name.slice(0, 1).toUpperCase()}</span>
+            <span className="mobile-workspace-copy">
+              <span className="mobile-workspace-label">Your workspace</span>
+              <span className="mobile-workspace-name">{business.name}</span>
+            </span>
           </Link>
           <div className="desktop-breadcrumb">
             <Icon name="home" size={14} />

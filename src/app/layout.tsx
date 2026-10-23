@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ServiceWorkerRegister } from "@/components/sw-register";
 import "./globals.css";
+import "./dropdowns.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 

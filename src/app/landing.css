@@ -2615,19 +2615,43 @@
 }
 
 .audience-pill {
+  --audience-bg:#eef9d5;
+  --audience-border:#d4e7ad;
+  --audience-accent:#527322;
   display:inline-flex;
   align-items:center;
   gap:8px;
   padding:9px 18px;
   border-radius:100px;
-  background:#fff;
-  border:1px solid var(--lp-line);
+  background:var(--audience-bg);
+  border:1px solid var(--audience-border);
+  color:var(--lp-ink);
   box-shadow:0 1px 2px #20221e0a;
   font-size:15px;
   font-weight:500;
 }
 
-.audience-pill .audience-star { font-size:15px; }
+.audience-pill:nth-child(2) {
+  --audience-bg:#fcebdd;
+  --audience-border:#f0d4bd;
+  --audience-accent:#9a592d;
+}
+.audience-pill:nth-child(3) {
+  --audience-bg:#e8f1e5;
+  --audience-border:#cedfca;
+  --audience-accent:#4d7647;
+}
+.audience-pill:nth-child(4) {
+  --audience-bg:#efeaf8;
+  --audience-border:#dbd0ed;
+  --audience-accent:#775a9c;
+}
+.audience-pill:nth-child(5) {
+  --audience-bg:#fbf0d8;
+  --audience-border:#ecdbaf;
+  --audience-accent:#896722;
+}
+.audience-pill .audience-star { font-size:15px; color:var(--audience-accent); }
 
 /* ---------- Premium pass: features ---------- */
 .feature-top { margin-bottom:22px; }
