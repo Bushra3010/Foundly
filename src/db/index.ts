@@ -38,6 +38,11 @@ async function connect(): Promise<Db> {
     // `max_pipeline` is a real postgres.js option that its type definitions omit.
     const options = { prepare: false, max_pipeline: 0, max: 10, idle_timeout: 20, max_lifetime: 60 * 10, connect_timeout: 10 };
     const client = postgres(url, options as Parameters<typeof postgres>[1]);
+    // With max_pipeline 0, postgres.js never reserves the connection that runs
+    // BEGIN, so every transaction fails with UNSAFE_TRANSACTION. Transactions
+    // get their own small pool that can reserve; their queries are sequential.
+    const txClient = postgres(url, { ...options, max: 5, max_pipeline: 1 } as Parameters<typeof postgres>[1]);
+    client.begin = txClient.begin.bind(txClient) as typeof client.begin;
     return drizzlePostgres({ client, schema }) as unknown as Db;
   }
   // Local development and tests: embedded Postgres, migrated on first use.
