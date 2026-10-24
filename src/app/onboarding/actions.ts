@@ -78,6 +78,7 @@ export async function finishSetupAction(_prev: ActionState, form: FormData): Pro
       const url = "websiteUrl" in parsed.data ? (parsed.data.websiteUrl ?? null) : null;
       await saveWebsiteChoice(db, ctx, true, url);
       await confirmReview(db, ctx, false);
+      destination = "/app/website?connected=1";
       if (values.publishProfile === "on") {
         await publishProfile(db, ctx);
         after(() => resubmitBusiness(db, ctx));

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
 import { businesses, jobs, memberships } from "@/db/schema";
 import { consumeLoginToken, createLoginToken, revokeSession, sessionContext, userForSession } from "@/server/auth";
-import { getBusiness, updateBusinessDetails } from "@/server/business";
+import { getBusiness, saveWebsiteChoice, updateBusinessDetails } from "@/server/business";
 import { AppError, type Ctx } from "@/server/context";
 import { getPublicProfile, searchDirectory } from "@/server/directory";
 import { listLeads, leadsToCsv, submitLead, updateLead } from "@/server/leads";
@@ -101,6 +101,17 @@ describe("roles", () => {
 });
 
 describe("website generation", () => {
+  it("connects an owner's own website instead of creating one", async () => {
+    await saveWebsiteChoice(db, alice, true, "https://sharmaplumbing.in");
+    await expectCode(generateSiteDraft(db, alice), "conflict");
+    expect(await getSite(db, alice)).toBeNull();
+
+    await saveWebsiteChoice(db, alice, false, null);
+    const b = (await getBusiness(db, alice))!;
+    expect(b.websiteUrl).toBeNull();
+    expect((await generateSiteDraft(db, alice)).status).toBe("ready");
+  });
+
   it("is idempotent per request and retries failures without a new job", async () => {
     const failed = await generateSiteDraft(db, alice, { requestId: "r1", failForTest: true });
     expect(failed.status).toBe("failed");

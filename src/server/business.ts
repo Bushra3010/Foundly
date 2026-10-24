@@ -95,7 +95,7 @@ export async function saveWebsiteChoice(db: Db, ctx: Ctx, hasWebsite: boolean, w
   const b = await requireBusiness(db, ctx);
   return patch(db, ctx, {
     hasWebsite,
-    websiteUrl: hasWebsite ? websiteUrl : b.websiteUrl,
+    websiteUrl: hasWebsite ? websiteUrl : null,
     onboardingStep: Math.max(b.onboardingStep, 4),
   });
 }
@@ -144,6 +144,8 @@ export async function updateBusinessDetails(db: Db, ctx: Ctx, input: z.infer<typ
       .update(businesses)
       .set({
         ...values,
+        // An owner with their own website is connected, not given a generated one.
+        hasWebsite: Boolean(values.websiteUrl),
         // Changed public contact fields must be confirmed again before they are published.
         ...(contactChanged ? { publicContactConfirmedAt: null } : {}),
         version: b.version + 1,

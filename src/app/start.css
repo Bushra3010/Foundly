@@ -324,6 +324,13 @@
   padding:16px 20px;
 }
 
+.start-choice-alt {
+  margin-top:0;
+  background:var(--s-field);
+  color:var(--s-ink);
+  border:1px solid var(--s-line);
+}
+
 .start-choice-icon {
   width:46px;
   height:46px;

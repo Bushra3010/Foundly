@@ -52,7 +52,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
           business && (
             <>
               <h1>Great, {business.name}!</h1>
-              <p className="start-lead">One click and your website is ready.</p>
+              <p className="start-lead">Do you already have a website?</p>
               <div className="start-summary">
                 <div>
                   <strong>{business.name}</strong>

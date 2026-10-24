@@ -73,41 +73,48 @@ export function FinishStep({ requestId }: { requestId: string }) {
   const [state, action] = useActionState(finishSetupAction, {});
   const [existing, setExisting] = useState(state.values?.choice === "existing");
   const e = state.fieldErrors ?? {};
+  // Owners with a website connect it; we only build one for owners who don't have one.
+  if (existing) {
+    return (
+      <form action={action} className="start-existing" noValidate>
+        <input type="hidden" name="choice" value="existing" />
+        <Field label="Your website address" name="websiteUrl" type="url" inputMode="url" placeholder="example.com" hint="We read your public pages only. We never need your login." defaultValue={state.values?.websiteUrl} error={e.websiteUrl} autoFocus />
+        <label className="start-check">
+          <input type="checkbox" name="publishProfile" defaultChecked />
+          <span>Also list my business in the Foundly directory</span>
+        </label>
+        <Message state={state} />
+        <div className="start-existing-actions">
+          <Submit pending="Connecting…">Connect my website <Icon name="arrow" size={18} /></Submit>
+          <button type="button" className="start-link" onClick={() => setExisting(false)}>Back</button>
+        </div>
+      </form>
+    );
+  }
+
   return (
     <div className="start-choices">
+      <button type="button" className="start-button start-choice-primary start-choice-alt" onClick={() => setExisting(true)}>
+        <span className="start-choice-icon"><Icon name="globe" size={22} /></span>
+        <span className="start-choice-text">
+          <strong>Yes, connect my website</strong>
+          <span>We keep your site. We check it and show you what to improve.</span>
+        </span>
+        <Icon name="arrow" size={20} />
+      </button>
       <form action={action}>
         <input type="hidden" name="choice" value="create" />
         <input type="hidden" name="requestId" value={requestId} />
-        <Message state={!existing ? state : {}} />
+        <Message state={state} />
         <Submit pending="Building your website…" className="start-choice-primary">
           <span className="start-choice-icon"><Icon name="website" size={22} /></span>
           <span className="start-choice-text">
-            <strong>Create my website</strong>
+            <strong>No, create one for me</strong>
             <span>Ready in a few seconds. Only you can see it until you publish.</span>
           </span>
           <Icon name="arrow" size={20} />
         </Submit>
       </form>
-
-      {!existing ? (
-        <button type="button" className="start-link" onClick={() => setExisting(true)}>
-          I already have a website
-        </button>
-      ) : (
-        <form action={action} className="start-existing" noValidate>
-          <input type="hidden" name="choice" value="existing" />
-          <Field label="Your website address" name="websiteUrl" type="url" inputMode="url" placeholder="example.com" defaultValue={state.values?.websiteUrl} error={e.websiteUrl} autoFocus />
-          <label className="start-check">
-            <input type="checkbox" name="publishProfile" defaultChecked />
-            <span>Also list my business in the Foundly directory</span>
-          </label>
-          <Message state={state} />
-          <div className="start-existing-actions">
-            <Submit pending="Finishing…">Finish <Icon name="arrow" size={18} /></Submit>
-            <button type="button" className="start-link" onClick={() => setExisting(false)}>Back</button>
-          </div>
-        </form>
-      )}
     </div>
   );
 }

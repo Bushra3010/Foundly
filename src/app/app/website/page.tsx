@@ -9,7 +9,7 @@ import { latestGenerationJob, listVersions } from "@/server/sites";
 import { listDomains } from "@/server/domains";
 import { DomainsCard } from "./domains-card";
 import { SiteEditor } from "./editor";
-import { GenerateForm, PublishForm, RollbackForm, SlugForm, UnpublishForm } from "./panels";
+import { GenerateForm, NoWebsiteForm, PublishForm, RollbackForm, SlugForm, UnpublishForm } from "./panels";
 import { ShareLink } from "@/components/share-link";
 import { siteUrl } from "@/app/s/load";
 import { currentSite, requireCurrentBusiness } from "@/server/current";
@@ -24,16 +24,75 @@ const JOB_TEXT = {
   failed: ["err", "Failed"],
 } as const;
 
-export default async function WebsitePage({ searchParams }: { searchParams: Promise<{ generated?: string }> }) {
+export default async function WebsitePage({ searchParams }: { searchParams: Promise<{ generated?: string; connected?: string }> }) {
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
   const [site, job, versions, domains] = await Promise.all([currentSite(db, ctx), latestGenerationJob(db, ctx), listVersions(db, ctx), listDomains(db, ctx)]);
-  const { generated } = await searchParams;
+  const { generated, connected } = await searchParams;
   const problems = requiredFactsProblems(business);
   const missing = missingOptionalFacts(business);
   const canEdit = can(ctx, "editor");
   const isOwner = can(ctx, "owner");
+
+  if (!site && business.hasWebsite) {
+    const url = business.websiteUrl;
+    return (
+      <>
+        <PageHeader icon="website" title="My Website" description="Your own website, connected to Foundly. We never change it without your approval." />
+        {connected && (
+          <div className="mb-4">
+            <Notice tone="ok" title="Your website is connected">
+              Next, check it to see what AI assistants can read and what to improve.
+            </Notice>
+          </div>
+        )}
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card>
+            <h2 className="font-semibold">Connected website</h2>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <Badge tone="ok">Connected</Badge>
+              {url ? (
+                <a href={url} target="_blank" rel="noopener noreferrer" className="break-all font-semibold underline">{url}</a>
+              ) : (
+                <span className="text-sm text-muted">No address saved yet</span>
+              )}
+            </div>
+            <p className="mt-3 text-sm text-muted">
+              We read your public pages only. We never need your website login, and nothing on your site changes unless you approve it.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {url && <LinkButton href="/app/improve">Check my website</LinkButton>}
+              {canEdit && (
+                <LinkButton href="/app/business" variant="secondary">
+                  {url ? "Change address" : "Add website address"}
+                </LinkButton>
+              )}
+            </div>
+          </Card>
+          <Card>
+            <h2 className="font-semibold">Apply fixes to your site</h2>
+            <p className="mt-2 text-sm text-muted">
+              On WordPress? Connect it and we can add approved sections, like questions and answers, to the pages you pick. On another platform, each fix comes as a ready-to-paste download.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <LinkButton href="/app/settings" variant="secondary">Connect WordPress</LinkButton>
+              <LinkButton href="/app/improve" variant="secondary">See improvements</LinkButton>
+            </div>
+          </Card>
+        </div>
+        {canEdit && (
+          <div className="mt-6">
+            <Card>
+              <h2 className="font-semibold">Don&apos;t have this website any more?</h2>
+              <p className="mt-1 mb-3 text-sm text-muted">Remove it and we&apos;ll create a website for you from your details instead.</p>
+              <NoWebsiteForm />
+            </Card>
+          </div>
+        )}
+      </>
+    );
+  }
 
   if (!site) {
     return (
@@ -47,7 +106,7 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
           </div>
         )}
         <EmptyState
-          title={business.hasWebsite ? "You told us you already have a website" : "Create your website"}
+          title="Create your website"
           action={
             problems.length ? (
               <LinkButton href="/app/business">Complete my details</LinkButton>
@@ -63,11 +122,7 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
               ))}
             </ul>
           ) : (
-            <p>
-              {business.hasWebsite
-                ? `We won't touch ${business.websiteUrl ?? "your current site"}. You can still create a simple site here — for example to try a new layout.`
-                : "We'll build a private preview from the details you confirmed. Nothing is public until you publish."}
-            </p>
+            <p>We&apos;ll build a private preview from the details you confirmed. Nothing is public until you publish.</p>
           )}
         </EmptyState>
       </>

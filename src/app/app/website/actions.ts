@@ -8,6 +8,7 @@ import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
 import type { SiteContent } from "@/lib/site/content";
 import { AppError } from "@/server/context";
+import { saveWebsiteChoice } from "@/server/business";
 import { addDomain, removeDomain, verifyDomain } from "@/server/domains";
 import { changeSiteSlug, generateSiteDraft, publishSite, regenerateBlock, rollbackSite, saveDraft, unpublishSite } from "@/server/sites";
 
@@ -17,6 +18,17 @@ export async function generateAction(_prev: ActionState, form: FormData): Promis
     revalidatePath("/app/website");
     if (job.status === "failed") return { ok: false, message: "We couldn't build the draft. Your current draft is unchanged — try again." };
     return { ok: true, message: "Your draft is ready. Review the preview before publishing." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+/** The owner no longer has their own website, so Foundly can create one for them. */
+export async function noWebsiteAction(): Promise<ActionState> {
+  try {
+    await saveWebsiteChoice(await getDb(), await requireCtx(), false, null);
+    revalidatePath("/app", "layout");
+    return { ok: true, message: "Removed. You can create your website now." };
   } catch (err) {
     return toActionError(err);
   }

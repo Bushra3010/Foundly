@@ -96,6 +96,13 @@ export default async function HomePage() {
       href: "/app/website",
       cta: "Create website",
     });
+  if (!site && business.hasWebsite && business.websiteUrl)
+    actions.push({
+      title: "Check your website",
+      body: "See what AI assistants can read on your site and what to improve.",
+      href: "/app/improve",
+      cta: "Check website",
+    });
   if (site && !live)
     actions.push({
       title: "Publish your website",

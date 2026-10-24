@@ -58,6 +58,12 @@ export async function generateSiteDraft(
   const b = await requireBusiness(db, ctx);
   const problems = requiredFactsProblems(b);
   if (problems.length) throw new AppError("invalid", problems.join(". ") + ".", { problems });
+  // We only build a website for owners who don't have one. Drafts made before
+  // they connected their own site can still be refreshed.
+  if (b.hasWebsite) {
+    const [existing] = await db.select({ id: sites.id }).from(sites).where(eq(sites.businessId, b.id));
+    if (!existing) throw new AppError("conflict", "You already have a website, so we connect it instead of making a new one.");
+  }
 
   // requestId comes from the rendered form, so a double submit maps to the same job.
   const requestId = (opts.requestId ?? "initial").slice(0, 64);
