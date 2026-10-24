@@ -59,10 +59,9 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
           <Card>
             <h2 className="font-semibold">Apply fixes to your site</h2>
             <p className="mt-2 text-sm text-muted">
-              On WordPress? Connect it and we can add approved sections, like questions and answers, to the pages you pick. On another platform, each fix comes as a ready-to-paste download.
+              We list what to improve on your site, with ready-to-paste text for each fix. Nothing changes on your site unless you make the change.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <LinkButton href="/app/settings" variant="secondary">Connect WordPress</LinkButton>
               <LinkButton href="/app/improve" variant="secondary">See improvements</LinkButton>
             </div>
           </Card>
