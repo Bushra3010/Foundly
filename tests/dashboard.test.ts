@@ -7,7 +7,7 @@ import { addListing, completeOnboarding, getBusiness, saveWebsiteChoice } from "
 import type { Ctx } from "@/server/context";
 import { approveQuestions, createRun, executeRun } from "@/server/monitoring/service";
 import type { AskResult, ProviderAdapter } from "@/server/monitoring/types";
-import { dashboardData } from "@/server/performance";
+import { dashboardData, rankPoints } from "@/server/performance";
 import { createWebsiteRequest } from "@/server/website-requests";
 import { makeDb, onboard, signUp } from "./helpers";
 
@@ -42,6 +42,23 @@ describe("keywords", () => {
     expect(keywordGroup("plumber near Baner")).toBe("location");
     expect(keywordGroup("best plumber in Pune")).toBe("comparison");
     expect(keywordGroup("leak repair in Pune")).toBe("service");
+  });
+});
+
+describe("keyword limit", () => {
+  it("allows up to 5 keywords per business", async () => {
+    const five = ["a", "b", "c", "d", "e"].map((x) => ({ text: `plumber ${x} in Pune`, group: "service" as const }));
+    await approveQuestions(db, ctx, five);
+    await expect(approveQuestions(db, ctx, [{ text: "plumber f in Pune", group: "service" }])).rejects.toThrow(/up to 5 keywords/);
+    expect((await load()).keywordLimit).toBe(5);
+  });
+});
+
+describe("ranking score", () => {
+  it("scores each answer by where the business is named", () => {
+    expect([1, 2, 3, 7].map((listedPosition) => rankPoints({ mentioned: true, listedPosition }))).toEqual([100, 80, 60, 40]);
+    expect(rankPoints({ mentioned: true, listedPosition: null })).toBe(50);
+    expect(rankPoints({ mentioned: false, listedPosition: null })).toBe(0);
   });
 });
 
@@ -112,5 +129,15 @@ describe("performance", () => {
     expect(d.trend.at(-1)).toMatchObject({ answers: 2, rate: 0.5 });
     expect(d.trend.slice(0, -1).every((t) => t.rate === null)).toBe(true);
     expect(d.lastRun?.id).toBe(run.id);
+    // Ranking score per platform: Claude named Sharma 1st for one keyword (100) and not at all for the other (0).
+    expect(d.platforms.find((p) => p.key === "claude")).toMatchObject({ checked: 2, named: 1, score: 50, best: 1 });
+    // Keyword × platform: "best" was named 1st by Claude (100); "leak" wasn't named (0); Gemini never answered.
+    expect(best).toMatchObject({ scores: { claude: 100, gemini: null }, overall: 100 });
+    expect(d.keywords.find((k) => k.text === "leak repair in Pune")).toMatchObject({ scores: { claude: 0, gemini: null }, overall: 0 });
+    expect(best.trend.at(-1)).toBe(100);
+    expect(d.overall).toBe(50);
+    expect(d.scoreTrend.at(-1)).toMatchObject({ answers: 2, score: 50 });
+    // Gemini only timed out, so it has no score rather than zero.
+    expect(d.platforms.find((p) => p.key === "gemini")).toMatchObject({ checked: 0, score: null });
   });
 });

@@ -60,11 +60,20 @@ export default async function AppLayout({
             <span className="font-medium text-text">{business.name}</span>
           </div>
           <div className="topbar-actions">
-            <Link href="/app/website" className="topbar-site">
-              <Icon name="globe" size={16} />
-              <span>Your website</span>
-              <span aria-hidden="true">↗</span>
-            </Link>
+            {business.hasWebsite && business.websiteUrl ? (
+              // The owner's own site, in a new tab so Foundly stays open.
+              <a href={business.websiteUrl} target="_blank" rel="noopener noreferrer" className="topbar-site">
+                <Icon name="globe" size={16} />
+                <span>Your website</span>
+                <span aria-hidden="true">↗</span>
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            ) : (
+              <Link href="/app/website" className="topbar-site">
+                <Icon name="globe" size={16} />
+                <span>Connect website</span>
+              </Link>
+            )}
             <details className="profile-menu">
               <summary className="topbar-avatar" aria-label="Your account">
                 {ctx.user.email.slice(0, 1).toUpperCase()}

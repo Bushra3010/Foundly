@@ -65,8 +65,8 @@ export function KeywordsStep({ initial, tracked }: { initial: { name: string; ca
       </div>
 
       <fieldset className="start-keywords">
-        <legend className="start-label">Keywords to track</legend>
-        <p className="start-hint">What would customers type or ask an AI assistant to find you? We check each keyword on ChatGPT, Gemini, Perplexity and Claude.</p>
+        <legend className="start-label">Keywords to track <em>(up to 5)</em></legend>
+        <p className="start-hint">What would customers type or ask an AI assistant to find you? We score each keyword on ChatGPT, Gemini, Perplexity and Claude.</p>
         {tracked.length > 0 && (
           <ul className="start-chips" aria-label="Already tracking">
             {tracked.map((k) => (

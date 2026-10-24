@@ -5,8 +5,8 @@ import { audits, monitoringRuns, type Business } from "@/db/schema";
 import { listingStatus } from "@/lib/geo";
 import { currentWebsiteCheck } from "./audit/service";
 import { computeMetrics, effectiveMention, VALID_STATUSES } from "./monitoring/metrics";
-import { enabledAdapters } from "./monitoring/registry";
-import { brandSpecs, listQuestions, queryObservations, toMetricRows } from "./monitoring/service";
+import { ADAPTERS, enabledAdapters } from "./monitoring/registry";
+import { brandSpecs, listQuestions, queryObservations, questionLimit, toMetricRows } from "./monitoring/service";
 import type { Ctx } from "./context";
 import { getFacebookConnection } from "./facebook-page";
 import { getGoogleConnection } from "./google-business";
@@ -48,6 +48,18 @@ export async function socialStatus(db: Db, ctx: Ctx, business: Business): Promis
   });
 }
 
+/**
+ * Keyword ranking score for one AI platform, 0–100. For each keyword, the
+ * platform's latest answer scores 100 if it names the business first in a
+ * list, 80 second, 60 third, 40 lower; 50 if named outside a list; 0 if not
+ * named. The score is the average across the keywords it has answered.
+ */
+export function rankPoints(m: { mentioned: boolean; listedPosition: number | null } | null): number {
+  if (!m?.mentioned) return 0;
+  if (m.listedPosition === null) return 50;
+  return m.listedPosition === 1 ? 100 : m.listedPosition === 2 ? 80 : m.listedPosition === 3 ? 60 : 40;
+}
+
 /** The four setup steps and whether each is done. */
 export function setupSteps(input: { keywords: number; business: Business; websiteRequested: boolean; social: SocialStatus[]; trackingStarted: boolean }) {
   // Before tracking starts the steps live in setup; afterwards, in the app.
@@ -65,7 +77,7 @@ export function setupSteps(input: { keywords: number; business: Business; websit
 export async function dashboardData(db: Db, ctx: Ctx, business: Business) {
   const now = new Date();
   const from = new Date(weekStart(now).getTime() - 7 * WEEK);
-  const [questions, obs, brands, social, request, [audit], runs] = await Promise.all([
+  const [questions, obs, brands, social, request, [audit], runs, keywordLimit] = await Promise.all([
     listQuestions(db, ctx),
     queryObservations(db, ctx, { from }, 2000),
     brandSpecs(db, ctx.workspaceId),
@@ -78,6 +90,7 @@ export async function dashboardData(db: Db, ctx: Ctx, business: Business) {
       .where(eq(monitoringRuns.workspaceId, ctx.workspaceId))
       .orderBy(desc(monitoringRuns.createdAt))
       .limit(1),
+    questionLimit(db, ctx.workspaceId),
   ]);
   // Only a check of the website connected now counts.
   const current = business.hasWebsite ? await currentWebsiteCheck(db, ctx, business.websiteUrl) : null;
@@ -102,11 +115,25 @@ export async function dashboardData(db: Db, ctx: Ctx, business: Business) {
     return { week: start, answers: week.length, rate: week.length ? week.filter(mentioned).length / week.length : null };
   });
 
-  // Each keyword: the latest valid answer from each AI.
+  // Score of one answer: where it names the business (see rankPoints).
+  const points = (o: (typeof obs)[number]) => {
+    const m = self(o);
+    return rankPoints(m && effectiveMention(m) ? { mentioned: true, listedPosition: m.listedPosition ?? null } : null);
+  };
+  const average = (xs: number[]) => (xs.length ? Math.round(xs.reduce((n, x) => n + x, 0) / xs.length) : null);
+  const live = new Set(enabledAdapters().map((a) => a.key));
+  const weeks = Array.from({ length: 8 }, (_, i) => new Date(from.getTime() + i * WEEK));
+  const inWeek = (o: (typeof obs)[number], start: Date) => o.capturedAt >= start && o.capturedAt < new Date(start.getTime() + WEEK);
+
+  // Each keyword: its score on every platform from that platform's latest answer,
+  // an overall score (the average of the platforms that answered), and a weekly trend.
   const keywords = questions.map((q) => {
+    const mine = obs.filter((o) => o.questionId === q.id && isValid(o.status));
     const latest = new Map<string, (typeof obs)[number]>();
-    for (const o of obs) if (o.questionId === q.id && isValid(o.status) && !latest.has(o.provider)) latest.set(o.provider, o);
+    for (const o of mine) if (!latest.has(o.provider)) latest.set(o.provider, o);
     const answers = [...latest.values()];
+    const scores = Object.fromEntries(ADAPTERS.map((a) => [a.key, latest.has(a.key) ? points(latest.get(a.key)!) : null])) as Record<string, number | null>;
+    const position = Object.fromEntries(ADAPTERS.map((a) => [a.key, latest.has(a.key) && mentioned(latest.get(a.key)!) ? (self(latest.get(a.key)!)?.listedPosition ?? null) : null])) as Record<string, number | null>;
     return {
       id: q.id,
       text: q.text,
@@ -115,7 +142,33 @@ export async function dashboardData(db: Db, ctx: Ctx, business: Business) {
       cited: answers.filter((o) => self(o)?.cited).length,
       mentionedBy: answers.filter(mentioned).map((o) => o.provider),
       lastChecked: answers[0]?.capturedAt ?? null,
+      scores,
+      position,
+      overall: average(answers.map(points)),
+      trend: weeks.map((w) => average(mine.filter((o) => inWeek(o, w)).map(points))),
     };
+  });
+
+  // Each platform: the average of its keyword scores, side by side.
+  const platforms = ADAPTERS.map((a) => {
+    const scored = keywords.flatMap((k) => (k.scores[a.key] === null ? [] : [k.scores[a.key]!]));
+    const positions = keywords.flatMap((k) => (k.position[a.key] ? [k.position[a.key]!] : []));
+    return {
+      key: a.key,
+      name: a.label.replace(/\s*\(.*\)$/, ""),
+      on: live.has(a.key),
+      checked: scored.length,
+      named: keywords.filter((k) => k.mentionedBy.includes(a.key)).length,
+      score: average(scored),
+      best: positions.length ? Math.min(...positions) : null,
+    };
+  });
+
+  // Overall: every keyword's overall score averaged, and the same each week.
+  const overall = average(keywords.flatMap((k) => (k.overall === null ? [] : [k.overall])));
+  const scoreTrend = weeks.map((w) => {
+    const week = obs.filter((o) => isValid(o.status) && inWeek(o, w) && questions.some((q) => q.id === o.questionId));
+    return { week: w, answers: week.length, score: average(week.map(points)) };
   });
 
   const passed = checks.filter((f) => f.passed).length;
@@ -133,7 +186,11 @@ export async function dashboardData(db: Db, ctx: Ctx, business: Business) {
   const run = runs[0] ?? null;
   return {
     questions,
+    keywordLimit,
     keywords,
+    platforms,
+    overall,
+    scoreTrend,
     metrics,
     trend,
     website,

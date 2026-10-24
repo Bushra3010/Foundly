@@ -30,6 +30,9 @@ export function AiReadiness({ readiness, limit, fresh }: { readiness: Readiness;
       <div className="geo-bar" aria-hidden="true"><span style={{ width: `${readiness.score}%` }} /></div>
       <p className="geo-parts">
         Business details <strong>{readiness.detailsScore}/50</strong> · Website <strong>{readiness.websiteRunning ? "checking now…" : readiness.websiteChecked ? `${readiness.websiteScore}/50` : "not checked yet"}</strong>
+        {readiness.websiteCheck && !readiness.websiteRunning && (
+          <> ({readiness.websiteCheck.passed} of {readiness.websiteCheck.total} website checks pass, {Math.round((readiness.websiteCheck.passed / readiness.websiteCheck.total) * 100)}%)</>
+        )}
       </p>
       {shownTodo.length > 0 && (
         <ul className="geo-list">

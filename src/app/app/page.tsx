@@ -4,12 +4,12 @@ import { redirect } from "next/navigation";
 import { ActionForm } from "@/components/action-form";
 import { AutoRefresh } from "@/components/auto-refresh";
 import { Icon } from "@/components/icon";
+import { Sparkline } from "@/components/sparkline";
 import { TrendChart } from "@/components/trend-chart";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { can } from "@/server/context";
 import { currentBusiness } from "@/server/current";
-import { ADAPTERS } from "@/server/monitoring/registry";
 import { dashboardData } from "@/server/performance";
 import { STATUS_TEXT } from "@/server/website-requests";
 import { runCheckAction } from "./visibility/actions";
@@ -18,7 +18,6 @@ export const metadata = { title: "Dashboard" };
 
 const pct = (r: number | null) => (r === null ? "—" : `${Math.round(r * 100)}%`);
 const host = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-const providerName = (key: string) => ADAPTERS.find((a) => a.key === key)?.label ?? key;
 const day = (d: Date) => d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ started?: string }> }) {
@@ -127,33 +126,34 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </Link>
       </section>
 
-      <section className="pf-kpis" aria-label="Performance, last 30 days">
-        <Kpi label="AI mentions" value={pct(m.mention.rate)} detail={hasResults ? `${m.mention.numerator} of ${m.mention.denominator} answers${m.smallSample ? " · small sample" : ""}` : "After your first check"} />
-        <Kpi label="Cited as a source" value={pct(m.citation.rate)} detail={hasResults ? `${m.citation.numerator} of ${m.citation.denominator} answers link to you` : "After your first check"} />
-        <Kpi label="Keywords tracked" value={String(d.questions.length)} detail={`${d.keywords.filter((k) => k.mentioned > 0).length} bring you up`} />
-        <Kpi label="Website health" value={d.website.health === null ? "—" : `${d.website.health}%`} detail={d.website.total ? `${d.website.passed} of ${d.website.total} checks pass` : d.website.url ? "Not checked yet" : "Connect a website"} />
-      </section>
-
-      <section className="pf-card" aria-labelledby="trend-title">
-        <div className="pf-card-head">
-          <h2 id="trend-title">How often AI assistants mention you</h2>
-          <span>Weekly, last 8 weeks</span>
+      <section className="pf-kpis" aria-label="Performance">
+        <div className="pf-kpi pf-kpi-main">
+          <span className="pf-kpi-label">Overall score</span>
+          <strong>{d.overall ?? "—"}{d.overall !== null && <em>/100</em>}</strong>
+          <span className="pf-kpi-detail">{d.overall === null ? "After your first check" : "Average across your keywords and AI platforms"}</span>
         </div>
-        <TrendChart points={d.trend.map((t) => ({ label: day(t.week), rate: t.rate, answers: t.answers }))} />
+        <Kpi label="AI mentions" value={pct(m.mention.rate)} detail={hasResults ? `${m.mention.numerator} of ${m.mention.denominator} answers, last 30 days${m.smallSample ? " · small sample" : ""}` : "After your first check"} />
+        <Kpi label="Cited as a source" value={pct(m.citation.rate)} detail={hasResults ? `${m.citation.numerator} of ${m.citation.denominator} answers link to you` : "After your first check"} />
+        <Kpi label="Keywords tracked" value={`${d.questions.length}/${d.keywordLimit}`} detail={`${d.keywords.filter((k) => k.mentioned > 0).length} bring you up`} />
       </section>
 
-      <div className="pf-grid">
-        <section className="pf-card" aria-labelledby="kw-title">
-          <div className="pf-card-head">
-            <h2 id="kw-title">Keywords</h2>
-            <Link href="/app/visibility">Manage <Icon name="arrow" size={13} /></Link>
-          </div>
-          {d.keywords.length === 0 ? (
-            <p className="pf-empty">No keywords yet. <Link href="/app/visibility">Add keywords</Link> to start tracking.</p>
-          ) : (
-            <table className="pf-table">
+      <section className="pf-card" aria-labelledby="scores-title">
+        <div className="pf-card-head">
+          <h2 id="scores-title">Keyword scores on each AI platform</h2>
+          <Link href="/app/visibility">{d.questions.length < d.keywordLimit ? "Add keywords" : "Manage"} <Icon name="arrow" size={13} /></Link>
+        </div>
+        {d.keywords.length === 0 ? (
+          <p className="pf-empty">No keywords yet. <Link href="/app/visibility">Add up to {d.keywordLimit} keywords</Link> to start tracking.</p>
+        ) : (
+          <div className="pf-scroll">
+            <table className="pf-table pf-scores">
               <thead>
-                <tr><th scope="col">Keyword</th><th scope="col">Mentioned by</th><th scope="col">Cited</th></tr>
+                <tr>
+                  <th scope="col">Keyword</th>
+                  {d.platforms.map((p) => <th key={p.key} scope="col">{p.name}</th>)}
+                  <th scope="col">Overall</th>
+                  <th scope="col">Trend</th>
+                </tr>
               </thead>
               <tbody>
                 {d.keywords.map((k) => (
@@ -162,24 +162,39 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                       {k.text}
                       <span>{k.lastChecked ? `Checked ${day(k.lastChecked)}` : "Not checked yet"}</span>
                     </th>
-                    <td>
-                      {k.checked === 0 ? (
-                        <span className="pf-muted">—</span>
-                      ) : (
-                        <span className={`pf-badge ${k.mentioned ? "ok" : ""}`} title={k.mentionedBy.map(providerName).join(", ") || "None"}>
-                          {k.mentioned} of {k.checked} AIs
-                        </span>
-                      )}
-                    </td>
-                    <td>{k.checked === 0 ? <span className="pf-muted">—</span> : k.cited}</td>
+                    {d.platforms.map((p) => (
+                      <td key={p.key}><Score value={k.scores[p.key]} off={!p.on} position={k.position[p.key]} /></td>
+                    ))}
+                    <td><Score value={k.overall} strong /></td>
+                    <td><Sparkline values={k.trend} label={k.text} /></td>
                   </tr>
                 ))}
               </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row">Platform average</th>
+                  {d.platforms.map((p) => <td key={p.key}><Score value={p.score} off={!p.on} strong /></td>)}
+                  <td><Score value={d.overall} strong /></td>
+                  <td />
+                </tr>
+              </tfoot>
             </table>
-          )}
-        </section>
+          </div>
+        )}
+        <p className="pf-method">
+          <strong>How scores work:</strong> we ask each AI platform your keyword and read its latest answer. Named 1st in a list = 100, 2nd = 80, 3rd = 60, lower = 40, named but not in a list = 50, not named = 0. Overall is the average of the platforms that answered. &ldquo;Off&rdquo; means that platform isn&apos;t switched on yet; &ldquo;—&rdquo; means it hasn&apos;t answered yet. We never estimate a score.
+        </p>
+      </section>
 
-        <div className="pf-stack">
+      <section className="pf-card" aria-labelledby="trend-title">
+        <div className="pf-card-head">
+          <h2 id="trend-title">Your overall score over time</h2>
+          <span>Weekly, last 8 weeks</span>
+        </div>
+        <TrendChart unit="score" label="Your overall score out of 100, by week" points={d.scoreTrend.map((t) => ({ label: day(t.week), rate: t.score === null ? null : t.score / 100, answers: t.answers }))} />
+      </section>
+
+      <div className="pf-grid pf-grid-even">
           <section className="pf-card" aria-labelledby="site-title">
             <div className="pf-card-head">
               <h2 id="site-title">Website</h2>
@@ -220,7 +235,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               ))}
             </ul>
           </section>
-        </div>
       </div>
 
       {insights.length > 0 && (
@@ -249,6 +263,17 @@ function Kpi({ label, value, detail }: { label: string; value: string; detail: s
       <strong>{value}</strong>
       <span className="pf-kpi-detail">{detail}</span>
     </div>
+  );
+}
+
+/** One score cell: the number, or "Off"/"—" when there's no answer to score. */
+function Score({ value, off = false, strong = false, position }: { value: number | null; off?: boolean; strong?: boolean; position?: number | null }) {
+  if (value === null) return <span className="pf-muted">{off ? "Off" : "—"}</span>;
+  const band = value >= 70 ? "high" : value >= 40 ? "mid" : "low";
+  return (
+    <span className={`pf-score ${band}${strong ? " strong" : ""}`} title={position ? `Named #${position}` : value === 0 ? "Not named" : value === 50 ? "Named, not in a list" : undefined}>
+      {value}
+    </span>
   );
 }
 

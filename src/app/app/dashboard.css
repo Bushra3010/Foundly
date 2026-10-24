@@ -1627,3 +1627,27 @@
 .cmp-label { fill:var(--d-ink); font-size:12px; font-weight:600; }
 .cmp-them-badge { background:var(--d-soft); outline:1.5px solid var(--cmp-them); }
 @media (max-width:640px) { .cmp-summary { grid-template-columns:1fr; } .cmp-vs { justify-self:center; } }
+.pf-kpi-link { color:var(--d-ink); text-decoration:none; }
+.pf-kpi-link:hover { border-color:var(--d-ink); }
+.pf-kpi strong em { font-style:normal; font-size:15px; font-weight:600; color:var(--d-muted); letter-spacing:0; margin-left:2px; }
+.pf-rank { list-style:none; margin:2px 0 0; padding:0; display:grid; gap:4px; }
+.pf-rank li { display:flex; align-items:baseline; justify-content:space-between; gap:8px; font-size:13.5px; }
+.pf-rank li span { color:var(--d-muted); font-weight:600; }
+.pf-rank li strong { font-size:16px; font-weight:700; letter-spacing:0; }
+
+/* Keyword × platform scores */
+.pf-scroll { overflow-x:auto; margin:0 -4px; padding:0 4px; }
+.pf-scores { min-width:640px; }
+.pf-scores td, .pf-scores thead th:not(:first-child) { text-align:center; }
+.pf-scores td:last-child, .pf-scores th:last-child { text-align:center; }
+.pf-scores tfoot th, .pf-scores tfoot td { border-top:2px solid var(--d-line); font-weight:700; }
+.pf-score { display:inline-grid; place-items:center; min-width:42px; height:30px; padding:0 8px; border-radius:9px; font-size:14px; font-weight:700; background:var(--d-soft); }
+.pf-score.high { background:#d6fc74; color:#1b1e17; }
+.pf-score.mid { background:color-mix(in srgb, #d6fc74 40%, var(--d-soft)); }
+.pf-score.strong { font-size:15px; }
+.pf-spark { display:inline-block; vertical-align:middle; overflow:visible; }
+.pf-method { margin:14px 0 0; font-size:12.5px; line-height:1.55; color:var(--d-muted); }
+.pf-method strong { color:var(--d-ink); }
+.pf-kpi-main strong em, .pf-kpi strong em { font-style:normal; font-size:15px; font-weight:600; color:var(--d-muted); letter-spacing:0; margin-left:2px; }
+.pf-grid-even { grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (max-width:900px) { .pf-grid-even { grid-template-columns:1fr; } }

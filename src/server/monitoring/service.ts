@@ -28,9 +28,12 @@ const OBSERVATION_TIMEOUT_MS = 90_000;
 
 // ---------- Questions ----------
 
-/** Keywords allowed by the workspace's plan; the hard maximum while billing isn't enforced. */
+/** Keywords per business while billing isn't enforced; with billing on, the plan decides. */
+export const DEFAULT_KEYWORDS = 5;
+
+/** Keywords allowed for the workspace: 5 by default, or the plan's number once billing is on. */
 export async function questionLimit(db: DbOrTx, workspaceId: string) {
-  if (!billingEnforced()) return MAX_QUESTIONS;
+  if (!billingEnforced()) return DEFAULT_KEYWORDS;
   return Math.min(planSpec(await effectivePlan(db, workspaceId)).keywords, MAX_QUESTIONS);
 }
 
@@ -55,7 +58,7 @@ export async function approveQuestions(db: Db, ctx: Ctx, items: NewQuestion[]) {
     .filter((i) => i.text.length >= 8 && i.text.length <= 300 && !seen.has(i.text.toLowerCase()));
   const limit = await questionLimit(db, ctx.workspaceId);
   if (existing.length + fresh.length > limit) {
-    throw new AppError("invalid", `Your plan tracks up to ${limit} keywords. Archive some or upgrade for more.`, { upgrade: true });
+    throw new AppError("invalid", `You can track up to ${limit} keywords. Stop tracking one to add another.`, { upgrade: true });
   }
   // Discovery questions that name the business bias inclusion; keep them in the branded group.
   const name = b.name.toLowerCase();

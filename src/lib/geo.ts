@@ -457,5 +457,5 @@ export function geoReadiness(input: {
   const detailsScore = Math.round((details.filter((i) => i.done).length / details.length) * 50);
   const websiteScore = check ? Math.round((check.passed / check.total) * 50) : 0;
   const confirmedDaysAgo = input.confirmedAt ? Math.floor((Date.now() - new Date(input.confirmedAt).getTime()) / 86_400_000) : null;
-  return { score: detailsScore + websiteScore, detailsScore, websiteScore, websiteChecked: !!check, done, total: items.length, items, confirmedDaysAgo };
+  return { score: detailsScore + websiteScore, detailsScore, websiteScore, websiteChecked: !!check, websiteCheck: check, done, total: items.length, items, confirmedDaysAgo };
 }
