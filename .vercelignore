@@ -1,0 +1,8 @@
+# Local-only files that must never be uploaded to Vercel.
+.claude
+.data
+.env*
+.netlify
+.next
+node_modules
+tsconfig.tsbuildinfo

@@ -31,9 +31,14 @@ function objectKey(workspaceId: string, id: string) {
 }
 
 /**
- * Serverless hosts have no persistent disk. On Netlify, photos go to Netlify
- * Blobs; everywhere else they go to UPLOADS_DIR (or .data/uploads locally).
+ * Serverless hosts have no persistent disk. On Vercel, photos go to a private
+ * Vercel Blob store; on Netlify, to Netlify Blobs; everywhere else to
+ * UPLOADS_DIR (or .data/uploads locally).
  */
+function onVercelBlob() {
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+}
+
 function onNetlify() {
   return Boolean(process.env.NETLIFY_BLOBS_CONTEXT || process.env.NETLIFY === "true");
 }
@@ -44,6 +49,11 @@ async function blobStore() {
 }
 
 async function putObject(key: string, bytes: Buffer, contentType: string) {
+  if (onVercelBlob()) {
+    const { put } = await import("@vercel/blob");
+    await put(key, bytes, { access: "private", contentType, addRandomSuffix: false, allowOverwrite: true });
+    return;
+  }
   if (onNetlify()) {
     const ab = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
     await (await blobStore()).set(key, ab, { metadata: { contentType } });
@@ -55,6 +65,11 @@ async function putObject(key: string, bytes: Buffer, contentType: string) {
 }
 
 async function getObject(key: string): Promise<Buffer | null> {
+  if (onVercelBlob()) {
+    const { get } = await import("@vercel/blob");
+    const found = await get(key, { access: "private" }).catch(() => null);
+    return found?.stream ? Buffer.from(await new Response(found.stream).arrayBuffer()) : null;
+  }
   if (onNetlify()) {
     const data = await (await blobStore()).get(key, { type: "arrayBuffer" });
     return data ? Buffer.from(data) : null;
@@ -63,6 +78,11 @@ async function getObject(key: string): Promise<Buffer | null> {
 }
 
 async function deleteObject(key: string) {
+  if (onVercelBlob()) {
+    const { del } = await import("@vercel/blob");
+    await del(key).catch(() => undefined);
+    return;
+  }
   if (onNetlify()) {
     await (await blobStore()).delete(key);
     return;
