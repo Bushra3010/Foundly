@@ -3,7 +3,7 @@ import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getDb } from "@/db";
-import { contextForUser, SESSION_TTL_MS, userForSession, type SessionUser } from "@/server/auth";
+import { SESSION_TTL_MS, sessionContext, userForSession, type SessionUser } from "@/server/auth";
 import type { Ctx } from "@/server/context";
 
 export const SESSION_COOKIE = "abgp_session";
@@ -34,23 +34,26 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
   return userForSession(await getDb(), token);
 });
 
+/** The signed-in user and active workspace, read in one query. */
+async function currentSession() {
+  const token = await readSessionToken();
+  if (!token) return null;
+  const preferred = (await cookies()).get(WORKSPACE_COOKIE)?.value;
+  return sessionContext(await getDb(), token, preferred);
+}
+
 /** Resolves the tenant context or redirects to sign in. */
 export const requireCtx = cache(async (): Promise<Ctx & { user: SessionUser }> => {
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
-  const preferred = (await cookies()).get(WORKSPACE_COOKIE)?.value;
-  const ctx = await contextForUser(await getDb(), user.id, preferred);
-  if (!ctx) redirect("/login?error=no_workspace");
-  return { ...ctx, user };
+  const session = await currentSession();
+  if (!session) redirect("/login");
+  if (!session.ctx) redirect("/login?error=no_workspace");
+  return { ...session.ctx, user: session.user };
 });
 
 /** For route handlers: the tenant context or null (no redirects). */
 export async function getCtxOrNull(): Promise<(Ctx & { user: SessionUser }) | null> {
-  const user = await getCurrentUser();
-  if (!user) return null;
-  const preferred = (await cookies()).get(WORKSPACE_COOKIE)?.value;
-  const ctx = await contextForUser(await getDb(), user.id, preferred);
-  return ctx ? { ...ctx, user } : null;
+  const session = await currentSession();
+  return session?.ctx ? { ...session.ctx, user: session.user } : null;
 }
 
 export async function setWorkspaceCookie(workspaceId: string) {

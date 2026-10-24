@@ -5,20 +5,17 @@ const SESSION_COOKIE = "abgp_session";
 const PASSTHROUGH = /^\/(_next|media|favicon\.ico|icon-|icon\.png|apple-icon\.png|sw\.js|offline\.html)/;
 const PROTECTED = /^\/(app|onboarding|admin)(\/|$)/;
 
-function rewriteToSite(req: NextRequest, pathname: string, base: string, target: string) {
+function rewriteToSite(req: NextRequest, target: string) {
   const url = req.nextUrl.clone();
   url.pathname = target;
-  const headers = new Headers(req.headers);
-  // Tells the site renderer which link prefix this origin uses ("" on its own origin).
-  headers.set("x-site-base", base);
-  const res = NextResponse.rewrite(url, { request: { headers } });
+  const res = NextResponse.rewrite(url);
   res.headers.set("X-Frame-Options", "SAMEORIGIN");
   return res;
 }
 
 /**
  * 1. Customer sites on their own origin, separate from the owner app:
- *    `<slug>.<SITES_ROOT_DOMAIN>` → /s/<slug>, verified custom domains → /d/<host>.
+ *    `<slug>.<SITES_ROOT_DOMAIN>` and verified custom domains → /d/<host>.
  *    App routes are never served on those origins.
  * 2. Optimistic auth redirect for the owner app. Real checks happen in the data
  *    access layer on every request.
@@ -32,14 +29,14 @@ export function proxy(req: NextRequest) {
 
   if (sitesRoot && host.endsWith(`.${sitesRoot}`)) {
     if (PASSTHROUGH.test(pathname)) return NextResponse.next();
-    return rewriteToSite(req, pathname, "", `/s/${host.slice(0, -(sitesRoot.length + 1))}${sub}`);
+    return rewriteToSite(req, `/d/${host}${sub}`);
   }
   // The host's own preview addresses (e.g. *.netlify.app) always serve the app,
   // never an owner's custom domain, so the site keeps working there too.
   const platformHost = host.endsWith(".netlify.app") || host.endsWith(".vercel.app");
   if (appHost && host !== appHost && !platformHost && host !== sitesRoot && host !== "localhost" && host !== "127.0.0.1") {
     if (PASSTHROUGH.test(pathname)) return NextResponse.next();
-    return rewriteToSite(req, pathname, "", `/d/${host}${sub}`);
+    return rewriteToSite(req, `/d/${host}${sub}`);
   }
 
   // Whole path segments only, so files like /apple-icon.png are never caught.

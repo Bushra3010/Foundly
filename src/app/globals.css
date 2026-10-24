@@ -1368,3 +1368,13 @@ a {
     font-size: 16px;
   }
 }
+
+/* Shown the instant a page is opened, while its data loads. */
+.page-skeleton { display: grid; gap: 16px; padding: 4px 0; }
+.page-skeleton > span { display: block; border-radius: 16px; background: color-mix(in srgb, var(--border) 55%, transparent); animation: skeleton-pulse 1.2s ease-in-out infinite alternate; }
+.page-skeleton .sk-title { width: min(320px, 70%); height: 34px; border-radius: 10px; }
+.page-skeleton .sk-line { width: min(520px, 90%); height: 16px; border-radius: 8px; }
+.page-skeleton .sk-card { height: 150px; }
+.page-skeleton .sk-row { height: 96px; }
+@keyframes skeleton-pulse { from { opacity: .55; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .page-skeleton > span { animation: none; } }

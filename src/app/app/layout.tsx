@@ -8,8 +8,8 @@ import { signOutEverywhereAction } from "./settings/actions";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { getLocale } from "@/lib/locale";
-import { getBusiness } from "@/server/business";
 import "./dashboard.css";
+import { currentBusiness } from "@/server/current";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
@@ -20,7 +20,7 @@ export default async function AppLayout({
 }) {
   const ctx = await requireCtx();
   const locale = await getLocale();
-  const business = await getBusiness(await getDb(), ctx);
+  const business = await currentBusiness(await getDb(), ctx);
   if (!business?.onboardingCompletedAt) redirect("/onboarding");
 
   return (

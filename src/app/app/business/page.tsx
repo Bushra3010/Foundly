@@ -3,19 +3,19 @@ import { listingStatus } from "@/lib/geo";
 import { Badge, Card, DefinitionList, LinkButton, Notice, PageHeader } from "@/components/ui";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
-import { getProfile, requireBusiness } from "@/server/business";
 import { can } from "@/server/context";
 import { listClaims } from "@/server/claims";
 import { ClaimsCard } from "./claims-card";
 import { ConfirmContactForm, DetailsForm, ProfilePublishForm } from "./forms";
+import { currentProfile, requireCurrentBusiness } from "@/server/current";
 
 export const metadata = { title: "My Business" };
 
 export default async function BusinessPage() {
   const ctx = await requireCtx();
   const db = await getDb();
-  const b = await requireBusiness(db, ctx);
-  const [profile, claims] = await Promise.all([getProfile(db, ctx), listClaims(db, ctx)]);
+  const b = await requireCurrentBusiness(db, ctx);
+  const [profile, claims] = await Promise.all([currentProfile(db, ctx), listClaims(db, ctx)]);
   const published = profile?.status === "published";
 
   return (

@@ -6,6 +6,7 @@ import { customDomains, siteVersions, sites } from "@/db/schema";
 import { AppError, audit, requireRole, type Ctx } from "./context";
 import { getSite } from "./sites";
 import { requireEntitlement } from "./billing/service";
+import { refreshPublicPages } from "./public-cache";
 
 export const DOMAIN_TXT_PREFIX = "_growth-domain";
 
@@ -85,6 +86,7 @@ export async function verifyDomain(db: Db, ctx: Ctx, domainId: string, resolver:
     .where(eq(customDomains.id, d.id))
     .returning();
   await audit(db, ctx, ok ? "domain.verified" : "domain.check_failed", d.hostname);
+  refreshPublicPages();
   return updated;
 }
 
@@ -95,15 +97,20 @@ export async function removeDomain(db: Db, ctx: Ctx, domainId: string) {
     .set({ status: "removed" })
     .where(and(eq(customDomains.id, domainId), eq(customDomains.workspaceId, ctx.workspaceId)));
   await audit(db, ctx, "domain.removed", domainId);
+  refreshPublicPages();
 }
 
 /** Public: which live site a verified custom hostname serves. */
 export async function siteSlugForHost(db: DbOrTx, hostname: string): Promise<string | null> {
+  // `<slug>.<SITES_ROOT_DOMAIN>` serves that slug; the page itself 404s if it isn't live.
+  const root = process.env.SITES_ROOT_DOMAIN?.toLowerCase();
+  const host = normalizeHostname(hostname);
+  if (root && host.endsWith(`.${root}`)) return host.slice(0, -(root.length + 1)) || null;
   const [row] = await db
     .select({ slug: sites.slug })
     .from(customDomains)
     .innerJoin(sites, eq(sites.id, customDomains.siteId))
     .innerJoin(siteVersions, eq(siteVersions.id, sites.publishedVersionId))
-    .where(and(eq(customDomains.hostname, normalizeHostname(hostname)), eq(customDomains.status, "verified")));
+    .where(and(eq(customDomains.hostname, host), eq(customDomains.status, "verified")));
   return row?.slug ?? null;
 }

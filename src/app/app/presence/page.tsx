@@ -13,8 +13,7 @@ import { listingStatus } from "@/lib/geo";
 import { presenceKit } from "@/lib/presence";
 import { toPublicProfile } from "@/lib/profile";
 import { siteUrl } from "@/app/s/load";
-import { getProfile, requireBusiness } from "@/server/business";
-import { getSite } from "@/server/sites";
+import { currentProfile, currentSite, requireCurrentBusiness } from "@/server/current";
 
 export const metadata = { title: "Get listed" };
 
@@ -39,8 +38,8 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
   const { connect } = await searchParams;
   const ctx = await requireCtx();
   const db = await getDb();
-  const b = await requireBusiness(db, ctx);
-  const [site, profile, google, facebook] = await Promise.all([getSite(db, ctx), getProfile(db, ctx), getGoogleConnection(db, ctx), getFacebookConnection(db, ctx)]);
+  const b = await requireCurrentBusiness(db, ctx);
+  const [site, profile, google, facebook] = await Promise.all([currentSite(db, ctx), currentProfile(db, ctx), getGoogleConnection(db, ctx), getFacebookConnection(db, ctx)]);
   const appUrl = process.env.APP_URL ?? "http://localhost:3000";
   const live = Boolean(site?.publishedVersionId);
   const websiteUrl = live && site ? siteUrl(site.slug) : (b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`);

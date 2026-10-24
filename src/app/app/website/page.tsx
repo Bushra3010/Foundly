@@ -4,15 +4,15 @@ import { Badge, Card, EmptyState, LinkButton, Notice, PageHeader } from "@/compo
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { missingOptionalFacts, requiredFactsProblems } from "@/lib/site/generate";
-import { requireBusiness } from "@/server/business";
 import { can } from "@/server/context";
-import { getSite, latestGenerationJob, listVersions } from "@/server/sites";
+import { latestGenerationJob, listVersions } from "@/server/sites";
 import { listDomains } from "@/server/domains";
 import { DomainsCard } from "./domains-card";
 import { SiteEditor } from "./editor";
 import { GenerateForm, PublishForm, RollbackForm, SlugForm, UnpublishForm } from "./panels";
 import { ShareLink } from "@/components/share-link";
 import { siteUrl } from "@/app/s/load";
+import { currentSite, requireCurrentBusiness } from "@/server/current";
 
 export const metadata = { title: "My Website" };
 
@@ -27,8 +27,8 @@ const JOB_TEXT = {
 export default async function WebsitePage({ searchParams }: { searchParams: Promise<{ generated?: string }> }) {
   const ctx = await requireCtx();
   const db = await getDb();
-  const business = await requireBusiness(db, ctx);
-  const [site, job, versions, domains] = await Promise.all([getSite(db, ctx), latestGenerationJob(db, ctx), listVersions(db, ctx), listDomains(db, ctx)]);
+  const business = await requireCurrentBusiness(db, ctx);
+  const [site, job, versions, domains] = await Promise.all([currentSite(db, ctx), latestGenerationJob(db, ctx), listVersions(db, ctx), listDomains(db, ctx)]);
   const { generated } = await searchParams;
   const problems = requiredFactsProblems(business);
   const missing = missingOptionalFacts(business);

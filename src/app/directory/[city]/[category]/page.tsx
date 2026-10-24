@@ -9,7 +9,11 @@ import { jsonLdScript } from "@/lib/profile";
 import { listPublishedProfiles } from "@/server/directory";
 import { ListingCard, listToText } from "../../listing";
 
-export const dynamic = "force-dynamic";
+// Built on the first visit, then served from the edge cache (see server/public-cache.ts).
+export const revalidate = 300;
+export async function generateStaticParams() {
+  return [];
+}
 type Props = { params: Promise<{ city: string; category: string }> };
 
 const load = cache(async (city: string, category: string) => {

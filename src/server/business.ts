@@ -1,4 +1,4 @@
-import { and, asc, eq, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, sql } from "drizzle-orm";
 import type { z } from "zod";
 import type { Db, DbOrTx } from "@/db";
 import { businessProfiles, businesses, type Business } from "@/db/schema";
@@ -6,6 +6,7 @@ import { toPublicProfile } from "@/lib/profile";
 import { checkSlug, slugify } from "@/lib/slug";
 import type { basicsSchema, businessDetailsSchema, offerSchema } from "@/lib/validation";
 import { AppError, audit, requireRole, type Ctx } from "./context";
+import { refreshPublicPages, withPublicRefresh } from "./public-cache";
 
 export async function getBusiness(db: DbOrTx, ctx: Ctx): Promise<Business | null> {
   const [b] = await db
@@ -15,6 +16,16 @@ export async function getBusiness(db: DbOrTx, ctx: Ctx): Promise<Business | null
     .orderBy(asc(businesses.createdAt))
     .limit(1);
   return b ?? null;
+}
+
+/** The workspace's business id as a subquery, so a lookup by business is one round trip, not two. */
+export function businessIdOf(db: DbOrTx, ctx: Ctx) {
+  return db
+    .select({ id: businesses.id })
+    .from(businesses)
+    .where(eq(businesses.workspaceId, ctx.workspaceId))
+    .orderBy(asc(businesses.createdAt))
+    .limit(1);
 }
 
 export async function requireBusiness(db: DbOrTx, ctx: Ctx): Promise<Business> {
@@ -152,18 +163,17 @@ export async function confirmPublicContact(db: Db, ctx: Ctx) {
 // ---------- Public profile ----------
 
 export async function getProfile(db: DbOrTx, ctx: Ctx) {
-  const b = await requireBusiness(db, ctx);
   const [p] = await db
     .select()
     .from(businessProfiles)
-    .where(and(eq(businessProfiles.businessId, b.id), eq(businessProfiles.workspaceId, ctx.workspaceId)));
+    .where(and(inArray(businessProfiles.businessId, businessIdOf(db, ctx)), eq(businessProfiles.workspaceId, ctx.workspaceId)));
   return p ?? null;
 }
 
 /** Copies the current confirmed facts into the public projection. Owner only. */
 export async function publishProfile(db: Db, ctx: Ctx) {
   requireRole(ctx, "owner");
-  return db.transaction(async (tx) => {
+  return withPublicRefresh(db.transaction(async (tx) => {
     const b = await requireBusiness(tx, ctx);
     if (!b.publicContactConfirmedAt) {
       throw new AppError("precondition_failed", "Confirm which contact details can be public before publishing.");
@@ -180,7 +190,7 @@ export async function publishProfile(db: Db, ctx: Ctx) {
       .returning();
     await audit(tx, ctx, "profile.published", b.id);
     return p;
-  });
+  }));
 }
 
 export async function unpublishProfile(db: Db, ctx: Ctx) {
@@ -191,4 +201,5 @@ export async function unpublishProfile(db: Db, ctx: Ctx) {
     .set({ status: "unpublished", updatedAt: new Date() })
     .where(and(eq(businessProfiles.businessId, b.id), eq(businessProfiles.status, "published")));
   await audit(db, ctx, "profile.unpublished", b.id);
+  refreshPublicPages();
 }

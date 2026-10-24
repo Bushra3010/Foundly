@@ -21,6 +21,7 @@ import {
 import { isPlatformAdmin } from "@/lib/admin";
 import { AppError } from "./context";
 import { grantCredits } from "./credits";
+import { refreshPublicPages } from "./public-cache";
 
 export type AdminCtx = { email: string; userId: string };
 
@@ -120,6 +121,7 @@ export async function setProfileModeration(db: Db, admin: AdminCtx, businessId: 
   const [p] = await db.update(businessProfiles).set({ status, updatedAt: new Date() }).where(eq(businessProfiles.businessId, businessId)).returning();
   if (!p) throw new AppError("not_found", "Profile not found.");
   await adminAudit(db, admin, "profile_moderated", p.workspaceId, { businessId, status, reason: why });
+  refreshPublicPages();
 }
 
 export async function listClaimsForReview(db: Db) {
@@ -150,6 +152,7 @@ export async function resolveClaim(db: Db, admin: AdminCtx, claimId: string, dec
     }
     await tx.insert(auditEvents).values({ workspaceId: c.workspaceId, actorUserId: admin.userId, action: "admin.claim_resolved", target: c.id, data: { decision, reason: why, admin: admin.email } });
   });
+  refreshPublicPages();
 }
 
 /** Support access needs a reason and expires; the owner can see it in their activity. */

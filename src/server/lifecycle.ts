@@ -4,6 +4,7 @@ import { and, eq, isNull, lt, sql } from "drizzle-orm";
 import type { Db } from "@/db";
 import { businessProfiles, deletionRequests, memberships, sessions, sites, users, workspaces } from "@/db/schema";
 import { AppError, audit, requireRole, type Ctx } from "./context";
+import { refreshPublicPages } from "./public-cache";
 
 export const RECOVERY_DAYS = 14;
 
@@ -109,5 +110,6 @@ export async function processDueDeletions(db: Db, now = new Date()) {
     }
     await db.update(deletionRequests).set({ completedAt: now }).where(eq(deletionRequests.id, r.id));
   }
+  if (due.length) refreshPublicPages();
   return due.length;
 }

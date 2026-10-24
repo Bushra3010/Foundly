@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { and, desc, eq, max, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, max, sql } from "drizzle-orm";
 import { factsFromSiteContent, slugify } from "@/lib/geo";
 import type { Db, DbOrTx } from "@/db";
 import { businessProfiles, jobs, siteSlugRedirects, siteVersions, sites, type Site } from "@/db/schema";
@@ -7,16 +7,16 @@ import { siteContent, type SiteContent } from "@/lib/site/content";
 import { buildBlock, factsFromBusiness, generateSite, requiredFactsProblems } from "@/lib/site/generate";
 import { toPublicProfile } from "@/lib/profile";
 import { checkSlug, SLUG_PROBLEM_TEXT } from "@/lib/slug";
-import { requireBusiness, uniqueSlug } from "./business";
+import { businessIdOf, requireBusiness, uniqueSlug } from "./business";
 import { AppError, audit, requireRole, type Ctx } from "./context";
 import { requireEntitlement } from "./billing/service";
+import { refreshPublicPages, withPublicRefresh } from "./public-cache";
 
 export async function getSite(db: DbOrTx, ctx: Ctx): Promise<Site | null> {
-  const b = await requireBusiness(db, ctx);
   const [s] = await db
     .select()
     .from(sites)
-    .where(and(eq(sites.businessId, b.id), eq(sites.workspaceId, ctx.workspaceId)));
+    .where(and(inArray(sites.businessId, businessIdOf(db, ctx)), eq(sites.workspaceId, ctx.workspaceId)));
   return s ?? null;
 }
 
@@ -195,7 +195,7 @@ export async function regenerateBlock(db: Db, ctx: Ctx, blockId: string, expecte
 export async function publishSite(db: Db, ctx: Ctx, expectedRevision: number) {
   requireRole(ctx, "owner");
   await requireEntitlement(db, ctx.workspaceId, "hostedSite");
-  return db.transaction(async (tx) => {
+  return withPublicRefresh(db.transaction(async (tx) => {
     const site = await requireSite(tx, ctx, true);
     if (site.draftRevision !== expectedRevision) {
       throw new AppError(
@@ -242,12 +242,10 @@ export async function publishSite(db: Db, ctx: Ctx, expectedRevision: number) {
 
     await audit(tx, ctx, "site.published", site.id, { version: version.versionNumber, hash });
     return version;
-  });
+  }));
 }
 
 export async function listVersions(db: DbOrTx, ctx: Ctx) {
-  const site = await getSite(db, ctx);
-  if (!site) return [];
   return db
     .select({
       id: siteVersions.id,
@@ -256,13 +254,20 @@ export async function listVersions(db: DbOrTx, ctx: Ctx) {
       contentHash: siteVersions.contentHash,
     })
     .from(siteVersions)
-    .where(and(eq(siteVersions.siteId, site.id), eq(siteVersions.workspaceId, ctx.workspaceId)))
+    .innerJoin(sites, eq(sites.id, siteVersions.siteId))
+    .where(
+      and(
+        eq(siteVersions.workspaceId, ctx.workspaceId),
+        eq(sites.workspaceId, ctx.workspaceId),
+        inArray(sites.businessId, businessIdOf(db, ctx)),
+      ),
+    )
     .orderBy(desc(siteVersions.versionNumber));
 }
 
 export async function rollbackSite(db: Db, ctx: Ctx, versionId: string) {
   requireRole(ctx, "owner");
-  return db.transaction(async (tx) => {
+  return withPublicRefresh(db.transaction(async (tx) => {
     const site = await requireSite(tx, ctx, true);
     const [version] = await tx
       .select()
@@ -274,7 +279,7 @@ export async function rollbackSite(db: Db, ctx: Ctx, versionId: string) {
     await tx.update(sites).set({ publishedVersionId: version.id, updatedAt: new Date() }).where(eq(sites.id, site.id));
     await audit(tx, ctx, "site.rolled_back", site.id, { to: version.versionNumber, from: site.publishedVersionId });
     return version;
-  });
+  }));
 }
 
 export async function unpublishSite(db: Db, ctx: Ctx) {
@@ -282,6 +287,7 @@ export async function unpublishSite(db: Db, ctx: Ctx) {
   const site = await requireSite(db, ctx);
   await db.update(sites).set({ publishedVersionId: null, updatedAt: new Date() }).where(eq(sites.id, site.id));
   await audit(db, ctx, "site.unpublished", site.id);
+  refreshPublicPages();
 }
 
 /** Changes the site address; the old address keeps redirecting. */
@@ -289,7 +295,7 @@ export async function changeSiteSlug(db: Db, ctx: Ctx, newSlug: string) {
   requireRole(ctx, "owner");
   const problem = checkSlug(newSlug);
   if (problem) throw new AppError("invalid", SLUG_PROBLEM_TEXT[problem]);
-  return db.transaction(async (tx) => {
+  return withPublicRefresh(db.transaction(async (tx) => {
     const site = await requireSite(tx, ctx, true);
     if (site.slug === newSlug) return site;
     const [ownRedirect] = await tx
@@ -309,7 +315,7 @@ export async function changeSiteSlug(db: Db, ctx: Ctx, newSlug: string) {
       .returning();
     await audit(tx, ctx, "site.slug_changed", site.id, { from: site.slug, to: newSlug });
     return updated;
-  });
+  }));
 }
 
 // ---------- Public delivery ----------

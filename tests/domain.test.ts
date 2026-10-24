@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
 import { businesses, jobs, memberships } from "@/db/schema";
-import { consumeLoginToken, createLoginToken, userForSession } from "@/server/auth";
+import { consumeLoginToken, createLoginToken, revokeSession, sessionContext, userForSession } from "@/server/auth";
 import { getBusiness, updateBusinessDetails } from "@/server/business";
 import { AppError, type Ctx } from "@/server/context";
 import { getPublicProfile, searchDirectory } from "@/server/directory";
@@ -43,6 +43,15 @@ describe("auth", () => {
     expect(isNew).toBe(true);
     expect((await userForSession(db, sessionToken))?.email).toBe("carol@example.com");
     await expectCode(consumeLoginToken(db, token), "invalid");
+  });
+
+  it("reads the session's user and workspace in one query, ignoring workspaces they don't belong to", async () => {
+    const { sessionToken } = await consumeLoginToken(db, await createLoginToken(db, "alice@example.com"));
+    const s = await sessionContext(db, sessionToken, bob.workspaceId);
+    expect(s?.user.email).toBe("alice@example.com");
+    expect(s?.ctx).toEqual({ userId: alice.userId, workspaceId: alice.workspaceId, role: alice.role });
+    await revokeSession(db, sessionToken);
+    expect(await sessionContext(db, sessionToken)).toBeNull();
   });
 
   it("returning users keep their workspace", async () => {

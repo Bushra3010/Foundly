@@ -197,6 +197,30 @@ export async function revokeAllSessions(db: Db, userId: string) {
 }
 
 /**
+ * The session's user and active workspace in one round trip: the session,
+ * its user and their memberships are read together. The workspace is chosen
+ * as in `contextForUser`. Null when the session is missing, revoked or expired.
+ */
+export async function sessionContext(
+  db: Db,
+  raw: string,
+  preferredWorkspaceId?: string,
+): Promise<{ user: SessionUser; ctx: Ctx | null } | null> {
+  const rows = await db
+    .select({ id: users.id, email: users.email, name: users.name, workspaceId: memberships.workspaceId, role: memberships.role })
+    .from(sessions)
+    .innerJoin(users, eq(users.id, sessions.userId))
+    .leftJoin(memberships, eq(memberships.userId, users.id))
+    .where(and(eq(sessions.tokenHash, hashToken(raw)), isNull(sessions.revokedAt), gt(sessions.expiresAt, new Date())))
+    .orderBy(asc(memberships.createdAt));
+  if (rows.length === 0) return null;
+  const { id, email, name } = rows[0];
+  const member = rows.filter((r) => r.workspaceId && r.role);
+  const m = member.find((r) => r.workspaceId === preferredWorkspaceId) ?? member[0];
+  return { user: { id, email, name }, ctx: m ? { userId: id, workspaceId: m.workspaceId!, role: m.role! } : null };
+}
+
+/**
  * Resolves the active workspace: the preferred one if the user is a member
  * of it, otherwise their earliest membership. A preferred id that the user
  * doesn't belong to is ignored, never trusted.

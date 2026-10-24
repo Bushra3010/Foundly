@@ -5,15 +5,15 @@ import { redirect } from "next/navigation";
 import { Brand, Icon } from "@/components/icon";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
-import { getBusiness } from "@/server/business";
 import { AboutStep, FinishStep } from "./steps";
 import "../start.css";
+import { currentBusiness } from "@/server/current";
 
 export const metadata: Metadata = { title: "Set up your business", robots: { index: false } };
 
 export default async function OnboardingPage({ searchParams }: { searchParams: Promise<{ step?: string }> }) {
   const ctx = await requireCtx();
-  const business = await getBusiness(await getDb(), ctx);
+  const business = await currentBusiness(await getDb(), ctx);
   if (business?.onboardingCompletedAt) redirect("/app");
 
   // Two screens. Screen 2 needs the details from screen 1; owners can always go back.

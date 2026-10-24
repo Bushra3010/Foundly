@@ -10,9 +10,9 @@ import { getDb } from "@/db";
 import { auditEvents, leads } from "@/db/schema";
 import { requireCtx } from "@/lib/auth/session";
 import { missingOptionalFacts } from "@/lib/site/generate";
-import { getProfile, requireBusiness } from "@/server/business";
-import { getSite, listVersions } from "@/server/sites";
+import { listVersions } from "@/server/sites";
 import { visibilitySummary } from "@/server/monitoring/service";
+import { currentProfile, currentSite, requireCurrentBusiness } from "@/server/current";
 
 export const metadata = { title: "Home" };
 
@@ -44,7 +44,7 @@ const ACTIVITY_TEXT: Record<string, string> = {
 export default async function HomePage() {
   const ctx = await requireCtx();
   const db = await getDb();
-  const business = await requireBusiness(db, ctx);
+  const business = await requireCurrentBusiness(db, ctx);
   const weekAgo = daysAgo(7);
   const [
     site,
@@ -54,10 +54,11 @@ export default async function HomePage() {
     [{ n: weekLeads }],
     activity,
     visibility,
+    readiness,
   ] = await Promise.all([
-    getSite(db, ctx),
+    currentSite(db, ctx),
     listVersions(db, ctx),
-    getProfile(db, ctx),
+    currentProfile(db, ctx),
     db
       .select({ n: count() })
       .from(leads)
@@ -80,6 +81,7 @@ export default async function HomePage() {
       .orderBy(desc(auditEvents.createdAt))
       .limit(8),
     visibilitySummary(db, ctx, 30),
+    readinessFor(db, ctx, business),
   ]);
   const vm = visibility.metrics;
   const live = site && versions.find((v) => v.id === site.publishedVersionId);
@@ -143,8 +145,6 @@ export default async function HomePage() {
     },
   ];
   const completed = setupSteps.filter((step) => step.done).length;
-
-  const readiness = await readinessFor(db, ctx, business);
 
   const [focus, ...moreActions] = actions;
   const mentionRate = vm.valid > 0 && vm.mention.rate !== null ? Math.round(vm.mention.rate * 100) : null;

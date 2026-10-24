@@ -8,7 +8,6 @@ import { isPlatformAdmin } from "@/lib/admin";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { GROUP_LABEL, suggestQuestions } from "@/lib/questions";
-import { requireBusiness } from "@/server/business";
 import { can } from "@/server/context";
 import { getBalance } from "@/server/credits";
 import { ADAPTERS, METHOD_LABEL, providerState } from "@/server/monitoring/registry";
@@ -31,6 +30,7 @@ import {
   saveBrandAction,
 } from "./actions";
 import { MetricCard, pct } from "./metric-card";
+import { requireCurrentBusiness } from "@/server/current";
 
 export const metadata = { title: "AI Visibility" };
 
@@ -60,7 +60,7 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
   const sp = await searchParams;
   const days = [7, 30, 90].includes(Number(sp.days)) ? Number(sp.days) : 30;
   const provider = ADAPTERS.some((a) => a.key === sp.provider) ? sp.provider : undefined;
-  const business = await requireBusiness(db, ctx);
+  const business = await requireCurrentBusiness(db, ctx);
   const [questions, comps, runs, balance, lastSuccess, summary, brands, keywordLimit] = await Promise.all([
     listQuestions(db, ctx),
     listCompetitors(db, ctx),

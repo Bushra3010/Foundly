@@ -2,14 +2,13 @@ import "server-only";
 import type { DbOrTx } from "@/db";
 import type { Business } from "@/db/schema";
 import { geoReadiness } from "@/lib/geo";
-import { getProfile } from "./business";
 import type { Ctx } from "./context";
 import { listDomains } from "./domains";
-import { getSite } from "./sites";
+import { currentProfile, currentSite } from "@/server/current";
 
 /** AI readiness for the signed-in workspace's business. */
 export async function readinessFor(db: DbOrTx, ctx: Ctx, business: Business) {
-  const [site, profile, domains] = await Promise.all([getSite(db, ctx), getProfile(db, ctx), listDomains(db, ctx)]);
+  const [site, profile, domains] = await Promise.all([currentSite(db, ctx), currentProfile(db, ctx), listDomains(db, ctx)]);
   const live = Boolean(site?.publishedVersionId);
   const faqCount = (site?.draft.pages ?? [])
     .flatMap((pg) => pg.blocks)

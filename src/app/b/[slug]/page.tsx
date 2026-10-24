@@ -8,6 +8,12 @@ import { jsonLdScript, phoneDigits } from "@/lib/profile";
 import { businessGraph, entitySentence, listingLabel } from "@/lib/geo";
 import { getPublicProfile } from "@/server/directory";
 
+// Built on the first visit, then served from the edge cache (see server/public-cache.ts).
+export const revalidate = 300;
+export async function generateStaticParams() {
+  return [];
+}
+
 type Props = { params: Promise<{ slug: string }> };
 
 const load = cache(async (slug: string) => getPublicProfile(await getDb(), slug));
