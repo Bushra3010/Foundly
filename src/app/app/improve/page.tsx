@@ -1,11 +1,10 @@
-import Link from "next/link";
 import { ActionForm } from "@/components/action-form";
 import { Badge, Card, EmptyState, LinkButton, Notice, PageHeader } from "@/components/ui";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
-import { CHECKLIST_VERSION } from "@/server/audit/checks";
+import { CHECK_LABEL, CHECKLIST_VERSION } from "@/server/audit/checks";
 import { latestAudit, listActions } from "@/server/audit/service";
 import { can } from "@/server/context";
 import { readinessFor } from "@/server/geo";
@@ -23,7 +22,9 @@ import {
   startAuditAction,
   verifyActionAction,
 } from "./actions";
-import { currentSite, requireCurrentBusiness } from "@/server/current";
+import { requireCurrentBusiness } from "@/server/current";
+import { normalizeSiteUrl } from "@/server/safe-fetch";
+import { AutoRefresh } from "@/components/auto-refresh";
 
 export const metadata = { title: "Improve My Business" };
 
@@ -42,12 +43,23 @@ const STATUS = {
 
 const CATEGORY = { facts: "Business facts", technical: "Technical access", content: "Content", structured_data: "Structured data", accessibility: "Accessibility and mobile" } as Record<string, string>;
 
+function targetOf(url: string) {
+  try {
+    return normalizeSiteUrl(url);
+  } catch {
+    return null;
+  }
+}
+
 export default async function ImprovePage() {
   const ctx = await requireCtx();
   const locale = await getLocale();
   const db = await getDb();
   const b = await requireCurrentBusiness(db, ctx);
-  const [audit, actions, site, wp, readiness] = await Promise.all([latestAudit(db, ctx), listActions(db, ctx), currentSite(db, ctx), getWordPress(db, ctx), readinessFor(db, ctx, b)]);
+  const [latest, actions, wp, readiness] = await Promise.all([latestAudit(db, ctx), listActions(db, ctx), getWordPress(db, ctx), readinessFor(db, ctx, b)]);
+  // Only a check of the website connected now is shown; an old address's results don't apply.
+  const target = b.hasWebsite && b.websiteUrl ? targetOf(b.websiteUrl) : null;
+  const audit = latest && target && latest.target === target ? latest : null;
   const wpPages = wp ? await listPages(db, ctx).catch(() => null) : null;
   const open = actions.filter((a) => !["verified", "rejected", "rolled_back"].includes(a.status));
   const closed = actions.filter((a) => ["verified", "rejected", "rolled_back"].includes(a.status));
@@ -59,6 +71,7 @@ export default async function ImprovePage() {
 
   return (
     <>
+      <AutoRefresh active={!!running || !!readiness.websiteRunning} />
       <PageHeader icon="improve"
         title={t(locale, "nav.improve")}
         description="Small, specific changes that make your information clearer for customers. They can make pages more useful; they can't guarantee that any AI service will mention you."
@@ -80,26 +93,23 @@ export default async function ImprovePage() {
         <p className="mt-1 text-sm text-muted">
           {b.websiteUrl
             ? `We read up to 8 public pages of ${b.websiteUrl}. We never need your website login, and nothing on your site is changed.`
-            : "We check your platform website's content."}
+            : "Connect your website and we'll check what AI assistants can read on it."}
         </p>
         {running ? (
           <p className="mt-3" aria-live="polite">
-            <Badge tone="info">Audit running</Badge> <span className="text-sm text-muted">Refresh in a moment.</span>
+            <Badge tone="info">Checking your website…</Badge> <span className="text-sm text-muted">Usually under a minute. This page updates by itself.</span>
           </p>
         ) : (
           canEdit && (
             <div className="mt-3 flex flex-wrap gap-3">
               {b.websiteUrl && (
-                <ActionForm action={startAuditAction} submitLabel="Check my website" pendingLabel="Starting…">
-                  <input type="hidden" name="kind" value="external" />
-                </ActionForm>
+                <ActionForm action={startAuditAction} submitLabel="Check my website" pendingLabel="Starting…" />
               )}
-              {site && (
-                <ActionForm action={startAuditAction} submitLabel="Check my platform website" variant={b.websiteUrl ? "secondary" : "primary"} pendingLabel="Starting…">
-                  <input type="hidden" name="kind" value="hosted" />
-                </ActionForm>
+              {!b.websiteUrl && (
+                <LinkButton href="/app/website" variant="secondary">
+                  Connect or request a website
+                </LinkButton>
               )}
-              {!b.websiteUrl && !site && <p className="text-sm text-muted">Add your website address in My Business, or create a website first.</p>}
             </div>
           )
         )}
@@ -121,18 +131,35 @@ export default async function ImprovePage() {
                 Some pages couldn&apos;t be read: {audit.notRun.map((n) => `${n.check} (${n.reason})`).join("; ")}. Checks for them didn&apos;t run.
               </p>
             )}
-            <details className="mt-3">
-              <summary className="cursor-pointer text-sm font-semibold">See all checks</summary>
-              <ul className="mt-2 space-y-1 text-sm">
-                {audit.findings.map((f) => (
-                  <li key={f.id} className="flex flex-wrap gap-2">
-                    <Badge tone={f.passed ? "ok" : f.severity === "high" ? "err" : "warn"}>{f.passed ? "Pass" : "Improve"}</Badge>
-                    <span className="text-muted">{CATEGORY[f.category]}:</span> {f.evidence}
-                    {f.partial && <span className="text-xs text-muted">(automated check — confirm manually)</span>}
-                  </li>
+            <h3 className="mt-5 font-semibold">How we rate your website</h3>
+            <p className="mt-1 text-sm text-muted">Each check below is one point. Your website score is the share that pass, scaled to 50.</p>
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              {Object.entries(CATEGORY)
+                .map(([key, name]) => ({ key, name, items: audit.findings.filter((f) => f.category === key) }))
+                .filter((g) => g.items.length > 0)
+                .map((g) => (
+                  <section key={g.key} className="rounded-lg border border-border p-3">
+                    <h4 className="flex items-center justify-between gap-2 text-sm font-semibold">
+                      {g.name}
+                      <span className="text-muted">{g.items.filter((f) => f.passed).length} of {g.items.length}</span>
+                    </h4>
+                    <ul className="mt-2 space-y-2 text-sm">
+                      {g.items.map((f) => (
+                        <li key={f.id}>
+                          <span className="flex items-center gap-2 font-medium">
+                            <Badge tone={f.passed ? "ok" : f.severity === "high" ? "err" : "warn"}>{f.passed ? "Pass" : "Improve"}</Badge>
+                            {CHECK_LABEL[f.checkKey] ?? f.checkKey}
+                          </span>
+                          <span className="mt-0.5 block text-muted">
+                            {f.evidence}
+                            {f.partial && " (automated check, confirm it yourself)"}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
                 ))}
-              </ul>
-            </details>
+            </div>
           </div>
         )}
       </Card>
@@ -177,7 +204,7 @@ export default async function ImprovePage() {
                       <input type="hidden" name="actionId" value={a.id} />
                       <input type="hidden" name="revision" value={a.draftRevision} />
                       <label htmlFor={`draft-${a.id}`} className="block text-sm font-semibold">
-                        Draft {a.applyKind === "manual" ? "(copy this to your website)" : "(added to your website when you apply it)"}
+                        Draft {a.applyKind === "wordpress_append" ? "(added to your WordPress page when you apply it)" : "(copy this to your website)"}
                       </label>
                       <textarea id={`draft-${a.id}`} name="draft" defaultValue={a.draft} rows={Math.min(12, Math.max(3, a.draft.split("\n").length + 1))} className="block w-full rounded-lg border border-border bg-surface px-3 py-2 font-mono text-sm" />
                     </ActionForm>
@@ -223,8 +250,8 @@ export default async function ImprovePage() {
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
                   )}
-                  {isOwner && a.status === "approved" && a.applyKind === "wordpress_append" ? null : isOwner && a.status === "approved" && (
-                    <ActionForm action={applyActionAction} submitLabel={a.applyKind === "manual" ? "I've made this change" : "Apply to my website draft"} inline>
+                  {isOwner && a.status === "approved" && a.applyKind === "manual" && (
+                    <ActionForm action={applyActionAction} submitLabel="I've made this change" inline>
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
                   )}
@@ -238,8 +265,8 @@ export default async function ImprovePage() {
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
                   )}
-                  {isOwner && a.status === "applied" && a.applyKind.startsWith("hosted_") && (
-                    <ActionForm action={rollbackActionAction} submitLabel="Roll back" variant="ghost" inline>
+                  {isOwner && a.status === "applied" && a.applyKind === "manual" && (
+                    <ActionForm action={rollbackActionAction} submitLabel="Reopen" variant="ghost" inline>
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
                   )}
@@ -247,11 +274,6 @@ export default async function ImprovePage() {
                     <ActionForm action={rejectActionAction} submitLabel="Dismiss" variant="ghost" inline>
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
-                  )}
-                  {a.status === "applied" && a.applyKind.startsWith("hosted_") && (
-                    <Link href="/app/website" className="inline-flex min-h-11 items-center text-sm font-semibold underline">
-                      Review and publish
-                    </Link>
                   )}
                 </div>
               </Card>

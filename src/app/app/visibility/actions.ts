@@ -6,6 +6,7 @@ import { z } from "zod";
 import { getDb } from "@/db";
 import { toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
+import { keywordGroup } from "@/lib/questions";
 import { splitList } from "@/lib/validation";
 import {
   addCompetitor,
@@ -31,12 +32,12 @@ export async function approveQuestionsAction(_prev: ActionState, form: FormData)
     .split("\n")
     .map((t) => t.trim())
     .filter(Boolean)
-    .map((text) => ({ group: groups.catch("service").parse(form.get("customGroup")), location: String(form.get("customLocation") ?? "") || null, text }));
-  if (picked.length + custom.length === 0) return { ok: false, message: "Pick or write at least one question." };
+    .map((text) => ({ group: form.get("customGroup") ? groups.catch("service").parse(form.get("customGroup")) : keywordGroup(text), location: String(form.get("customLocation") ?? "") || null, text }));
+  if (picked.length + custom.length === 0) return { ok: false, message: "Pick or write at least one keyword." };
   try {
     const n = await approveQuestions(await getDb(), await requireCtx(), [...picked, ...custom]);
     revalidatePath("/app/visibility");
-    return { ok: true, message: n ? `${n} question${n === 1 ? "" : "s"} added to tracking.` : "Those questions are already tracked." };
+    return { ok: true, message: n ? `${n} keyword${n === 1 ? "" : "s"} added to tracking.` : "Those keywords are already tracked." };
   } catch (err) {
     return toActionError(err);
   }

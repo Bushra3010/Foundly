@@ -14,8 +14,8 @@ const stages = [
     id: "day1",
     label: "Day 1",
     week: 0,
-    website: { value: "Not created", detail: "No home on the internet yet", live: false },
-    enquiries: { value: 0, detail: "No way for customers to reach you" },
+    website: { value: "Not connected", detail: "No home on the internet yet", live: false },
+    enquiries: { value: 0, detail: "Not listed where AI looks yet" },
     profile: { done: 3, total: 9 },
     tasks: 0,
     answer: {
@@ -30,8 +30,8 @@ const stages = [
     id: "week4",
     label: "Week 4",
     week: 3,
-    website: { value: "Live", detail: "Published · version 2", live: true },
-    enquiries: { value: 2, detail: "2 enquiries from your website" },
+    website: { value: "Connected", detail: "Built by the Foundly team", live: true },
+    enquiries: { value: 3, detail: "Listed on 3 sites AI reads" },
     profile: { done: 7, total: 9 },
     tasks: 3,
     answer: {
@@ -46,8 +46,8 @@ const stages = [
     id: "week8",
     label: "Week 8",
     week: 7,
-    website: { value: "Live", detail: "Published · version 4", live: true },
-    enquiries: { value: 6, detail: "6 enquiries this week" },
+    website: { value: "Connected", detail: "Checked weekly for AI readiness", live: true },
+    enquiries: { value: 6, detail: "Listed on 6 sites AI reads" },
     profile: { done: 9, total: 9 },
     tasks: 6,
     answer: {
@@ -168,7 +168,7 @@ export function LandingResults() {
             <span className="results-kpi-detail">{mention} of {TOTAL_ANSWERS} answers</span>
           </div>
           <div className="results-kpi amber">
-            <span className="results-kpi-label"><Icon name="leads" size={16} /> Enquiries</span>
+            <span className="results-kpi-label"><Icon name="presence" size={16} /> Listings</span>
             <strong className="results-kpi-value">{stage.enquiries.value}</strong>
             <span className="results-kpi-detail">{stage.enquiries.detail}</span>
           </div>

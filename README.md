@@ -18,21 +18,27 @@ To open the admin console locally, start with `ADMIN_EMAILS=you@example.com npm 
 ```bash
 npm test               # 64 tests against an in-memory Postgres
 npm run typecheck && npm run lint && npm run build
-npm run seed:dev       # optional demo owner with a published site
+npm run seed:dev       # optional demo owner with a published profile (add -- --request for a website request)
 ```
 
 All configuration is documented in [.env.example](.env.example).
+
+## Owner journey
+
+Sign in → **Keywords** (business name, what they do, city, and the keywords to track) → **Website** (connect it, or say they don't have one) → **Social media** (Google Business Profile and Facebook connect in one click when configured; otherwise paste the link) → **Start tracking** (one button: confirms details, lists the business, and runs the first AI check when sources are on). Then the dashboard (`/app`, built in `src/server/performance.ts`) shows connection status, AI mention and citation rates, an 8-week trend, results per keyword, website health from the last check, social status and up to three next steps. The menu has five items: Dashboard, Keywords, Website, Social media and Settings; business details, improvements and reports open from Settings.
 
 ## What's in each phase
 
 | Phase | Delivered |
 | --- | --- |
 | **1 Foundation** | Magic-link sign-in. Hashed single-use tokens, consumed by POST so email link scanners can't use them up. Sessions, including sign out everywhere. Workspaces with owner, editor and viewer roles enforced in the server data layer. Six-step onboarding with per-step save and resume. Business facts with version preconditions. Public and private field separation. Directory and profile pages with JSON-LD built only from supplied facts. |
-| **2 Website** | Deterministic site generation that never invents claims. Idempotent jobs that retry safely after failure. Block editor with autosave, reordering, per-section regeneration, a colour contrast warning, and photo uploads checked by file signature (no SVG). Privacy page draft. Private noindex preview. Immutable content-hashed versions with publish, rollback and unpublish. Slugs with reserved names and redirects. Custom domains with TXT and CNAME verification, served from a separate origin. Lead capture with honeypot and rate limits that works without JavaScript; lead inbox and CSV export. Team invitations, roles, last-owner protection and ownership transfer. Ownership claims by DNS, file or manual review, with dispute handling. English and Hindi interface. |
+| **2 Website** | Owners with a website connect it. Owners without one send a brief (goal, pages, style, sites they like, and how to reach them by phone, WhatsApp or video call); the team is emailed, works the request in the admin console, builds the site with any tool and delivers its address, which connects it to the owner's account. One open request per business. Foundly no longer generates or hosts websites (see below). Team invitations, roles, last-owner protection and ownership transfer. Ownership claims by DNS, file or manual review, with dispute handling. English and Hindi interface. |
 | **3 Visibility** | Owner-approved tracked questions, with branded questions kept separate. Competitors. Adapters for ChatGPT (OpenAI Responses), Perplexity (Sonar), Gemini (Search grounding) and Claude (Messages + web search), each off until validated. Raw evidence stored unchanged. Brand and citation extraction with flags for uncertain matches. Mention rate, citation rate, competitor share and coverage, always showing numerator and denominator. Small-sample warnings. Comparisons using only matched question and source pairs. Evidence screen and owner corrections that never edit raw answers. CSV export. Weekly scheduling and resumable runs. Credits reserved atomically and charged only for valid answers. |
-| **4 Improvements** | SSRF-safe crawler: blocks private networks, cloud metadata and DNS rebinding; respects robots.txt; bounded in pages, bytes and time. Versioned checklist covering facts, technical access, content, structured data, and partial accessibility checks. Tasks with evidence, a hypothesis and an editable draft. Full workflow: detected → proposed → owner edited → approved → queued → applied → verified, plus rejected, failed and rolled back. Edits invalidate approvals, and placeholders block approval. Hosted-site changes are applied to the draft and verified once published. Downloadable fixes and off-site checklists. |
+| **4 Improvements** | SSRF-safe crawler: blocks private networks, cloud metadata and DNS rebinding; respects robots.txt; bounded in pages, bytes and time. Versioned checklist covering facts, technical access, content, structured data, and partial accessibility checks. Tasks with evidence, a hypothesis and an editable draft. Full workflow: detected → proposed → owner edited → approved → queued → applied → verified, plus rejected, failed and rolled back. Edits invalidate approvals, and placeholders block approval. The owner makes each change on their own site (or through the WordPress connector) and a re-scan verifies it. Downloadable fixes and off-site checklists. |
 | **5 Paid pilot** | Plans and entitlements (enforcement switchable). Hosted checkout through a replaceable adapter: Razorpay, or a local test mode. Signed webhooks deduplicated by event id. Allowance credits once per billing period. Grace period on failed payment, with content never deleted for non-payment. Downgrades at period end and cancellation. Lead alerts and opt-in weekly summaries with signed unsubscribe links. Website and account deletion as separate actions with a 14-day recovery window. Admin console covering moderation, disputes, failed work, provider health, time-boxed and reasoned support access, and credit adjustments, all audited. Runbooks, backup and restore scripts. |
 | **6 Expansion** | WordPress connector: application password for an Editor-role user (administrators refused), encrypted at rest. Owner picks the page and previews the exact escaped HTML. Revision check before writing; rollback only if the page is unchanged. Multiple workspaces per user, a workspace switcher and portfolio view, and agency workspace limits. Installable PWA with an offline page. |
+
+**Retired: Foundly-hosted websites.** The one-click generator, block editor, hosted sites at `/s/<slug>`, custom domains, photo uploads, the lead inbox and website deletion were removed: the team builds websites instead. Their tables (`sites`, `site_versions`, `custom_domains`, `leads`, `assets`) are kept, nothing reads or writes them, and the owner's data export still includes any rows they hold.
 
 **Not built (by design or out of scope):** native iOS and Android apps (PRD: "after pilot evidence"; the PWA covers mobile), connectors for CMSs other than WordPress, white-label agency reporting, domain purchasing, and reviews (the PRD keeps them disabled until moderation exists).
 
@@ -45,21 +51,20 @@ src/server/          Domain layer — plain functions taking an explicit tenant 
   audit/             crawler, checklist, task templates, workflow
   billing/           plans, payment adapters, webhook processing
 src/lib/             validation, site content schema + generator, auth/session, i18n
-src/app/             Next.js 16 App Router: /app (owner), /admin, /s/[slug] + /d/[host] (sites),
+src/app/             Next.js 16 App Router: /app (owner), /admin (incl. website requests),
                      /directory, /b/[slug], /api/cron/*, /api/webhooks/payments/[provider]
 src/proxy.ts         separates customer-site origins from the app; optimistic auth redirect
 drizzle/             SQL migrations     docs/       providers, deployment, runbooks
 tests/               phase-by-phase domain tests
 ```
 
-**Rules the code enforces** (each has tests): the workspace always comes from the session, never from the request; publishing binds a reviewed revision atomically; failed jobs keep earlier work and are never charged twice; generated content uses only confirmed facts; unsupported providers produce no data; raw evidence is never modified; a duplicate payment webhook changes nothing.
+**Rules the code enforces** (each has tests): the workspace always comes from the session, never from the request; failed work is never charged twice; drafts use only confirmed facts; a business has one open website request at a time; unsupported providers produce no data; raw evidence is never modified; a duplicate payment webhook changes nothing.
 
 ## Deviations from the PRD's proposed stack
 
 - **Auth:** the app has its own magic-link sessions instead of Supabase Auth, so it runs without credentials. Isolation is enforced in the data layer and covered by tests. Migration `0007_enable_rls` turns on row-level security (RLS) for every table with no policies, so Supabase's public Data API can't read or write app data. The app connects as the table owner and is unaffected. Add policies keyed on `workspace_id` only if you ever need the Data API.
 - **Jobs:** background work runs through `after()`, with durable state rows (`jobs`, `monitoring_runs`, `audits`). Hourly and daily crons resume and schedule work. For higher volume, move execution to a queue (for example Vercel Queues); the run functions are already idempotent.
 - **Rate limiting** is in-process. Use a shared store before running more than one instance.
-- **Media** is stored on the local filesystem (`UPLOADS_DIR`). Use object storage in production.
 
 ## Before launch
 

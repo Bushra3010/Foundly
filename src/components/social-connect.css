@@ -1,0 +1,38 @@
+/* Works inside setup (--s-*) and the app (--d-*). */
+.sc {
+  --sc-ink: var(--s-ink, var(--d-ink));
+  --sc-muted: var(--s-muted, var(--d-muted));
+  --sc-line: var(--s-line, var(--d-line));
+  --sc-field: var(--s-field, var(--d-soft));
+  --sc-card: var(--s-card, var(--d-card));
+  display: grid;
+  gap: 16px;
+}
+.sc-status { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.sc-status li { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 14px; border: 1px solid var(--sc-line); background: var(--sc-field); min-width: 0; }
+.sc-status li > span:last-child { display: grid; min-width: 0; }
+.sc-status strong { font-size: 14px; overflow-wrap: anywhere; }
+.sc-status em { font-style: normal; font-size: 12.5px; color: var(--sc-muted); }
+.sc-dot { width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; border: 1.5px dashed var(--sc-line); }
+.sc-status li.on .sc-dot { border: 0; background: #d6fc74; color: #1b1e17; }
+.sc-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.sc-btn, .sc-save {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 18px;
+  border-radius: 100px; border: 1.5px solid var(--sc-ink); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none;
+}
+.sc-btn { background: var(--sc-ink); color: var(--sc-card); }
+.sc-save { background: transparent; color: var(--sc-ink); justify-self: start; }
+.sc-save:disabled { opacity: .7; cursor: progress; }
+.sc-form { display: grid; gap: 8px; }
+.sc-form label { display: grid; gap: 2px; }
+.sc-form label strong { font-size: 14.5px; }
+.sc-form label span { font-size: 13px; color: var(--sc-muted); }
+.sc-form textarea {
+  width: 100%; padding: 12px 14px; font: inherit; font-size: 15px; color: var(--sc-ink);
+  background: var(--sc-card); border: 1.5px solid var(--sc-line); border-radius: 14px; resize: vertical;
+}
+.sc-form textarea:focus { outline: none; border-color: var(--sc-ink); box-shadow: 0 0 0 4px #d6fc7466; }
+.sc-form textarea[aria-invalid=true] { border-color: #a33a2a; }
+.sc-error { font-size: 13px; font-weight: 600; color: #a33a2a; }
+.sc-ok { font-size: 13.5px; font-weight: 600; color: #2f6b3b; }
+@media (max-width: 560px) { .sc-status { grid-template-columns: 1fr; } }

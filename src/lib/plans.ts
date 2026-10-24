@@ -13,8 +13,6 @@ export type PlanSpec = {
   name: string;
   summary: string;
   features: string[];
-  hostedSite: boolean;
-  customDomain: boolean;
   /** Tracked questions allowed per business. */
   keywords: number;
   /** Scheduled AI checks; null means manual checks with trial credits only. */
@@ -30,7 +28,7 @@ const AI_SOURCES = 4;
 // 4.5 weekly runs covers 5-Monday months; biweekly is half that.
 const RUNS_PER_MONTH: Record<CheckSchedule, number> = { weekly: 4.5, biweekly: 2.25 };
 const credits = (keywords: number, checks: CheckSchedule) => keywords * AI_SOURCES * RUNS_PER_MONTH[checks];
-const GEO = ["Weekly GEO upkeep: Bing, Google and Facebook kept fresh", "AI-ready pages with schema and llms.txt", "GEO readiness score and next steps"];
+const GEO = ["Weekly GEO upkeep: Bing, Google and Facebook kept fresh", "AI-ready profile page with schema and llms.txt", "GEO readiness score and next steps"];
 const AI_LIST = "Checked on ChatGPT, Gemini, Perplexity and Claude";
 
 function keywordPlan(key: Plan, name: string, keywords: number, checks: CheckSchedule, extra: string[] = []): PlanSpec {
@@ -38,18 +36,18 @@ function keywordPlan(key: Plan, name: string, keywords: number, checks: CheckSch
   return {
     key, name, summary: `Track ${keywords} keywords in AI answers`,
     features: [`${keywords} keywords checked ${schedule}`, AI_LIST, ...GEO, "GEO audits and improvement tasks", ...extra],
-    hostedSite: true, customDomain: true, keywords, checks, monthlyCredits: credits(keywords, checks), maxWorkspaces: 1,
+    keywords, checks, monthlyCredits: credits(keywords, checks), maxWorkspaces: 1,
     priceEnv: `PLAN_PRICE_${key.toUpperCase()}_INR`,
   };
 }
 
 export const PLANS: PlanSpec[] = [
-  { key: "free", name: "Free", summary: "Business profile and a private website preview", features: ["Directory profile", "GEO readiness score", "One-time trial credits"], hostedSite: false, customDomain: false, keywords: 3, checks: null, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "" },
+  { key: "free", name: "Free", summary: "Business profile and your GEO readiness score", features: ["Directory profile", "GEO readiness score", "One-time trial credits"], keywords: 3, checks: null, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "" },
   // The old Website plan: no longer sold, still honoured for existing subscribers.
-  { key: "website", name: "Base", summary: "Get your business ready for AI answers", features: GEO, hostedSite: true, customDomain: true, keywords: 3, checks: null, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "PLAN_PRICE_WEBSITE_INR", retired: true },
+  { key: "website", name: "Base", summary: "Get your business ready for AI answers", features: GEO, keywords: 3, checks: null, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "PLAN_PRICE_WEBSITE_INR", retired: true },
   keywordPlan("growth", "Growth", 5, "biweekly"),
   keywordPlan("pro", "Pro", 10, "weekly"),
-  { key: "agency", name: "Enterprise", summary: "Growth for up to 10 businesses", features: ["Growth for every business", "5 keywords per business, checked every 2 weeks", AI_LIST, "Up to 10 businesses", "Portfolio view"], hostedSite: true, customDomain: true, keywords: 5, checks: "biweekly", monthlyCredits: credits(5, "biweekly"), maxWorkspaces: 10, priceEnv: "PLAN_PRICE_AGENCY_INR" },
+  { key: "agency", name: "Enterprise", summary: "Growth for up to 10 businesses", features: ["Growth for every business", "5 keywords per business, checked every 2 weeks", AI_LIST, "Up to 10 businesses", "Portfolio view"], keywords: 5, checks: "biweekly", monthlyCredits: credits(5, "biweekly"), maxWorkspaces: 10, priceEnv: "PLAN_PRICE_AGENCY_INR" },
 ];
 
 export const planSpec = (p: Plan) => PLANS.find((x) => x.key === p)!;

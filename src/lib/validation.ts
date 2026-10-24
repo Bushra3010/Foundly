@@ -26,6 +26,21 @@ export const listingUrl = z
   .transform((s) => (/^https?:\/\//i.test(s) ? s : `https://${s}`))
   .refine((s) => z.url({ protocol: /^https?$/ }).safeParse(s).success, "Enter a web address like instagram.com/yourbusiness");
 
+/**
+ * Links pasted into one box: one per line, or separated by spaces or commas.
+ * Returns the cleaned links, and the first entry that isn't a web address.
+ */
+export function parseListingLinks(text: string): { urls: string[]; bad: string | null } {
+  const raw = text.split(/[\s,]+/).map((l) => l.trim()).filter(Boolean);
+  const urls: string[] = [];
+  for (const l of raw) {
+    const p = listingUrl.safeParse(l);
+    if (!p.success || !/\.[a-z]{2,}/i.test(l)) return { urls, bad: l };
+    if (!urls.includes(p.data)) urls.push(p.data);
+  }
+  return { urls, bad: null };
+}
+
 const phone = z
   .string()
   .trim()
@@ -70,6 +85,25 @@ export const websiteChoiceSchema = z.discriminatedUnion("hasWebsite", [
   z.object({ hasWebsite: z.literal("no") }),
 ]);
 
+/** An owner without a website asks Foundly's team to build one. */
+export const websiteRequestSchema = z
+  .object({
+    goal: z.string().trim().min(10, "Tell us in a sentence or two what your website should do").max(1000),
+    pages: optionalText(500),
+    style: optionalText(500),
+    examples: optionalText(1000),
+    contactMethod: z.enum(["phone", "whatsapp", "video"], "Choose how we should reach you"),
+    contactValue: z.string().trim().min(3, "Tell us where to reach you").max(200),
+    contactTime: optionalText(200),
+  })
+  .superRefine((v, c) => {
+    if (v.contactMethod === "video" ? !z.email().safeParse(v.contactValue).success : !/^\+?[\d\s()-]{7,20}$/.test(v.contactValue)) {
+      c.addIssue({ code: "custom", path: ["contactValue"], message: v.contactMethod === "video" ? "Enter the email we should send the meeting link to" : "Enter a phone number like +91 98765 43210" });
+    }
+  });
+
+export const deliverWebsiteSchema = z.object({ url: httpUrl.refine((v) => !!v, "Enter the website address") });
+
 export const servicesSchema = z
   .array(z.object({ name: z.string().trim().min(1).max(100), description: z.string().trim().max(600).optional() }))
   .min(1, "Add at least one service")
@@ -98,15 +132,6 @@ export const businessDetailsSchema = basicsSchema.extend({
   credentials: optionalText(300),
   listings: z.array(listingUrl).max(10, "Add up to 10 links"),
   expectedVersion: z.number().int(),
-});
-
-export const leadSchema = z.object({
-  siteSlug: z.string().min(1).max(60),
-  name: z.string().trim().min(1, "Enter your name").max(100),
-  contact: z.string().trim().min(5, "Enter a phone number or email so they can reply").max(120),
-  message: z.string().trim().min(5, "Tell them a little about what you need").max(2000),
-  // Honeypot: real visitors never see or fill this field.
-  website: z.string().max(0).optional().or(z.literal("")),
 });
 
 /** Splits a comma or newline separated textarea into trimmed items. */

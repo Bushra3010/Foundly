@@ -1,11 +1,9 @@
 import "server-only";
 import { createHash } from "node:crypto";
 import type { DbOrTx } from "@/db";
-import { siteUrl } from "@/app/s/load";
-import { factsFromSiteContent, slugify } from "@/lib/geo";
+import { slugify } from "@/lib/geo";
 import { getBusiness, getProfile } from "./business";
 import type { Ctx } from "./context";
-import { getSite } from "./sites";
 
 /**
  * IndexNow tells Bing (and Yandex, Naver, Seznam) that a page changed, so it is
@@ -55,13 +53,8 @@ export async function pingIndexNow(urls: string[]): Promise<{ sent: number; stat
 /** Every public URL that shows this business, to resubmit after it changes. */
 export async function businessPublicUrls(db: DbOrTx, ctx: Ctx) {
   const base = process.env.APP_URL ?? "";
-  const [site, profile, business] = await Promise.all([getSite(db, ctx), getProfile(db, ctx), getBusiness(db, ctx)]);
+  const [profile, business] = await Promise.all([getProfile(db, ctx), getBusiness(db, ctx)]);
   const urls = [`${base}/llms.txt`, `${base}/directory`];
-  if (site) {
-    for (const page of ["home", "services", "about", "contact"]) urls.push(siteUrl(site.slug, page));
-    for (const s of factsFromSiteContent(site.draft).services) urls.push(`${siteUrl(site.slug)}/services/${slugify(s.name)}`);
-    urls.push(`${siteUrl(site.slug)}/llms.txt`);
-  }
   if (profile) urls.push(`${base}/b/${profile.slug}`, `${base}/b/${profile.slug}/llms.txt`);
   if (business) {
     urls.push(`${base}/directory/${slugify(business.city)}`, `${base}/directory/${slugify(business.city)}/${slugify(business.category)}`);

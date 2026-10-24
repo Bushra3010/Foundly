@@ -31,3 +31,25 @@ export function suggestQuestions(b: Pick<Business, "name" | "category" | "city" 
   out.push({ group: "branded", text: `What does ${b.name} in ${b.city} offer?` });
   return out;
 }
+
+/**
+ * Short search-style keywords for the setup screen, built from what the owner
+ * typed. Each keyword is asked as-is to every AI source.
+ */
+export function suggestKeywords(b: { category: string; city: string; services?: string[] }): string[] {
+  const category = b.category.trim().toLowerCase();
+  const city = b.city.trim();
+  if (!category || !city) return [];
+  const out = [`best ${category} in ${city}`, `${category} near me in ${city}`, `affordable ${category} in ${city}`];
+  for (const s of (b.services ?? []).slice(0, 2)) out.push(`${s.trim().toLowerCase()} in ${city}`);
+  return [...new Set(out)];
+}
+
+/** Which question group a typed keyword belongs to. */
+export function keywordGroup(keyword: string): QuestionGroup {
+  const k = keyword.toLowerCase();
+  if (/\b(near|nearby|near me|in my area)\b/.test(k)) return "location";
+  if (/\b(best|top|vs|compare|cheapest|affordable)\b/.test(k)) return "comparison";
+  if (/\b(hire|book|cost|price|quote)\b/.test(k)) return "purchase";
+  return "service";
+}

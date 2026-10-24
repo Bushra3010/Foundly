@@ -1,21 +1,18 @@
-import { and, count, desc, eq, gt, gte, ilike, inArray, isNull, or, sql } from "drizzle-orm";
+import { and, count, desc, eq, gt, gte, ilike, inArray, isNotNull, isNull, or, sql } from "drizzle-orm";
 import type { Db } from "@/db";
 import {
   auditEvents,
   audits,
   businessProfiles,
   businesses,
-  customDomains,
-  jobs,
-  leads,
   memberships,
   monitoringRuns,
   observations,
   ownershipClaims,
-  sites,
   subscriptions,
   supportGrants,
   users,
+  websiteRequests,
   workspaces,
 } from "@/db/schema";
 import { isPlatformAdmin } from "@/lib/admin";
@@ -41,12 +38,11 @@ function requireReason(reason: string) {
 
 export async function overview(db: Db) {
   const day = new Date(Date.now() - 86_400_000);
-  const [[ws], [published], [failedRuns], [failedAudits], [failedJobs], providerHealth, [pendingDomains], [disputes], plans] = await Promise.all([
+  const [[ws], [connected], [failedRuns], [failedAudits], providerHealth, [openRequests], [disputes], plans] = await Promise.all([
     db.select({ n: count() }).from(workspaces),
-    db.select({ n: count() }).from(sites).where(sql`${sites.publishedVersionId} is not null`),
+    db.select({ n: count() }).from(businesses).where(and(eq(businesses.hasWebsite, true), isNotNull(businesses.websiteUrl))),
     db.select({ n: count() }).from(monitoringRuns).where(and(eq(monitoringRuns.status, "failed"), gte(monitoringRuns.createdAt, day))),
     db.select({ n: count() }).from(audits).where(and(eq(audits.status, "failed"), gte(audits.createdAt, day))),
-    db.select({ n: count() }).from(jobs).where(eq(jobs.status, "failed")),
     db
       .select({
         provider: observations.provider,
@@ -57,25 +53,25 @@ export async function overview(db: Db) {
       .from(observations)
       .where(gte(observations.capturedAt, day))
       .groupBy(observations.provider),
-    db.select({ n: count() }).from(customDomains).where(inArray(customDomains.status, ["pending", "failed"])),
+    db.select({ n: count() }).from(websiteRequests).where(inArray(websiteRequests.status, ["new", "contacted", "in_progress"])),
     db.select({ n: count() }).from(ownershipClaims).where(or(eq(ownershipClaims.status, "disputed"), and(eq(ownershipClaims.method, "manual"), eq(ownershipClaims.status, "pending")))),
     db.select({ plan: subscriptions.plan, n: count() }).from(subscriptions).groupBy(subscriptions.plan),
   ]);
-  return { workspaces: ws.n, published: published.n, failedRuns: failedRuns.n, failedAudits: failedAudits.n, failedJobs: failedJobs.n, providerHealth, pendingDomains: pendingDomains.n, disputes: disputes.n, plans };
+  return { workspaces: ws.n, connected: connected.n, failedRuns: failedRuns.n, failedAudits: failedAudits.n, providerHealth, openRequests: openRequests.n, disputes: disputes.n, plans };
 }
 
 /** People and growth at a glance for the admin home. */
 export async function userStats(db: Db) {
   const week = new Date(Date.now() - 7 * 86_400_000);
-  const [[total], [recent], [withPassword], [biz], [onboarded], [newLeads]] = await Promise.all([
+  const [[total], [recent], [withPassword], [biz], [onboarded], [requests]] = await Promise.all([
     db.select({ n: count() }).from(users),
     db.select({ n: count() }).from(users).where(gte(users.createdAt, week)),
     db.select({ n: count() }).from(users).where(sql`${users.passwordHash} is not null`),
     db.select({ n: count() }).from(businesses),
     db.select({ n: count() }).from(businesses).where(sql`${businesses.onboardingCompletedAt} is not null`),
-    db.select({ n: count() }).from(leads).where(gte(leads.createdAt, week)),
+    db.select({ n: count() }).from(websiteRequests).where(gte(websiteRequests.createdAt, week)),
   ]);
-  return { users: total.n, signups7d: recent.n, withPassword: withPassword.n, businesses: biz.n, onboarded: onboarded.n, leads7d: newLeads.n };
+  return { users: total.n, signups7d: recent.n, withPassword: withPassword.n, businesses: biz.n, onboarded: onboarded.n, requests7d: requests.n };
 }
 
 /** Accounts with the business they own, newest first. Never returns password hashes. */
@@ -93,13 +89,12 @@ export async function listUsers(db: Db, q: string, limit = 100) {
       city: businesses.city,
       onboarded: sql<boolean>`${businesses.onboardingCompletedAt} is not null`,
       plan: subscriptions.plan,
-      live: sql<boolean>`${sites.publishedVersionId} is not null`,
+      connected: sql<boolean>`coalesce(${businesses.hasWebsite} and ${businesses.websiteUrl} is not null, false)`,
     })
     .from(users)
     .leftJoin(memberships, eq(memberships.userId, users.id))
     .leftJoin(businesses, eq(businesses.workspaceId, memberships.workspaceId))
     .leftJoin(subscriptions, eq(subscriptions.workspaceId, memberships.workspaceId))
-    .leftJoin(sites, eq(sites.workspaceId, memberships.workspaceId))
     .where(q ? or(ilike(users.email, pattern), ilike(businesses.name, pattern), ilike(businesses.city, pattern)) : undefined)
     .orderBy(desc(users.createdAt))
     .limit(limit);
@@ -177,15 +172,13 @@ export async function supportView(db: Db, admin: AdminCtx, workspaceId: string) 
   const grant = await activeGrant(db, admin, workspaceId);
   if (!grant) throw new AppError("forbidden", "Request support access with a reason first.");
   await adminAudit(db, admin, "support_view", workspaceId, { grantId: grant.id });
-  const [[b], [s], runs, [leadCount], sub, recent] = await Promise.all([
+  const [[b], runs, sub, recent] = await Promise.all([
     db.select().from(businesses).where(eq(businesses.workspaceId, workspaceId)).limit(1),
-    db.select({ slug: sites.slug, live: sites.publishedVersionId, updatedAt: sites.updatedAt }).from(sites).where(eq(sites.workspaceId, workspaceId)),
     db.select().from(monitoringRuns).where(eq(monitoringRuns.workspaceId, workspaceId)).orderBy(desc(monitoringRuns.createdAt)).limit(5),
-    db.select({ n: count() }).from(leads).where(eq(leads.workspaceId, workspaceId)),
     db.select().from(subscriptions).where(eq(subscriptions.workspaceId, workspaceId)),
     db.select({ action: auditEvents.action, createdAt: auditEvents.createdAt }).from(auditEvents).where(eq(auditEvents.workspaceId, workspaceId)).orderBy(desc(auditEvents.createdAt)).limit(20),
   ]);
-  return { grant, business: b ? { name: b.name, category: b.category, city: b.city, version: b.version } : null, site: s ?? null, runs, leadCount: leadCount.n, subscription: sub[0] ?? null, recent };
+  return { grant, business: b ? { name: b.name, category: b.category, city: b.city, version: b.version, websiteUrl: b.hasWebsite ? b.websiteUrl : null } : null, runs, subscription: sub[0] ?? null, recent };
 }
 
 export async function adjustCredits(db: Db, admin: AdminCtx, workspaceId: string, amount: number, reason: string) {
@@ -205,10 +198,9 @@ export async function recentAudit(db: Db, limit = 50) {
 }
 
 export async function failedWork(db: Db) {
-  const [runs, auditRows, jobRows] = await Promise.all([
+  const [runs, auditRows] = await Promise.all([
     db.select({ id: monitoringRuns.id, workspaceId: monitoringRuns.workspaceId, status: monitoringRuns.status, createdAt: monitoringRuns.createdAt }).from(monitoringRuns).where(inArray(monitoringRuns.status, ["failed", "queued", "running"])).orderBy(desc(monitoringRuns.createdAt)).limit(20),
     db.select({ id: audits.id, workspaceId: audits.workspaceId, error: audits.error, createdAt: audits.createdAt }).from(audits).where(eq(audits.status, "failed")).orderBy(desc(audits.createdAt)).limit(20),
-    db.select({ id: jobs.id, workspaceId: jobs.workspaceId, type: jobs.type, error: jobs.error, attempts: jobs.attempts }).from(jobs).where(eq(jobs.status, "failed")).orderBy(desc(jobs.updatedAt)).limit(20),
   ]);
-  return { runs, audits: auditRows, jobs: jobRows };
+  return { runs, audits: auditRows };
 }

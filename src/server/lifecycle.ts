@@ -2,8 +2,8 @@ import { rm } from "node:fs/promises";
 import path from "node:path";
 import { and, eq, isNull, lt, sql } from "drizzle-orm";
 import type { Db } from "@/db";
-import { businessProfiles, deletionRequests, memberships, sessions, sites, users, workspaces } from "@/db/schema";
-import { AppError, audit, requireRole, type Ctx } from "./context";
+import { deletionRequests, memberships, sessions, sites, users, workspaces } from "@/db/schema";
+import { AppError, audit, type Ctx } from "./context";
 import { refreshPublicPages } from "./public-cache";
 
 export const RECOVERY_DAYS = 14;
@@ -19,24 +19,6 @@ export async function pendingDeletions(db: Db, ctx: Ctx) {
         sql`(${deletionRequests.userId} = ${ctx.userId} and ${deletionRequests.kind} = 'account') or (${deletionRequests.workspaceId} = ${ctx.workspaceId} and ${deletionRequests.kind} = 'website')`,
       ),
     );
-}
-
-/**
- * Website deletion: taken offline immediately and removed from the directory
- * and sitemap; the content is deleted after the recovery window.
- */
-export async function requestWebsiteDeletion(db: Db, ctx: Ctx) {
-  requireRole(ctx, "owner");
-  return db.transaction(async (tx) => {
-    await tx.update(sites).set({ publishedVersionId: null, updatedAt: new Date() }).where(eq(sites.workspaceId, ctx.workspaceId));
-    await tx.update(businessProfiles).set({ status: "unpublished", updatedAt: new Date() }).where(eq(businessProfiles.workspaceId, ctx.workspaceId));
-    const [r] = await tx
-      .insert(deletionRequests)
-      .values({ kind: "website", workspaceId: ctx.workspaceId, requestedBy: ctx.userId, scheduledFor: new Date(Date.now() + RECOVERY_DAYS * 86_400_000) })
-      .returning();
-    await audit(tx, ctx, "lifecycle.website_deletion_requested", r.id);
-    return r;
-  });
 }
 
 /**
@@ -98,6 +80,7 @@ export async function processDueDeletions(db: Db, now = new Date()) {
     .from(deletionRequests)
     .where(and(isNull(deletionRequests.cancelledAt), isNull(deletionRequests.completedAt), lt(deletionRequests.scheduledFor, now)));
   for (const r of due) {
+    // Website deletions were for websites Foundly used to host; ones already scheduled still complete.
     if (r.kind === "website" && r.workspaceId) {
       await db.delete(sites).where(eq(sites.workspaceId, r.workspaceId));
     } else if (r.kind === "account" && r.userId) {

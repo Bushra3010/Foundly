@@ -42,20 +42,27 @@ function sign(payload: string) {
   return createHmac("sha256", secret()).update(payload).digest("base64url");
 }
 
-export function makeState(data: { provider: Provider; workspaceId: string; userId: string }) {
+/** Where the owner returns after the platform login: setup, or the Social page. */
+export type ConnectReturn = "setup" | "presence";
+
+export function returnPath(back: ConnectReturn | undefined) {
+  return back === "setup" ? "/onboarding?step=social&" : "/app/presence?";
+}
+
+export function makeState(data: { provider: Provider; workspaceId: string; userId: string; back?: ConnectReturn }) {
   const payload = Buffer.from(JSON.stringify({ ...data, nonce: randomBytes(8).toString("hex"), exp: Date.now() + 10 * 60_000 })).toString("base64url");
   return `${payload}.${sign(payload)}`;
 }
 
-export function readState(state: string): { provider: Provider; workspaceId: string; userId: string } | null {
+export function readState(state: string): { provider: Provider; workspaceId: string; userId: string; back?: ConnectReturn } | null {
   const [payload, sig] = state.split(".");
   if (!payload || !sig) return null;
   const want = sign(payload);
   if (want.length !== sig.length || !timingSafeEqual(Buffer.from(want), Buffer.from(sig))) return null;
   try {
-    const data = JSON.parse(Buffer.from(payload, "base64url").toString()) as { provider: Provider; workspaceId: string; userId: string; exp: number };
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString()) as { provider: Provider; workspaceId: string; userId: string; exp: number; back?: ConnectReturn };
     if (!data.exp || data.exp < Date.now()) return null;
-    return { provider: data.provider, workspaceId: data.workspaceId, userId: data.userId };
+    return { provider: data.provider, workspaceId: data.workspaceId, userId: data.userId, back: data.back === "setup" ? "setup" : "presence" };
   } catch {
     return null;
   }

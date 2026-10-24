@@ -6,7 +6,7 @@ import { Icon } from "./icon";
 import { AiLogo, assistants } from "./landing-ai-answers";
 
 const products = [
-  { id: "website", label: "Website builder", eyebrow: "YOUR OWN CORNER OF THE INTERNET", title: "From what you do\nto a website that works.", body: "Give your business a home online. Start with a draft built around your business, then make every detail your own.", cta: "Create your website", color: "orange", length: 6800 },
+  { id: "website", label: "Websites", eyebrow: "YOUR OWN CORNER OF THE INTERNET", title: "Connect yours,\nor we build it.", body: "Already online? Connect your website and we check what AI can read. No website yet? Our team designs and builds a professional one for your business.", cta: "Get your website", color: "orange", length: 6800 },
   { id: "business", label: "Business profile", eyebrow: "THE DETAILS MAKE THE DIFFERENCE", title: "Your business story.\nAll the right details.", body: "Help people understand what makes you, you. Bring your services, service areas and contact information into one clear profile.", cta: "Build your profile", color: "green", length: 6800 },
   { id: "visibility", label: "AI visibility", eyebrow: "A CLEARER PICTURE OF YOUR PRESENCE", title: "Know how AI\ntalks about you.", body: "Explore how supported AI answers mention your business, with saved evidence that helps you see the bigger picture.", cta: "Explore AI visibility", color: "purple", length: 7400 },
 ];
@@ -94,7 +94,7 @@ const floats = [
   { icon: "visibility", text: "Insights backed by evidence.", at: 4600 },
 ];
 const toolbar = [
-  (t: number) => (on(t, 2800) ? "Your business website" : "Building your draft…"),
+  (t: number) => (on(t, 2800) ? "Your business website" : "Our team is building it…"),
   (t: number) => (on(t, 3500) ? "Your business profile" : "Filling in your profile…"),
   (t: number) => (on(t, 2400) ? "Your visibility workspace" : "Asking AI assistants…"),
 ];

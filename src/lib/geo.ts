@@ -340,7 +340,6 @@ export type ReadinessItem = { key: string; label: string; why: string; done: boo
 export function geoReadiness(input: {
   /** When the owner last confirmed the details are correct. */
   confirmedAt?: Date | null;
-  customDomain?: boolean;
   foundedYear?: number | null;
   projectsCompleted?: number | null;
   listings?: string[];
@@ -351,9 +350,10 @@ export function geoReadiness(input: {
   phone?: string | null;
   whatsapp?: string | null;
   email?: string | null;
-  sitePublished: boolean;
-  siteCurrent: boolean;
-  faqCount: number;
+  /** The business has its own website connected to Foundly. */
+  websiteConnected: boolean;
+  /** Our latest check of the connected website, if it has been checked. */
+  websiteCheck?: { passed: number; total: number } | null;
   profilePublished: boolean;
   verified: boolean;
 }) {
@@ -416,23 +416,9 @@ export function geoReadiness(input: {
     },
     {
       key: "site",
-      label: "Publish your website",
+      label: "Connect your website",
       why: "Gives AI a page of yours to read and cite",
-      done: input.sitePublished,
-      href: "/app/website",
-    },
-    {
-      key: "fresh",
-      label: "Keep your live website up to date",
-      why: "AI should quote your latest details",
-      done: input.sitePublished && input.siteCurrent,
-      href: "/app/website",
-    },
-    {
-      key: "faq",
-      label: "Answer at least 4 customer questions on your website",
-      why: "AI assistants reuse clear question-and-answer text",
-      done: input.faqCount >= 4,
+      done: input.websiteConnected,
       href: "/app/website",
     },
     {
@@ -441,13 +427,6 @@ export function geoReadiness(input: {
       why: "Content confirmed in the last 30 days is cited about 3× more often",
       done: Boolean(input.confirmedAt && Date.now() - new Date(input.confirmedAt).getTime() < 30 * 86_400_000),
       href: "/app",
-    },
-    {
-      key: "domain",
-      label: "Use your own domain for your website",
-      why: "AI assistants cite brand homepages far more than pages on shared sites",
-      done: Boolean(input.customDomain),
-      href: "/app/website",
     },
     {
       key: "profile",
@@ -464,39 +443,19 @@ export function geoReadiness(input: {
       href: "/app/business",
     },
   ];
+  // The website itself counts for half: what our check of the connected site found.
+  const check = input.websiteConnected && input.websiteCheck && input.websiteCheck.total > 0 ? input.websiteCheck : null;
+  items.splice(items.findIndex((i) => i.key === "site") + 1, 0, {
+    key: "site_check",
+    label: !input.websiteConnected ? "Get your website checked" : check ? `Fix what our website check found (${check.passed} of ${check.total} pass)` : "Check your website",
+    why: "AI assistants can only cite what they can read on your site",
+    done: !!check && check.passed === check.total,
+    href: input.websiteConnected ? "/app/improve" : "/app/website",
+  });
   const done = items.filter((i) => i.done).length;
+  const details = items.filter((i) => i.key !== "site_check");
+  const detailsScore = Math.round((details.filter((i) => i.done).length / details.length) * 50);
+  const websiteScore = check ? Math.round((check.passed / check.total) * 50) : 0;
   const confirmedDaysAgo = input.confirmedAt ? Math.floor((Date.now() - new Date(input.confirmedAt).getTime()) / 86_400_000) : null;
-  return { score: Math.round((done / items.length) * 100), done, total: items.length, items, confirmedDaysAgo };
-}
-
-/** Services, questions and description as published on a website, for structured data and llms.txt. */
-export function factsFromSiteContent(content: {
-  pages: { blocks: ({ type: string } & Record<string, unknown>)[] }[];
-}) {
-  const blocks = content.pages.flatMap((p) => p.blocks);
-  // The same block can appear on more than one page; keep each service and question once.
-  const seen = new Set<string>();
-  const services = blocks
-    .filter((b) => b.type === "services")
-    .flatMap((b) => (b.items as { name: string; description?: string }[]) ?? [])
-    .filter((s) => {
-      const k = s.name.trim().toLowerCase();
-      if (seen.has(k)) return false;
-      seen.add(k);
-      return true;
-    })
-    .map((s) => ({ name: s.name, ...(s.description ? { description: s.description } : {}) }));
-  const asked = new Set<string>();
-  const faq = blocks
-    .filter((b) => b.type === "faq")
-    .flatMap((b) => (b.items as Faq[]) ?? [])
-    .filter((q) => {
-      const k = q.question.trim().toLowerCase();
-      if (asked.has(k)) return false;
-      asked.add(k);
-      return true;
-    });
-  const about = blocks.find((b) => b.type === "about");
-  const description = about && typeof about.body === "string" ? about.body : undefined;
-  return { services, faq, description };
+  return { score: detailsScore + websiteScore, detailsScore, websiteScore, websiteChecked: !!check, done, total: items.length, items, confirmedDaysAgo };
 }

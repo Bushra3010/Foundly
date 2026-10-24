@@ -1,100 +1,106 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
 import { resubmitBusiness } from "@/server/indexnow";
 import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
-import { basicsSchema, fieldErrors, offerSchema, splitList, websiteChoiceSchema } from "@/lib/validation";
-import {
-  completeOnboarding,
-  confirmReview,
-  publishProfile,
-  saveBasics,
-  saveOffer,
-  saveWebsiteChoice,
-} from "@/server/business";
-import { generateSiteDraft } from "@/server/sites";
+import { keywordGroup } from "@/lib/questions";
+import { basicsSchema, fieldErrors, websiteChoiceSchema } from "@/lib/validation";
+import { completeOnboarding, confirmReview, getBusiness, publishProfile, saveBasics, saveWebsiteChoice } from "@/server/business";
+import { checkWebsiteSoon } from "@/server/audit/service";
+import { enabledAdapters } from "@/server/monitoring/registry";
+import { approveQuestions, createRun, executeRun, listQuestions, manualRunKey } from "@/server/monitoring/service";
 
 /**
- * Screen 1 of 2: everything we need in one short form.
- * Saves the basics and services together, then moves to the website choice.
+ * Setup in four steps: keywords, website, social media, start tracking.
+ * Every step saves as it goes, so owners can leave and come back.
  */
-export async function saveAboutAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+
+/** Step 1: who the business is, and the keywords to track. */
+export async function saveKeywordsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const values = formValues(form);
-  const phone = values.phone ?? "";
-  const basics = basicsSchema.safeParse({
-    name: values.name ?? "",
-    category: values.category ?? "",
-    city: values.city ?? "",
-    phone,
-    whatsapp: values.onWhatsapp === "on" ? phone : "",
-    email: values.email ?? "",
-  });
-  const offer = offerSchema.safeParse({
-    services: splitList(form.get("services")).map((name) => ({ name })),
-    audience: "",
-    serviceAreas: [],
-  });
-  if (!basics.success || !offer.success) {
-    return {
-      ok: false,
-      fieldErrors: {
-        ...(basics.success ? {} : fieldErrors(basics.error)),
-        ...(offer.success ? {} : fieldErrors(offer.error)),
-      },
-      values,
-    };
-  }
-  if (!basics.data.phone && !basics.data.email) {
-    return { ok: false, fieldErrors: { phone: ["Add a phone number so customers can reach you"] }, values };
-  }
+  const keywords = [...form.getAll("keyword").map(String), ...String(form.get("custom") ?? "").split("\n")]
+    .map((k) => k.trim().replace(/\s+/g, " "))
+    .filter(Boolean);
   try {
     const ctx = await requireCtx();
+    const basics = basicsSchema.safeParse({
+      name: values.name ?? "",
+      category: values.category ?? "",
+      city: values.city ?? "",
+      phone: "",
+      whatsapp: "",
+      email: ctx.user.email,
+    });
+    const errors = basics.success ? {} : fieldErrors(basics.error);
+    if (keywords.length === 0) errors.custom = ["Pick or type at least one keyword"];
+    else if (keywords.some((k) => k.length < 8)) errors.custom = ["Make each keyword a little longer, like “plumber in Pune”"];
+    if (!basics.success || errors.custom) return { ok: false, fieldErrors: errors, values };
+
     const db = await getDb();
-    await saveBasics(db, ctx, basics.data);
-    await saveOffer(db, ctx, offer.data);
+    const existing = await getBusiness(db, ctx);
+    // Keep contact details the owner already gave; only fill the email for a new business.
+    await saveBasics(db, ctx, existing ? { ...basics.data, phone: existing.phone, whatsapp: existing.whatsapp, email: existing.email } : basics.data);
+    await approveQuestions(db, ctx, keywords.map((text) => ({ text, group: keywordGroup(text) })));
   } catch (err) {
     return toActionError(err, values);
   }
-  redirect("/onboarding?step=2");
+  redirect("/onboarding?step=website");
+}
+
+/** Step 2: connect the owner's website, or note that they don't have one yet. */
+export async function saveWebsiteStepAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const values = formValues(form);
+  try {
+    const ctx = await requireCtx();
+    const db = await getDb();
+    if (values.choice === "none") {
+      await saveWebsiteChoice(db, ctx, false, null);
+    } else {
+      const parsed = websiteChoiceSchema.safeParse({ hasWebsite: "yes", websiteUrl: values.websiteUrl ?? "" });
+      if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
+      await saveWebsiteChoice(db, ctx, true, "websiteUrl" in parsed.data ? (parsed.data.websiteUrl ?? null) : null);
+      after(() => checkWebsiteSoon(db, ctx));
+    }
+  } catch (err) {
+    return toActionError(err, values);
+  }
+  redirect("/onboarding?step=social");
 }
 
 /**
- * Screen 2 of 2: one click. Either build a private website preview, or save an
- * existing website. Choosing an option confirms the details shown on screen.
+ * Step 4: one button. Confirms the details, lists the business if the owner
+ * agreed, and runs the first AI check when sources are switched on.
  */
-export async function finishSetupAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  const values = formValues(form);
-  const choice = values.choice;
-  let destination = "/app";
+export async function startTrackingAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  let started = "1";
   try {
     const ctx = await requireCtx();
     const db = await getDb();
-    if (choice === "existing") {
-      const parsed = websiteChoiceSchema.safeParse({ hasWebsite: "yes", websiteUrl: values.websiteUrl ?? "" });
-      if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
-      const url = "websiteUrl" in parsed.data ? (parsed.data.websiteUrl ?? null) : null;
-      await saveWebsiteChoice(db, ctx, true, url);
-      await confirmReview(db, ctx, false);
-      destination = "/app/website?connected=1";
-      if (values.publishProfile === "on") {
-        await publishProfile(db, ctx);
-        after(() => resubmitBusiness(db, ctx));
-      }
-    } else {
-      await saveWebsiteChoice(db, ctx, false, null);
-      await confirmReview(db, ctx, false);
-      const job = await generateSiteDraft(db, ctx, { requestId: String(form.get("requestId") ?? "") });
-      if (job.status === "failed") {
-        return { ok: false, message: "We couldn't build your website this time. Your details are saved. Try again.", values };
-      }
-      destination = "/app/website?generated=1";
+    if ((await listQuestions(db, ctx)).length === 0) return { ok: false, message: "Add at least one keyword first." };
+    await confirmReview(db, ctx, false);
+    if (form.get("publishProfile") === "on") {
+      await publishProfile(db, ctx);
+      after(() => resubmitBusiness(db, ctx));
     }
     await completeOnboarding(db, ctx);
+    if (enabledAdapters().length > 0) {
+      try {
+        const run = await createRun(db, ctx, { trigger: "manual", idempotencyKey: manualRunKey(String(form.get("requestId") ?? randomUUID())) });
+        after(() => executeRun(db, run.id).catch((err) => console.error("[monitoring] first run failed", run.id, err)));
+      } catch (err) {
+        // Tracking is on either way; the dashboard explains why the first check didn't start.
+        console.error("[setup] first check not started", err);
+        started = "later";
+      }
+    } else {
+      started = "later";
+    }
   } catch (err) {
-    return toActionError(err, values);
+    return toActionError(err);
   }
-  redirect(destination);
+  redirect(`/app?started=${started}`);
 }

@@ -10,8 +10,8 @@ const HOLD = 1600;
 
 const steps = [
   { title: "Tell us about your business", body: "Add what you do, where you work, and how customers can reach you.", tag: "Business facts" },
-  { title: "Make it your own", body: "Review your business profile and website draft. Edit the details until they sound like you.", tag: "Website draft" },
-  { title: "Publish. Learn. Keep growing.", body: "Put your website online, check your AI visibility, and keep improving your presence.", tag: "Live and tracked" },
+  { title: "Connect your website", body: "Link the website you have. No website? Our team designs and builds one for your business.", tag: "Website" },
+  { title: "Learn. Keep growing.", body: "Check your AI visibility, get listed where AI looks, and keep improving your presence.", tag: "Live and tracked" },
 ];
 
 const END = 1e9;

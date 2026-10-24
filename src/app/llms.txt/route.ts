@@ -16,7 +16,7 @@ export async function GET() {
   const lines = [
     "# Foundly",
     "",
-    "> Foundly is a directory and website builder for local businesses in India. Every listing below is created and confirmed by the business owner. There are no paid placements, ratings or rankings.",
+    "> Foundly is a directory and AI visibility platform for local businesses in India. Every listing below is created and confirmed by the business owner. There are no paid placements, ratings or rankings.",
     "",
     `- [Business directory](${base}/directory)`,
     "",

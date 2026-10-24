@@ -15,14 +15,13 @@ export default async function AdminHome() {
   const growth = [
     { label: "Users", value: people.users, detail: `${people.signups7d} new this week`, icon: "workspaces", tone: "lilac" },
     { label: "Businesses set up", value: people.onboarded, detail: `${people.businesses - people.onboarded} still onboarding`, icon: "business", tone: "peach" },
-    { label: "Live websites", value: o.published, detail: `${o.workspaces} workspaces in total`, icon: "website", tone: "sage" },
-    { label: "Enquiries this week", value: people.leads7d, detail: "Across all businesses", icon: "leads", tone: "amber" },
+    { label: "Connected websites", value: o.connected, detail: `${o.workspaces} workspaces in total`, icon: "website", tone: "sage" },
+    { label: "Website requests", value: o.openRequests, detail: `${people.requests7d} new this week`, icon: "leads", tone: "amber" },
   ];
   const health: [string, number][] = [
     ["Failed checks (24h)", o.failedRuns],
     ["Failed audits (24h)", o.failedAudits],
-    ["Failed generation jobs", o.failedJobs],
-    ["Domains awaiting DNS", o.pendingDomains],
+    ["Website requests open", o.openRequests],
     ["Claims to review", o.disputes],
   ];
   return (
@@ -56,7 +55,7 @@ export default async function AdminHome() {
                     {u.email}
                     <span className="admin-sub">{u.business ?? "Not set up yet"}</span>
                   </span>
-                  {u.live ? <Badge tone="ok">Live</Badge> : u.onboarded ? <Badge tone="info">Set up</Badge> : <Badge tone="warn">Onboarding</Badge>}
+                  {u.connected ? <Badge tone="ok">Website</Badge> : u.onboarded ? <Badge tone="info">Set up</Badge> : <Badge tone="warn">Onboarding</Badge>}
                 </li>
               ))}
             </ul>
@@ -132,9 +131,9 @@ export default async function AdminHome() {
               </li>
             ))}
           </ul>
-          <h3 className="mt-4 text-sm font-semibold">Failed audits and generation jobs</h3>
+          <h3 className="mt-4 text-sm font-semibold">Failed audits</h3>
           <ul className="mt-1 text-sm">
-            {[...work.audits.map((a) => `${a.workspaceId.slice(0, 8)} audit: ${a.error}`), ...work.jobs.map((j) => `${j.workspaceId.slice(0, 8)} ${j.type} (×${j.attempts}): ${j.error}`)].map((l) => (
+            {work.audits.map((a) => `${a.workspaceId.slice(0, 8)} audit: ${a.error}`).map((l) => (
               <li key={l} className="border-t border-border py-1">
                 {l}
               </li>

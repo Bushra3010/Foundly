@@ -16,7 +16,7 @@ export default async function ReportsPage() {
         <Card>
           <h2 className="font-semibold">Export your data</h2>
           <p className="mt-1 text-sm text-muted">
-            Download your business details, website content, every published version and your leads. You own this data.
+            Download your business details, website requests and everything else your workspace holds. You own this data.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {can(ctx, "owner") && (
@@ -24,9 +24,6 @@ export default async function ReportsPage() {
                 Download everything (JSON)
               </LinkButton>
             )}
-            <LinkButton href="/app/leads/export" variant="secondary" prefetch={false}>
-              Leads (CSV)
-            </LinkButton>
           </div>
         </Card>
       </div>

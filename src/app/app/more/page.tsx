@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/icon";
-import { MOBILE_NAV, NAV } from "@/components/nav-items";
+import { MORE_NAV } from "@/components/nav-items";
 import { PageHeader } from "@/components/ui";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
@@ -13,12 +13,7 @@ export default async function MorePage() {
     <>
       <PageHeader icon="more" title={t(locale, "nav.more")} />
       <ul className="more-list">
-        {[
-          ...NAV.filter(
-            (i) =>
-              !MOBILE_NAV.some((mobile) => mobile.href === i.href),
-          ).map((i) => ({ ...i, label: t(locale, i.key) })),
-        ].map((item) => (
+        {MORE_NAV.map((i) => ({ ...i, label: t(locale, i.key) })).map((item) => (
           <li key={item.href}>
             <Link
               href={item.href}

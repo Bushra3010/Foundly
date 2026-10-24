@@ -1,325 +1,263 @@
-import { and, count, desc, eq, gte } from "drizzle-orm";
+import { randomUUID } from "node:crypto";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { ActionForm } from "@/components/action-form";
+import { AutoRefresh } from "@/components/auto-refresh";
 import { Icon } from "@/components/icon";
-import { Badge } from "@/components/ui";
-import { ShareLink } from "@/components/share-link";
-import { AiReadiness } from "@/components/ai-readiness";
-import { readinessFor } from "@/server/geo";
-import { siteUrl } from "@/app/s/load";
+import { TrendChart } from "@/components/trend-chart";
 import { getDb } from "@/db";
-import { auditEvents, leads } from "@/db/schema";
 import { requireCtx } from "@/lib/auth/session";
-import { missingOptionalFacts } from "@/lib/site/generate";
-import { listVersions } from "@/server/sites";
-import { visibilitySummary } from "@/server/monitoring/service";
-import { currentProfile, currentSite, requireCurrentBusiness } from "@/server/current";
+import { can } from "@/server/context";
+import { currentBusiness } from "@/server/current";
+import { ADAPTERS } from "@/server/monitoring/registry";
+import { dashboardData } from "@/server/performance";
+import { STATUS_TEXT } from "@/server/website-requests";
+import { runCheckAction } from "./visibility/actions";
 
-export const metadata = { title: "Home" };
+export const metadata = { title: "Dashboard" };
 
-function daysAgo(days: number) {
-  return new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-}
+const pct = (r: number | null) => (r === null ? "—" : `${Math.round(r * 100)}%`);
+const host = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+const providerName = (key: string) => ADAPTERS.find((a) => a.key === key)?.label ?? key;
+const day = (d: Date) => d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 
-const ACTIVITY_TEXT: Record<string, string> = {
-  "workspace.created": "Account created",
-  "business.created": "Business added",
-  "business.updated": "Business details updated",
-  "site.generated": "Website draft generated",
-  "site.published": "Website published",
-  "site.rolled_back": "Website rolled back",
-  "site.unpublished": "Website taken offline",
-  "site.slug_changed": "Website address changed",
-  "profile.published": "Directory profile published",
-  "profile.unpublished": "Directory profile hidden",
-  "admin.support_access_granted": "Support team was given temporary access",
-  "admin.support_view": "Support team viewed your workspace",
-  "billing.subscription.activated": "Plan activated",
-  "billing.payment.failed": "Payment failed",
-  "monitoring.run_created": "AI visibility check started",
-  "action.applied": "Improvement applied",
-  "team.joined": "Someone joined your team",
-  "account.password_set": "Password updated",
-};
-
-export default async function HomePage() {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ started?: string }> }) {
   const ctx = await requireCtx();
   const db = await getDb();
-  const business = await requireCurrentBusiness(db, ctx);
-  const weekAgo = daysAgo(7);
-  const [
-    site,
-    versions,
-    profile,
-    [{ n: newLeads }],
-    [{ n: weekLeads }],
-    activity,
-    visibility,
-    readiness,
-  ] = await Promise.all([
-    currentSite(db, ctx),
-    listVersions(db, ctx),
-    currentProfile(db, ctx),
-    db
-      .select({ n: count() })
-      .from(leads)
-      .where(
-        and(eq(leads.workspaceId, ctx.workspaceId), eq(leads.status, "new")),
-      ),
-    db
-      .select({ n: count() })
-      .from(leads)
-      .where(
-        and(
-          eq(leads.workspaceId, ctx.workspaceId),
-          gte(leads.createdAt, weekAgo),
-        ),
-      ),
-    db
-      .select()
-      .from(auditEvents)
-      .where(eq(auditEvents.workspaceId, ctx.workspaceId))
-      .orderBy(desc(auditEvents.createdAt))
-      .limit(8),
-    visibilitySummary(db, ctx, 30),
-    readinessFor(db, ctx, business),
-  ]);
-  const vm = visibility.metrics;
-  const live = site && versions.find((v) => v.id === site.publishedVersionId);
+  const business = await currentBusiness(db, ctx);
+  // New owners start with setup; the layout redirects too, but the page renders alongside it.
+  if (!business?.onboardingCompletedAt) redirect("/onboarding");
+  const d = await dashboardData(db, ctx, business);
+  const { started } = await searchParams;
+  const m = d.metrics;
+  const canEdit = can(ctx, "editor");
+  const hasResults = m.valid > 0;
+  const socialOn = d.social.filter((s) => s.state !== "none").length;
+  const failing = d.website.total - d.website.passed;
 
-  // Three next actions, in order of what unlocks the most for the owner.
-  const actions: { title: string; body: string; href: string; cta: string }[] =
-    [];
-  if (!site && !business.hasWebsite)
-    actions.push({
-      title: "Create your website",
-      body: "Generate a private preview from your details.",
-      href: "/app/website",
-      cta: "Create website",
-    });
-  if (!site && business.hasWebsite && business.websiteUrl)
-    actions.push({
-      title: "Check your website",
-      body: "See what AI assistants can read on your site and what to improve.",
-      href: "/app/improve",
-      cta: "Check website",
-    });
-  if (site && !live)
-    actions.push({
-      title: "Publish your website",
-      body: "Your draft is ready. Review it and publish when happy.",
-      href: "/app/website",
-      cta: "Review draft",
-    });
-  if (profile?.status !== "published")
-    actions.push({
-      title: "Publish your directory profile",
-      body: "Give customers an accurate page about your business.",
-      href: "/app/business",
-      cta: "Open My Business",
-    });
-  if (newLeads > 0)
-    actions.push({
-      title: `Reply to ${newLeads} new ${newLeads === 1 ? "enquiry" : "enquiries"}`,
-      body: "Customers are waiting to hear back.",
-      href: "/app/leads",
-      cta: "Open leads",
-    });
-  for (const m of missingOptionalFacts(business)) {
-    actions.push({
-      title: `Add ${m.label.toLowerCase()}`,
-      body: m.why + ".",
-      href: "/app/business",
-      cta: "Add details",
-    });
-  }
-
-  const setupSteps = [
-    { label: "Business details", done: true, href: "/app/business" },
-    {
-      label: "Website published",
-      done: Boolean(live || business.hasWebsite),
-      href: "/app/website",
-    },
-    {
-      label: "Directory profile",
-      done: profile?.status === "published",
-      href: "/app/business",
-    },
-    {
-      label: "AI visibility check",
-      done: vm.valid > 0,
-      href: "/app/visibility",
-    },
-  ];
-  const completed = setupSteps.filter((step) => step.done).length;
-
-  const [focus, ...moreActions] = actions;
-  const mentionRate = vm.valid > 0 && vm.mention.rate !== null ? Math.round(vm.mention.rate * 100) : null;
-  const ringR = 34;
-  const ringC = 2 * Math.PI * ringR;
+  // At most three next steps, most useful first.
+  const insights: { title: string; body: string; href: string; cta: string }[] = [];
+  if (!d.website.url && !d.website.requested)
+    insights.push({ title: "Connect your website", body: "AI assistants cite websites. Connect yours, or ask our team to build one.", href: "/app/website", cta: "Connect" });
+  const unseen = d.keywords.filter((k) => k.checked > 0 && k.mentioned === 0);
+  if (unseen.length)
+    insights.push({ title: `Not mentioned yet for “${unseen[0].text}”`, body: `${unseen.length} of your keywords don't bring you up yet. Clearer website content and more listings help.`, href: "/app/improve", cta: "See how" });
+  if (d.website.url && d.website.total === 0 && !d.website.auditRunning)
+    insights.push({ title: "Check your website", body: "See what AI assistants can read on your site, and what to fix.", href: "/app/improve", cta: "Check" });
+  if (d.website.issues.length)
+    insights.push({ title: `Fix ${failing} website issue${failing === 1 ? "" : "s"}`, body: d.website.issues[0].evidence, href: "/app/improve", cta: "Fix" });
+  if (!d.social.some((s) => s.key === "google" && s.state !== "none"))
+    insights.push({ title: "Connect your Google Business Profile", body: "Gemini and Google's AI answers read it first for local businesses.", href: "/app/presence", cta: "Connect" });
+  if (socialOn > 0 && socialOn < d.social.length)
+    insights.push({ title: "Add your other social accounts", body: "The same details in more places make AI assistants more confident about you.", href: "/app/presence", cta: "Add" });
 
   return (
-    <div className="dash">
-      <header className="dash-hero">
-        <div className="dash-hero-text">
-          <span className="dash-eyebrow">Welcome back</span>
+    <div className="pf">
+      <AutoRefresh active={d.running || d.website.auditRunning} />
+      <header className="pf-head">
+        <div>
+          <p className="pf-eyebrow">Dashboard</p>
           <h1>{business.name}</h1>
-          <p>{[business.category, business.city].filter(Boolean).join(" · ")}</p>
+          <p className="pf-sub">
+            {d.lastRun ? `Last AI check ${day(d.lastRun.createdAt)}` : "No AI checks yet"} · {d.questions.length} keyword{d.questions.length === 1 ? "" : "s"}
+          </p>
         </div>
-        <div className="dash-hero-actions">
-          <span className={`dash-status ${live ? "live" : site ? "draft" : ""}`}>
-            <span aria-hidden="true" />
-            {live ? "Website live" : site ? "Draft ready" : business.hasWebsite ? "Website connected" : "No website yet"}
-          </span>
-          {live && site ? (
-            <a href={`/s/${site.slug}`} target="_blank" rel="noreferrer" className="dash-btn ghost">
-              <Icon name="globe" size={16} /> View website
-            </a>
-          ) : (
-            <Link href="/app/website" className="dash-btn ghost">
-              <Icon name="website" size={16} /> Open website
-            </Link>
-          )}
-        </div>
+        {d.running ? (
+          <span className="pf-badge info"><span className="pf-pulse" aria-hidden="true" /> Checking now…</span>
+        ) : (
+          canEdit && d.sources > 0 && d.questions.length > 0 && (
+            <ActionForm action={runCheckAction} submitLabel="Check now" pendingLabel="Starting…" inline>
+              <input type="hidden" name="requestId" value={randomUUID()} />
+            </ActionForm>
+          )
+        )}
       </header>
 
-      <section className="dash-focus" aria-label="Your next step">
-        <div className="dash-focus-main">
-          {focus ? (
-            <>
-              <span className="dash-focus-label"><Icon name="spark" size={14} /> Your next step</span>
-              <h2>{focus.title}</h2>
-              <p>{focus.body}</p>
-              <Link href={focus.href} className="dash-btn lime">
-                {focus.cta} <Icon name="arrow" size={17} />
-              </Link>
-              {live && site && <ShareLink url={siteUrl(site.slug)} label="Share your website with customers" shareText={business.name} />}
-            </>
-          ) : (
-            <>
-              <span className="dash-focus-label"><Icon name="check" size={14} /> All caught up</span>
-              <h2>Everything is in place.</h2>
-              <p>Come back to check new enquiries and your latest AI visibility results.</p>
-              <Link href="/app/visibility" className="dash-btn lime">
-                See AI visibility <Icon name="arrow" size={17} />
-              </Link>
-              {live && site && <ShareLink url={siteUrl(site.slug)} label="Share your website with customers" shareText={business.name} />}
-            </>
-          )}
-        </div>
-        <div className="dash-setup">
-          <div className="dash-ring" role="progressbar" aria-label="Setup progress" aria-valuenow={completed} aria-valuemin={0} aria-valuemax={4}>
-            <svg viewBox="0 0 80 80" aria-hidden="true">
-              <circle cx="40" cy="40" r={ringR} className="dash-ring-track" />
-              <circle cx="40" cy="40" r={ringR} className="dash-ring-fill" strokeDasharray={ringC} strokeDashoffset={ringC * (1 - completed / 4)} />
-            </svg>
-            <span><strong>{completed}</strong>/4</span>
+      {started && (
+        <p className="pf-notice" role="status">
+          <Icon name="check" size={16} />
+          {started === "later"
+            ? "Tracking is on. Our team is switching on the AI checks, and your first results will appear here."
+            : "Tracking is on. Your first AI check is running, and results will appear here in a few minutes."}
+        </p>
+      )}
+
+      {d.setup.done < d.setup.total && (
+        <section className="pf-card pf-setup" aria-labelledby="setup-title">
+          <div className="pf-card-head">
+            <h2 id="setup-title">Finish setting up</h2>
+            <span>{d.setup.done} of {d.setup.total} done</span>
           </div>
-          <ul>
-            {setupSteps.map((step) => (
-              <li key={step.label}>
-                <Link href={step.href} className={step.done ? "done" : ""}>
-                  <span className="dash-tick" aria-hidden="true">{step.done && <Icon name="check" size={11} />}</span>
-                  {step.label}
-                  <span className="sr-only">{step.done ? " (done)" : " (to do)"}</span>
+          <div className="pf-progress" aria-hidden="true"><span style={{ width: `${(d.setup.done / d.setup.total) * 100}%` }} /></div>
+          <ol className="pf-steps">
+            {d.setup.steps.map((s, i) => (
+              <li key={s.key} className={s.done ? "done" : ""}>
+                <Link href={s.href}>
+                  <span className="pf-step-dot" aria-hidden="true">{s.done ? <Icon name="check" size={12} /> : i + 1}</span>
+                  {s.label}
+                  <span className="sr-only">{s.done ? " (done)" : " (to do)"}</span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <section className="pf-status" aria-label="Connections">
+        <Link href="/app/website" className="pf-chip">
+          <Status on={!!d.website.url} wait={!!d.website.requested} />
+          <span>
+            <strong>Website</strong>
+            <em>{d.website.url ? host(d.website.url) : d.website.requested ? STATUS_TEXT[d.website.requested.status] : "Not connected"}</em>
+          </span>
+        </Link>
+        <Link href="/app/presence" className="pf-chip">
+          <Status on={socialOn > 0} />
+          <span>
+            <strong>Social media</strong>
+            <em>{socialOn ? `${socialOn} of ${d.social.length} connected` : "Not connected"}</em>
+          </span>
+        </Link>
+        <Link href="/app/visibility" className="pf-chip">
+          <Status on={d.sources > 0 && d.questions.length > 0} wait={d.sources === 0} />
+          <span>
+            <strong>AI tracking</strong>
+            <em>{d.sources === 0 ? "Being switched on" : d.questions.length ? `On · ${d.sources} AI assistant${d.sources === 1 ? "" : "s"}` : "Add keywords"}</em>
+          </span>
+        </Link>
+      </section>
+
+      <section className="pf-kpis" aria-label="Performance, last 30 days">
+        <Kpi label="AI mentions" value={pct(m.mention.rate)} detail={hasResults ? `${m.mention.numerator} of ${m.mention.denominator} answers${m.smallSample ? " · small sample" : ""}` : "After your first check"} />
+        <Kpi label="Cited as a source" value={pct(m.citation.rate)} detail={hasResults ? `${m.citation.numerator} of ${m.citation.denominator} answers link to you` : "After your first check"} />
+        <Kpi label="Keywords tracked" value={String(d.questions.length)} detail={`${d.keywords.filter((k) => k.mentioned > 0).length} bring you up`} />
+        <Kpi label="Website health" value={d.website.health === null ? "—" : `${d.website.health}%`} detail={d.website.total ? `${d.website.passed} of ${d.website.total} checks pass` : d.website.url ? "Not checked yet" : "Connect a website"} />
+      </section>
+
+      <section className="pf-card" aria-labelledby="trend-title">
+        <div className="pf-card-head">
+          <h2 id="trend-title">How often AI assistants mention you</h2>
+          <span>Weekly, last 8 weeks</span>
+        </div>
+        <TrendChart points={d.trend.map((t) => ({ label: day(t.week), rate: t.rate, answers: t.answers }))} />
+      </section>
+
+      <div className="pf-grid">
+        <section className="pf-card" aria-labelledby="kw-title">
+          <div className="pf-card-head">
+            <h2 id="kw-title">Keywords</h2>
+            <Link href="/app/visibility">Manage <Icon name="arrow" size={13} /></Link>
+          </div>
+          {d.keywords.length === 0 ? (
+            <p className="pf-empty">No keywords yet. <Link href="/app/visibility">Add keywords</Link> to start tracking.</p>
+          ) : (
+            <table className="pf-table">
+              <thead>
+                <tr><th scope="col">Keyword</th><th scope="col">Mentioned by</th><th scope="col">Cited</th></tr>
+              </thead>
+              <tbody>
+                {d.keywords.map((k) => (
+                  <tr key={k.id}>
+                    <th scope="row">
+                      {k.text}
+                      <span>{k.lastChecked ? `Checked ${day(k.lastChecked)}` : "Not checked yet"}</span>
+                    </th>
+                    <td>
+                      {k.checked === 0 ? (
+                        <span className="pf-muted">—</span>
+                      ) : (
+                        <span className={`pf-badge ${k.mentioned ? "ok" : ""}`} title={k.mentionedBy.map(providerName).join(", ") || "None"}>
+                          {k.mentioned} of {k.checked} AIs
+                        </span>
+                      )}
+                    </td>
+                    <td>{k.checked === 0 ? <span className="pf-muted">—</span> : k.cited}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </section>
+
+        <div className="pf-stack">
+          <section className="pf-card" aria-labelledby="site-title">
+            <div className="pf-card-head">
+              <h2 id="site-title">Website</h2>
+              <Link href={d.website.url ? "/app/improve" : "/app/website"}>{d.website.url ? "Details" : "Connect"} <Icon name="arrow" size={13} /></Link>
+            </div>
+            {d.website.url ? (
+              <>
+                <p className="pf-line"><strong>{host(d.website.url)}</strong>{d.website.checkedAt && <span>Checked {day(d.website.checkedAt)}</span>}</p>
+                {d.website.auditRunning ? (
+                  <p className="pf-muted">Checking your website now…</p>
+                ) : d.website.issues.length ? (
+                  <ul className="pf-issues">
+                    {d.website.issues.map((f) => <li key={f.id}>{f.evidence}</li>)}
+                  </ul>
+                ) : (
+                  <p className="pf-muted">{d.website.total ? "Everything we check passes." : "Run a check to see what AI assistants can read."}</p>
+                )}
+              </>
+            ) : (
+              <p className="pf-muted">{d.website.requested ? `Our team is building your website (${STATUS_TEXT[d.website.requested.status].toLowerCase()}).` : "Connect your website, or ask our team to build one."}</p>
+            )}
+          </section>
+
+          <section className="pf-card" aria-labelledby="social-title">
+            <div className="pf-card-head">
+              <h2 id="social-title">Social media</h2>
+              <Link href="/app/presence">Manage <Icon name="arrow" size={13} /></Link>
+            </div>
+            <ul className="pf-social">
+              {d.social.map((s) => (
+                <li key={s.key}>
+                  <Status on={s.state !== "none"} bad={!!s.error} />
+                  <span>
+                    <strong>{s.label}</strong>
+                    <em>{s.error ? "Update failed. Reconnect it" : s.state === "synced" ? "Connected · kept up to date" : s.state === "linked" ? "Linked" : "Not connected"}</em>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      {insights.length > 0 && (
+        <section className="pf-card" aria-labelledby="next-title">
+          <div className="pf-card-head"><h2 id="next-title">What to do next</h2></div>
+          <ul className="pf-insights">
+            {insights.slice(0, 3).map((i) => (
+              <li key={i.title}>
+                <Link href={i.href}>
+                  <span><strong>{i.title}</strong><em>{i.body}</em></span>
+                  <span className="pf-cta">{i.cta} <Icon name="arrow" size={13} /></span>
                 </Link>
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      <section className="dash-kpis" aria-label="Business overview">
-        <Link href="/app/website" className="dash-kpi">
-          <span className="dash-kpi-icon peach"><Icon name="website" size={19} /></span>
-          <span className="dash-kpi-label">Website</span>
-          <strong className="dash-kpi-value">
-            {live ? "Live" : site ? "Draft" : business.hasWebsite ? "Connected" : "Not created"}
-          </strong>
-          <span className="dash-kpi-detail">
-            {live ? `Published · version ${live.versionNumber}` : site ? "Review and publish when ready" : business.hasWebsite ? (business.websiteUrl ?? "Your own website") : "Your home on the internet"}
-          </span>
-          <span className="dash-kpi-link">Manage website <Icon name="arrow" size={14} /></span>
-        </Link>
-        <Link href="/app/visibility" className="dash-kpi">
-          <span className="dash-kpi-icon lilac"><Icon name="visibility" size={19} /></span>
-          <span className="dash-kpi-label">AI mention rate <em>30 days</em></span>
-          <strong className="dash-kpi-value">{mentionRate === null ? "—" : `${mentionRate}%`}</strong>
-          <span className="dash-kpi-detail">
-            {vm.valid > 0
-              ? `${vm.mention.numerator} of ${vm.mention.denominator} answers${vm.smallSample ? " · small sample" : ""}`
-              : "Run a check to see your first results"}
-          </span>
-          {mentionRate !== null && (
-            <span className="dash-kpi-meter" aria-hidden="true"><span style={{ width: `${mentionRate}%` }} /></span>
-          )}
-          <span className="dash-kpi-link">{vm.valid > 0 ? "See the evidence" : "Explore AI visibility"} <Icon name="arrow" size={14} /></span>
-        </Link>
-        <Link href="/app/leads" className="dash-kpi">
-          <span className="dash-kpi-icon amber"><Icon name="leads" size={19} /></span>
-          <span className="dash-kpi-label">Enquiries <em>7 days</em></span>
-          <strong className="dash-kpi-value">{weekLeads}</strong>
-          <span className="dash-kpi-detail">
-            {newLeads > 0 ? `${newLeads} waiting for your reply` : "No enquiries waiting"}
-          </span>
-          {newLeads > 0 && <span className="dash-kpi-badge">{newLeads} new</span>}
-          <span className="dash-kpi-link">Open inbox <Icon name="arrow" size={14} /></span>
-        </Link>
-      </section>
-
-      <AiReadiness readiness={readiness} limit={4} fresh />
-
-      <div className="dash-lower">
-        <section className="dash-panel" aria-labelledby="dash-more">
-          <div className="dash-panel-head">
-            <h2 id="dash-more">More ways to grow</h2>
-            <span>{moreActions.length > 0 ? `${Math.min(moreActions.length, 3)} suggestions` : "Nothing pending"}</span>
-          </div>
-          {moreActions.length === 0 ? (
-            <p className="dash-empty">
-              <Badge tone="ok">You’re all caught up</Badge>
-              <span>New suggestions will appear here as your business grows.</span>
-            </p>
-          ) : (
-            <ul className="dash-todo">
-              {moreActions.slice(0, 3).map((a) => (
-                <li key={a.title}>
-                  <Link href={a.href}>
-                    <span className="dash-todo-dot" aria-hidden="true" />
-                    <span className="dash-todo-text">
-                      <strong>{a.title}</strong>
-                      <span>{a.body}</span>
-                    </span>
-                    <span className="dash-todo-cta">{a.cta}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
         </section>
-
-        <section className="dash-panel" aria-labelledby="dash-activity">
-          <div className="dash-panel-head">
-            <h2 id="dash-activity">Recent activity</h2>
-            <Link href="/app/reports">Reports <Icon name="arrow" size={13} /></Link>
-          </div>
-          {activity.length === 0 ? (
-            <p className="dash-empty"><span>Your business journey starts here. Updates will appear as you go.</span></p>
-          ) : (
-            <ul className="dash-activity">
-              {activity.slice(0, 5).map((e) => (
-                <li key={e.id}>
-                  <span className="dash-activity-dot" aria-hidden="true" />
-                  <span className="dash-activity-text">{ACTIVITY_TEXT[e.action] ?? e.action}</span>
-                  <time dateTime={e.createdAt.toISOString()}>
-                    {e.createdAt.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}
-                  </time>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </div>
+      )}
     </div>
+  );
+}
+
+function Kpi({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <div className="pf-kpi">
+      <span className="pf-kpi-label">{label}</span>
+      <strong>{value}</strong>
+      <span className="pf-kpi-detail">{detail}</span>
+    </div>
+  );
+}
+
+/** Connection state as an icon and text, never colour alone. */
+function Status({ on, wait = false, bad = false }: { on: boolean; wait?: boolean; bad?: boolean }) {
+  const state = bad ? "bad" : on ? "on" : wait ? "wait" : "off";
+  return (
+    <span className={`pf-dot ${state}`} aria-hidden="true">
+      {state === "on" ? <Icon name="check" size={12} /> : state === "bad" ? "!" : state === "wait" ? <Icon name="clock" size={12} /> : ""}
+    </span>
   );
 }

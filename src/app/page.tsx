@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const features = [
-  { icon: "website", n: "01", title: "A website that feels like you.", body: "Turn your business details into a website draft. Edit your pages, preview the result, and publish when it feels right.", detail: "Create · Edit · Publish", tone: "peach" },
+  { icon: "website", n: "01", title: "A website made for you.", body: "Already have a website? Connect it in a minute. Don’t have one? Our team designs and builds a professional website for your business.", detail: "Connect · Or we build it", tone: "peach" },
   { icon: "business", n: "02", title: "Your business, clearly represented.", body: "Bring your services, locations and contact details together in one business profile. Keep the facts that matter up to date.", detail: "Services · Locations · Contact details", tone: "sage" },
   { icon: "visibility", n: "03", title: "See where you stand in AI.", body: "Check how supported AI answers mention your business. Explore saved evidence and use it to guide your next improvement.", detail: "Monitor · Understand · Improve", tone: "lilac" },
 ];
@@ -42,7 +42,7 @@ export default function Home() {
       <main id="main" className="landing-main">
         <div className="landing-fit landing-first"><div className="fit-body"><section className="landing-hero" aria-labelledby="hero-title">
           <div className="hero-copy"><p className="landing-eyebrow"><span /> SMALL BUSINESS. BIG POSSIBILITIES.</p><h1 id="hero-title">Good businesses<br />deserve to be <span className="hero-found">found<svg viewBox="0 0 330 18" aria-hidden="true"><path d="M4 13 Q150 -2 326 7" /></svg></span>.</h1>
-          <div className="hero-intro"><p>You do the work you love.{" "}<br />Let’s help the world find it.</p><p className="hero-description">Build your website, bring your business information together, and understand how you show up in AI answers. Your online presence, all in one place.</p><div className="hero-buttons"><Link href="/signup" className="landing-button">Start building <Icon name="arrow" size={18} /></Link><a href="#products" className="landing-button secondary">Explore Foundly <Icon name="down" size={17} /></a></div><span className="hero-note">Made for business owners. No coding needed.</span></div></div>
+          <div className="hero-intro"><p>You do the work you love.{" "}<br />Let’s help the world find it.</p><p className="hero-description">Connect your website or let our team build one, bring your business information together, and understand how you show up in AI answers. Your online presence, all in one place.</p><div className="hero-buttons"><Link href="/signup" className="landing-button">Get started <Icon name="arrow" size={18} /></Link><a href="#products" className="landing-button secondary">Explore Foundly <Icon name="down" size={17} /></a></div><span className="hero-note">Made for business owners. No coding needed.</span></div></div>
           <HeroDemo />
         </section><div className="landing-audience"><span>FOR PEOPLE BUILDING SOMETHING OF THEIR OWN</span><div>{["Local businesses","Independent professionals","Growing teams","Service businesses","Studios and clinics"].map(a=><span key={a} className="audience-pill"><span className="audience-star" aria-hidden="true">✳</span>{a}</span>)}</div></div></div></div>
         <section id="products" className="landing-products landing-fit" aria-label="Explore Foundly products"><div className="fit-body"><LandingShowcase /></div></section>
@@ -52,7 +52,7 @@ export default function Home() {
           <LandingAiAnswers />
         </div></section>
         <section id="results" className="landing-section landing-results landing-fit" aria-labelledby="results-title"><div className="fit-body">
-          <div className="landing-section-heading"><div><p className="landing-eyebrow"><span /> SEE IT BEFORE YOU START</p><h2 id="results-title">Watch your presence<br />grow, week by week.</h2></div><p>This is what your dashboard looks like as you go. A live website, a complete profile, more enquiries, and a clearer view of how AI answers talk about you.</p></div>
+          <div className="landing-section-heading"><div><p className="landing-eyebrow"><span /> SEE IT BEFORE YOU START</p><h2 id="results-title">Watch your presence<br />grow, week by week.</h2></div><p>This is what your dashboard looks like as you go. A connected website, a complete profile, more listings, and a clearer view of how AI answers talk about you.</p></div>
           <LandingResults />
         </div></section>
         <section id="why-foundly" className="landing-section landing-fit"><div className="fit-body">
@@ -70,7 +70,7 @@ export default function Home() {
               <p className="faq-description">Everything you need to know before giving your business a new place to grow.</p>
               <Link href="/signup" className="faq-start">Get started with Foundly <Icon name="arrow" size={18} /></Link>
             </div>
-            <div className="faq-questions">{[{q:"What is Foundly?",a:"Foundly is a workspace for managing your business’s online presence. Create a business profile, build and publish a website, and review how supported AI answers mention your business."},{q:"Do I need to know how to code?",a:"No. Start with your business details, review your website draft, and make edits before publishing. The setup guides you through each step."},{q:"Can I review my website before it goes live?",a:"Yes. Your website begins as a draft. You can preview and edit it before choosing to publish."},{q:"Will Foundly guarantee AI recommendations?",a:"No. AI answers can change, and mentions or rankings aren’t guaranteed. Foundly shows observed results and saved evidence so you can understand what was found."}].map((item, index) => (
+            <div className="faq-questions">{[{q:"What is Foundly?",a:"Foundly is a workspace for managing your business’s online presence. Create a business profile, connect your website or have our team build one, and review how supported AI answers mention your business."},{q:"Do I need to know how to code?",a:"No. Start with your business details and connect your website. If you don’t have one, our team builds it for you, so there’s nothing technical to do."},{q:"What if I don’t have a website?",a:"Send us a short brief from your account. We’ll call, WhatsApp or video call you to plan it, then design and build a professional website for your business and connect it to Foundly."},{q:"Will Foundly guarantee AI recommendations?",a:"No. AI answers can change, and mentions or rankings aren’t guaranteed. Foundly shows observed results and saved evidence so you can understand what was found."}].map((item, index) => (
                 <details key={item.q} name="foundly-faq" open={index === 0}>
                   <summary><small aria-hidden="true">{String(index + 1).padStart(2, "0")}</small><b>{item.q}</b><span aria-hidden="true">+</span></summary>
                   <p>{item.a}</p>

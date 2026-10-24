@@ -1,8 +1,6 @@
 import type { Business } from "@/db/schema";
-import type { SiteContent } from "@/lib/site/content";
-import { buildBlock } from "@/lib/site/generate";
 import { toPublicProfile } from "@/lib/profile";
-import { businessGraph } from "@/lib/geo";
+import { businessGraph, discoveryFaq, listToText } from "@/lib/geo";
 import type { CheckResult } from "./checks";
 
 /**
@@ -11,8 +9,9 @@ import type { CheckResult } from "./checks";
  * to write it rather than inventing it. Benefits are stated as hypotheses.
  */
 
-export type ApplyKind = "manual" | "wordpress_append" | "hosted_seo_description" | "hosted_faq_add" | "hosted_service_descriptions" | "hosted_about";
+export type ApplyKind = "manual" | "wordpress_append";
 
+/** Tasks for websites Foundly used to host. Those websites are retired, so these can't be applied. */
 export const isHostedKind = (k: string) => k.startsWith("hosted_");
 
 export type ActionTemplate = {
@@ -27,12 +26,19 @@ export type ActionTemplate = {
 
 const SEVERITY_WEIGHT = { high: 30, medium: 20, low: 10 } as const;
 
+/** Questions people ask AI assistants, answered from confirmed facts only. */
 function faqDraft(b: Business): string {
-  const faq = buildBlock("faq", b, "draft");
-  return faq?.type === "faq" ? faq.items.map((i) => `Q: ${i.question}\nA: ${i.answer}`).join("\n\n") : "";
+  const f = toPublicProfile(b);
+  const items = discoveryFaq({ ...f, services: b.services });
+  items.push({ question: `Which areas does ${f.name} serve?`, answer: `We serve ${f.serviceAreas.length ? listToText(f.serviceAreas) : f.city}.` });
+  if (b.services.length) items.push({ question: "What services do you offer?", answer: `We offer ${listToText(b.services.map((s) => s.name.trim()))}.` });
+  const methods = [f.phone && `call ${f.phone}`, f.whatsapp && `message us on WhatsApp at ${f.whatsapp}`, f.email && `email ${f.email}`].filter((m): m is string => !!m);
+  if (methods.length) items.push({ question: `How can I contact ${f.name}?`, answer: `You can ${listToText(methods)}${f.bookingUrl ? ", or book online" : ""}.` });
+  if (f.hours.length) items.push({ question: "What are your opening hours?", answer: f.hours.map((h) => `${h.days}: ${h.hours}`).join("; ") + "." });
+  return items.map((i) => `Q: ${i.question}\nA: ${i.answer}`).join("\n\n");
 }
 
-export function templateFor(check: CheckResult, b: Business, hosted: boolean): ActionTemplate | null {
+export function templateFor(check: CheckResult, b: Business): ActionTemplate | null {
   const base = SEVERITY_WEIGHT[check.severity];
   const facts = toPublicProfile(b);
   switch (check.checkKey) {
@@ -54,7 +60,7 @@ export function templateFor(check: CheckResult, b: Business, hosted: boolean): A
       return { title: "Write a clear page title", hypothesis: "A specific title helps people and search tools understand the page.", proposedChange: "Set the homepage title to name your business, service and city.", draft: `${b.name} — ${b.category} in ${b.city}`.slice(0, 70), applyKind: "manual", priority: base + 2 };
     case "meta_description": {
       const draft = `${b.name}: ${b.category} in ${b.city}. ${b.services.slice(0, 4).map((s) => s.name).join(", ")}.`.slice(0, 170);
-      return { title: "Write a search description", hypothesis: "A clear description may improve how your page appears in results.", proposedChange: hosted ? "Replace your website's search description." : "Add a meta description to the homepage.", draft, applyKind: hosted ? "hosted_seo_description" : "manual", priority: base + 1 };
+      return { title: "Write a search description", hypothesis: "A clear description may improve how your page appears in results.", proposedChange: "Add a meta description to the homepage.", draft, applyKind: "manual", priority: base + 1 };
     }
     case "h1":
       return { title: "Use one main heading", hypothesis: "One clear H1 makes the page's topic obvious.", proposedChange: "Keep exactly one H1 on the homepage, naming what you do.", draft: `${b.category} in ${b.city} — ${b.name}`, applyKind: "manual", priority: base - 3 };
@@ -66,18 +72,18 @@ export function templateFor(check: CheckResult, b: Business, hosted: boolean): A
     case "service_coverage":
       return { title: "Describe every service you offer", hypothesis: "Customers can only find services your site actually describes.", proposedChange: "Add a short section for each missing service, in your own words.", draft: b.services.map((s) => `${s.name}: ${s.description ?? "[Describe what's included, who it's for and the area you cover]"}`).join("\n"), applyKind: "manual", priority: base + 5 };
     case "service_descriptions":
-      return { title: "Explain each service", hypothesis: "Specific descriptions answer customers' questions before they call.", proposedChange: "Add a description for each service. Replace every [bracket] with your own words before approving.", draft: b.services.map((s) => `${s.name}: ${s.description ?? "[What's included, who it's for, typical timing]"}`).join("\n"), applyKind: "hosted_service_descriptions", priority: base + 5 };
+      return { title: "Explain each service", hypothesis: "Specific descriptions answer customers' questions before they call.", proposedChange: "Add a description for each service. Replace every [bracket] with your own words before approving.", draft: b.services.map((s) => `${s.name}: ${s.description ?? "[What's included, who it's for, typical timing]"}`).join("\n"), applyKind: "manual", priority: base + 5 };
     case "structured_data":
     case "structured_data_agrees":
       return { title: "Add accurate structured data", hypothesis: "Structured data that matches the page may help search tools read your details correctly.", proposedChange: "Add this JSON-LD to your homepage <head>. It contains only details you confirmed.", draft: `<script type="application/ld+json">\n${JSON.stringify(businessGraph({ ...facts, url: b.websiteUrl ?? undefined }), null, 2)}\n</script>`, applyKind: "manual", priority: base };
     case "faq":
-      return { title: "Answer common customer questions", hypothesis: "Clear answers to real questions make your page more useful to customers and to tools that summarise it.", proposedChange: hosted ? "Add these questions to your website's Questions section." : "Add a questions-and-answers section with these answers.", draft: faqDraft(b), applyKind: hosted ? "hosted_faq_add" : "manual", priority: base + 3 };
+      return { title: "Answer common customer questions", hypothesis: "Clear answers to real questions make your page more useful to customers and to tools that summarise it.", proposedChange: "Add a questions-and-answers section with these answers.", draft: faqDraft(b), applyKind: "manual", priority: base + 3 };
     case "about":
-      return { title: "Tell customers who you are", hypothesis: "A short, honest background helps customers trust who they're contacting.", proposedChange: "Write a few sentences about your business. We won't write this for you, so the facts stay yours.", draft: b.description ?? "[Who runs the business, since when, and what you focus on — only what's true]", applyKind: "hosted_about", priority: base + 2 };
+      return { title: "Tell customers who you are", hypothesis: "A short, honest background helps customers trust who they're contacting.", proposedChange: "Write a few sentences about your business. We won't write this for you, so the facts stay yours.", draft: b.description ?? "[Who runs the business, since when, and what you focus on — only what's true]", applyKind: "manual", priority: base + 2 };
     case "hours":
-      return { title: "Add your opening hours", hypothesis: "Customers often check hours before contacting a business.", proposedChange: "Add your hours in My Business. They appear on your Contact page automatically.", draft: "", applyKind: "manual", priority: base };
+      return { title: "Add your opening hours", hypothesis: "Customers often check hours before contacting a business.", proposedChange: "Add your hours in My Business, and show them on your website's contact page.", draft: "", applyKind: "manual", priority: base };
     case "photos":
-      return { title: "Add photos of your real work", hypothesis: "Genuine photos help customers see what you do. Don't use stock images presented as your work.", proposedChange: "Upload photos in My Website → Photos section.", draft: "", applyKind: "manual", priority: base - 2 };
+      return { title: "Add photos of your real work", hypothesis: "Genuine photos help customers see what you do. Don't use stock images presented as your work.", proposedChange: "Add photos of your work and premises to your website.", draft: "", applyKind: "manual", priority: base - 2 };
     case "viewport":
       return { title: "Make your site work on phones", hypothesis: "Most visitors use phones; without a viewport tag pages render tiny.", proposedChange: 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> and check the site on a phone.', draft: "", applyKind: "manual", priority: base + 4 };
     case "img_alt":
@@ -116,83 +122,4 @@ export function parseServiceDraft(draft: string) {
       return i === -1 ? null : { name: l.slice(0, i).trim(), description: l.slice(i + 1).trim().slice(0, 600) };
     })
     .filter((x): x is { name: string; description: string } => !!x && !!x.description);
-}
-
-/** Applies an approved draft to site content. Returns the new content, or null if not applicable. */
-export function applyToContent(kind: ApplyKind, draft: string, content: SiteContent): SiteContent | null {
-  const next: SiteContent = structuredClone(content);
-  const allBlocks = next.pages.flatMap((p) => p.blocks);
-  switch (kind) {
-    case "hosted_seo_description":
-      next.seo.description = draft.trim().slice(0, 170);
-      return next;
-    case "hosted_faq_add": {
-      const items = parseFaqDraft(draft);
-      if (!items.length) return null;
-      let faq = allBlocks.find((x) => x.type === "faq");
-      if (!faq) {
-        faq = { id: `home-faq-${Date.now().toString(36)}`, type: "faq", heading: "Common questions", items: [] };
-        next.pages[0].blocks.push(faq);
-      }
-      if (faq.type !== "faq") return null;
-      const have = new Set(faq.items.map((i) => i.question.toLowerCase()));
-      faq.items.push(...items.filter((i) => !have.has(i.question.toLowerCase())));
-      faq.items = faq.items.slice(0, 20);
-      return next;
-    }
-    case "hosted_service_descriptions": {
-      const byName = new Map(parseServiceDraft(draft).map((s) => [s.name.toLowerCase(), s.description]));
-      let changed = false;
-      for (const blk of allBlocks) {
-        if (blk.type !== "services") continue;
-        for (const item of blk.items) {
-          const d = byName.get(item.name.toLowerCase());
-          if (d) {
-            item.description = d;
-            changed = true;
-          }
-        }
-      }
-      return changed ? next : null;
-    }
-    case "hosted_about": {
-      const body = draft.trim().slice(0, 3000);
-      if (!body) return null;
-      const existing = allBlocks.find((x) => x.type === "about");
-      if (existing?.type === "about") existing.body = body;
-      else {
-        const page = next.pages.find((p) => p.key === "about");
-        const blk = { id: `about-about-${Date.now().toString(36)}`, type: "about" as const, heading: `About ${next.facts.name}`, body };
-        if (page) page.blocks.push(blk);
-        else next.pages.splice(Math.min(2, next.pages.length), 0, { key: "about", title: "About", blocks: [blk] });
-      }
-      return next;
-    }
-    case "manual":
-    case "wordpress_append":
-      return null;
-  }
-}
-
-/** Whether published content reflects an applied draft (for verification). */
-export function contentReflects(kind: ApplyKind, draft: string, content: SiteContent): boolean {
-  const blocks = content.pages.flatMap((p) => p.blocks);
-  switch (kind) {
-    case "hosted_seo_description":
-      return content.seo.description === draft.trim().slice(0, 170);
-    case "hosted_faq_add": {
-      const faq = blocks.find((x) => x.type === "faq");
-      const qs = new Set(faq?.type === "faq" ? faq.items.map((i) => i.question.toLowerCase()) : []);
-      return parseFaqDraft(draft).every((i) => qs.has(i.question.toLowerCase()));
-    }
-    case "hosted_service_descriptions": {
-      const services = blocks.flatMap((x) => (x.type === "services" ? x.items : []));
-      return parseServiceDraft(draft).every((s) => services.some((i) => i.name.toLowerCase() === s.name.toLowerCase() && i.description === s.description));
-    }
-    case "hosted_about":
-      return blocks.some((x) => x.type === "about" && x.body === draft.trim().slice(0, 3000));
-    case "manual":
-    case "wordpress_append":
-      return false;
-  }
 }

@@ -1,6 +1,5 @@
 import { parse, type HTMLElement } from "node-html-parser";
 import type { Business } from "@/db/schema";
-import type { SiteContent } from "@/lib/site/content";
 import { robotsDisallows, type CrawlResult } from "./crawl";
 
 /** Bump when checks change; reports show which checklist produced them. */
@@ -122,21 +121,28 @@ export function externalChecks(crawl: CrawlResult, b: Business): CheckResult[] {
   return out;
 }
 
-/** Content checks for a platform-hosted site. Technical output is generated correctly by the platform. */
-export function hostedChecks(content: SiteContent, b: Business): CheckResult[] {
-  const blocks = content.pages.flatMap((p) => p.blocks);
-  const out: CheckResult[] = [];
-  const services = blocks.find((x) => x.type === "services");
-  const undescribed = services?.type === "services" ? services.items.filter((i) => i.description.trim().length < 20) : [];
-  out.push({ checkKey: "service_descriptions", category: "content", page: "services", passed: !!services && undescribed.length === 0, severity: "medium", evidence: undescribed.length ? `No useful description for: ${undescribed.map((i) => i.name).join(", ")}` : "Each service has a description" });
-  const about = blocks.find((x) => x.type === "about");
-  out.push({ checkKey: "about", category: "content", page: "about", passed: !!about, severity: "medium", evidence: about ? "Your site has an About section" : "No About section — customers can't see who runs the business" });
-  const faq = blocks.find((x) => x.type === "faq");
-  const faqCount = faq?.type === "faq" ? faq.items.length : 0;
-  out.push({ checkKey: "faq", category: "content", page: "home", passed: faqCount >= 3, severity: "low", evidence: `${faqCount} questions answered` });
-  out.push({ checkKey: "hours", category: "facts", page: "contact", passed: b.hours.length > 0, severity: "low", evidence: b.hours.length ? "Opening hours are shown" : "Opening hours aren't shown" });
-  out.push({ checkKey: "meta_description", category: "content", page: "home", passed: content.seo.description.length >= 50, severity: "low", evidence: `Search description (${content.seo.description.length} chars): “${content.seo.description}”` });
-  const images = blocks.flatMap((x) => (x.type === "gallery" ? x.images : []));
-  out.push({ checkKey: "photos", category: "content", page: null, passed: images.length > 0, severity: "low", evidence: images.length ? `${images.length} photo(s) of your work` : "No photos of your work or premises" });
-  return out;
-}
+/** Plain names for each website check, as owners see them in the rating breakdown. */
+export const CHECK_LABEL: Record<string, string> = {
+  http_status: "Homepage loads",
+  https: "Secure connection (HTTPS)",
+  redirects: "Few redirects",
+  indexable: "Search engines may index it",
+  robots_allows: "robots.txt lets crawlers in",
+  sitemap: "Has a sitemap",
+  canonical: "Main address declared (canonical)",
+  rendering: "Text readable without JavaScript",
+  title: "Clear page title",
+  meta_description: "Search description",
+  h1: "One main heading",
+  nap_name: "Business name on the site",
+  nap_phone: "Phone number on the site",
+  nap_whatsapp: "WhatsApp number on the site",
+  nap_city: "City on the site",
+  service_coverage: "Your services described",
+  structured_data: "Structured data (schema)",
+  structured_data_agrees: "Structured data matches your details",
+  faq: "Questions and answers",
+  viewport: "Works on phones",
+  img_alt: "Images described",
+  html_lang: "Page language declared",
+};

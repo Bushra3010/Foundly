@@ -4,6 +4,8 @@ import { Icon } from "@/components/icon";
 import { AddListingForm, CandidatePicker, CopyField, SyncCard } from "@/components/presence-kit";
 import { getGoogleConnection } from "@/server/google-business";
 import { getFacebookConnection } from "@/server/facebook-page";
+import { SocialConnect } from "@/components/social-connect";
+import { socialStatus } from "@/server/performance";
 import { isPlatformAdmin } from "@/lib/admin";
 import { decodeCandidates, providerConfigured, providerEnvNames, type Provider } from "@/server/connect";
 import { Notice, PageHeader } from "@/components/ui";
@@ -12,10 +14,9 @@ import { requireCtx } from "@/lib/auth/session";
 import { listingStatus } from "@/lib/geo";
 import { presenceKit } from "@/lib/presence";
 import { toPublicProfile } from "@/lib/profile";
-import { siteUrl } from "@/app/s/load";
-import { currentProfile, currentSite, requireCurrentBusiness } from "@/server/current";
+import { currentProfile, requireCurrentBusiness } from "@/server/current";
 
-export const metadata = { title: "Get listed" };
+export const metadata = { title: "Social media" };
 
 /**
  * The presence agent. It prepares every listing (same facts, each platform's
@@ -39,10 +40,10 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
   const ctx = await requireCtx();
   const db = await getDb();
   const b = await requireCurrentBusiness(db, ctx);
-  const [site, profile, google, facebook] = await Promise.all([currentSite(db, ctx), currentProfile(db, ctx), getGoogleConnection(db, ctx), getFacebookConnection(db, ctx)]);
+  const [profile, google, facebook] = await Promise.all([currentProfile(db, ctx), getGoogleConnection(db, ctx), getFacebookConnection(db, ctx)]);
+  const social = await socialStatus(db, ctx, b);
   const appUrl = process.env.APP_URL ?? "http://localhost:3000";
-  const live = Boolean(site?.publishedVersionId);
-  const websiteUrl = live && site ? siteUrl(site.slug) : (b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`);
+  const websiteUrl = b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`;
   const p = toPublicProfile(b);
   const kit = presenceKit({ ...p, description: p.description, websiteUrl, profileUrl: `${appUrl}/b/${profile?.slug ?? ""}` });
   const status = listingStatus(b.listings);
@@ -56,9 +57,23 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
     <>
       <PageHeader
         icon="presence"
-        title="Get listed where AI looks"
-        description="AI assistants recommend businesses they find in several places with the same details. Everything below is written from your confirmed facts and cut to each platform's limits. Create the listing, paste the text, then paste the link back here."
+        title="Social media"
+        description="Connect your pages so AI assistants see your business in more places with the same details."
       />
+      <section className="dash-panel mb-6">
+        <SocialConnect social={social} oneClick={{ google: providerConfigured("google"), facebook: providerConfigured("facebook") }} />
+        {(google || facebook) && (
+          <div className="mt-4 grid gap-3">
+            {google && <SyncCard provider="google" connection={{ status: google.status, lastError: google.lastError, lastSyncedAt: google.lastSyncedAt?.toISOString() ?? null }} />}
+            {facebook && <SyncCard provider="facebook" connection={{ status: facebook.status, lastError: facebook.lastError, lastSyncedAt: facebook.lastSyncedAt?.toISOString() ?? null }} />}
+          </div>
+        )}
+      </section>
+      <details className="kit-more">
+        <summary>
+          <strong>Get listed in more places (optional)</strong>
+          <span>{done} of {status.length} listings linked · Justdial, Bing Places, YouTube and more, with the text written for you</span>
+        </summary>
       <div className="kit-progress">
         <div className="kit-progress-bar" aria-hidden="true"><span style={{ width: `${(done / status.length) * 100}%` }} /></div>
         <p>
@@ -72,10 +87,10 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
         </div>
       )}
       {candidates && candidates.length > 0 && <CandidatePicker candidates={candidates} label={connect === "google" ? "Google" : "Facebook"} />}
-      {!live && (
+      {!b.websiteUrl && (
         <div className="mb-5">
-          <Notice tone="warn" title="Publish your website first">
-            Listings should link to your website so AI assistants can read your full details there. <Link href="/app/website" className="font-semibold underline">Go to My Website</Link>.
+          <Notice tone="warn" title="Listings link to your Foundly profile for now">
+            Once your website is connected, listings link to it so AI assistants can read your full details there. <Link href="/app/website" className="font-semibold underline">Go to My Website</Link>.
           </Notice>
         </div>
       )}
@@ -132,6 +147,7 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
           );
         })}
       </ol>
+      </details>
       <p className="admin-footnote">
         Foundly never signs in to these sites or creates accounts for you: their rules forbid it and listings made that way get removed. Verification codes and the final click are yours; everything else is prepared.
       </p>

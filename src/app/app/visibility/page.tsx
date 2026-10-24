@@ -85,45 +85,73 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
   return (
     <>
       <PageHeader icon="visibility"
-        title={t(locale, "nav.visibility")}
-        description="How supported AI answers respond to the questions you track. These are observations of a sample of answers, not the full behaviour of any AI service."
+        title={t(locale, "nav.keywords")}
+        description="The keywords we check on ChatGPT, Gemini, Perplexity and Claude, and what their answers say about you."
       />
 
-      {/* ---------- Sources ---------- */}
-      <h2 className="mb-3 text-lg font-semibold">Sources</h2>
-      <ul className="grid gap-3 sm:grid-cols-2">
-        {ADAPTERS.map((a) => {
-          const state = providerState(a);
-          return (
-            <li key={a.key}>
-              <Card>
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className="font-semibold">{a.label}</h3>
-                  <Badge tone={STATE_BADGE[state][0]}>{STATE_BADGE[state][1]}</Badge>
-                </div>
-                <p className="mt-2 text-sm text-muted">{METHOD_LABEL[a.method]}</p>
-                <p className="mt-1 text-sm text-muted">{LOCALE_TEXT[a.locale]}</p>
-                <p className="mt-1 text-sm text-muted">
-                  Last successful check: {lastSuccess[a.key] ? lastSuccess[a.key].toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : "none"}
-                </p>
-                {state === "not_connected" && (
-                  <p className="mt-1 text-xs text-muted">
-                    {showSetup ? `Admin: set ${a.requiredEnv.join(", ")}` : "We're switching this on for Foundly. Nothing for you to set up."}
-                  </p>
-                )}
-                {state === "awaiting_validation" && <p className="mt-1 text-xs text-muted">We&apos;re checking this source before turning it on for everyone.</p>}
-              </Card>
-            </li>
-          );
-        })}
-      </ul>
       {connected.length === 0 && (
-        <div className="mt-3">
+        <div className="mb-6">
           <Notice tone="info" title="AI checks are being switched on">
-            Meanwhile, choose the customer questions you want tracked below, and keep your business details complete. Your first results appear here after the first check. We never show estimates or sample data.
+            Your keywords are saved. Results appear here after the first check. Nothing for you to set up.
           </Notice>
         </div>
       )}
+
+      {/* ---------- Questions ---------- */}
+      <section>
+        <h2 className="mb-1 text-lg font-semibold">
+          Tracked keywords ({questions.length}/{keywordLimit})
+        </h2>
+        <p className="mb-3 text-sm text-muted">We ask each keyword on every AI assistant and record whether the answer mentions you.</p>
+        <Card>
+          {questions.length === 0 ? (
+            <p className="text-muted">No keywords yet. Add some below.</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {questions.map((q) => (
+                <li key={q.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
+                  <span className="min-w-0">
+                    {q.text} {q.location && <span className="text-sm text-muted">· {q.location}</span>}
+                  </span>
+                  <span className="flex items-center gap-2">
+                    {q.group === "branded" && <Badge tone="warn">{GROUP_LABEL[q.group]}</Badge>}
+                    {canEdit && (
+                      <ActionForm action={archiveQuestionAction} submitLabel="Stop tracking" variant="ghost" inline>
+                        <input type="hidden" name="questionId" value={q.id} />
+                      </ActionForm>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+        {canEdit && (
+          <Card className="mt-3">
+            <ActionForm action={approveQuestionsAction} submitLabel="Track these keywords">
+              {suggestions.length > 0 && (
+                <fieldset>
+                  <legend className="font-semibold">Suggestions</legend>
+                  <ul className="mt-2 space-y-1">
+                    {suggestions.map((s) => (
+                      <li key={s.text}>
+                        <label className="flex min-h-11 items-start gap-3 py-1">
+                          <input type="checkbox" name="suggestion" value={`${s.group}|${business.city}|${s.text}`} className="mt-1 size-5" />
+                          <span>
+                            {s.text} <span className="text-sm text-muted">({GROUP_LABEL[s.group]})</span>
+                          </span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </fieldset>
+              )}
+              <TextArea label="Add keywords" name="custom" optional hint="One per line, like “best plumber in Pune”." rows={3} />
+              <input type="hidden" name="customLocation" value={business.city} />
+            </ActionForm>
+          </Card>
+        )}
+      </section>
 
       {/* ---------- Results ---------- */}
       <section className="mt-8">
@@ -259,6 +287,9 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
         )}
       </section>
 
+      {/* ---------- Everything else, out of the way ---------- */}
+      <details className="mt-8 rounded-xl border border-border bg-surface p-4">
+        <summary className="min-h-11 cursor-pointer content-center font-semibold">More options: run a check, competitors, how we recognise you</summary>
       {/* ---------- Run a check ---------- */}
       <section className="mt-8 grid gap-4 md:grid-cols-2">
         <Card>
@@ -321,78 +352,6 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
         </Card>
       </section>
 
-      {/* ---------- Questions ---------- */}
-      <section className="mt-8">
-        <h2 className="mb-1 text-lg font-semibold">
-          Tracked keywords ({questions.length}/{keywordLimit})
-        </h2>
-        <p className="mb-3 text-sm text-muted">
-          Only questions you approve are asked. Questions that name your business are kept in a separate group because they make a mention more likely.
-        </p>
-        <Card>
-          {questions.length === 0 ? (
-            <p className="text-muted">No questions yet. Pick some suggestions below.</p>
-          ) : (
-            <ul className="divide-y divide-border">
-              {questions.map((q) => (
-                <li key={q.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
-                  <span className="min-w-0">
-                    {q.text} {q.location && <span className="text-sm text-muted">· {q.location}</span>}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Badge tone={q.group === "branded" ? "warn" : "neutral"}>{GROUP_LABEL[q.group]}</Badge>
-                    {canEdit && (
-                      <ActionForm action={archiveQuestionAction} submitLabel="Stop tracking" variant="ghost" inline>
-                        <input type="hidden" name="questionId" value={q.id} />
-                      </ActionForm>
-                    )}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Card>
-        {canEdit && (
-          <Card className="mt-3">
-            <ActionForm action={approveQuestionsAction} submitLabel="Track selected questions">
-              {suggestions.length > 0 && (
-                <fieldset>
-                  <legend className="font-semibold">Suggestions from your services and areas</legend>
-                  <ul className="mt-2 space-y-1">
-                    {suggestions.map((s) => (
-                      <li key={s.text}>
-                        <label className="flex min-h-11 items-start gap-3 py-1">
-                          <input type="checkbox" name="suggestion" value={`${s.group}|${business.city}|${s.text}`} className="mt-1 size-5" />
-                          <span>
-                            {s.text} <span className="text-sm text-muted">({GROUP_LABEL[s.group]})</span>
-                          </span>
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                </fieldset>
-              )}
-              <TextArea label="Your own questions" name="custom" optional hint="One per line, written the way a customer would ask." rows={3} />
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="customGroup" className="block text-sm font-semibold">
-                    Type of question
-                  </label>
-                  <select id="customGroup" name="customGroup" className="mt-1 block min-h-11 w-full rounded-lg border border-border bg-surface px-3">
-                    {Object.entries(GROUP_LABEL).map(([k, v]) => (
-                      <option key={k} value={k}>
-                        {v}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <TextField label="Location for these questions" name="customLocation" optional defaultValue={business.city} />
-              </div>
-            </ActionForm>
-          </Card>
-        )}
-      </section>
-
       {/* ---------- Brand and competitors ---------- */}
       <section className="mt-8 grid gap-4 md:grid-cols-2">
         <Card>
@@ -433,6 +392,39 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
           )}
         </Card>
       </section>
+        {showSetup && (
+          <>
+      {/* ---------- Sources ---------- */}
+      <h2 className="mb-3 mt-8 text-lg font-semibold">AI sources (admins only)</h2>
+      <ul className="grid gap-3 sm:grid-cols-2">
+        {ADAPTERS.map((a) => {
+          const state = providerState(a);
+          return (
+            <li key={a.key}>
+              <Card>
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="font-semibold">{a.label}</h3>
+                  <Badge tone={STATE_BADGE[state][0]}>{STATE_BADGE[state][1]}</Badge>
+                </div>
+                <p className="mt-2 text-sm text-muted">{METHOD_LABEL[a.method]}</p>
+                <p className="mt-1 text-sm text-muted">{LOCALE_TEXT[a.locale]}</p>
+                <p className="mt-1 text-sm text-muted">
+                  Last successful check: {lastSuccess[a.key] ? lastSuccess[a.key].toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : "none"}
+                </p>
+                {state === "not_connected" && (
+                  <p className="mt-1 text-xs text-muted">
+                    {showSetup ? `Admin: set ${a.requiredEnv.join(", ")}` : "We're switching this on for Foundly. Nothing for you to set up."}
+                  </p>
+                )}
+                {state === "awaiting_validation" && <p className="mt-1 text-xs text-muted">We&apos;re checking this source before turning it on for everyone.</p>}
+              </Card>
+            </li>
+          );
+        })}
+      </ul>
+          </>
+        )}
+      </details>
     </>
   );
 }

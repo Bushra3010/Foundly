@@ -1,13 +1,12 @@
 import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
-import { businesses } from "@/db/schema";
+import { businesses, improvementActions } from "@/db/schema";
 import { robotsDisallows } from "@/server/audit/crawl";
 import { hasPlaceholder, parseFaqDraft } from "@/server/audit/actions";
-import { applyAction, approveAction, editActionDraft, latestAudit, listActions, rollbackAction, runAudit, startAudit, verifyAction } from "@/server/audit/service";
+import { applyAction, approveAction, currentWebsiteCheck, editActionDraft, latestAudit, listActions, rollbackAction, runAudit, startAudit, verifyAction } from "@/server/audit/service";
 import { AppError, type Ctx } from "@/server/context";
 import type { SafeResponse } from "@/server/safe-fetch";
-import { generateSiteDraft, getSite, publishSite } from "@/server/sites";
 import { makeDb, onboard, signUp } from "./helpers";
 
 const code = (c: AppError["code"]) => (e: unknown) => e instanceof AppError && e.code === c;
@@ -47,7 +46,7 @@ describe("crawler helpers", () => {
 describe("external audit", () => {
   it("scans bounded pages, finds real problems, and treats page text as data", async () => {
     await db.update(businesses).set({ websiteUrl: "https://sharma.example.in" }).where(eq(businesses.workspaceId, ctx.workspaceId));
-    const a = await startAudit(db, ctx, "external");
+    const a = await startAudit(db, ctx);
     await runAudit(db, a.id, { fetcher: fakeFetch });
     const result = (await latestAudit(db, ctx))!;
     expect(result.status).toBe("completed");
@@ -60,46 +59,58 @@ describe("external audit", () => {
     const actions = await listActions(db, ctx);
     expect(actions.every((x) => x.status === "proposed")).toBe(true);
     // A second audit doesn't duplicate open tasks.
-    const b = await startAudit(db, ctx, "external");
+    const b = await startAudit(db, ctx);
     await runAudit(db, b.id, { fetcher: fakeFetch });
     expect((await listActions(db, ctx)).length).toBe(actions.length);
   });
 });
 
-describe("hosted improvement workflow", () => {
-  it("edit invalidates approval; approved drafts apply to the draft, verify after publish, and roll back", async () => {
-    await generateSiteDraft(db, ctx);
-    const a = await startAudit(db, ctx, "hosted");
-    await runAudit(db, a.id);
-    const meta = (await listActions(db, ctx)).find((x) => x.checkKey === "about")!;
-    expect(meta.applyKind).toBe("hosted_about");
-    // The generated draft is a placeholder; it can't be approved until the owner writes it.
-    await expect(approveAction(db, ctx, meta.id, meta.draftRevision)).rejects.toSatisfy(code("invalid"));
-    const first = await editActionDraft(db, ctx, meta.id, "Family-run plumbers in Pune.", meta.draftRevision);
-    const approved = await approveAction(db, ctx, meta.id, first.draftRevision);
-    const edited = await editActionDraft(db, ctx, meta.id, "Sharma Plumbing is a family-run plumbing business in Pune.", approved.draftRevision);
-    expect(edited.status).toBe("owner_edited");
-    await expect(applyAction(db, ctx, meta.id)).rejects.toSatisfy(code("precondition_failed"));
-    await expect(approveAction(db, { ...ctx, role: "editor" }, meta.id, edited.draftRevision)).rejects.toSatisfy(code("forbidden"));
-    await approveAction(db, ctx, meta.id, edited.draftRevision);
+describe("current website check", () => {
+  it("only the check of the address connected now counts", async () => {
+    await db.update(businesses).set({ websiteUrl: "https://sharma.example.in" }).where(eq(businesses.workspaceId, ctx.workspaceId));
+    const a = await startAudit(db, ctx);
+    await runAudit(db, a.id, { fetcher: fakeFetch });
+    const check = (await currentWebsiteCheck(db, ctx, "https://sharma.example.in/"))!;
+    expect(check.total).toBeGreaterThan(0);
+    expect(check.passed).toBeLessThan(check.total);
+    expect(await currentWebsiteCheck(db, ctx, "https://another-site.example")).toBeNull();
+  });
+});
 
-    const before = (await getSite(db, ctx))!;
-    await applyAction(db, ctx, meta.id);
-    const after = (await getSite(db, ctx))!;
-    expect(after.draft.pages.flatMap((p) => p.blocks).some((b) => b.type === "about" && b.body === edited.draft)).toBe(true);
-    expect((await verifyAction(db, ctx, meta.id)).status).toBe("applied"); // not published yet
-    await publishSite(db, ctx, after.draftRevision);
-    expect((await verifyAction(db, ctx, meta.id)).status).toBe("verified");
+describe("improvement workflow", () => {
+  async function auditedTask(checkKey: string) {
+    await db.update(businesses).set({ websiteUrl: "https://sharma.example.in" }).where(eq(businesses.workspaceId, ctx.workspaceId));
+    const a = await startAudit(db, ctx);
+    await runAudit(db, a.id, { fetcher: fakeFetch });
+    return (await listActions(db, ctx)).find((x) => x.checkKey === checkKey)!;
+  }
 
-    await rollbackAction(db, ctx, meta.id);
-    expect((await getSite(db, ctx))!.draft).toEqual(before.draft);
+  it("needs a connected website to audit", async () => {
+    await expect(startAudit(db, ctx)).rejects.toSatisfy(code("invalid"));
   });
 
-  it("won't approve drafts that still contain placeholders", async () => {
-    await generateSiteDraft(db, ctx);
-    const a = await startAudit(db, ctx, "hosted");
-    await runAudit(db, a.id);
-    const svc = (await listActions(db, ctx)).find((x) => x.checkKey === "service_descriptions")!;
-    await expect(approveAction(db, ctx, svc.id, svc.draftRevision)).rejects.toSatisfy(code("invalid"));
+  it("edit invalidates approval; the owner marks it done, a re-scan verifies it, and it can be reopened", async () => {
+    const task = await auditedTask("service_coverage");
+    expect(task.applyKind).toBe("manual");
+    const approved = await approveAction(db, ctx, task.id, task.draftRevision);
+    const edited = await editActionDraft(db, ctx, task.id, "Leak repair: Same-day fixes across Pune.", approved.draftRevision);
+    expect(edited.status).toBe("owner_edited");
+    await expect(applyAction(db, ctx, task.id)).rejects.toSatisfy(code("precondition_failed"));
+    await expect(approveAction(db, { ...ctx, role: "editor" }, task.id, edited.draftRevision)).rejects.toSatisfy(code("forbidden"));
+    await approveAction(db, ctx, task.id, edited.draftRevision);
+
+    expect((await applyAction(db, ctx, task.id)).status).toBe("applied");
+    // The fake site still doesn't describe the services, so the re-scan doesn't verify it.
+    expect((await verifyAction(db, ctx, task.id, { fetcher: fakeFetch })).status).toBe("failed");
+    await approveAction(db, ctx, task.id, edited.draftRevision);
+    await applyAction(db, ctx, task.id);
+    expect((await rollbackAction(db, ctx, task.id)).status).toBe("rolled_back");
+  });
+
+  it("refuses tasks left over from websites Foundly used to host", async () => {
+    const task = await auditedTask("indexable");
+    await db.update(improvementActions).set({ applyKind: "hosted_about", draft: "Family-run plumbers in Pune." }).where(eq(improvementActions.id, task.id));
+    expect((await approveAction(db, ctx, task.id, task.draftRevision)).status).toBe("approved");
+    await expect(applyAction(db, ctx, task.id)).rejects.toSatisfy(code("invalid"));
   });
 });

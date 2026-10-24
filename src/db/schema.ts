@@ -12,7 +12,6 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
-import type { SiteContent } from "@/lib/site/content";
 import type { PublicProfile } from "@/lib/profile";
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
@@ -195,6 +194,55 @@ export const ownershipClaims = pgTable(
 
 // ---------- Websites ----------
 
+/**
+ * Website requests: owners without a website ask Foundly's team to build one.
+ * The team builds it with any tool; on delivery its address becomes the
+ * business's connected website.
+ */
+export const websiteRequestStatusEnum = pgEnum("website_request_status", ["new", "contacted", "in_progress", "delivered", "cancelled"]);
+export const contactMethodEnum = pgEnum("contact_method", ["phone", "whatsapp", "video"]);
+
+export const websiteRequests = pgTable(
+  "website_requests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    businessId: uuid("business_id")
+      .notNull()
+      .references(() => businesses.id, { onDelete: "cascade" }),
+    requestedBy: uuid("requested_by").references(() => users.id, { onDelete: "set null" }),
+    /** What the website should do for the business, in the owner's words. */
+    goal: text("goal").notNull(),
+    pages: text("pages"),
+    style: text("style"),
+    /** Websites the owner likes, one per line. */
+    examples: text("examples"),
+    contactMethod: contactMethodEnum("contact_method").notNull(),
+    contactValue: text("contact_value").notNull(),
+    contactTime: text("contact_time"),
+    status: websiteRequestStatusEnum("status").notNull().default("new"),
+    /** Latest note from the team, shown to the owner. */
+    teamNote: text("team_note"),
+    deliveredUrl: text("delivered_url"),
+    deliveredAt: timestamp("delivered_at", { withTimezone: true }),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    index("website_requests_workspace_idx").on(t.workspaceId),
+    // One open request per business at a time.
+    uniqueIndex("website_requests_open_idx").on(t.businessId).where(sql`${t.status} in ('new', 'contacted', 'in_progress')`),
+  ],
+);
+
+export type WebsiteRequest = typeof websiteRequests.$inferSelect;
+
+// Foundly-hosted websites were retired in favour of website requests. The
+// tables stay so no owner data is lost; nothing reads or writes them now.
+type StoredSiteContent = Record<string, unknown>;
+
 export const sites = pgTable("sites", {
   id: uuid("id").primaryKey().defaultRandom(),
   workspaceId: uuid("workspace_id")
@@ -205,7 +253,7 @@ export const sites = pgTable("sites", {
     .unique()
     .references(() => businesses.id, { onDelete: "cascade" }),
   slug: text("slug").notNull().unique(),
-  draft: jsonb("draft").$type<SiteContent>().notNull(),
+  draft: jsonb("draft").$type<StoredSiteContent>().notNull(),
   /** Optimistic concurrency token for the draft. */
   draftRevision: integer("draft_revision").notNull().default(1),
   /** Business version the draft was last generated from. */
@@ -227,7 +275,7 @@ export const siteVersions = pgTable(
       .notNull()
       .references(() => workspaces.id, { onDelete: "cascade" }),
     versionNumber: integer("version_number").notNull(),
-    content: jsonb("content").$type<SiteContent>().notNull(),
+    content: jsonb("content").$type<StoredSiteContent>().notNull(),
     contentHash: text("content_hash").notNull(),
     draftRevision: integer("draft_revision").notNull(),
     createdBy: uuid("created_by")

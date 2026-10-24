@@ -9,9 +9,8 @@ import { getBusiness } from "@/server/business";
 import { AppError, type Ctx } from "@/server/context";
 import { getBalance } from "@/server/credits";
 import { planSpec } from "@/lib/plans";
-import { processDueDeletions, requestAccountDeletion, requestWebsiteDeletion } from "@/server/lifecycle";
+import { processDueDeletions, requestAccountDeletion } from "@/server/lifecycle";
 import { unsubscribeToken, verifyUnsubscribe } from "@/server/notifications";
-import { generateSiteDraft, getSite, publishSite } from "@/server/sites";
 import { acceptInvite, inviteMember } from "@/server/team";
 import { makeDb, onboard, signUp } from "./helpers";
 
@@ -71,12 +70,13 @@ describe("billing webhooks", () => {
 });
 
 describe("account lifecycle", () => {
-  it("website deletion takes the site offline now and deletes it after the recovery window", async () => {
-    await generateSiteDraft(db, ctx);
-    const s = (await getSite(db, ctx))!;
-    await publishSite(db, ctx, s.draftRevision);
-    const r = await requestWebsiteDeletion(db, ctx);
-    expect((await getSite(db, ctx))!.publishedVersionId).toBeNull();
+  it("website deletions scheduled before hosting was retired still complete after the recovery window", async () => {
+    const b = (await getBusiness(db, ctx))!;
+    await db.insert(sites).values({ workspaceId: ctx.workspaceId, businessId: b.id, slug: "sharma", draft: {}, generatedFromVersion: b.version });
+    const [r] = await db
+      .insert(deletionRequests)
+      .values({ kind: "website", workspaceId: ctx.workspaceId, requestedBy: ctx.userId, scheduledFor: new Date(Date.now() + 86_400_000) })
+      .returning();
     expect(await processDueDeletions(db)).toBe(0);
     await db.update(deletionRequests).set({ scheduledFor: new Date(Date.now() - 1000) }).where(eq(deletionRequests.id, r.id));
     await processDueDeletions(db);

@@ -4,11 +4,9 @@ import type { Db } from "@/db";
 import { integrations } from "@/db/schema";
 import { googleLocationUpdate } from "@/lib/presence";
 import { toPublicProfile } from "@/lib/profile";
-import { siteUrl } from "@/app/s/load";
 import { AppError, audit, requireRole, type Ctx } from "./context";
 import { decryptSecret, encryptSecret } from "./crypto";
 import { getProfile, requireBusiness } from "./business";
-import { getSite } from "./sites";
 
 /**
  * A connected Google Business Profile location. The owner signed in with
@@ -62,9 +60,9 @@ export async function syncGoogle(db: Db, ctx: Ctx) {
   requireRole(ctx, "editor");
   const [row] = await db.select().from(integrations).where(and(eq(integrations.workspaceId, ctx.workspaceId), eq(integrations.kind, KIND)));
   if (!row) throw new AppError("not_found", "Google isn't connected.");
-  const [b, site, profile] = await Promise.all([requireBusiness(db, ctx), getSite(db, ctx), getProfile(db, ctx)]);
+  const [b, profile] = await Promise.all([requireBusiness(db, ctx), getProfile(db, ctx)]);
   const appUrl = process.env.APP_URL ?? "http://localhost:3000";
-  const websiteUrl = site?.publishedVersionId ? siteUrl(site.slug) : (b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`);
+  const websiteUrl = b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`;
   const pub = toPublicProfile(b);
   const { body, updateMask } = googleLocationUpdate({ ...pub, websiteUrl, profileUrl: `${appUrl}/b/${profile?.slug ?? ""}` });
   try {

@@ -14,10 +14,10 @@ function done(message: string): ActionState {
   return { ok: true, message };
 }
 
-export async function startAuditAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+export async function startAuditAction(): Promise<ActionState> {
   try {
     const db = await getDb();
-    const a = await startAudit(db, await requireCtx(), form.get("kind") === "hosted" ? "hosted" : "external");
+    const a = await startAudit(db, await requireCtx());
     after(() => runAudit(db, a.id).catch((e) => console.error("[audit]", a.id, e)));
     return done("Audit started. This usually takes under a minute — refresh to see results.");
   } catch (err) {
@@ -54,9 +54,8 @@ export async function rejectActionAction(_prev: ActionState, form: FormData): Pr
 
 export async function applyActionAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   try {
-    const a = await applyAction(await getDb(), await requireCtx(), String(form.get("actionId")));
-    if (a.status === "failed") return { ok: false, message: "Nothing could be applied from this draft. Edit it and try again." };
-    return done(a.applyKind === "manual" ? "Marked as done. Select Check to confirm it's live." : "Added to your website draft. Publish your website, then select Check.");
+    await applyAction(await getDb(), await requireCtx(), String(form.get("actionId")));
+    return done("Marked as done. Select Check to confirm it's live.");
   } catch (err) {
     return toActionError(err);
   }
@@ -75,7 +74,7 @@ export async function verifyActionAction(_prev: ActionState, form: FormData): Pr
 export async function rollbackActionAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   try {
     await rollbackAction(await getDb(), await requireCtx(), String(form.get("actionId")));
-    return done("Rolled back in your website draft. Publish to make the rollback live.");
+    return done("Reopened. It's back on your list.");
   } catch (err) {
     return toActionError(err);
   }

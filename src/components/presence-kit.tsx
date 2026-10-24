@@ -76,7 +76,7 @@ function LinkButton() {
 }
 
 /** After the platform login: the listings that account manages, one click to link. */
-export function CandidatePicker({ candidates, label }: { candidates: PickerCandidate[]; label: string }) {
+export function CandidatePicker({ candidates, label, back }: { candidates: PickerCandidate[]; label: string; back?: "setup" }) {
   const [state, action] = useActionState(linkCandidateAction, {});
   return (
     <section className="kit-picker" aria-labelledby="picker-title">
@@ -86,6 +86,7 @@ export function CandidatePicker({ candidates, label }: { candidates: PickerCandi
           <li key={c.url}>
             <form action={action}>
               <input type="hidden" name="url" value={c.url} />
+              {back && <input type="hidden" name="back" value={back} />}
               {c.externalId && <input type="hidden" name="externalId" value={c.externalId} />}
               <span className="kit-title">
                 <strong>{c.title}</strong>

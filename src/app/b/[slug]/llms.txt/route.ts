@@ -10,7 +10,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
   if (!row) return new Response("Not found\n", { status: 404, headers: { "Content-Type": "text/plain; charset=utf-8" } });
   const base = process.env.APP_URL ?? "http://localhost:3000";
   const text = businessLlmsText(row.profile, {
-    website: row.siteSlug ? `${base}/s/${row.siteSlug}` : row.profile.websiteUrl,
+    website: row.profile.websiteUrl,
     profile: `${base}/b/${row.slug}`,
   });
   return new Response(text, { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" } });

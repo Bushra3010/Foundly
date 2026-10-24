@@ -2,20 +2,20 @@ import "server-only";
 import type { DbOrTx } from "@/db";
 import type { Business } from "@/db/schema";
 import { geoReadiness } from "@/lib/geo";
+import { currentWebsiteCheck, websiteCheckRunning } from "./audit/service";
 import type { Ctx } from "./context";
-import { listDomains } from "./domains";
-import { currentProfile, currentSite } from "@/server/current";
+import { currentProfile } from "@/server/current";
 
-/** AI readiness for the signed-in workspace's business. */
+/** AI readiness for the signed-in workspace's business, including our check of its website. */
 export async function readinessFor(db: DbOrTx, ctx: Ctx, business: Business) {
-  const [site, profile, domains] = await Promise.all([currentSite(db, ctx), currentProfile(db, ctx), listDomains(db, ctx)]);
-  const live = Boolean(site?.publishedVersionId);
-  const faqCount = (site?.draft.pages ?? [])
-    .flatMap((pg) => pg.blocks)
-    .reduce((n, b) => n + (b.type === "faq" ? b.items.length : 0), 0);
-  return geoReadiness({
+  const connected = Boolean(business.hasWebsite && business.websiteUrl);
+  const [profile, check, running] = await Promise.all([
+    currentProfile(db, ctx),
+    connected ? currentWebsiteCheck(db, ctx, business.websiteUrl) : null,
+    connected ? websiteCheckRunning(db, ctx, business.websiteUrl) : false,
+  ]);
+  const readiness = geoReadiness({
     confirmedAt: business.publicContactConfirmedAt,
-    customDomain: domains.some((d) => d.status === "verified"),
     foundedYear: business.foundedYear,
     projectsCompleted: business.projectsCompleted,
     listings: business.listings,
@@ -26,10 +26,10 @@ export async function readinessFor(db: DbOrTx, ctx: Ctx, business: Business) {
     phone: business.phone,
     whatsapp: business.whatsapp,
     email: business.email,
-    sitePublished: live,
-    siteCurrent: Boolean(live && site && site.generatedFromVersion >= business.version),
-    faqCount,
+    websiteConnected: connected,
+    websiteCheck: check,
     profilePublished: profile?.status === "published",
     verified: Boolean(profile && profile.verification !== "none"),
   });
+  return { ...readiness, websiteRunning: running };
 }

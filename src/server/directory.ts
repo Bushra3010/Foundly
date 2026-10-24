@@ -1,6 +1,6 @@
 import { and, asc, eq, sql } from "drizzle-orm";
 import type { DbOrTx } from "@/db";
-import { businessProfiles, sites } from "@/db/schema";
+import { businessProfiles } from "@/db/schema";
 
 /**
  * Directory ordering rule (documented for owners): text relevance first, then
@@ -45,31 +45,25 @@ export async function getPublicProfile(db: DbOrTx, slug: string) {
       verification: businessProfiles.verification,
       profile: businessProfiles.publishedData,
       publishedAt: businessProfiles.publishedAt,
-      siteSlug: sites.slug,
-      siteLive: sites.publishedVersionId,
     })
     .from(businessProfiles)
-    .leftJoin(sites, eq(sites.businessId, businessProfiles.businessId))
     .where(eq(businessProfiles.slug, slug));
   if (!row || row.status !== "published" || !row.profile) return null;
-  return { ...row, profile: row.profile, siteSlug: row.siteLive ? row.siteSlug : null };
+  return { ...row, profile: row.profile };
 }
 
-/** Every published profile with its live website (if any), for llms.txt and city/category pages. */
+/** Every published profile, for llms.txt and city/category pages. */
 export async function listPublishedProfiles(db: DbOrTx) {
   const rows = await db
     .select({
       slug: businessProfiles.slug,
       profile: businessProfiles.publishedData,
       verification: businessProfiles.verification,
-      siteSlug: sites.slug,
-      siteLive: sites.publishedVersionId,
     })
     .from(businessProfiles)
-    .leftJoin(sites, eq(sites.businessId, businessProfiles.businessId))
     .where(eq(businessProfiles.status, "published"))
     .limit(5000);
   return rows
     .filter((r) => r.profile)
-    .map((r) => ({ slug: r.slug, profile: r.profile!, verification: r.verification, siteSlug: r.siteLive ? r.siteSlug : null }));
+    .map((r) => ({ slug: r.slug, profile: r.profile!, verification: r.verification }));
 }

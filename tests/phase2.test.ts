@@ -2,15 +2,11 @@ import { beforeEach, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
 import { businesses } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { generateSite } from "@/lib/site/generate";
-import { sniffImageType } from "@/server/assets";
 import { contextForUser } from "@/server/auth";
 import { getProfile } from "@/server/business";
 import { startClaim, verifyClaim } from "@/server/claims";
 import { AppError, type Ctx } from "@/server/context";
-import { addDomain, siteSlugForHost, verifyDomain } from "@/server/domains";
 import { isBlockedIp, safeFetch } from "@/server/safe-fetch";
-import { generateSiteDraft, getSite, publishSite } from "@/server/sites";
 import { acceptInvite, changeRole, inviteMember, listMembers, removeMember, transferOwnership } from "@/server/team";
 import { makeDb, onboard, signUp } from "./helpers";
 
@@ -82,26 +78,6 @@ describe("ownership claims", () => {
   });
 });
 
-describe("custom domains", () => {
-  it("requires both TXT and CNAME before serving, and hostnames are unique", async () => {
-    await generateSiteDraft(db, alice);
-    const site = (await getSite(db, alice))!;
-    await publishSite(db, alice, site.draftRevision);
-    const d = await addDomain(db, alice, "https://WWW.Sharma.example.in/");
-    expect(d.hostname).toBe("www.sharma.example.in");
-    await generateSiteDraft(db, bob);
-    await expect(addDomain(db, bob, "www.sharma.example.in")).rejects.toSatisfy(code("conflict"));
-
-    const half = await verifyDomain(db, alice, d.id, { txt: async () => [[d.verificationToken]], cname: async () => [] });
-    expect(half.status).toBe("failed");
-    expect(await siteSlugForHost(db, "www.sharma.example.in")).toBeNull();
-
-    const ok = await verifyDomain(db, alice, d.id, { txt: async () => [[d.verificationToken]], cname: async () => ["sites.example.com."] });
-    expect(ok.status).toBe("verified");
-    expect(await siteSlugForHost(db, "www.sharma.example.in")).toBe(site.slug);
-  });
-});
-
 describe("safe fetch", () => {
   it("blocks private, loopback, link-local and metadata addresses", async () => {
     for (const ip of ["127.0.0.1", "10.1.2.3", "172.16.0.1", "192.168.1.1", "169.254.169.254", "100.64.0.1", "::1", "fd00::1", "::ffff:127.0.0.1", "0.0.0.0"]) {
@@ -111,19 +87,5 @@ describe("safe fetch", () => {
     for (const url of ["http://127.0.0.1/", "http://localhost/", "http://169.254.169.254/latest/meta-data", "file:///etc/passwd", "http://user:pw@example.com/", "http://example.com:8080/"]) {
       await expect(safeFetch(url), url).rejects.toThrow();
     }
-  });
-});
-
-describe("uploads and policy pages", () => {
-  it("identifies images by signature and rejects SVG", () => {
-    expect(sniffImageType(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0]))).toBe("image/png");
-    expect(sniffImageType(Buffer.from([0xff, 0xd8, 0xff, 0xe0]))).toBe("image/jpeg");
-    expect(sniffImageType(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>'))).toBeNull();
-  });
-
-  it("generates an editable privacy page", async () => {
-    const [b] = await db.select().from(businesses).where(eq(businesses.workspaceId, alice.workspaceId));
-    const privacy = generateSite(b).pages.find((p) => p.key === "privacy");
-    expect(privacy?.blocks[0].type).toBe("text");
   });
 });

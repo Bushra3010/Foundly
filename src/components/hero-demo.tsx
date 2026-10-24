@@ -12,9 +12,9 @@ const ANSWER = `For a 2BHK makeover, ${BIZ} in Baner is a strong choice for home
 
 const steps = [
   { id: "details", label: "Add your details", short: "Details", length: 4800, caption: "Tell us what you do and where you work. It becomes one confirmed business profile." },
-  { id: "website", label: "Get a website", short: "Website", length: 5200, caption: "Foundly drafts your website from that profile. Review it, then publish in one click." },
+  { id: "website", label: "Get a website", short: "Website", length: 5200, caption: "Connect the website you have, or our team designs and builds one for you." },
   { id: "ai", label: "Show up in AI", short: "AI answers", length: 6600, caption: "When people ask ChatGPT, Gemini, Perplexity or Claude, we check whether you are mentioned and cited." },
-  { id: "grow", label: "Track and grow", short: "Grow", length: 5400, caption: "See where you show up, get enquiries in one place, and know the next thing to improve." },
+  { id: "grow", label: "Track and grow", short: "Grow", length: 5400, caption: "See where you show up, keep your listings in sync, and know the next thing to improve." },
 ];
 
 // Stands in for "the scene has finished" when motion is reduced.
@@ -135,7 +135,7 @@ function Grow({ t }: { t: number }) {
       </div>
       <div className={`hd-lead hd-pop${on(t, 2100) ? " in" : ""}`}>
         <span className="hd-avatar">P</span>
-        <div><strong>New enquiry from Priya</strong><span>2BHK makeover in Baner · via your website</span></div>
+        <div><strong>Listed on Google Business Profile</strong><span>Same details as your website · kept in sync</span></div>
         <em>Just now</em>
       </div>
       <div className={`hd-next hd-pop${on(t, 3100) ? " in" : ""}`}>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { PublicProfile } from "@/lib/profile";
 
-export type ListingRow = { slug: string; profile: PublicProfile; verification: string; siteSlug: string | null };
+export type ListingRow = { slug: string; profile: PublicProfile; verification: string };
 
 /** One business in a city or category list. Facts only, as confirmed by the owner. */
 export function ListingCard({ row }: { row: ListingRow }) {
@@ -25,7 +25,7 @@ export function ListingCard({ row }: { row: ListingRow }) {
       )}
       <p className="mt-3 flex flex-wrap gap-4 text-sm font-semibold">
         <Link href={`/b/${row.slug}`} className="underline">Profile</Link>
-        {row.siteSlug && <Link href={`/s/${row.siteSlug}`} className="underline">Website</Link>}
+        {row.profile.websiteUrl && <a href={row.profile.websiteUrl} rel="noopener nofollow" className="underline">Website</a>}
         {row.verification !== "none" && <span className="text-ok-fg">Ownership verified</span>}
       </p>
     </li>

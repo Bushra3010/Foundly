@@ -3,16 +3,14 @@ import { cache } from "react";
 import { AppError, type Ctx } from "./context";
 import type { DbOrTx } from "@/db";
 import { getBusiness, getProfile } from "./business";
-import { getSite } from "./sites";
 
 /**
  * Reads for pages and layouts, shared within one request: the app layout,
- * the page and its panels ask for the same business, site and profile, and
+ * the page and its panels ask for the same business and profile, and
  * each is fetched once. Server actions use the plain functions so they always
  * read their own writes.
  */
 export const currentBusiness = cache(getBusiness);
-export const currentSite = cache(getSite);
 export const currentProfile = cache(getProfile);
 
 export async function requireCurrentBusiness(db: DbOrTx, ctx: Ctx) {

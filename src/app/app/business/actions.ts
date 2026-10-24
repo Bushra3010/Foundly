@@ -8,7 +8,7 @@ import { resubmitBusiness } from "@/server/indexnow";
 import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
-import { businessDetailsSchema, fieldErrors, listingUrl, splitList } from "@/lib/validation";
+import { businessDetailsSchema, fieldErrors, listingUrl, parseListingLinks, splitList } from "@/lib/validation";
 import { startClaim, verifyClaim } from "@/server/claims";
 import { addListing, confirmPublicContact, getProfile, publishProfile, unpublishProfile, updateBusinessDetails } from "@/server/business";
 import { decodeConnection } from "@/server/connect";
@@ -18,6 +18,7 @@ import { syncConnectedSafe } from "@/server/sync";
 import { decryptSecret } from "@/server/crypto";
 import { can } from "@/server/context";
 import { parseHoursLine } from "@/lib/hours";
+import { listingLabel } from "@/lib/geo";
 
 function lines(value: FormDataEntryValue | null) {
   return String(value ?? "")
@@ -59,7 +60,7 @@ export async function saveDetailsAction(_prev: ActionState, form: FormData): Pro
   try {
     await updateBusinessDetails(await getDb(), await requireCtx(), parsed.data);
     revalidatePath("/app", "layout");
-    return { ok: true, message: "Saved. Publish your website or profile again to show these changes publicly." };
+    return { ok: true, message: "Saved. Publish your profile again to show these changes publicly." };
   } catch (err) {
     return toActionError(err, values);
   }
@@ -159,6 +160,28 @@ export async function addListingAction(_prev: ActionState, form: FormData): Prom
   }
 }
 
+/**
+ * One box for all of an owner's pages: paste any links, one per line or
+ * separated by spaces, and each is recognised (Google, Facebook, Instagram…).
+ */
+export async function addListingsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const values = { links: String(form.get("links") ?? "") };
+  const { urls, bad } = parseListingLinks(values.links);
+  if (bad) return { ok: false, fieldErrors: { links: [`This doesn't look like a link: ${bad}`] }, values };
+  if (urls.length === 0) return { ok: false, fieldErrors: { links: ["Paste at least one link"] }, values };
+  try {
+    const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
+    for (const url of urls) await addListing(db, ctx, url);
+    revalidatePath("/app", "layout");
+    revalidatePath("/onboarding");
+    after(() => resubmitBusiness(db, ctx));
+    const names = [...new Set(urls.map(listingLabel))];
+    return { ok: true, message: `Connected: ${names.join(", ")}.` };
+  } catch (err) {
+    return toActionError(err, values);
+  }
+}
+
 /** Presence kit: link a listing found through the platform's own login. */
 export async function linkCandidateAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const url = String(form.get("url") ?? "");
@@ -179,13 +202,14 @@ export async function linkCandidateAction(_prev: ActionState, form: FormData): P
       await connectFacebookPage(db, ctx, { pageId: chosen.externalId, link: chosen.url, pageToken: decryptSecret(chosen.secret) });
     }
     if (chosen && (chosen.platform === "google" || chosen.platform === "facebook")) after(() => syncConnectedSafe(db, ctx));
+    jar.delete({ name: "foundly_connect", path: "/" });
     jar.delete({ name: "foundly_connect", path: "/app/presence" });
     revalidatePath("/app", "layout");
     after(() => resubmitBusiness(db, ctx));
   } catch (err) {
     return toActionError(err);
   }
-  redirect("/app/presence?connect=linked");
+  redirect(form.get("back") === "setup" ? "/onboarding?step=social&connect=linked" : "/app/presence?connect=linked");
 }
 
 /** "Update Google now": pushes the confirmed facts to the connected listing. */

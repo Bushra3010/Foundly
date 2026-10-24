@@ -51,7 +51,7 @@ export default async function AdminUsers({ searchParams }: { searchParams: Promi
                   </td>
                   <td>{u.business ? <><strong>{u.business}</strong><span className="admin-sub">{u.city}</span></> : <span className="admin-sub">Not set up</span>}</td>
                   <td>
-                    {u.live ? <Badge tone="ok">Website live</Badge> : u.onboarded ? <Badge tone="info">Set up</Badge> : <Badge tone="warn">Onboarding</Badge>}
+                    {u.connected ? <Badge tone="ok">Website connected</Badge> : u.onboarded ? <Badge tone="info">Set up</Badge> : <Badge tone="warn">Onboarding</Badge>}
                   </td>
                   <td className="capitalize">{u.plan ?? "free"}</td>
                   <td className="admin-sub">{fmt(u.createdAt)}</td>

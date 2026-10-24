@@ -1,9 +1,8 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
-import { businessGraph, businessLlmsText, discoveryFaq, entitySentence, factsFromSiteContent, geoReadiness, listingLabel, pluralCategory, slugify } from "@/lib/geo";
+import { businessGraph, businessLlmsText, discoveryFaq, entitySentence, geoReadiness, listingLabel, pluralCategory, slugify } from "@/lib/geo";
 import { getBusiness, publishProfile } from "@/server/business";
 import { listPublishedProfiles } from "@/server/directory";
-import { generateSiteDraft, getPublishedSite, getSite, publishSite } from "@/server/sites";
 import { facebookPageUpdate, googleLocationUpdate, presenceKit } from "@/lib/presence";
 import { geoMaintenance, upkeepWeekday } from "@/server/sync";
 import { makeDb, onboard, signUp } from "./helpers";
@@ -75,19 +74,30 @@ describe("GEO helpers", () => {
       serviceAreas: facts.serviceAreas,
       hours: facts.hours,
       phone: facts.phone,
-      sitePublished: false,
-      siteCurrent: false,
-      faqCount: 0,
+      websiteConnected: false,
       profilePublished: false,
       verified: false,
     });
-    expect(r.total).toBe(15);
+    expect(r.total).toBe(13);
     expect(r.done).toBe(3); // areas, hours, contact
-    expect(r.score).toBe(20);
+    // Half the score is business details (3 of 12 done); the other half is the unchecked website.
+    expect(r).toMatchObject({ detailsScore: 13, websiteScore: 0, websiteChecked: false, score: 13 });
     expect(r.items.find((i) => i.key === "confirmed")?.done).toBe(false);
-    expect(geoReadiness({ services: [], serviceAreas: [], hours: [], sitePublished: false, siteCurrent: false, faqCount: 0, profilePublished: false, verified: false, confirmedAt: new Date() }).items.find((i) => i.key === "confirmed")?.done).toBe(true);
+    expect(geoReadiness({ services: [], serviceAreas: [], hours: [], websiteConnected: false, profilePublished: false, verified: false, confirmedAt: new Date() }).items.find((i) => i.key === "confirmed")?.done).toBe(true);
     expect(r.items.find((i) => i.key === "google")?.done).toBe(false);
     expect(r.items.find((i) => i.key === "site")?.href).toBe("/app/website");
+  });
+
+  it("the website check counts for half, so different websites score differently", () => {
+    const base = { services: facts.services, serviceAreas: facts.serviceAreas, hours: facts.hours, phone: facts.phone, websiteConnected: true, profilePublished: false, verified: false };
+    const good = geoReadiness({ ...base, websiteCheck: { passed: 18, total: 20 } });
+    const poor = geoReadiness({ ...base, websiteCheck: { passed: 5, total: 20 } });
+    expect(good.websiteScore).toBe(45);
+    expect(poor.websiteScore).toBe(13);
+    expect(good.score).toBeGreaterThan(poor.score);
+    expect(good.items.find((i) => i.key === "site_check")?.label).toBe("Fix what our website check found (18 of 20 pass)");
+    // A check only counts while a website is connected.
+    expect(geoReadiness({ ...base, websiteConnected: false, websiteCheck: { passed: 20, total: 20 } }).websiteScore).toBe(0);
   });
 });
 
@@ -129,21 +139,10 @@ describe("GEO on published businesses", () => {
     db = await makeDb();
   });
 
-  it("generated sites lead with AI-style questions, and published data feeds llms.txt and city pages", async () => {
+  it("published profiles feed llms.txt and city pages, and get weekly upkeep", async () => {
     const ctx = await signUp(db, "geo@example.com");
     await onboard(db, ctx, "Sharma Plumbing");
-    await generateSiteDraft(db, ctx);
-    const site = (await getSite(db, ctx))!;
-    const draftFacts = factsFromSiteContent(site.draft);
-    expect(draftFacts.faq[0].question).toBe("Who offers leak repair in Pune?");
-    expect(draftFacts.faq.length).toBeGreaterThanOrEqual(4);
-    expect(draftFacts.services.map((s) => s.name)).toContain("Leak repair");
-
-    await publishSite(db, ctx, site.draftRevision);
     await publishProfile(db, ctx);
-    const live = await getPublishedSite(db, site.slug);
-    expect(live.kind).toBe("site");
-    if (live.kind === "site") expect(live.profileSlug).toBeTruthy();
 
     const upkeep = await geoMaintenance(db);
     expect(upkeep.businesses).toBe(1);
@@ -166,7 +165,6 @@ describe("GEO on published businesses", () => {
 
     const listed = await listPublishedProfiles(db);
     const mine = listed.find((r) => r.profile.name === "Sharma Plumbing")!;
-    expect(mine.siteSlug).toBe(site.slug);
     const b = (await getBusiness(db, ctx))!;
     expect(`${slugify(mine.profile.city)}/${slugify(mine.profile.category)}`).toBe(`${slugify(b.city)}/${slugify(b.category)}`);
   });

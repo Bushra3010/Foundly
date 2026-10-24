@@ -37,9 +37,8 @@ export default async function SupportPage({ params }: { params: Promise<{ worksp
           <DefinitionList
             items={[
               ["Business", v.business ? `${v.business.name} · ${v.business.category} · ${v.business.city} (v${v.business.version})` : "None"],
-              ["Website", v.site ? `/s/${v.site.slug} · ${v.site.live ? "live" : "not live"}` : "None"],
+              ["Website", v.business?.websiteUrl ?? "None"],
               ["Plan", v.subscription ? `${v.subscription.plan} · ${v.subscription.status}` : "free"],
-              ["Leads", `${v.leadCount} (contents hidden)`],
             ]}
           />
         </Card>

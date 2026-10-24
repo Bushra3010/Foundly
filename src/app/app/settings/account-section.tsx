@@ -17,7 +17,6 @@ import {
   connectWordPressAction,
   deleteAccountAction,
   disconnectWordPressAction,
-  deleteWebsiteAction,
   downgradeAction,
   savePrefsAction,
 } from "./actions";
@@ -56,7 +55,7 @@ export async function AccountSection() {
         {sub.status === "past_due" && sub.graceUntil && (
           <div className="mt-3">
             <Notice tone="err" title="We couldn't take your last payment">
-              Your features stay on until {sub.graceUntil.toLocaleDateString("en-IN")}. After that your website goes offline — it&apos;s never deleted for non-payment, and you can export everything.
+              Your features stay on until {sub.graceUntil.toLocaleDateString("en-IN")}. After that your plan moves to Free. Nothing is deleted for non-payment, and you can export everything.
             </Notice>
           </div>
         )}
@@ -169,8 +168,7 @@ export async function AccountSection() {
         <Card>
           <h2 className="font-semibold">Email notifications</h2>
           <ActionForm action={savePrefsAction} submitLabel="Save" variant="secondary">
-            <Checkbox name="leadAlerts" label="Tell me when a new enquiry arrives" defaultChecked={prefs.leadAlerts} />
-            <Checkbox name="weeklySummary" label="Send me a weekly summary" hint="New enquiries, AI visibility and tasks. Off unless you turn it on." defaultChecked={prefs.weeklySummary} />
+            <Checkbox name="weeklySummary" label="Send me a weekly summary" hint="AI visibility and improvement tasks. Off unless you turn it on." defaultChecked={prefs.weeklySummary} />
           </ActionForm>
           <p className="mt-2 text-xs text-muted">Security and billing messages are always sent.</p>
         </Card>
@@ -187,15 +185,8 @@ export async function AccountSection() {
             </div>
           ))}
           <p className="mt-2 text-sm text-muted">
-            These are separate. Deleting your website takes it offline now and removes it from the directory; your account and leads stay. Deleting your account removes your access and any workspace only you use. Both can be cancelled for {RECOVERY_DAYS} days. Download your data from Reports first.
+            Deleting your account removes your access and any workspace only you use. It can be cancelled for {RECOVERY_DAYS} days. Download your data from Reports first.
           </p>
-          {isOwner && (
-            <div className="mt-3">
-              <ActionForm action={deleteWebsiteAction} submitLabel="Delete website" variant="danger">
-                <TextField label="Type DELETE WEBSITE to confirm" name="confirm" autoComplete="off" />
-              </ActionForm>
-            </div>
-          )}
           <div className="mt-4">
             <ActionForm action={deleteAccountAction} submitLabel="Delete my account" variant="danger">
               <TextField label="Type DELETE ACCOUNT to confirm" name="confirm" autoComplete="off" />

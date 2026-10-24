@@ -1,49 +1,40 @@
-import { randomUUID } from "node:crypto";
 import Link from "next/link";
-import { Badge, Card, EmptyState, LinkButton, Notice, PageHeader } from "@/components/ui";
+import { Badge, Card, LinkButton, Notice, PageHeader } from "@/components/ui";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
-import { missingOptionalFacts, requiredFactsProblems } from "@/lib/site/generate";
 import { can } from "@/server/context";
-import { latestGenerationJob, listVersions } from "@/server/sites";
-import { listDomains } from "@/server/domains";
-import { DomainsCard } from "./domains-card";
-import { SiteEditor } from "./editor";
-import { GenerateForm, NoWebsiteForm, PublishForm, RollbackForm, SlugForm, UnpublishForm } from "./panels";
-import { ShareLink } from "@/components/share-link";
-import { siteUrl } from "@/app/s/load";
-import { currentSite, requireCurrentBusiness } from "@/server/current";
+import { requireCurrentBusiness } from "@/server/current";
+import { CONTACT_TEXT, latestWebsiteRequest, OPEN_STATUSES, STATUS_TEXT } from "@/server/website-requests";
+import { CancelRequestForm, ChangeAddress, ConnectWebsiteForm, NoWebsiteForm, RequestWebsiteForm } from "./panels";
 
 export const metadata = { title: "My Website" };
 
-const JOB_TEXT = {
-  queued: ["neutral", "Queued"],
-  generating: ["info", "Generating"],
-  validating: ["info", "Checking"],
-  ready: ["ok", "Ready"],
-  failed: ["err", "Failed"],
-} as const;
+// The steps an owner sees while Foundly's team builds their website.
+const STEPS = ["new", "contacted", "in_progress", "delivered"] as const;
 
-export default async function WebsitePage({ searchParams }: { searchParams: Promise<{ generated?: string; connected?: string }> }) {
+export default async function WebsitePage({ searchParams }: { searchParams: Promise<{ connected?: string; changed?: string }> }) {
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
-  const [site, job, versions, domains] = await Promise.all([currentSite(db, ctx), latestGenerationJob(db, ctx), listVersions(db, ctx), listDomains(db, ctx)]);
-  const { generated, connected } = await searchParams;
-  const problems = requiredFactsProblems(business);
-  const missing = missingOptionalFacts(business);
+  const { connected, changed } = await searchParams;
   const canEdit = can(ctx, "editor");
-  const isOwner = can(ctx, "owner");
 
-  if (!site && business.hasWebsite) {
+  if (business.hasWebsite) {
     const url = business.websiteUrl;
     return (
       <>
-        <PageHeader icon="website" title="My Website" description="Your own website, connected to Foundly. We never change it without your approval." />
+        <PageHeader icon="website" title="My Website" description="Your website, connected to Foundly. We never change it without your approval." />
+        {changed && (
+          <div className="mb-4">
+            <Notice tone="ok" title="Website address updated">
+              We&apos;re checking the new site now. Your score and fixes update in about a minute on <Link href="/app/improve" className="font-semibold underline">Improve My Business</Link>.
+            </Notice>
+          </div>
+        )}
         {connected && (
           <div className="mb-4">
             <Notice tone="ok" title="Your website is connected">
-              Next, check it to see what AI assistants can read and what to improve.
+              We&apos;re checking it now. See what AI assistants can read, and what to fix, on <Link href="/app/improve" className="font-semibold underline">Improve My Business</Link>.
             </Notice>
           </div>
         )}
@@ -61,14 +52,9 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
             <p className="mt-3 text-sm text-muted">
               We read your public pages only. We never need your website login, and nothing on your site changes unless you approve it.
             </p>
-            <div className="mt-4 flex flex-wrap gap-3">
+            <ChangeAddress url={url} canEdit={canEdit}>
               {url && <LinkButton href="/app/improve">Check my website</LinkButton>}
-              {canEdit && (
-                <LinkButton href="/app/business" variant="secondary">
-                  {url ? "Change address" : "Add website address"}
-                </LinkButton>
-              )}
-            </div>
+            </ChangeAddress>
           </Card>
           <Card>
             <h2 className="font-semibold">Apply fixes to your site</h2>
@@ -85,7 +71,7 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
           <div className="mt-6">
             <Card>
               <h2 className="font-semibold">Don&apos;t have this website any more?</h2>
-              <p className="mt-1 mb-3 text-sm text-muted">Remove it and we&apos;ll create a website for you from your details instead.</p>
+              <p className="mt-1 mb-3 text-sm text-muted">Remove it and our team can build you a new one.</p>
               <NoWebsiteForm />
             </Card>
           </div>
@@ -94,181 +80,103 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
     );
   }
 
-  if (!site) {
+  const request = await latestWebsiteRequest(db, ctx);
+  const open = request && (OPEN_STATUSES as readonly string[]).includes(request.status) ? request : null;
+
+  if (open) {
+    const at = STEPS.indexOf(open.status as (typeof STEPS)[number]);
     return (
       <>
-        <PageHeader icon="website" title="My Website" />
-        {job?.status === "failed" && (
-          <div className="mb-4">
-            <Notice tone="err" title="The last attempt didn't finish">
-              Your details are saved. Try again — a retry for the same details isn&apos;t charged twice.
-            </Notice>
+        <PageHeader icon="website" title="My Website" description="Our team is building your website." />
+        <Card>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="font-semibold">Your website request</h2>
+            <Badge tone="info">{STATUS_TEXT[open.status]}</Badge>
           </div>
-        )}
-        <EmptyState
-          title="Create your website"
-          action={
-            problems.length ? (
-              <LinkButton href="/app/business">Complete my details</LinkButton>
-            ) : canEdit ? (
-              <GenerateForm requestId={randomUUID()} label="Generate website" pendingLabel="Building your private preview…" />
-            ) : undefined
-          }
-        >
-          {problems.length ? (
-            <ul className="list-disc pl-5 text-left">
-              {problems.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>We&apos;ll build a private preview from the details you confirmed. Nothing is public until you publish.</p>
+          <ol className="mt-4 grid gap-2 sm:grid-cols-4">
+            {STEPS.map((s, i) => (
+              <li key={s} className={`rounded-lg border p-3 text-sm ${i <= at ? "border-text font-semibold" : "border-border text-muted"}`}>
+                <span aria-hidden="true">{i < at ? "✓ " : `${i + 1}. `}</span>
+                {STATUS_TEXT[s]}
+                <span className="sr-only">{i < at ? " (done)" : i === at ? " (current)" : " (to do)"}</span>
+              </li>
+            ))}
+          </ol>
+          {open.teamNote && (
+            <div className="mt-4">
+              <Notice tone="info" title="Note from our team">{open.teamNote}</Notice>
+            </div>
           )}
-        </EmptyState>
+          <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+            <div>
+              <dt className="text-muted">What it should do</dt>
+              <dd className="whitespace-pre-line">{open.goal}</dd>
+            </div>
+            <div>
+              <dt className="text-muted">We&apos;ll contact you by</dt>
+              <dd>
+                {CONTACT_TEXT[open.contactMethod]} · {open.contactValue}
+                {open.contactTime && ` · ${open.contactTime}`}
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-4 text-sm text-muted">
+            When your website is ready, it connects to Foundly automatically, so we can check it and track how AI assistants mention you.
+          </p>
+          {canEdit && (
+            <div className="mt-4">
+              <CancelRequestForm />
+            </div>
+          )}
+        </Card>
+        {canEdit && (
+          <Card className="mt-4">
+            <h2 className="font-semibold">Already have a website?</h2>
+            <p className="mt-1 mb-4 text-sm text-muted">Connect it instead. We&apos;ll cancel your request so our team doesn&apos;t build a second one.</p>
+            <ConnectWebsiteForm />
+          </Card>
+        )}
       </>
     );
   }
 
-  const live = versions.find((v) => v.id === site.publishedVersionId);
-  const liveIsCurrent = !!live && versions[0]?.id === live.id;
-  const factsChanged = site.generatedFromVersion < business.version;
-
   return (
     <>
-      <PageHeader icon="website"
+      <PageHeader
+        icon="website"
         title="My Website"
-        description="Edit your draft, preview it, then publish when you're happy."
-        actions={
-          <>
-            <LinkButton href="/app/website/preview" variant="secondary" target="_blank">
-              Open private preview
-            </LinkButton>
-            {live && (
-              <LinkButton href={`/s/${site.slug}`} variant="secondary" target="_blank">
-                View live site
-              </LinkButton>
-            )}
-          </>
-        }
+        description="Connect your website, or let our team build one designed around your business."
       />
-
-      {generated && (
-        <div className="mb-4">
-          <Notice tone="ok" title="Your website draft is ready">
-            Check the private preview, edit anything you like, then publish.
-          </Notice>
-        </div>
+      {canEdit && (
+        <Card className="mb-4">
+          <h2 className="font-semibold">Connect your website</h2>
+          <p className="mt-1 mb-4 text-sm text-muted">Already have one? Enter its address. We only read your public pages and never need your login.</p>
+          <ConnectWebsiteForm />
+        </Card>
       )}
-
-      <div className="mb-6 grid gap-4 md:grid-cols-2">
+      <h2 className="mb-3 mt-6 text-lg font-semibold">No website yet? We&apos;ll build one for you</h2>
+      <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
         <Card>
-          <h2 className="font-semibold">Status</h2>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {live ? <Badge tone="ok">Live · version {live.versionNumber}</Badge> : <Badge tone="neutral">Not published</Badge>}
-            {live && !liveIsCurrent && <Badge tone="warn">Older version live</Badge>}
-            {job && <Badge tone={JOB_TEXT[job.status][0]}>Last generation: {JOB_TEXT[job.status][1]}</Badge>}
-          </div>
-          <ShareLink
-            url={siteUrl(site.slug)}
-            label={live ? "Your live website" : "Your website address (live after you publish)"}
-            shareText={business.name}
-            live={!!live}
-          />
-          {!business.publicContactConfirmedAt && (
-            <div className="mt-3">
-              <Notice tone="warn">
-                Your contact details changed. <Link className="font-semibold underline" href="/app/business">Confirm them</Link>{" "}
-                before publishing.
-              </Notice>
-            </div>
-          )}
-          <div className="mt-4 flex flex-wrap gap-3">
-            {isOwner ? (
-              <PublishForm revision={site.draftRevision} isLive={!!live} />
-            ) : (
-              <p className="text-sm text-muted">Only owners can publish. Your edits are saved to the draft.</p>
-            )}
-          </div>
-        </Card>
-        <Card>
-          <h2 className="font-semibold">Make it better</h2>
-          {missing.length === 0 ? (
-            <p className="mt-2 text-muted">You&apos;ve added all the optional details we use.</p>
+          <h2 className="font-semibold">Tell us about the website you need</h2>
+          <p className="mt-1 mb-4 text-sm text-muted">Send a short brief. We&apos;ll contact you to plan it together, then build it for you.</p>
+          {canEdit ? (
+            <RequestWebsiteForm defaults={{ phone: business.whatsapp ?? business.phone ?? "", email: business.email ?? ctx.user.email }} />
           ) : (
-            <>
-              <p className="mt-2 text-sm text-muted">Add these in My Business, then rewrite the related section:</p>
-              <ul className="mt-2 space-y-1 text-sm">
-                {missing.map((m) => (
-                  <li key={m.field}>
-                    <span className="font-semibold">{m.label}</span> — {m.why}
-                  </li>
-                ))}
-              </ul>
-              <LinkButton href="/app/business" variant="secondary" className="mt-3">
-                Add details
-              </LinkButton>
-            </>
-          )}
-          {factsChanged && (
-            <div className="mt-4">
-              <Notice tone="info" title="Your details changed since this draft was made">
-                Refresh the whole draft with your latest details, or use “Rewrite from my details” on one section. Refreshing replaces edits you made to the draft. Your live site only changes when you publish.
-              </Notice>
-              {canEdit && (
-                <div className="mt-3">
-                  <GenerateForm requestId={randomUUID()} label="Refresh draft with my details" pendingLabel="Refreshing draft…" variant="secondary" />
-                </div>
-              )}
-            </div>
+            <p className="text-sm text-muted">Ask a workspace owner or editor to request your website.</p>
           )}
         </Card>
-      </div>
-
-      <SiteEditor initialDraft={site.draft} initialRevision={site.draftRevision} readOnly={!canEdit} />
-
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
         <Card>
-          <h2 className="font-semibold">Published versions</h2>
-          {versions.length === 0 ? (
-            <p className="mt-2 text-muted">Nothing published yet.</p>
-          ) : (
-            <ul className="mt-3 divide-y divide-border">
-              {versions.map((v) => (
-                <li key={v.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
-                  <span>
-                    <span className="font-semibold">Version {v.versionNumber}</span>{" "}
-                    <span className="text-sm text-muted">{v.createdAt.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</span>
-                  </span>
-                  {v.id === site.publishedVersionId ? (
-                    <Badge tone="ok">Live</Badge>
-                  ) : (
-                    isOwner && <RollbackForm versionId={v.id} versionNumber={v.versionNumber} />
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-          {isOwner && live && (
-            <div className="mt-4 border-t border-border pt-4">
-              <UnpublishForm />
-            </div>
+          <h2 className="font-semibold">How it works</h2>
+          <ol className="mt-3 space-y-3 text-sm">
+            <li><strong>1. Send your brief.</strong> It takes a minute.</li>
+            <li><strong>2. We talk.</strong> By phone, WhatsApp or video call, when it suits you.</li>
+            <li><strong>3. We build it.</strong> A professional website made for your business.</li>
+            <li><strong>4. It connects to Foundly.</strong> We check it and track how AI assistants mention you.</li>
+          </ol>
+          {request?.status === "delivered" && request.deliveredUrl && (
+            <p className="mt-4 text-sm text-muted">Your last website from us was {request.deliveredUrl}.</p>
           )}
         </Card>
-        <Card className="space-y-6">
-          {isOwner && <SlugForm slug={site.slug} />}
-          {canEdit && (
-            <div>
-              <h2 className="font-semibold">Start over</h2>
-              <p className="mt-1 mb-3 text-sm text-muted">
-                Rebuild the whole draft from your current details. This replaces your draft edits; published versions are kept.
-              </p>
-              <GenerateForm requestId={randomUUID()} label="Regenerate whole draft" pendingLabel="Rebuilding draft…" variant="secondary" />
-            </div>
-          )}
-        </Card>
-        <div className="md:col-span-2">
-          <DomainsCard domains={domains} isOwner={isOwner} />
-        </div>
       </div>
     </>
   );

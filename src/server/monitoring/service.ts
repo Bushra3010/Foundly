@@ -5,10 +5,8 @@ import {
   brandMatches,
   businesses,
   competitors,
-  customDomains,
   monitoringRuns,
   observations,
-  sites,
   trackedQuestions,
   type BrandMatch,
   type Observation,
@@ -113,15 +111,8 @@ export async function removeCompetitor(db: Db, ctx: Ctx, id: string) {
 export async function brandSpecs(db: DbOrTx, workspaceId: string): Promise<BrandSpec[]> {
   const [b] = await db.select().from(businesses).where(eq(businesses.workspaceId, workspaceId)).limit(1);
   if (!b) return [];
-  const [site] = await db.select({ slug: sites.slug }).from(sites).where(eq(sites.businessId, b.id));
-  const custom = await db
-    .select({ hostname: customDomains.hostname })
-    .from(customDomains)
-    .where(and(eq(customDomains.workspaceId, workspaceId), eq(customDomains.status, "verified")));
   const domains = new Set<string>(b.ownedDomains);
   if (b.websiteUrl) domains.add(hostOf(b.websiteUrl));
-  if (site && process.env.SITES_ROOT_DOMAIN) domains.add(`${site.slug}.${process.env.SITES_ROOT_DOMAIN}`);
-  for (const c of custom) domains.add(c.hostname.replace(/^www\./, ""));
   const comps = await db.select().from(competitors).where(eq(competitors.workspaceId, workspaceId));
   return [
     { key: "self", name: b.name, aliases: b.aliases, domains: [...domains] },

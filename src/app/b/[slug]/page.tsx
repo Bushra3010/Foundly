@@ -46,7 +46,7 @@ export default async function ProfilePage({ params }: Props) {
   const appUrl = process.env.APP_URL ?? "http://localhost:3000";
   const ld = businessGraph({
     ...p,
-    url: row.siteSlug ? `${appUrl}/s/${row.siteSlug}` : p.websiteUrl,
+    url: p.websiteUrl,
     profileUrl: `${appUrl}/b/${row.slug}`,
     sameAs: p.websiteUrl ? [p.websiteUrl] : [],
     dateModified: row.publishedAt ?? p.updatedAt,
@@ -79,20 +79,9 @@ export default async function ProfilePage({ params }: Props) {
               WhatsApp
             </a>
           )}
-          {row.siteSlug ? (
-            <a href={`/s/${row.siteSlug}`} className={`${btn} border border-border bg-surface`}>
+          {p.websiteUrl && (
+            <a href={p.websiteUrl} rel="noopener nofollow" className={`${btn} border border-border bg-surface`}>
               Visit website
-            </a>
-          ) : (
-            p.websiteUrl && (
-              <a href={p.websiteUrl} rel="noopener nofollow" className={`${btn} border border-border bg-surface`}>
-                Visit website
-              </a>
-            )
-          )}
-          {row.siteSlug && (
-            <a href={`/s/${row.siteSlug}/contact`} className={`${btn} border border-border bg-surface`}>
-              Send enquiry
             </a>
           )}
           {p.email && (

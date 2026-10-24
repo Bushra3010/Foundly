@@ -14,7 +14,7 @@ import { revokeAllSessions, setPassword } from "@/server/auth";
 import { audit } from "@/server/context";
 import { changeRole, inviteMember, removeMember, revokeInvite, transferOwnership } from "@/server/team";
 import { cancelSubscription, scheduleDowngrade, startCheckout } from "@/server/billing/service";
-import { cancelDeletion, RECOVERY_DAYS, requestAccountDeletion, requestWebsiteDeletion } from "@/server/lifecycle";
+import { cancelDeletion, requestAccountDeletion } from "@/server/lifecycle";
 import { setPrefs } from "@/server/notifications";
 import { connectWordPress, disconnectWordPress } from "@/server/wordpress";
 
@@ -162,20 +162,9 @@ export async function cancelPlanAction(): Promise<ActionState> {
 
 export async function savePrefsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   try {
-    await setPrefs(await getDb(), await requireCtx(), { weeklySummary: form.get("weeklySummary") === "on", leadAlerts: form.get("leadAlerts") === "on" });
+    await setPrefs(await getDb(), await requireCtx(), { weeklySummary: form.get("weeklySummary") === "on" });
     revalidatePath("/app/settings");
     return { ok: true, message: "Email preferences saved." };
-  } catch (err) {
-    return toActionError(err);
-  }
-}
-
-export async function deleteWebsiteAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  if (form.get("confirm") !== "DELETE WEBSITE") return { ok: false, message: "Type DELETE WEBSITE to confirm." };
-  try {
-    await requestWebsiteDeletion(await getDb(), await requireCtx());
-    revalidatePath("/app", "layout");
-    return { ok: true, message: `Your website is offline and will be deleted in ${RECOVERY_DAYS} days. You can cancel until then.` };
   } catch (err) {
     return toActionError(err);
   }
@@ -196,7 +185,7 @@ export async function cancelDeletionAction(_prev: ActionState, form: FormData): 
   try {
     await cancelDeletion(await getDb(), await requireCtx(), String(form.get("requestId")));
     revalidatePath("/app/settings");
-    return { ok: true, message: "Deletion cancelled. Republish your website when you're ready." };
+    return { ok: true, message: "Deletion cancelled." };
   } catch (err) {
     return toActionError(err);
   }

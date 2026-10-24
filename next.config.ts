@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
-      // The owner app must never be framed; hosted sites get their own policy in proxy.ts.
+      // The owner app must never be framed.
       { source: "/app/:path*", headers: [{ key: "X-Frame-Options", value: "DENY" }] },
     ];
   },

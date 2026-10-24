@@ -3,7 +3,7 @@ import type { geoReadiness } from "@/lib/geo";
 import { ConfirmFresh } from "./confirm-fresh";
 import { Icon } from "./icon";
 
-type Readiness = ReturnType<typeof geoReadiness>;
+type Readiness = ReturnType<typeof geoReadiness> & { websiteRunning?: boolean };
 
 /** "Get found by AI" panel: score, what's done, and the next steps with links. */
 export function AiReadiness({ readiness, limit, fresh }: { readiness: Readiness; limit?: number; fresh?: boolean }) {
@@ -28,6 +28,9 @@ export function AiReadiness({ readiness, limit, fresh }: { readiness: Readiness;
         </div>
       </div>
       <div className="geo-bar" aria-hidden="true"><span style={{ width: `${readiness.score}%` }} /></div>
+      <p className="geo-parts">
+        Business details <strong>{readiness.detailsScore}/50</strong> · Website <strong>{readiness.websiteRunning ? "checking now…" : readiness.websiteChecked ? `${readiness.websiteScore}/50` : "not checked yet"}</strong>
+      </p>
       {shownTodo.length > 0 && (
         <ul className="geo-list">
           {shownTodo.map((i) => (
@@ -51,7 +54,7 @@ export function AiReadiness({ readiness, limit, fresh }: { readiness: Readiness;
       )}
       {fresh && <ConfirmFresh daysAgo={readiness.confirmedDaysAgo} />}
       <p className="geo-note">
-        Foundly also does this for you automatically: every page of your website and profile carries structured data, each service has its own page, AI crawlers are allowed, and search engines are told the moment you publish.
+        Half of the score is your business details and listings; the other half is what our latest check of your connected website found. Foundly also keeps your profile readable by AI: it carries structured data, AI crawlers are allowed, and search engines are told whenever your details change.
       </p>
     </section>
   );

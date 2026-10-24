@@ -100,3 +100,20 @@ export function localBusinessJsonLd(
 export function jsonLdScript(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
+
+export type MissingFact = { field: string; label: string; why: string };
+
+/** Optional details that help customers and AI assistants, in the order worth adding them. */
+export function missingOptionalFacts(b: Business): MissingFact[] {
+  const missing: MissingFact[] = [];
+  if (!b.description?.trim())
+    missing.push({ field: "description", label: "Business description", why: "Tells customers and AI assistants what you do" });
+  if (b.hours.length === 0)
+    missing.push({ field: "hours", label: "Opening hours", why: "Answers “are you open now?”" });
+  if (b.serviceAreas.length === 0)
+    missing.push({ field: "serviceAreas", label: "Service areas", why: "Tells customers where you work" });
+  if (b.services.every((s) => !s.description?.trim()))
+    missing.push({ field: "services", label: "Service descriptions", why: "Explains each service in your own words" });
+  if (!b.bookingUrl) missing.push({ field: "bookingUrl", label: "Booking link", why: "Lets customers book straight from your listings" });
+  return missing;
+}

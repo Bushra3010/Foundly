@@ -10,12 +10,15 @@ export const LOCALE_COOKIE = "abgp_lang";
  */
 const dict = {
   "nav.home": { en: "Home", hi: "होम" },
+  "nav.dashboard": { en: "Dashboard", hi: "डैशबोर्ड" },
+  "nav.keywords": { en: "Keywords", hi: "कीवर्ड" },
+  "nav.social": { en: "Social media", hi: "सोशल मीडिया" },
+  "nav.socialShort": { en: "Social", hi: "सोशल" },
   "nav.business": { en: "My Business", hi: "मेरा व्यवसाय" },
   "nav.website": { en: "My Website", hi: "मेरी वेबसाइट" },
   "nav.visibility": { en: "AI Visibility", hi: "AI में दिखना" },
   "nav.improve": { en: "Improve My Business", hi: "व्यवसाय सुधारें" },
   "nav.presence": { en: "Get listed", hi: "लिस्टिंग" },
-  "nav.leads": { en: "Leads", hi: "पूछताछ" },
   "nav.reports": { en: "Reports", hi: "रिपोर्ट" },
   "nav.settings": { en: "Settings", hi: "सेटिंग्स" },
   "nav.more": { en: "More", hi: "और" },

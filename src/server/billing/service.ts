@@ -1,7 +1,7 @@
 import { and, eq, isNotNull, lt, sql } from "drizzle-orm";
 import type { Db, DbOrTx } from "@/db";
-import { paymentEvents, sites, subscriptions, type Plan } from "@/db/schema";
-import { billingEnforced, PLAN_RANK, planSpec } from "@/lib/plans";
+import { paymentEvents, subscriptions, type Plan } from "@/db/schema";
+import { PLAN_RANK, planSpec } from "@/lib/plans";
 import { AppError, audit, requireRole, type Ctx } from "../context";
 import { grantCredits } from "../credits";
 import { activeProvider, type BillingEvent } from "./providers";
@@ -19,15 +19,6 @@ export async function effectivePlan(db: DbOrTx, workspaceId: string): Promise<Pl
   if (s.status === "cancelled") return "free";
   if (s.status === "past_due" && s.graceUntil && s.graceUntil < new Date()) return "free";
   return s.plan;
-}
-
-/** Throws when billing is enforced and the plan lacks a feature. */
-export async function requireEntitlement(db: DbOrTx, workspaceId: string, feature: "hostedSite" | "customDomain") {
-  if (!billingEnforced()) return;
-  const plan = planSpec(await effectivePlan(db, workspaceId));
-  if (!plan[feature]) {
-    throw new AppError("forbidden", feature === "hostedSite" ? "Publishing a website needs a paid plan." : "Your own domain needs a paid plan.", { upgrade: true });
-  }
 }
 
 export async function startCheckout(db: Db, ctx: Ctx & { user: { email: string } }, plan: Plan, returnUrl: string) {
@@ -134,11 +125,5 @@ export async function applyPeriodTransitions(db: Db, now = new Date()) {
     }
   }
   const lapsed = await db.select().from(subscriptions).where(and(eq(subscriptions.status, "past_due"), lt(subscriptions.graceUntil, now)));
-  if (billingEnforced()) {
-    for (const s of [...lapsed, ...ending.filter((e) => e.cancelAtPeriodEnd)]) {
-      await db.update(sites).set({ publishedVersionId: null, updatedAt: now }).where(eq(sites.workspaceId, s.workspaceId));
-      await audit(db, { workspaceId: s.workspaceId, userId: null as unknown as string }, "billing.site_offline_after_grace");
-    }
-  }
   return { changed, lapsed: lapsed.length };
 }
