@@ -3,7 +3,7 @@
 # the Vercel project, so both run with the same database and secrets.
 # Values are never printed. Run from the project folder:
 #
-#   VERCEL_TOKEN=<token> bash scripts/vercel-env.sh
+#   bash scripts/vercel-env.sh
 #
 # Needs: netlify CLI logged in to the account that owns the site, python3, curl.
 set -euo pipefail
@@ -13,7 +13,10 @@ NETLIFY_ACCOUNT_ID="6adbaddc8621ecb79ce7bea0"
 VERCEL_PROJECT_ID="prj_qTbz5YB9X810qbz22XOxqZhe2972"
 VERCEL_TEAM_ID="team_svDJtdSHmUUknzz3jaWv6qGv"
 
-[ -n "${VERCEL_TOKEN:-}" ] || { echo "Set VERCEL_TOKEN first."; exit 1; }
+if [ -z "${VERCEL_TOKEN:-}" ]; then
+  read -r -s -p "Vercel token: " VERCEL_TOKEN; echo
+fi
+[ -n "$VERCEL_TOKEN" ] || { echo "No Vercel token entered."; exit 1; }
 
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
