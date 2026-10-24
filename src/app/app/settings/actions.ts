@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -8,7 +8,6 @@ import { getDb } from "@/db";
 import { toActionError, type ActionState } from "@/lib/actions";
 import { sendEmail } from "@/lib/auth/mailer";
 import { clearSessionCookie, requireCtx } from "@/lib/auth/session";
-import { LOCALE_COOKIE, parseLocale } from "@/lib/i18n";
 import { SALE_PLANS } from "@/lib/plans";
 import { revokeAllSessions, setPassword } from "@/server/auth";
 import { audit } from "@/server/context";
@@ -45,12 +44,6 @@ export async function setPasswordAction(_prev: ActionState, form: FormData): Pro
     return toActionError(err);
   }
   return { ok: true, message: "Password saved. Use it next time you log in." };
-}
-
-export async function setLanguageAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  (await cookies()).set(LOCALE_COOKIE, parseLocale(String(form.get("locale"))), { path: "/", sameSite: "lax", maxAge: 60 * 60 * 24 * 365 });
-  revalidatePath("/", "layout");
-  return { ok: true, message: "Language updated." };
 }
 
 async function origin() {

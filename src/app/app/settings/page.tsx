@@ -15,7 +15,6 @@ import {
   inviteAction,
   removeMemberAction,
   revokeInviteAction,
-  setLanguageAction,
   setPasswordAction,
   transferOwnershipAction,
 } from "./actions";
@@ -49,27 +48,13 @@ export default async function SettingsPage() {
         ))}
       </nav>
       <div className="settings-layout grid items-start gap-4 lg:grid-cols-2">
-        <Card className="settings-overview lg:col-span-2">
+        <Card className="lg:col-span-2">
           <div>
             <h2 className="font-semibold">Your account</h2>
             <p className="mt-2 break-all">{ctx.user.email}</p>
             <p className="mt-1">
               <Badge tone="info">{ROLE_TEXT[ctx.role]}</Badge>
             </p>
-          </div>
-
-          <div className="settings-language">
-            <h2 className="font-semibold">{t(locale, "common.language")}</h2>
-            <p className="mt-1 mb-3 text-sm text-muted">{t(locale, "settings.languageHint")}</p>
-            <ActionForm action={setLanguageAction} submitLabel={t(locale, "common.save")} variant="secondary" inline>
-              <label className="sr-only" htmlFor="locale">
-                {t(locale, "common.language")}
-              </label>
-              <select id="locale" name="locale" defaultValue={locale} className={select}>
-                <option value="en">English</option>
-                <option value="hi">हिन्दी (Hindi)</option>
-              </select>
-            </ActionForm>
           </div>
         </Card>
 

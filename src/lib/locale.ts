@@ -1,7 +1,7 @@
 import "server-only";
-import { cookies } from "next/headers";
-import { LOCALE_COOKIE, parseLocale, type Locale } from "./i18n";
+import type { Locale } from "./i18n";
 
+/** The interface is English only for now; Hindi strings are kept but not offered. */
 export async function getLocale(): Promise<Locale> {
-  return parseLocale((await cookies()).get(LOCALE_COOKIE)?.value);
+  return "en";
 }
