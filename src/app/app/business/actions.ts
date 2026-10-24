@@ -17,6 +17,7 @@ import { connectFacebookPage, disconnectFacebook, syncFacebook } from "@/server/
 import { syncConnectedSafe } from "@/server/sync";
 import { decryptSecret } from "@/server/crypto";
 import { can } from "@/server/context";
+import { parseHoursLine } from "@/lib/hours";
 
 function lines(value: FormDataEntryValue | null) {
   return String(value ?? "")
@@ -33,12 +34,9 @@ function parseServices(value: FormDataEntryValue | null) {
   });
 }
 
-/** "Days: hours" per line, e.g. "Mon–Sat: 9am–7pm". */
+/** "Days: hours" per line, e.g. "Mon–Sat: 9am–7pm"; see parseHoursLine for what else is understood. */
 function parseHours(value: FormDataEntryValue | null) {
-  return lines(value).map((line) => {
-    const i = line.indexOf(":");
-    return i === -1 ? { days: line, hours: "" } : { days: line.slice(0, i).trim(), hours: line.slice(i + 1).trim() };
-  });
+  return lines(value).map(parseHoursLine);
 }
 
 export async function saveDetailsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
