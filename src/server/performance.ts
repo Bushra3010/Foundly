@@ -1,5 +1,5 @@
 import "server-only";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import type { Db } from "@/db";
 import { audits, monitoringRuns, type Business } from "@/db/schema";
 import { listingStatus } from "@/lib/geo";
@@ -71,7 +71,7 @@ export async function dashboardData(db: Db, ctx: Ctx, business: Business) {
     brandSpecs(db, ctx.workspaceId),
     socialStatus(db, ctx, business),
     latestWebsiteRequest(db, ctx),
-    db.select().from(audits).where(eq(audits.workspaceId, ctx.workspaceId)).orderBy(desc(audits.createdAt)).limit(1),
+    db.select().from(audits).where(and(eq(audits.workspaceId, ctx.workspaceId), eq(audits.kind, "external"))).orderBy(desc(audits.createdAt)).limit(1),
     db
       .select({ id: monitoringRuns.id, status: monitoringRuns.status, createdAt: monitoringRuns.createdAt })
       .from(monitoringRuns)

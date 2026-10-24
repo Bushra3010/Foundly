@@ -645,7 +645,7 @@ export const audits = pgTable(
     businessId: uuid("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
-    /** "external" scans the owner's own website; "hosted" checks the platform site's content. */
+    /** "external" scans the owner's own website; "competitor" a competitor's site for Compare; "hosted" is retired. */
     kind: text("kind").notNull(),
     target: text("target").notNull(),
     status: auditStatusEnum("status").notNull().default("queued"),

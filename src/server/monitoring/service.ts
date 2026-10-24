@@ -100,7 +100,8 @@ export async function addCompetitor(db: Db, ctx: Ctx, name: string, domain?: str
   if ((await listCompetitors(db, ctx)).length >= 10) throw new AppError("invalid", "You can track up to 10 competitors.");
   const n = name.trim();
   if (n.length < 2) throw new AppError("invalid", "Enter the competitor's business name.");
-  await db.insert(competitors).values({ workspaceId: ctx.workspaceId, name: n.slice(0, 120), domains: domain?.trim() ? [hostOf(domain)] : [] });
+  const [c] = await db.insert(competitors).values({ workspaceId: ctx.workspaceId, name: n.slice(0, 120), domains: domain?.trim() ? [hostOf(domain)] : [] }).returning();
+  return c;
 }
 
 export async function removeCompetitor(db: Db, ctx: Ctx, id: string) {

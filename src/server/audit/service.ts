@@ -22,7 +22,7 @@ export async function startAudit(db: Db, ctx: Ctx) {
   const running = await db
     .select({ id: audits.id })
     .from(audits)
-    .where(and(eq(audits.workspaceId, ctx.workspaceId), inArray(audits.status, ["queued", "running"])));
+    .where(and(eq(audits.workspaceId, ctx.workspaceId), eq(audits.kind, "external"), inArray(audits.status, ["queued", "running"])));
   if (running.length) throw new AppError("conflict", "An audit is already running.");
   const [row] = await db
     .insert(audits)
@@ -104,7 +104,7 @@ export async function currentWebsiteCheck(db: DbOrTx, ctx: Ctx, websiteUrl: stri
   const [a] = await db
     .select()
     .from(audits)
-    .where(and(eq(audits.workspaceId, ctx.workspaceId), eq(audits.target, target), eq(audits.status, "completed")))
+    .where(and(eq(audits.workspaceId, ctx.workspaceId), eq(audits.kind, "external"), eq(audits.target, target), eq(audits.status, "completed")))
     .orderBy(desc(audits.createdAt))
     .limit(1);
   if (!a) return null;
@@ -124,7 +124,7 @@ export async function websiteCheckRunning(db: DbOrTx, ctx: Ctx, websiteUrl: stri
   const rows = await db
     .select({ id: audits.id })
     .from(audits)
-    .where(and(eq(audits.workspaceId, ctx.workspaceId), eq(audits.target, target), inArray(audits.status, ["queued", "running"])))
+    .where(and(eq(audits.workspaceId, ctx.workspaceId), eq(audits.kind, "external"), eq(audits.target, target), inArray(audits.status, ["queued", "running"])))
     .limit(1);
   return rows.length > 0;
 }
@@ -140,7 +140,8 @@ export async function checkWebsiteSoon(db: Db, ctx: Ctx) {
 }
 
 export async function latestAudit(db: DbOrTx, ctx: Ctx) {
-  const [a] = await db.select().from(audits).where(eq(audits.workspaceId, ctx.workspaceId)).orderBy(desc(audits.createdAt)).limit(1);
+  // Competitor checks live in the same table; this is always the owner's own site.
+  const [a] = await db.select().from(audits).where(and(eq(audits.workspaceId, ctx.workspaceId), eq(audits.kind, "external"))).orderBy(desc(audits.createdAt)).limit(1);
   if (!a) return null;
   const f = await db.select().from(findings).where(and(eq(findings.auditId, a.id), eq(findings.workspaceId, ctx.workspaceId)));
   return { ...a, findings: f };

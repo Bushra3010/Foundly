@@ -368,6 +368,7 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
         </Card>
         <Card>
           <h2 className="font-semibold">Competitors to compare with</h2>
+          <p className="mt-1 text-sm text-muted"><Link href="/app/compare" className="font-semibold underline">Open Compare</Link> to see you vs them side by side.</p>
           <ul className="mt-2 divide-y divide-border">
             {comps.map((c) => (
               <li key={c.id} className="flex flex-wrap items-center justify-between gap-2 py-2">

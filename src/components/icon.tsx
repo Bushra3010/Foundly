@@ -17,6 +17,7 @@ const paths: Record<string, string> = {
   workspaces: "M3 3h7v7H3V3Zm11 0h7v7h-7V3ZM3 14h7v7H3v-7Zm11 0h7v7h-7v-7Z",
   more: "M4 6h16M4 12h16M4 18h16",
   arrow: "M4 12h16m-6-6 6 6-6 6",
+  compare: "M7 4 3 8l4 4M3 8h14m0 4 4 4-4 4m4-4H7",
   chevron: "m9 5 7 7-7 7",
   down: "m6 9 6 6 6-6",
   check: "m5 12 4 4L19 6",
@@ -29,6 +30,7 @@ const paths: Record<string, string> = {
 const hrefNames: Record<string, string> = {
   "/app": "home",
   "/admin": "shield",
+  "/app/compare": "compare",
 };
 export function Icon({
   name,

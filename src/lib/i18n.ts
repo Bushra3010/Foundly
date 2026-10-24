@@ -12,6 +12,7 @@ const dict = {
   "nav.home": { en: "Home", hi: "होम" },
   "nav.dashboard": { en: "Dashboard", hi: "डैशबोर्ड" },
   "nav.keywords": { en: "Keywords", hi: "कीवर्ड" },
+  "nav.compare": { en: "Compare", hi: "तुलना" },
   "nav.social": { en: "Social media", hi: "सोशल मीडिया" },
   "nav.socialShort": { en: "Social", hi: "सोशल" },
   "nav.business": { en: "My Business", hi: "मेरा व्यवसाय" },

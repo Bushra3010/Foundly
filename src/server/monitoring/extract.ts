@@ -4,7 +4,8 @@ import type { Citation } from "@/db/schema";
  * Brand and citation extraction. Bump EXTRACTION_VERSION whenever matching
  * rules change; metrics warn when comparing across versions.
  */
-export const EXTRACTION_VERSION = 1;
+// v2: a full stop ending a sentence no longer hides a brand ("…call Apex Plumbing.").
+export const EXTRACTION_VERSION = 2;
 
 export type BrandSpec = { key: string; name: string; aliases: string[]; domains: string[] };
 
@@ -26,6 +27,8 @@ export function normalize(s: string): string {
     .replace(/&/g, " and ")
     .replace(/[’']/g, "")
     .replace(/[^a-z0-9.ऀ-ॿ]+/g, " ")
+    // Keep dots only inside words such as domains (apex.in); drop sentence full stops.
+    .replace(/\.(?![a-z0-9ऀ-ॿ])|(?<![a-z0-9ऀ-ॿ])\./g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
