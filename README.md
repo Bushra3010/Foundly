@@ -40,7 +40,7 @@ Sign in → **Keywords** (business name, what they do, city, and the keywords to
 
 **Retired and removed:**
 - **Foundly-hosted websites.** The one-click generator, block editor, hosted sites at `/s/<slug>`, custom domains, photo uploads, the lead inbox and website deletion are gone: the team builds websites instead. Migration `0012` drops their tables (`sites`, `site_versions`, `site_slug_redirects`, `custom_domains`, `leads`, `assets`) and their data.
-- **WordPress connector.** Owners copy the ready-to-paste fixes instead. Migration `0012` turns WordPress tasks into ordinary tasks and deletes stored WordPress passwords.
+- **WordPress connector.** Owners copy the ready-to-paste fixes instead. Migration `0012` turns WordPress tasks into ordinary tasks and deletes stored WordPress passwords. Migration `0014` drops the website generator's `jobs` table.
 - **Hindi interface** and **Netlify hosting.** Foundly runs on Vercel only.
 
 **Not built (by design or out of scope):** native iOS and Android apps (PRD: "after pilot evidence"; the PWA covers mobile), CMS connectors, white-label agency reporting, domain purchasing, and reviews (the PRD keeps them disabled until moderation exists).
@@ -66,7 +66,7 @@ tests/               phase-by-phase domain tests
 ## Deviations from the PRD's proposed stack
 
 - **Auth:** the app has its own magic-link sessions instead of Supabase Auth, so it runs without credentials. Isolation is enforced in the data layer and covered by tests. Migration `0007_enable_rls` turns on row-level security (RLS) for every table with no policies, so Supabase's public Data API can't read or write app data. The app connects as the table owner and is unaffected. Add policies keyed on `workspace_id` only if you ever need the Data API.
-- **Jobs:** background work runs through `after()`, with durable state rows (`jobs`, `monitoring_runs`, `audits`). Daily crons (`vercel.json`) resume and schedule work. For higher volume, move execution to a queue (for example Vercel Queues); the run functions are already idempotent.
+- **Jobs:** background work runs through `after()`, with durable state rows (`monitoring_runs`, `audits`). Daily crons (`vercel.json`) resume and schedule work. For higher volume, move execution to a queue (for example Vercel Queues); the run functions are already idempotent.
 - **Rate limiting** for sign-in, sign-up, password reset and admin sign-in uses fixed windows stored in Postgres (`rate_limits`), so every Vercel instance shares the same counts. The daily cron prunes ended windows.
 
 ## Before launch

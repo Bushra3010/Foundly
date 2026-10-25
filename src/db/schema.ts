@@ -250,36 +250,6 @@ export const websiteRequests = pgTable(
 
 export type WebsiteRequest = typeof websiteRequests.$inferSelect;
 
-// ---------- Jobs ----------
-
-export const jobStatusEnum = pgEnum("job_status", [
-  "queued",
-  "generating",
-  "validating",
-  "ready",
-  "failed",
-]);
-
-export const jobs = pgTable(
-  "jobs",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    workspaceId: uuid("workspace_id")
-      .notNull()
-      .references(() => workspaces.id, { onDelete: "cascade" }),
-    type: text("type").notNull(),
-    status: jobStatusEnum("status").notNull().default("queued"),
-    idempotencyKey: text("idempotency_key").notNull(),
-    input: jsonb("input").$type<Record<string, unknown>>().notNull().default({}),
-    result: jsonb("result").$type<Record<string, unknown>>(),
-    error: text("error"),
-    attempts: integer("attempts").notNull().default(0),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-  (t) => [uniqueIndex("jobs_workspace_key_idx").on(t.workspaceId, t.idempotencyKey)],
-);
-
 // ---------- Operations ----------
 
 export const auditEvents = pgTable(

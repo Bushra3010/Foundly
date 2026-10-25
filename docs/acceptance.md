@@ -8,11 +8,11 @@
 | Every live visibility metric opens its exact evidence and denominator | `/app/visibility/evidence` applies the same rule as `computeMetrics`; `tests/phase3.test.ts` |
 | An unsupported provider never produces invented answers or scores | `providerState()` gating; no demo data paths exist; `tests/phase3.test.ts` |
 | Keyword and city selection create owner-approved questions, not doorway pages | `approveQuestions` (owner approval, branded grouping); no per-city pages are generated |
-| Failed jobs keep work and don't double-charge | `tests/domain.test.ts` (generation retry), `tests/phase3.test.ts` (credits, resume) |
+| Failed jobs keep work and don't double-charge | `tests/phase3.test.ts` (credits, resume) |
 | Only authorised members access website requests and private reports | `tests/domain.test.ts` (tenant isolation), role checks in `src/server/*` |
 | Mobile users can finish onboarding, review a draft and approve an action | Layouts from 360px up, bottom navigation, 44px tap targets. **Still needs a manual check on a real phone.** |
 | Duplicate webhook doesn't double credit | `tests/phase5.test.ts` |
-| Tenant isolation for exports, jobs and storage | Every route handler resolves the context from the session; every query is scoped to the session's workspace |
+| Tenant isolation for exports and storage | Every route handler resolves the context from the session; every query is scoped to the session's workspace |
 
 ## Manual checks still needed before launch
 - [ ] Real-device test on mobile and desktop, plus a WCAG 2.2 AA review with a screen reader.
