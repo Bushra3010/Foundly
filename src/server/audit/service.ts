@@ -214,7 +214,6 @@ export async function applyAction(db: Db, ctx: Ctx, id: string) {
     if (a.status !== "approved" || a.approvedRevision !== a.draftRevision || a.approvedHash !== hash(a.draft)) {
       throw new AppError("precondition_failed", "This task needs approval of its current draft before it can be applied.");
     }
-    if (a.applyKind === "wordpress_append") throw new AppError("invalid", "Apply this through WordPress.");
     if (isHostedKind(a.applyKind)) throw new AppError("invalid", "This task was for a website Foundly used to host. Make the change on your own website instead.");
     const [u] = await tx
       .update(improvementActions)
@@ -251,7 +250,6 @@ export async function rollbackAction(db: Db, ctx: Ctx, id: string) {
   return db.transaction(async (tx) => {
     const a = await getAction(tx, ctx, id, true);
     if (!["applied", "verified"].includes(a.status)) throw new AppError("invalid", "Only applied changes can be rolled back.");
-    if (a.applyKind === "wordpress_append") throw new AppError("invalid", "Roll this back through WordPress.");
     const [u] = await tx.update(improvementActions).set({ status: "rolled_back", updatedAt: new Date() }).where(eq(improvementActions.id, a.id)).returning();
     await auditEvent(tx, ctx, "action.rolled_back", a.id);
     return u;

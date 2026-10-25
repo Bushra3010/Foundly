@@ -80,10 +80,8 @@ describe("regional monthly pricing", () => {
 
   it("reads the visitor's country from platform location headers", () => {
     expect(countryFromHeaders(new Headers({ "x-vercel-ip-country": "gb" }))).toBe("GB");
-    expect(countryFromHeaders(new Headers({ "x-country": "IN" }))).toBe("IN");
-    expect(countryFromHeaders(new Headers({ "x-nf-geo": btoa(JSON.stringify({ country: { code: "AU" } })) }))).toBe("AU");
+    expect(countryFromHeaders(new Headers({ "cf-ipcountry": "in" }))).toBe("IN");
     expect(countryFromHeaders(new Headers({ "cf-ipcountry": "XX" }))).toBeNull();
-    expect(countryFromHeaders(new Headers({ "x-nf-geo": "not-base64!" }))).toBeNull();
     expect(countryFromHeaders(new Headers())).toBeNull();
     expect(pricingCountryFor("DE")).toBe("DE");
     expect(pricingCountryFor("BR")).toBe("OTHER");

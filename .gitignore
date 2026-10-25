@@ -44,5 +44,3 @@ next-env.d.ts
 /.data
 /backups
 
-# Local Netlify folder
-.netlify

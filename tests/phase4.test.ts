@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
 import { businesses, improvementActions } from "@/db/schema";
 import { robotsDisallows } from "@/server/audit/crawl";
-import { hasPlaceholder, parseFaqDraft } from "@/server/audit/actions";
+import { hasPlaceholder } from "@/server/audit/actions";
 import { applyAction, approveAction, currentWebsiteCheck, editActionDraft, latestAudit, listActions, rollbackAction, runAudit, startAudit, verifyAction } from "@/server/audit/service";
 import { AppError, type Ctx } from "@/server/context";
 import type { SafeResponse } from "@/server/safe-fetch";
@@ -37,8 +37,7 @@ describe("crawler helpers", () => {
     expect(robotsDisallows("User-agent: *\nDisallow: /private\nAllow: /private/ok", "/private/ok")).toBe(false);
     expect(robotsDisallows("User-agent: googlebot\nDisallow: /", "/")).toBe(false);
   });
-  it("parses FAQ drafts and spots placeholders", () => {
-    expect(parseFaqDraft("Q: A?\nA: B.\n\nQ: C?\nA: D.")).toHaveLength(2);
+  it("spots placeholders", () => {
     expect(hasPlaceholder("We do [describe what's included]")).toBe(true);
   });
 });

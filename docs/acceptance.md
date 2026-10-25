@@ -12,12 +12,11 @@
 | Only authorised members access website requests and private reports | `tests/domain.test.ts` (tenant isolation), role checks in `src/server/*` |
 | Mobile users can finish onboarding, review a draft and approve an action | Layouts from 360px up, bottom navigation, 44px tap targets. **Still needs a manual check on a real phone.** |
 | Duplicate webhook doesn't double credit | `tests/phase5.test.ts` |
-| Tenant isolation for exports, jobs and storage | Every route handler resolves the context from the session; uploads are stored under the workspace id |
+| Tenant isolation for exports, jobs and storage | Every route handler resolves the context from the session; every query is scoped to the session's workspace |
 
 ## Manual checks still needed before launch
 - [ ] Real-device test on mobile and desktop, plus a WCAG 2.2 AA review with a screen reader.
 - [ ] Live call to each provider using its real key (docs/providers.md).
 - [ ] Razorpay sandbox end to end: checkout, webhook, renewal, failure, refund.
 - [ ] Backup restore drill.
-- [ ] Hindi copy reviewed by a native speaker.
 - [ ] Legal review of the terms, privacy notice and retention policy.

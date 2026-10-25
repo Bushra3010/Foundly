@@ -59,15 +59,10 @@ export const GEO_COUNTRY_COOKIE = "foundly-geo-country";
 
 /**
  * The visitor's country from the hosting platform's IP location headers
- * (Vercel, Netlify, Cloudflare). Display only: never proof of a billing country.
+ * (Vercel, or Cloudflare when it sits in front). Display only: never proof of a billing country.
  */
 export function countryFromHeaders(headers: Headers): string | null {
-  let code = headers.get("x-vercel-ip-country") ?? headers.get("x-country") ?? headers.get("cf-ipcountry");
-  const nfGeo = headers.get("x-nf-geo");
-  if (!code && nfGeo) {
-    try { code = JSON.parse(atob(nfGeo))?.country?.code ?? null; } catch { /* Ignore a malformed header. */ }
-  }
-  code = code?.trim().toUpperCase() ?? null;
+  const code = (headers.get("x-vercel-ip-country") ?? headers.get("cf-ipcountry"))?.trim().toUpperCase() ?? null;
   return code && /^[A-Z]{2}$/.test(code) && code !== "XX" ? code : null;
 }
 

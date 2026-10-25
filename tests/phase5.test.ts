@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
-import { deletionRequests, sites, users, workspaces } from "@/db/schema";
+import { deletionRequests, users, workspaces } from "@/db/schema";
 import { adjustCredits, grantSupportAccess, setProfileModeration, supportView } from "@/server/admin";
 import { signTestEvent, testProvider } from "@/server/billing/providers";
 import { applyPeriodTransitions, effectivePlan, getSubscription, processBillingEvent, scheduleDowngrade } from "@/server/billing/service";
@@ -70,20 +70,6 @@ describe("billing webhooks", () => {
 });
 
 describe("account lifecycle", () => {
-  it("website deletions scheduled before hosting was retired still complete after the recovery window", async () => {
-    const b = (await getBusiness(db, ctx))!;
-    await db.insert(sites).values({ workspaceId: ctx.workspaceId, businessId: b.id, slug: "sharma", draft: {}, generatedFromVersion: b.version });
-    const [r] = await db
-      .insert(deletionRequests)
-      .values({ kind: "website", workspaceId: ctx.workspaceId, requestedBy: ctx.userId, scheduledFor: new Date(Date.now() + 86_400_000) })
-      .returning();
-    expect(await processDueDeletions(db)).toBe(0);
-    await db.update(deletionRequests).set({ scheduledFor: new Date(Date.now() - 1000) }).where(eq(deletionRequests.id, r.id));
-    await processDueDeletions(db);
-    expect(await db.select().from(sites).where(eq(sites.workspaceId, ctx.workspaceId))).toHaveLength(0);
-    expect(await getBusiness(db, ctx)).not.toBeNull();
-  });
-
   it("the only owner of a shared workspace can't delete their account", async () => {
     const bob = await signUp(db, "bob@example.com");
     const t = await inviteMember(db, ctx, "bob@example.com", "editor");

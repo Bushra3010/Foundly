@@ -50,7 +50,7 @@ Before turning on `BILLING_ENFORCED`, record the real cost per successful observ
 
 ## Display and billing
 
-The catalogue lives in `src/lib/regional-pricing.ts`. The country is picked automatically: the proxy reads the hosting platform's IP location header (`x-vercel-ip-country`, Netlify's `x-country` or `x-nf-geo`, or `cf-ipcountry`) and stores it in the `foundly-geo-country` cookie for a day. The pricing cards use it, falling back to the device timezone and locale when no header is present. A manual choice overrides both and persists in local storage. Unsupported countries use USD. No third-party location service is called. Location is for display only; it never verifies billing eligibility.
+The catalogue lives in `src/lib/regional-pricing.ts`. The country is picked automatically: the proxy reads the hosting platform's IP location header (`x-vercel-ip-country`, or `cf-ipcountry` when Cloudflare is in front) and stores it in the `foundly-geo-country` cookie for a day. The pricing cards use it, falling back to the device timezone and locale when no header is present. A manual choice overrides both and persists in local storage. Unsupported countries use USD. No third-party location service is called. Location is for display only; it never verifies billing eligibility.
 
 Existing configured INR plan prices override the Indian catalogue on the landing page. Billing settings and the Razorpay adapter still use the existing server configuration, which has not been changed by this display update. Localized prices do not configure provider plans or enable multi-currency charging.
 

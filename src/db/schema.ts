@@ -58,6 +58,17 @@ export const sessions = pgTable(
   (t) => [index("sessions_user_idx").on(t.userId)],
 );
 
+/** Fixed-window counters for sign-in and sign-up limits, shared by every server instance. */
+export const rateLimits = pgTable(
+  "rate_limits",
+  {
+    key: text("key").primaryKey(),
+    count: integer("count").notNull(),
+    resetAt: timestamp("reset_at", { withTimezone: true }).notNull(),
+  },
+  (t) => [index("rate_limits_reset_idx").on(t.resetAt)],
+);
+
 export const workspaces = pgTable("workspaces", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
@@ -239,61 +250,6 @@ export const websiteRequests = pgTable(
 
 export type WebsiteRequest = typeof websiteRequests.$inferSelect;
 
-// Foundly-hosted websites were retired in favour of website requests. The
-// tables stay so no owner data is lost; nothing reads or writes them now.
-type StoredSiteContent = Record<string, unknown>;
-
-export const sites = pgTable("sites", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  workspaceId: uuid("workspace_id")
-    .notNull()
-    .references(() => workspaces.id, { onDelete: "cascade" }),
-  businessId: uuid("business_id")
-    .notNull()
-    .unique()
-    .references(() => businesses.id, { onDelete: "cascade" }),
-  slug: text("slug").notNull().unique(),
-  draft: jsonb("draft").$type<StoredSiteContent>().notNull(),
-  /** Optimistic concurrency token for the draft. */
-  draftRevision: integer("draft_revision").notNull().default(1),
-  /** Business version the draft was last generated from. */
-  generatedFromVersion: integer("generated_from_version").notNull(),
-  publishedVersionId: uuid("published_version_id"),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
-
-/** Immutable, validated snapshots. A published site points at exactly one. */
-export const siteVersions = pgTable(
-  "site_versions",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    siteId: uuid("site_id")
-      .notNull()
-      .references(() => sites.id, { onDelete: "cascade" }),
-    workspaceId: uuid("workspace_id")
-      .notNull()
-      .references(() => workspaces.id, { onDelete: "cascade" }),
-    versionNumber: integer("version_number").notNull(),
-    content: jsonb("content").$type<StoredSiteContent>().notNull(),
-    contentHash: text("content_hash").notNull(),
-    draftRevision: integer("draft_revision").notNull(),
-    createdBy: uuid("created_by")
-      .notNull()
-      .references(() => users.id),
-    createdAt: createdAt(),
-  },
-  (t) => [uniqueIndex("site_versions_site_number_idx").on(t.siteId, t.versionNumber)],
-);
-
-export const siteSlugRedirects = pgTable("site_slug_redirects", {
-  oldSlug: text("old_slug").primaryKey(),
-  siteId: uuid("site_id")
-    .notNull()
-    .references(() => sites.id, { onDelete: "cascade" }),
-  createdAt: createdAt(),
-});
-
 // ---------- Jobs ----------
 
 export const jobStatusEnum = pgEnum("job_status", [
@@ -326,29 +282,6 @@ export const jobs = pgTable(
 
 // ---------- Operations ----------
 
-export const leadStatusEnum = pgEnum("lead_status", ["new", "contacted", "qualified", "closed"]);
-
-export const leads = pgTable(
-  "leads",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    workspaceId: uuid("workspace_id")
-      .notNull()
-      .references(() => workspaces.id, { onDelete: "cascade" }),
-    businessId: uuid("business_id")
-      .notNull()
-      .references(() => businesses.id, { onDelete: "cascade" }),
-    name: text("name").notNull(),
-    contact: text("contact").notNull(),
-    message: text("message").notNull(),
-    source: text("source"),
-    status: leadStatusEnum("status").notNull().default("new"),
-    notes: text("notes"),
-    createdAt: createdAt(),
-  },
-  (t) => [index("leads_workspace_idx").on(t.workspaceId, t.createdAt)],
-);
-
 export const auditEvents = pgTable(
   "audit_events",
   {
@@ -364,12 +297,9 @@ export const auditEvents = pgTable(
 );
 
 export type Business = typeof businesses.$inferSelect;
-export type Site = typeof sites.$inferSelect;
-export type SiteVersion = typeof siteVersions.$inferSelect;
-export type Lead = typeof leads.$inferSelect;
 export type Role = (typeof roleEnum.enumValues)[number];
 
-// ---------- Phase 2: team, claims, domains, assets ----------
+// ---------- Phase 2: team ----------
 
 export const invitations = pgTable(
   "invitations",
@@ -390,51 +320,6 @@ export const invitations = pgTable(
     createdAt: createdAt(),
   },
   (t) => [index("invitations_workspace_idx").on(t.workspaceId)],
-);
-
-export const domainStatusEnum = pgEnum("domain_status", ["pending", "verified", "failed", "removed"]);
-
-export const customDomains = pgTable(
-  "custom_domains",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    workspaceId: uuid("workspace_id")
-      .notNull()
-      .references(() => workspaces.id, { onDelete: "cascade" }),
-    siteId: uuid("site_id")
-      .notNull()
-      .references(() => sites.id, { onDelete: "cascade" }),
-    hostname: text("hostname").notNull(),
-    verificationToken: text("verification_token").notNull(),
-    status: domainStatusEnum("status").notNull().default("pending"),
-    lastCheckedAt: timestamp("last_checked_at", { withTimezone: true }),
-    lastError: text("last_error"),
-    verifiedAt: timestamp("verified_at", { withTimezone: true }),
-    createdAt: createdAt(),
-  },
-  // Only one active claim per hostname; removed rows don't block a new claim.
-  (t) => [uniqueIndex("custom_domains_active_host_idx").on(t.hostname).where(sql`status <> 'removed'`)],
-);
-
-export const assets = pgTable(
-  "assets",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    workspaceId: uuid("workspace_id")
-      .notNull()
-      .references(() => workspaces.id, { onDelete: "cascade" }),
-    uploadedBy: uuid("uploaded_by")
-      .notNull()
-      .references(() => users.id),
-    contentType: text("content_type").notNull(),
-    bytes: integer("bytes").notNull(),
-    sha256: text("sha256").notNull(),
-    originalName: text("original_name"),
-    /** Owner's statement about rights to the image, kept as ownership metadata. */
-    rights: text("rights").notNull().default("owner_supplied"),
-    createdAt: createdAt(),
-  },
-  (t) => [index("assets_workspace_idx").on(t.workspaceId)],
 );
 
 // ---------- Phase 3: AI visibility monitoring ----------
@@ -724,10 +609,6 @@ export const improvementActions = pgTable(
     approvedAt: timestamp("approved_at", { withTimezone: true }),
     approvedRevision: integer("approved_revision"),
     approvedHash: text("approved_hash"),
-    /** Snapshot taken before applying, used for rollback. */
-    beforeSnapshot: jsonb("before_snapshot").$type<unknown>(),
-    /** For CMS-applied changes: target page and the revision the owner previewed. */
-    externalTarget: jsonb("external_target").$type<{ kind: "wordpress"; pageId: number; pageTitle: string; previewedModified: string } | null>(),
     appliedAt: timestamp("applied_at", { withTimezone: true }),
     verifiedAt: timestamp("verified_at", { withTimezone: true }),
     verificationNote: text("verification_note"),
@@ -829,7 +710,7 @@ export const supportGrants = pgTable("support_grants", {
 export type Plan = (typeof planEnum.enumValues)[number];
 export type Subscription = typeof subscriptions.$inferSelect;
 
-// ---------- Phase 6: CMS integrations ----------
+// ---------- Connected listings (Google Business Profile, Facebook Page) ----------
 
 export const integrations = pgTable(
   "integrations",
@@ -841,7 +722,7 @@ export const integrations = pgTable(
     kind: text("kind").notNull(),
     siteUrl: text("site_url").notNull(),
     username: text("username").notNull(),
-    /** AES-256-GCM ciphertext of the application password; never returned to clients. */
+    /** AES-256-GCM ciphertext of the account token; never returned to clients. */
     secretEncrypted: text("secret_encrypted").notNull(),
     status: text("status").notNull().default("connected"),
     lastError: text("last_error"),

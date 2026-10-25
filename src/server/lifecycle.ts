@@ -1,8 +1,6 @@
-import { rm } from "node:fs/promises";
-import path from "node:path";
 import { and, eq, isNull, lt, sql } from "drizzle-orm";
 import type { Db } from "@/db";
-import { deletionRequests, memberships, sessions, sites, users, workspaces } from "@/db/schema";
+import { deletionRequests, memberships, sessions, users, workspaces } from "@/db/schema";
 import { AppError, audit, type Ctx } from "./context";
 import { refreshPublicPages } from "./public-cache";
 
@@ -16,7 +14,8 @@ export async function pendingDeletions(db: Db, ctx: Ctx) {
       and(
         isNull(deletionRequests.cancelledAt),
         isNull(deletionRequests.completedAt),
-        sql`(${deletionRequests.userId} = ${ctx.userId} and ${deletionRequests.kind} = 'account') or (${deletionRequests.workspaceId} = ${ctx.workspaceId} and ${deletionRequests.kind} = 'website')`,
+        eq(deletionRequests.userId, ctx.userId),
+        eq(deletionRequests.kind, "account"),
       ),
     );
 }
@@ -69,8 +68,6 @@ export async function cancelDeletion(db: Db, ctx: Ctx, requestId: string) {
 
 async function deleteWorkspace(db: Db, workspaceId: string) {
   await db.delete(workspaces).where(eq(workspaces.id, workspaceId)); // cascades to every tenant row
-  const uploads = process.env.UPLOADS_DIR || path.join(process.cwd(), ".data", "uploads");
-  if (/^[0-9a-f-]{36}$/.test(workspaceId)) await rm(path.join(uploads, workspaceId), { recursive: true, force: true });
 }
 
 /** Cron: carries out deletions whose recovery window has passed. */
@@ -80,10 +77,7 @@ export async function processDueDeletions(db: Db, now = new Date()) {
     .from(deletionRequests)
     .where(and(isNull(deletionRequests.cancelledAt), isNull(deletionRequests.completedAt), lt(deletionRequests.scheduledFor, now)));
   for (const r of due) {
-    // Website deletions were for websites Foundly used to host; ones already scheduled still complete.
-    if (r.kind === "website" && r.workspaceId) {
-      await db.delete(sites).where(eq(sites.workspaceId, r.workspaceId));
-    } else if (r.kind === "account" && r.userId) {
+    if (r.kind === "account" && r.userId) {
       const mine = await db.select({ workspaceId: memberships.workspaceId }).from(memberships).where(eq(memberships.userId, r.userId));
       for (const { workspaceId } of mine) {
         const [{ n }] = await db.select({ n: sql<number>`count(*)::int` }).from(memberships).where(eq(memberships.workspaceId, workspaceId));

@@ -7,17 +7,24 @@ import type { ActionState } from "@/lib/actions";
 import { toActionError } from "@/lib/actions";
 import { safeNextPath, sendPasswordResetEmail } from "@/lib/auth/mailer";
 import { clearSessionCookie, readSessionToken, setSessionCookie } from "@/lib/auth/session";
-import { rateLimit } from "@/lib/rate-limit";
 import { isPlatformAdmin } from "@/lib/admin";
 import { fieldErrors, loginSchema, type FieldErrors } from "@/lib/validation";
 import { accountExists, adminDummyCheck, consumeLoginToken, contextForUser, createLoginToken, resetPasswordWithToken, revokeSession, signInWithPassword, signUpWithPassword } from "@/server/auth";
 import { getBusiness } from "@/server/business";
+import { rateLimit } from "@/server/rate-limit";
 
 export type SignInState = ActionState & { devLink?: string };
 
 async function clientIp() {
   const h = await headers();
   return h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
+}
+
+/** True while every limit allows another attempt. Each check counts one attempt. */
+async function withinLimits(...checks: [key: string, limit: number, windowMs: number][]) {
+  const db = await getDb();
+  for (const [key, limit, windowMs] of checks) if (!(await rateLimit(db, key, limit, windowMs))) return false;
+  return true;
 }
 
 /** New accounts go to setup; returning owners go home, or to a safe `next` path. */
@@ -44,7 +51,7 @@ export async function signUpAction(_prev: ActionState, form: FormData): Promise<
   else if (password.length > 128) errors.password = ["Use 128 characters or fewer"];
   if (!parsed.success || errors.password) return { ok: false, fieldErrors: errors, values };
 
-  if (!rateLimit(`signup:ip:${await clientIp()}`, 10, 60 * 60_000)) {
+  if (!(await withinLimits([`signup:ip:${await clientIp()}`, 10, 60 * 60_000]))) {
     return { ok: false, message: "Too many new accounts from this connection. Try again in an hour.", values };
   }
   let destination: string;
@@ -67,7 +74,7 @@ export async function logInAction(_prev: ActionState, form: FormData): Promise<A
   if (!parsed.success || errors.password) return { ok: false, fieldErrors: errors, values };
 
   const ip = await clientIp();
-  if (!rateLimit(`pwlogin:ip:${ip}`, 20, 15 * 60_000) || !rateLimit(`pwlogin:email:${parsed.data.email}`, 8, 15 * 60_000)) {
+  if (!(await withinLimits([`pwlogin:ip:${ip}`, 20, 15 * 60_000], [`pwlogin:email:${parsed.data.email}`, 8, 15 * 60_000]))) {
     return { ok: false, message: "Too many attempts. Wait 15 minutes, or get a sign-in link by email.", values };
   }
   let destination: string;
@@ -115,7 +122,7 @@ export async function requestPasswordResetAction(_prev: SignInState, form: FormD
   const parsed = loginSchema.safeParse(values);
   if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
   const ip = await clientIp();
-  if (!rateLimit(`reset:ip:${ip}`, 10, 15 * 60_000) || !rateLimit(`reset:email:${parsed.data.email}`, 3, 15 * 60_000)) {
+  if (!(await withinLimits([`reset:ip:${ip}`, 10, 15 * 60_000], [`reset:email:${parsed.data.email}`, 3, 15 * 60_000]))) {
     return { ok: false, message: "Too many reset requests. Wait 15 minutes and try again.", values };
   }
   const sent = { ok: true, message: `If ${parsed.data.email} has a Foundly account, a reset link is on its way. It works once and expires in 15 minutes.`, values };
@@ -162,7 +169,7 @@ export async function adminLogInAction(_prev: ActionState, form: FormData): Prom
   const password = String(form.get("password") ?? "");
   if (!parsed.success || !password) return { ok: false, message: "Enter your admin email and password.", values };
   const ip = await clientIp();
-  if (!rateLimit(`adminlogin:ip:${ip}`, 10, 15 * 60_000) || !rateLimit(`adminlogin:email:${parsed.data.email}`, 5, 15 * 60_000)) {
+  if (!(await withinLimits([`adminlogin:ip:${ip}`, 10, 15 * 60_000], [`adminlogin:email:${parsed.data.email}`, 5, 15 * 60_000]))) {
     return { ok: false, message: "Too many attempts. Wait 15 minutes and try again.", values };
   }
   const denied = { ok: false, message: "That email and password don't match an admin account.", values };

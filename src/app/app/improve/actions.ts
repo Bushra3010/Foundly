@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { getDb } from "@/db";
 import { toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
-import { applyWordPressChange, prepareWordPressChange, rollbackWordPressChange } from "@/server/wordpress";
 import { applyAction, approveAction, editActionDraft, rejectAction, rollbackAction, runAudit, startAudit, verifyAction } from "@/server/audit/service";
 
 function done(message: string): ActionState {
@@ -75,33 +74,6 @@ export async function rollbackActionAction(_prev: ActionState, form: FormData): 
   try {
     await rollbackAction(await getDb(), await requireCtx(), String(form.get("actionId")));
     return done("Reopened. It's back on your list.");
-  } catch (err) {
-    return toActionError(err);
-  }
-}
-
-export async function prepareWordPressAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  try {
-    const t = await prepareWordPressChange(await getDb(), await requireCtx(), String(form.get("actionId")), Number(form.get("pageId")));
-    return done(`Preview ready for “${t.pageTitle}”. Review it below, then approve.`);
-  } catch (err) {
-    return toActionError(err);
-  }
-}
-
-export async function applyWordPressAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  try {
-    await applyWordPressChange(await getDb(), await requireCtx(), String(form.get("actionId")));
-    return done("Added to your WordPress page. Select Check it's live to confirm.");
-  } catch (err) {
-    return toActionError(err);
-  }
-}
-
-export async function rollbackWordPressAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  try {
-    await rollbackWordPressChange(await getDb(), await requireCtx(), String(form.get("actionId")));
-    return done("Your WordPress page is back to how it was.");
   } catch (err) {
     return toActionError(err);
   }

@@ -15,7 +15,6 @@ import { changeRole, inviteMember, removeMember, revokeInvite, transferOwnership
 import { cancelSubscription, scheduleDowngrade, startCheckout } from "@/server/billing/service";
 import { cancelDeletion, requestAccountDeletion } from "@/server/lifecycle";
 import { setPrefs } from "@/server/notifications";
-import { connectWordPress, disconnectWordPress } from "@/server/wordpress";
 
 const roleSchema = z.enum(["owner", "editor", "viewer"]);
 
@@ -179,31 +178,6 @@ export async function cancelDeletionAction(_prev: ActionState, form: FormData): 
     await cancelDeletion(await getDb(), await requireCtx(), String(form.get("requestId")));
     revalidatePath("/app/settings");
     return { ok: true, message: "Deletion cancelled." };
-  } catch (err) {
-    return toActionError(err);
-  }
-}
-
-export async function connectWordPressAction(_prev: ActionState, form: FormData): Promise<ActionState> {
-  if (form.get("consent") !== "on") return { ok: false, message: "Confirm that you allow us to edit pages you approve." };
-  try {
-    await connectWordPress(await getDb(), await requireCtx(), {
-      siteUrl: String(form.get("siteUrl") ?? ""),
-      username: String(form.get("username") ?? ""),
-      password: String(form.get("password") ?? ""),
-    });
-    revalidatePath("/app/settings");
-    return { ok: true, message: "WordPress connected. We'll only change pages after you preview and approve each change." };
-  } catch (err) {
-    return toActionError(err);
-  }
-}
-
-export async function disconnectWordPressAction(): Promise<ActionState> {
-  try {
-    await disconnectWordPress(await getDb(), await requireCtx());
-    revalidatePath("/app/settings");
-    return { ok: true, message: "Disconnected. Also delete the application password in WordPress → Users → Profile." };
   } catch (err) {
     return toActionError(err);
   }

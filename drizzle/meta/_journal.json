@@ -85,6 +85,20 @@
       "when": 1792872288468,
       "tag": "0011_website_requests",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792926447067,
+      "tag": "0012_retire_hosted_sites_and_wordpress",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792926482414,
+      "tag": "0013_shared_rate_limits",
+      "breakpoints": true
     }
   ]
 }

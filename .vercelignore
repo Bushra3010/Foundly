@@ -2,7 +2,6 @@
 .claude
 .data
 .env*
-.netlify
 .next
 node_modules
 tsconfig.tsbuildinfo

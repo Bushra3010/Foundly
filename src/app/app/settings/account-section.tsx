@@ -9,14 +9,11 @@ import { can } from "@/server/context";
 import { getBalance, recentLedger } from "@/server/credits";
 import { pendingDeletions, RECOVERY_DAYS } from "@/server/lifecycle";
 import { getPrefs } from "@/server/notifications";
-import { getWordPress } from "@/server/wordpress";
 import {
   cancelDeletionAction,
   cancelPlanAction,
   checkoutAction,
-  connectWordPressAction,
   deleteAccountAction,
-  disconnectWordPressAction,
   downgradeAction,
   savePrefsAction,
 } from "./actions";
@@ -24,13 +21,12 @@ import {
 export async function AccountSection() {
   const ctx = await requireCtx();
   const db = await getDb();
-  const [sub, balance, ledger, prefs, deletions, wp] = await Promise.all([
+  const [sub, balance, ledger, prefs, deletions] = await Promise.all([
     getSubscription(db, ctx.workspaceId),
     getBalance(db, ctx.workspaceId),
     recentLedger(db, ctx.workspaceId, 8),
     getPrefs(db, ctx),
     pendingDeletions(db, ctx),
-    getWordPress(db, ctx),
   ]);
   const plan = planSpec(sub.plan);
   const provider = activeProvider();
@@ -131,39 +127,6 @@ export async function AccountSection() {
         )}
       </Card>
 
-      <Card>
-        <h2 className="font-semibold">Connections</h2>
-        {wp ? (
-          <>
-            <p className="mt-2 text-sm">
-              <Badge tone="ok">WordPress connected</Badge> <span className="break-all">{wp.siteUrl}</span> as {wp.username}
-            </p>
-            <p className="mt-1 text-xs text-muted">Used only for changes you preview and approve in Improve My Business.</p>
-            {isOwner && (
-              <div className="mt-3">
-                <ActionForm action={disconnectWordPressAction} submitLabel="Disconnect WordPress" variant="secondary" />
-              </div>
-            )}
-          </>
-        ) : isOwner ? (
-          <>
-            <p className="mt-1 text-sm text-muted">
-              Optional. Lets us add approved sections (like questions and answers) to your WordPress pages. Create a separate user with the <strong>Editor</strong> role, then an application password under Users → Profile. Never use your admin login.
-            </p>
-            <div className="mt-3">
-              <ActionForm action={connectWordPressAction} submitLabel="Connect WordPress">
-                <TextField label="WordPress site address" name="siteUrl" placeholder="https://example.com" />
-                <TextField label="Username (Editor role)" name="username" autoComplete="off" />
-                <TextField label="Application password" name="password" type="password" autoComplete="off" hint="Stored encrypted. You can revoke it in WordPress at any time." />
-                <Checkbox name="consent" label="I allow this app to edit pages I approve, one change at a time" />
-              </ActionForm>
-            </div>
-          </>
-        ) : (
-          <p className="mt-2 text-sm text-muted">No external accounts are connected.</p>
-        )}
-      </Card>
-
       <div className="grid content-start gap-4">
         <Card>
           <h2 className="font-semibold">Email notifications</h2>
@@ -177,7 +140,7 @@ export async function AccountSection() {
           <h2 className="font-semibold">Delete</h2>
           {deletions.map((d) => (
             <div key={d.id} className="mt-3">
-              <Notice tone="warn" title={`${d.kind === "website" ? "Website" : "Account"} deletion scheduled for ${d.scheduledFor.toLocaleDateString("en-IN")}`}>
+              <Notice tone="warn" title={`Account deletion scheduled for ${d.scheduledFor.toLocaleDateString("en-IN")}`}>
                 <ActionForm action={cancelDeletionAction} submitLabel="Cancel deletion" variant="secondary">
                   <input type="hidden" name="requestId" value={d.id} />
                 </ActionForm>

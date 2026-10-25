@@ -9,7 +9,7 @@ import type { CheckResult } from "./checks";
  * to write it rather than inventing it. Benefits are stated as hypotheses.
  */
 
-export type ApplyKind = "manual" | "wordpress_append";
+export type ApplyKind = "manual";
 
 /** Tasks for websites Foundly used to host. Those websites are retired, so these can't be applied. */
 export const isHostedKind = (k: string) => k.startsWith("hosted_");
@@ -102,24 +102,3 @@ export function hasPlaceholder(draft: string): boolean {
   return /\[[^\]]{3,}\]/.test(draft);
 }
 
-/** Parses "Q: ... / A: ..." pairs from a FAQ draft. */
-export function parseFaqDraft(draft: string) {
-  return draft
-    .split(/\n\s*\n/)
-    .map((chunk) => ({ q: chunk.match(/^Q:\s*(.+)$/m)?.[1]?.trim(), a: chunk.match(/^A:\s*([\s\S]+)$/m)?.[1]?.trim() }))
-    .filter((x): x is { q: string; a: string } => !!x.q && !!x.a)
-    .map((x) => ({ question: x.q.slice(0, 200), answer: x.a.slice(0, 1000) }));
-}
-
-/** Parses "Service name: description" lines. */
-export function parseServiceDraft(draft: string) {
-  return draft
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .map((l) => {
-      const i = l.indexOf(":");
-      return i === -1 ? null : { name: l.slice(0, i).trim(), description: l.slice(i + 1).trim().slice(0, 600) };
-    })
-    .filter((x): x is { name: string; description: string } => !!x && !!x.description);
-}

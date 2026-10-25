@@ -9,15 +9,11 @@ import { latestAudit, listActions } from "@/server/audit/service";
 import { can } from "@/server/context";
 import { readinessFor } from "@/server/geo";
 import { AiReadiness } from "@/components/ai-readiness";
-import { getWordPress, listPages, sectionHtml, WORDPRESS_CHECKS } from "@/server/wordpress";
 import {
   applyActionAction,
   approveActionAction,
   rejectActionAction,
-  applyWordPressAction,
-  prepareWordPressAction,
   rollbackActionAction,
-  rollbackWordPressAction,
   saveDraftAction,
   startAuditAction,
   verifyActionAction,
@@ -56,11 +52,10 @@ export default async function ImprovePage() {
   const locale = await getLocale();
   const db = await getDb();
   const b = await requireCurrentBusiness(db, ctx);
-  const [latest, actions, wp, readiness] = await Promise.all([latestAudit(db, ctx), listActions(db, ctx), getWordPress(db, ctx), readinessFor(db, ctx, b)]);
+  const [latest, actions, readiness] = await Promise.all([latestAudit(db, ctx), listActions(db, ctx), readinessFor(db, ctx, b)]);
   // Only a check of the website connected now is shown; an old address's results don't apply.
   const target = b.hasWebsite && b.websiteUrl ? targetOf(b.websiteUrl) : null;
   const audit = latest && target && latest.target === target ? latest : null;
-  const wpPages = wp ? await listPages(db, ctx).catch(() => null) : null;
   const open = actions.filter((a) => !["verified", "rejected", "rolled_back"].includes(a.status));
   const closed = actions.filter((a) => ["verified", "rejected", "rolled_back"].includes(a.status));
   const isOwner = can(ctx, "owner");
@@ -198,56 +193,24 @@ export default async function ImprovePage() {
                   </div>
                 </dl>
                 {a.verificationNote && <p className="mt-2 text-sm">{a.verificationNote}</p>}
-                {canEdit && !["applied", "queued"].includes(a.status) && (a.draft || a.applyKind !== "manual") && (
+                {canEdit && !["applied", "queued"].includes(a.status) && a.draft && (
                   <div className="mt-3">
                     <ActionForm action={saveDraftAction} submitLabel="Save draft" variant="secondary">
                       <input type="hidden" name="actionId" value={a.id} />
                       <input type="hidden" name="revision" value={a.draftRevision} />
                       <label htmlFor={`draft-${a.id}`} className="block text-sm font-semibold">
-                        Draft {a.applyKind === "wordpress_append" ? "(added to your WordPress page when you apply it)" : "(copy this to your website)"}
+                        Draft (copy this to your website)
                       </label>
                       <textarea id={`draft-${a.id}`} name="draft" defaultValue={a.draft} rows={Math.min(12, Math.max(3, a.draft.split("\n").length + 1))} className="block w-full rounded-lg border border-border bg-surface px-3 py-2 font-mono text-sm" />
                     </ActionForm>
                   </div>
                 )}
                 {a.draft && ["applied", "queued"].includes(a.status) && <pre className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-lg bg-surface-2 p-3 text-sm">{a.draft}</pre>}
-                {wp && WORDPRESS_CHECKS.includes(a.checkKey) && !["applied", "queued"].includes(a.status) && (
-                  <div className="mt-3 rounded-lg border border-border p-3">
-                    <h4 className="text-sm font-semibold">Add this to a WordPress page</h4>
-                    {wpPages === null ? (
-                      <p className="text-sm text-err-fg">We couldn&apos;t list your WordPress pages. Check the connection in Settings.</p>
-                    ) : (
-                      <ActionForm action={prepareWordPressAction} submitLabel="Preview change" variant="secondary" inline>
-                        <input type="hidden" name="actionId" value={a.id} />
-                        <select name="pageId" aria-label="WordPress page" defaultValue={a.externalTarget?.pageId} className="min-h-11 rounded-lg border border-border bg-surface px-2">
-                          {wpPages.map((p) => (
-                            <option key={p.id} value={p.id}>
-                              {p.title}
-                            </option>
-                          ))}
-                        </select>
-                      </ActionForm>
-                    )}
-                    {a.externalTarget && (
-                      <>
-                        <p className="mt-2 text-sm">
-                          This section will be added to the end of <strong>{a.externalTarget.pageTitle}</strong> (page last edited {a.externalTarget.previewedModified} UTC). If the page changes before you apply, nothing is written.
-                        </p>
-                        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded bg-surface-2 p-2 text-xs">{sectionHtml(a.checkKey, a.draft) ?? "Nothing to add — edit the draft."}</pre>
-                      </>
-                    )}
-                  </div>
-                )}
                 <div className="mt-3 flex flex-wrap gap-2">
                   {isOwner && ["detected", "proposed", "owner_edited", "failed", "rolled_back"].includes(a.status) && (
                     <ActionForm action={approveActionAction} submitLabel="Approve" inline>
                       <input type="hidden" name="actionId" value={a.id} />
                       <input type="hidden" name="revision" value={a.draftRevision} />
-                    </ActionForm>
-                  )}
-                  {isOwner && a.status === "approved" && a.applyKind === "wordpress_append" && (
-                    <ActionForm action={applyWordPressAction} submitLabel="Apply to WordPress" inline>
-                      <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
                   )}
                   {isOwner && a.status === "approved" && a.applyKind === "manual" && (
@@ -257,11 +220,6 @@ export default async function ImprovePage() {
                   )}
                   {canEdit && (a.status === "applied" || a.status === "failed") && (
                     <ActionForm action={verifyActionAction} submitLabel="Check it's live" variant="secondary" pendingLabel="Checking…" inline>
-                      <input type="hidden" name="actionId" value={a.id} />
-                    </ActionForm>
-                  )}
-                  {isOwner && a.status === "applied" && a.applyKind === "wordpress_append" && (
-                    <ActionForm action={rollbackWordPressAction} submitLabel="Undo in WordPress" variant="ghost" inline>
                       <input type="hidden" name="actionId" value={a.id} />
                     </ActionForm>
                   )}
