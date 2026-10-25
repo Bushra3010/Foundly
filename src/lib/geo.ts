@@ -36,14 +36,41 @@ export function slugify(s: string): string {
     .slice(0, 60);
 }
 
-/** "Interior designer" -> "Interior designers" for list headings. Conservative on purpose. */
+/** Text an owner typed in capitals ("MUMBAI") in lower case; anything with a lower-case letter is kept as typed. */
+function unshout(s: string, keepUpTo: number): string {
+  const t = s.trim().replace(/\s+/g, " ");
+  return /\p{Ll}/u.test(t) || t.replace(/\P{L}/gu, "").length <= keepUpTo ? t : t.toLowerCase();
+}
+
+/** City for headings: "MUMBAI", "mumbai" and "Mumbai" all read "Mumbai". */
+export function displayCity(city: string): string {
+  return titleCase(unshout(city, 0));
+}
+
+/** Category for headings: "ADMIN" -> "Admin", "plumber" -> "Plumber". Short acronyms such as "IT" stay as typed. */
+export function displayCategory(category: string): string {
+  const c = unshout(category, 4);
+  return c.charAt(0).toUpperCase() + c.slice(1);
+}
+
+/** Categories that name an activity, not a kind of business: "Software development", "Catering", "Interior design". */
+const isActivity = (c: string) => /(ing|ment|tion|sion|ance|ogy|phy|ism|care|work|repair|design)$/i.test(c) && !/station$/i.test(c);
+
+/** "Interior designer" -> "Interior designers", "Software development" -> "Software development businesses". Conservative on purpose. */
 export function pluralCategory(category: string): string {
   const c = category.trim();
   if (!c) return "Businesses";
-  if (/(s|services|care|work|repair|cleaning|consulting|tutoring|coaching)$/i.test(c)) return c;
+  if (/s$/i.test(c)) return c;
+  if (isActivity(c)) return `${c} businesses`;
   if (/[^aeiou]y$/i.test(c)) return c.slice(0, -1) + "ies";
   if (/(ch|sh|x|z)$/i.test(c)) return c + "es";
   return c + "s";
+}
+
+/** One of a category: "Software development" -> "Software development business"; "Plumber" stays "Plumber". */
+export function singularCategory(category: string): string {
+  const c = category.trim();
+  return isActivity(c) ? `${c} business` : c;
 }
 
 /** "a plumber", "an interior designer". */

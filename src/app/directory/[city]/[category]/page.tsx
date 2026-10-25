@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { PublicHeader } from "@/components/public-header";
 import { getDb } from "@/db";
-import { pluralCategory, slugify, withArticle } from "@/lib/geo";
+import { displayCategory, displayCity, pluralCategory, singularCategory, slugify, withArticle } from "@/lib/geo";
 import { jsonLdScript } from "@/lib/profile";
 import { listPublishedProfiles } from "@/server/directory";
 import { ListingCard, listToText } from "../../listing";
@@ -22,7 +22,7 @@ const load = cache(async (city: string, category: string) => {
     .filter((r) => slugify(r.profile.city) === city && slugify(r.profile.category) === category)
     .sort((a, b) => a.profile.name.localeCompare(b.profile.name));
   if (rows.length === 0) return null;
-  return { rows, cityName: rows[0].profile.city.trim(), categoryName: rows[0].profile.category.trim() };
+  return { rows, cityName: displayCity(rows[0].profile.city), categoryName: displayCategory(rows[0].profile.category) };
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -52,7 +52,7 @@ export default async function CityCategoryPage({ params }: Props) {
   const faq = [
     {
       question: `Which ${plural.toLowerCase()} are in ${cityName}?`,
-      answer: `${listToText(names)} ${rows.length === 1 ? `is ${withArticle(categoryName.toLowerCase())}` : `are ${plural.toLowerCase()}`} in ${cityName} listed on Foundly.`,
+      answer: `${listToText(names)} ${rows.length === 1 ? `is ${withArticle(singularCategory(categoryName).toLowerCase())}` : `are ${plural.toLowerCase()}`} in ${cityName} listed on Foundly.`,
     },
     ...(services.length
       ? [{ question: `What services do ${plural.toLowerCase()} in ${cityName} offer?`, answer: `Listed services include ${listToText(services.map((s) => s.toLowerCase()))}.` }]
@@ -100,7 +100,7 @@ export default async function CityCategoryPage({ params }: Props) {
         </nav>
         <h1 className="mt-3 text-3xl font-bold">{plural} in {cityName}</h1>
         <p className="mt-2 text-muted">
-          {rows.length} {rows.length === 1 ? categoryName.toLowerCase() : plural.toLowerCase()} listed, sorted by name. Details are supplied and confirmed by each business. There are no paid placements or rankings.
+          {rows.length} {rows.length === 1 ? singularCategory(categoryName).toLowerCase() : plural.toLowerCase()} listed, sorted by name. Details are supplied and confirmed by each business. There are no paid placements or rankings.
         </p>
         <ul className="mt-6 grid gap-4">
           {rows.map((r) => <ListingCard key={r.slug} row={r} />)}

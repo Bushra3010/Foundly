@@ -4,7 +4,7 @@ import { PublicHeader } from "@/components/public-header";
 import { Card, EmptyState } from "@/components/ui";
 import { getDb } from "@/db";
 import { listPublishedProfiles, searchDirectory } from "@/server/directory";
-import { pluralCategory, slugify } from "@/lib/geo";
+import { displayCategory, displayCity, pluralCategory, slugify } from "@/lib/geo";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default async function DirectoryPage({ searchParams }: { searchParams: Pr
   const facets = new Map<string, { href: string; label: string; count: number }>();
   for (const r of all) {
     const href = `/directory/${slugify(r.profile.city)}/${slugify(r.profile.category)}`;
-    const f = facets.get(href) ?? { href, label: `${pluralCategory(r.profile.category.trim())} in ${r.profile.city.trim()}`, count: 0 };
+    const f = facets.get(href) ?? { href, label: `${pluralCategory(displayCategory(r.profile.category))} in ${displayCity(r.profile.city)}`, count: 0 };
     facets.set(href, { ...f, count: f.count + 1 });
   }
   const browse = [...facets.values()].sort((a, b) => a.label.localeCompare(b.label));

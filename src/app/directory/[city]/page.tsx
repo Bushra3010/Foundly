@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { PublicHeader } from "@/components/public-header";
 import { getDb } from "@/db";
-import { pluralCategory, slugify } from "@/lib/geo";
+import { displayCategory, displayCity, pluralCategory, slugify } from "@/lib/geo";
 import { jsonLdScript } from "@/lib/profile";
 import { listPublishedProfiles } from "@/server/directory";
 import { ListingCard } from "../listing";
@@ -23,10 +23,10 @@ const load = cache(async (city: string) => {
   const categories = new Map<string, { name: string; count: number }>();
   for (const r of rows) {
     const key = slugify(r.profile.category);
-    const c = categories.get(key) ?? { name: r.profile.category.trim(), count: 0 };
+    const c = categories.get(key) ?? { name: displayCategory(r.profile.category), count: 0 };
     categories.set(key, { ...c, count: c.count + 1 });
   }
-  return { rows, cityName: rows[0].profile.city.trim(), categories: [...categories.entries()].sort((a, b) => a[1].name.localeCompare(b[1].name)) };
+  return { rows, cityName: displayCity(rows[0].profile.city), categories: [...categories.entries()].sort((a, b) => a[1].name.localeCompare(b[1].name)) };
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

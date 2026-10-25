@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import type { Db } from "@/db";
-import { businessGraph, businessLlmsText, discoveryFaq, entitySentence, geoReadiness, listingLabel, pluralCategory, slugify } from "@/lib/geo";
+import { businessGraph, businessLlmsText, discoveryFaq, displayCategory, displayCity, entitySentence, geoReadiness, listingLabel, pluralCategory, singularCategory, slugify } from "@/lib/geo";
 import { getBusiness, publishProfile } from "@/server/business";
 import { listPublishedProfiles } from "@/server/directory";
 import { facebookPageUpdate, googleLocationUpdate, presenceKit } from "@/lib/presence";
@@ -27,6 +27,23 @@ describe("GEO helpers", () => {
     expect(pluralCategory("Dental clinic")).toBe("Dental clinics");
     expect(pluralCategory("Pharmacy")).toBe("Pharmacies");
     expect(pluralCategory("Cleaning services")).toBe("Cleaning services");
+    expect(pluralCategory("Software Development")).toBe("Software Development businesses");
+    expect(pluralCategory("Catering")).toBe("Catering businesses");
+    expect(pluralCategory("Petrol station")).toBe("Petrol stations");
+    expect(singularCategory("Software development")).toBe("Software development business");
+    expect(singularCategory("Plumber")).toBe("Plumber");
+  });
+
+  it("shows owner-typed cities and categories in normal case for headings", () => {
+    expect(displayCity("MUMBAI")).toBe("Mumbai");
+    expect(displayCity("PUNE")).toBe("Pune");
+    expect(displayCity("new delhi")).toBe("New Delhi");
+    expect(displayCity("  Navi   Mumbai ")).toBe("Navi Mumbai");
+    expect(displayCategory("ADMIN")).toBe("Admin");
+    expect(displayCategory("plumber")).toBe("Plumber");
+    expect(displayCategory("IT")).toBe("IT");
+    expect(displayCategory("IT services")).toBe("IT services");
+    expect(pluralCategory(displayCategory("ADMIN"))).toBe("Admins");
   });
 
   it("writes one quotable sentence from confirmed facts only", () => {
