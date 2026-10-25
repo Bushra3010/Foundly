@@ -1,7 +1,7 @@
 feature,area,priority,original,clone,notes
 Sign up without a card and land in setup,onboarding,must,yes,yes,Foundly signup goes straight to onboarding
 Setup stepper: keywords -> website -> social -> start,onboarding,must,partial,yes,/app/start: 4 steps; one-click publish; Start runs first check + audit
-Type a keyword and get buyer questions,keywords,must,yes,yes,free-text + suggested keywords; template question per keyword; Hindi supported
+Type a keyword and get buyer questions,keywords,must,yes,yes,"free text, suggestions, and 'Find ideas with AI' (falls back to details without an AI source)"
 Pick which questions to track (checklist),keywords,must,yes,yes,approveQuestions()
 Brand name variations and owned domains,brand,must,yes,yes,updateBrandTerms(aliases ownedDomains)
 Add competitors,brand,must,yes,yes,competitors table; no automatic suggestions yet
@@ -16,13 +16,13 @@ Next 3 fixes on the performance page,optimization,must,yes,yes,"open improvement
 Connect website (Foundly site or own URL),website,must,no,yes,hosted site plus WordPress connector and audit
 Connect Google Business Profile and Facebook,connections,must,no,yes,OAuth sync built; needs app keys and approvals
 Share of voice vs competitors,metrics,should,yes,yes,share of AI recommendations among tracked brands
-Sentiment of mentions,metrics,should,yes,no,add a sentiment field per brand match during extraction
-Domain ranking of cited sources,citations,should,yes,yes,'Sites AI reads' with the business's own pages grouped
-Gap list: competitor mentioned and you are not,optimization,should,yes,partial,'Also named' per keyword; no dedicated gap view yet
+Sentiment of mentions,metrics,should,yes,partial,"estimated tone from the wording around the name (word lists, no model call); shown as 'estimated'"
+Domain ranking of cited sources,citations,should,yes,yes,"/app/sources: domains (answers, named-you, keywords) and exact pages"
+Gap list: competitor mentioned and you are not,optimization,should,yes,yes,"'Where competitors beat you' on Performance, with rivals, assistants and sites read"
 GEO audit: AI crawler access and page readiness,optimization,should,yes,yes,audits and findings and crawlSite
 Recommendation queue with done/dismiss,optimization,should,yes,yes,approve apply verify rollback flow
-Filters: engine and date range,dashboard,should,yes,partial,7/30/90 days; no engine filter on Performance
-CSV export,reports,should,yes,yes,leads and reports exports exist
+Filters: engine and date range,dashboard,should,yes,yes,assistant filter + 7/30/90 days on Performance
+CSV export,reports,should,yes,yes,/app/keywords/export: keyword results as CSV
 Plans priced by keyword count,billing,should,yes,yes,plans.ts keyword plans
 Weekly email summary,notifications,should,no,partial,sendWeeklySummaries; needs Resend key
 Country and language per question,keywords,could,yes,no,most Foundly users are one city; add later

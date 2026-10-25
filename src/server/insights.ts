@@ -1,6 +1,8 @@
 import "server-only";
 import type { DbOrTx } from "@/db";
-import type { BrandMatch } from "@/db/schema";
+import { and, eq, inArray } from "drizzle-orm";
+import { trackedQuestions, type BrandMatch } from "@/db/schema";
+import { toneAround, type Tone } from "@/lib/tone";
 import { requireRole, type Ctx } from "./context";
 import { effectiveMention, SMALL_SAMPLE, VALID_STATUSES } from "./monitoring/metrics";
 import { adapterFor } from "./monitoring/registry";
@@ -52,15 +54,17 @@ function latestPerQuestion(rows: ObservationWithMatches[]) {
  * how often AI names the business, the trend per check, the share against
  * competitors, results per AI source, per keyword, and the sites AI reads.
  */
-export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30) {
+export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: string) {
   requireRole(ctx, "viewer");
   const from = new Date(Date.now() - days * 86_400_000);
-  const [brands, questions, rows, runs] = await Promise.all([
+  const [brands, questions, allRows, runs] = await Promise.all([
     brandSpecs(db, ctx.workspaceId),
     listQuestions(db, ctx),
     queryObservations(db, ctx, { from }, 3000),
     listRuns(db, ctx, 1),
   ]);
+  // The engine filter narrows every number; the list of engines comes from all answers.
+  const rows = engine ? allRows.filter((o) => o.provider === engine) : allRows;
   const valid = rows.filter(isValid);
   const namedCount = valid.filter((o) => named(selfHit(o))).length;
   const citedCount = valid.filter((o) => selfHit(o)?.cited).length;
@@ -90,10 +94,10 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30) {
     .sort((a, b) => b.answers - a.answers || Number(b.self) - Number(a.self));
 
   // Per AI source.
-  const providers = [...new Set(rows.map((o) => o.provider))];
+  const providers = [...new Set(allRows.map((o) => o.provider))];
   const engines = providers
     .map((p) => {
-      const list = valid.filter((o) => o.provider === p);
+      const list = allRows.filter((o) => o.provider === p && isValid(o));
       return { key: p, label: engineName(p), answers: list.length, rate: pct(list.filter((o) => named(selfHit(o))).length, list.length) };
     })
     .sort((a, b) => (b.rate ?? -1) - (a.rate ?? -1));
@@ -121,6 +125,26 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30) {
     };
   });
 
+  // Tone of the answers that name the business (estimated from their wording).
+  const tones: Record<Tone, number> = { positive: 0, neutral: 0, negative: 0 };
+  for (const o of valid) {
+    const m = selfHit(o);
+    if (named(m)) tones[toneAround(o.rawAnswer, m!.matchedText ?? m!.brandName)]++;
+  }
+
+  // Gaps: keywords where AI names a competitor in an answer that leaves the business out.
+  const gaps = keywords
+    .map((k) => {
+      const list = latest.get(k.id) ?? [];
+      const missed = list.filter((o) => !named(selfHit(o)) && o.matches.some((m) => m.brandKey !== "self" && effectiveMention(m)));
+      if (missed.length === 0) return null;
+      const rivals = [...new Set(missed.flatMap((o) => o.matches.filter((m) => m.brandKey !== "self" && effectiveMention(m)).map((m) => nameOf.get(m.brandKey) ?? m.brandName)))];
+      const hosts = [...new Set(missed.flatMap((o) => o.citations.map((c) => hostOf(c.url)).filter(Boolean) as string[]))];
+      return { id: k.id, keyword: k.keyword, rivals, engines: [...new Set(missed.map((o) => engineName(o.provider)))], sources: hosts.slice(0, 3) };
+    })
+    .filter((g): g is NonNullable<typeof g> => g !== null)
+    .sort((a, b) => b.engines.length - a.engines.length);
+
   // Sites AI read to answer.
   // Sites AI read to answer.
   const own = new Set(brands.find((b) => b.key === "self")?.domains ?? []);
@@ -146,6 +170,9 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30) {
     keywords,
     sources,
     lastRun: runs[0] ?? null,
+    engine: engine ?? null,
+    tone: { ...tones, positiveRate: pct(tones.positive, namedCount) },
+    gaps,
   };
 }
 
@@ -180,7 +207,85 @@ export async function keywordAnswers(db: DbOrTx, ctx: Ctx, questionId: string) {
         capturedAt: o.capturedAt,
         citations: o.citations,
         self: selfHit(o) ?? null,
+        tone: named(selfHit(o)) ? toneAround(o.rawAnswer, selfHit(o)!.matchedText ?? selfHit(o)!.brandName) : null,
         named: o.matches.filter((m) => effectiveMention(m)).map((m) => ({ key: m.brandKey, name: m.brandName, position: m.listedPosition })),
       })),
   };
+}
+
+/**
+ * Every site and page AI assistants cited for the business's keywords:
+ * how many answers used each domain, for which keywords, and whether the
+ * business was named in those answers.
+ */
+export async function citationsFor(db: DbOrTx, ctx: Ctx, days = 30) {
+  requireRole(ctx, "viewer");
+  const from = new Date(Date.now() - days * 86_400_000);
+  const [brands, rows] = await Promise.all([brandSpecs(db, ctx.workspaceId), queryObservations(db, ctx, { from }, 3000)]);
+  const valid = rows.filter(isValid);
+  const own = brands.find((b) => b.key === "self")?.domains ?? [];
+  // Keywords no longer tracked still label their past answers.
+  const ids = [...new Set(valid.map((o) => o.questionId))];
+  const questions = ids.length
+    ? await db
+        .select({ id: trackedQuestions.id, keyword: trackedQuestions.keyword, text: trackedQuestions.text })
+        .from(trackedQuestions)
+        .where(and(eq(trackedQuestions.workspaceId, ctx.workspaceId), inArray(trackedQuestions.id, ids)))
+    : [];
+  const keywordOf = new Map(questions.map((q) => [q.id, q.keyword ?? q.text]));
+  const domains = new Map<string, { answers: Set<string>; keywords: Set<string>; withYou: Set<string> }>();
+  const urls = new Map<string, { title: string | null; host: string; answers: Set<string>; keywords: Set<string> }>();
+  for (const o of valid) {
+    const you = named(selfHit(o));
+    for (const c of o.citations) {
+      const host = hostOf(c.url);
+      if (!host) continue;
+      const d = domains.get(host) ?? { answers: new Set(), keywords: new Set(), withYou: new Set() };
+      d.answers.add(o.id);
+      d.keywords.add(keywordOf.get(o.questionId) ?? o.questionText);
+      if (you) d.withYou.add(o.id);
+      domains.set(host, d);
+      const u = urls.get(c.url) ?? { title: c.title ?? null, host, answers: new Set(), keywords: new Set() };
+      u.answers.add(o.id);
+      u.keywords.add(keywordOf.get(o.questionId) ?? o.questionText);
+      urls.set(c.url, u);
+    }
+  }
+  const withSources = valid.filter((o) => o.citations.length > 0).length;
+  return {
+    days,
+    answers: valid.length,
+    withSources,
+    domains: [...domains.entries()]
+      .map(([host, d]) => ({
+        host,
+        answers: d.answers.size,
+        share: pct(d.answers.size, withSources) ?? 0,
+        keywords: [...d.keywords],
+        namedYou: d.withYou.size,
+        own: own.some((x) => host === x || host.endsWith(`.${x}`)),
+      }))
+      .sort((a, b) => b.answers - a.answers),
+    urls: [...urls.entries()]
+      .map(([url, u]) => ({ url, title: u.title, host: u.host, answers: u.answers.size, keywords: [...u.keywords] }))
+      .sort((a, b) => b.answers - a.answers)
+      .slice(0, 50),
+  };
+}
+
+const csvCell = (v: string | number | null) => {
+  const s = v === null ? "" : String(v);
+  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+};
+
+/** The keyword results as CSV, for spreadsheets and reports. */
+export function keywordsCsv(p: Performance) {
+  const head = ["Keyword", "Question asked", "Result", "Recommended in (%)", "Answers", "Assistants that recommend you", "Also named", "Last checked"];
+  const label = { won: "Recommended", partly: "Sometimes", lost: "Not yet", pending: "Waiting" } as const;
+  const lines = p.keywords.map((k) =>
+    [k.keyword, k.question, label[k.status], k.rate, k.answers, k.namedOn.join("; "), k.rivals.join("; "), k.checkedAt ? k.checkedAt.toISOString().slice(0, 10) : null]
+      .map(csvCell)
+      .join(","),
+  );
+  return [head.join(","), ...lines].join("\n") + "\n";
 }

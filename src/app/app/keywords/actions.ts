@@ -7,6 +7,7 @@ import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
 import { parseKeywordList } from "@/lib/keywords";
 import { addKeywords, editKeyword } from "@/server/keywords";
+import { researchKeywords } from "@/server/research";
 import { addCompetitor, archiveQuestion, createRun, executeRun, manualRunKey, removeCompetitor } from "@/server/monitoring/service";
 
 function refresh() {
@@ -16,7 +17,7 @@ function refresh() {
 export async function addKeywordsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const values = formValues(form);
   try {
-    const keywords = parseKeywordList(String(form.get("keywords") ?? ""));
+    const keywords = parseKeywordList(form.getAll("keywords").map(String).join("\n"));
     if (keywords.length === 0) return { ok: false, message: "Type a keyword, like “dentist in Indore”.", values };
     const n = await addKeywords(await getDb(), await requireCtx(), keywords);
     refresh();
@@ -76,6 +77,19 @@ export async function checkNowAction(_prev: ActionState, form: FormData): Promis
     after(() => executeRun(db, run.id).catch((err) => console.error("[monitoring] run failed", run.id, err)));
     refresh();
     return { ok: true, message: "Checking now. Results appear here in a few minutes." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export type ResearchState = ActionState & { ideas?: string[]; source?: "ai" | "details" };
+
+/** Keyword ideas from AI (or from the owner's details when no AI source is on). */
+export async function researchKeywordsAction(_prev: ResearchState, form: FormData): Promise<ResearchState> {
+  try {
+    const r = await researchKeywords(await getDb(), await requireCtx(), String(form.get("focus") ?? ""));
+    if (r.ideas.length === 0) return { ok: false, message: "No new ideas right now. Try a different service or area." };
+    return { ok: true, ...r };
   } catch (err) {
     return toActionError(err);
   }

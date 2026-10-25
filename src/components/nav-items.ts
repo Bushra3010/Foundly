@@ -22,6 +22,7 @@ export const MORE_NAV: { href: string; key: MessageKey; icon: string }[] = [
   { href: "/app/compare", key: "nav.compare", icon: "⇄" },
   { href: "/app/business", key: "nav.business", icon: "▣" },
   { href: "/app/improve", key: "nav.improve", icon: "↗" },
+  { href: "/app/sources", key: "nav.sources", icon: "◉" },
   { href: "/app/visibility", key: "nav.visibility", icon: "◎" },
   { href: "/app/reports", key: "nav.reports", icon: "▤" },
 ];

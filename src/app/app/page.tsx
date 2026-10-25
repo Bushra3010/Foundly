@@ -26,14 +26,23 @@ const STARTED_NOTE: Record<string, { tone: "ok" | "warn"; text: string }> = {
   later: { tone: "warn", text: "Tracking is on. AI answer checks are being switched on for your account; your first results will appear here automatically." },
 };
 
-export default async function PerformancePage({ searchParams }: { searchParams: Promise<{ days?: string; started?: string }> }) {
+export default async function PerformancePage({ searchParams }: { searchParams: Promise<{ days?: string; started?: string; engine?: string }> }) {
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
   const sp = await searchParams;
   const days = PERIODS.includes(Number(sp.days)) ? Number(sp.days) : 30;
+  const engine = sp.engine && /^[a-z]+$/.test(sp.engine) ? sp.engine : undefined;
+  const qs = (next: { days?: number; engine?: string | null }) => {
+    const q = new URLSearchParams();
+    const d = next.days ?? days;
+    const e = next.engine === undefined ? engine : next.engine;
+    if (d !== 30) q.set("days", String(d));
+    if (e) q.set("engine", e);
+    return q.size ? `/app?${q}` : "/app";
+  };
   const [p, actions, readiness, social, request] = await Promise.all([
-    performanceFor(db, ctx, days),
+    performanceFor(db, ctx, days, engine),
     listActions(db, ctx),
     readinessFor(db, ctx, business),
     socialStatus(db, ctx, business),
@@ -60,12 +69,12 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
         <div className="dash-hero-text">
           <span className="dash-eyebrow">Performance</span>
           <h1>{business.name}</h1>
-          <p>How often AI assistants recommend you · last {days} days</p>
+          <p>How often AI assistants recommend you · last {days} days{engine ? ` · ${p.engines.find((e) => e.key === engine)?.label ?? engine} only` : ""}</p>
         </div>
         <div className="dash-hero-actions">
           <nav aria-label="Period" className="ov-row">
             {PERIODS.map((d) => (
-              <Link key={d} href={`/app?days=${d}`} className={`dash-btn ghost${d === days ? " is-active" : ""}`} aria-current={d === days ? "page" : undefined} style={d === days ? { borderColor: "var(--d-ink)" } : undefined}>
+              <Link key={d} href={qs({ days: d })} className={`dash-btn ghost${d === days ? " is-active" : ""}`} aria-current={d === days ? "page" : undefined} style={d === days ? { borderColor: "var(--d-ink)" } : undefined}>
                 {d} days
               </Link>
             ))}
@@ -78,6 +87,16 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
         </div>
       </header>
 
+      {p.engines.length > 1 && (
+        <nav aria-label="AI assistant" className="ov-filter">
+          <Link href={qs({ engine: null })} aria-current={!engine ? "page" : undefined}>All assistants</Link>
+          {p.engines.map((e) => (
+            <Link key={e.key} href={qs({ engine: e.key })} aria-current={engine === e.key ? "page" : undefined}>
+              {e.label} <span>{e.rate === null ? "—" : `${e.rate}%`}</span>
+            </Link>
+          ))}
+        </nav>
+      )}
       {note && <p className={`ov-note ${note.tone}`} role="status">{note.text}</p>}
       {todo.length > 0 && (
         <p className="ov-note" role="note">
@@ -127,6 +146,13 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
               <strong className="ov-kpi-value">{p.citedRate ?? 0}<small>%</small></strong>
               <span className="ov-kpi-note">Answers that cite your website as a source</span>
             </div>
+            <div className="ov-kpi">
+              <span className="ov-kpi-label">Positive tone <em className="ov-est">estimated</em></span>
+              <strong className="ov-kpi-value">{p.tone.positiveRate ?? "—"}{p.tone.positiveRate !== null && <small>%</small>}</strong>
+              <span className="ov-kpi-note">
+                {p.named ? `${p.tone.positive} positive · ${p.tone.neutral} neutral · ${p.tone.negative} negative` : "Shown once AI names you"}
+              </span>
+            </div>
           </section>
 
           <div className="ov-two">
@@ -138,13 +164,6 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
                 </div>
               </div>
               <TrendChart points={p.trend} />
-              <div className="ov-engines" aria-label="By AI assistant">
-                {p.engines.map((e) => (
-                  <span key={e.key} className="ov-engine">
-                    {e.label} <strong>{e.rate === null ? "—" : `${e.rate}%`}</strong>
-                  </span>
-                ))}
-              </div>
             </section>
             <section className="dash-panel ov-panel" aria-labelledby="ov-share">
               <div className="ov-row between">
@@ -172,7 +191,10 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
             <h2 id="ov-kw">Your keywords</h2>
             <p className="ov-sub">Latest answer for each keyword, across every AI assistant</p>
           </div>
-          <Link href="/app/keywords" className="dash-btn ghost">Manage keywords <Icon name="arrow" size={15} /></Link>
+          <div className="ov-row">
+            <a href={`/app/keywords/export?days=${days}`} className="dash-btn ghost" download>Export CSV</a>
+            <Link href="/app/keywords" className="dash-btn ghost">Manage keywords <Icon name="arrow" size={15} /></Link>
+          </div>
         </div>
         <div className="ov-table-wrap">
           <table className="ov-table">
@@ -203,6 +225,29 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
         {p.keywords.length > 8 && <p className="ov-sub" style={{ marginTop: 8 }}><Link href="/app/keywords" className="underline">See all {p.keywords.length} keywords</Link></p>}
       </section>
 
+      {p.gaps.length > 0 && (
+        <section className="dash-panel ov-panel" aria-labelledby="ov-gaps">
+          <h2 id="ov-gaps">Where competitors beat you</h2>
+          <p className="ov-sub">AI recommended a competitor here and left you out. Open a keyword to see the answer and the sites it trusted.</p>
+          <ul className="ov-list">
+            {p.gaps.slice(0, 6).map((g) => (
+              <li key={g.id}>
+                <span>
+                  <Link href={`/app/keywords/${g.id}`} className="ov-link"><strong>{g.keyword}</strong></Link>
+                  <span className="ov-q">
+                    {g.rivals.join(", ")} on {g.engines.join(", ")}
+                    {g.sources.length > 0 && <> · read {g.sources.join(", ")}</>}
+                  </span>
+                </span>
+                <Link href={`/app/keywords/${g.id}`} className="ov-sub" aria-label={`See answers for ${g.keyword}`}>
+                  <Icon name="arrow" size={15} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <div className="ov-two">
         <section className="dash-panel ov-panel" aria-labelledby="ov-fix">
           <div className="ov-row between">
@@ -230,7 +275,10 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
         </section>
         {p.sources.length > 0 ? (
           <section className="dash-panel ov-panel" aria-labelledby="ov-src">
-            <h2 id="ov-src">Sites AI reads</h2>
+            <div className="ov-row between">
+              <h2 id="ov-src">Sites AI reads</h2>
+              <Link href={`/app/sources?days=${days}`} className="ov-sub">See all</Link>
+            </div>
             <p className="ov-sub">Sources cited in answers about your keywords</p>
             <ul className="ov-list">
               {p.sources.map((s) => (

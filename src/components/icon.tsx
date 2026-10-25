@@ -6,6 +6,7 @@ const paths: Record<string, string> = {
   home: "M3 10.5 12 3l9 7.5M5 9v11h5v-6h4v6h5V9",
   performance: "M4 20V10m6 10V4m6 16v-7m4 7H2",
   keywords: "M10 3 8 21m8-18-2 18M4 8h17M3 16h17",
+  sources: "M4 5h16M4 12h16M4 19h10M18 17l2 2 3-4",
   connections: "M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1",
   business: "M4 21V5h16v16M8 5V3h8v2M8 9h2m4 0h2M8 13h2m4 0h2M10 21v-4h4v4",
   website:

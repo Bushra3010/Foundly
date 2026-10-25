@@ -11,6 +11,7 @@ const dict = {
   "nav.performance": { en: "Performance" },
   "nav.connections": { en: "Connections" },
   "nav.connectionsShort": { en: "Connect" },
+  "nav.sources": { en: "Sources AI reads" },
   "nav.keywords": { en: "Keywords" },
   "nav.compare": { en: "Compare" },
   "nav.social": { en: "Social media" },

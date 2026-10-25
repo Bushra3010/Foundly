@@ -6,7 +6,9 @@ import { grantCredits } from "@/server/credits";
 import { addKeywords, editKeyword } from "@/server/keywords";
 import { addCompetitor, createRun, executeRun, listQuestions, manualRunKey } from "@/server/monitoring/service";
 import type { AskResult, ProviderAdapter } from "@/server/monitoring/types";
-import { keywordAnswers, performanceFor } from "@/server/insights";
+import { citationsFor, keywordAnswers, keywordsCsv, performanceFor } from "@/server/insights";
+import { researchKeywords } from "@/server/research";
+import { toneAround } from "@/lib/tone";
 import { makeDb, onboard, signUp } from "./helpers";
 
 function fake(key: ProviderAdapter["key"], answer: (q: string) => Partial<AskResult>): ProviderAdapter {
@@ -35,6 +37,16 @@ describe("keywords", () => {
   it("cleans pasted lists", () => {
     expect(parseKeywordList(' "dentist in indore"?, Dentist in Indore\nx\nteeth cleaning ')).toEqual(["dentist in indore", "teeth cleaning"]);
     expect(normalizeKeyword("  plumber   in Pune!! ")).toBe("plumber in Pune");
+  });
+});
+
+describe("tone", () => {
+  it("reads the wording around the business name", () => {
+    expect(toneAround("1. Sharma Plumbing — trusted and highly rated\n2. Apex", "Sharma Plumbing")).toBe("positive");
+    expect(toneAround("Sharma Plumbing has mixed reviews; some customers report delays.", "Sharma Plumbing")).toBe("negative");
+    expect(toneAround("Sharma Plumbing is not recommended for big jobs.", "Sharma Plumbing")).toBe("negative");
+    expect(toneAround("1. Sharma Plumbing\n2. Apex", "Sharma Plumbing")).toBe("neutral");
+    expect(toneAround("The best plumbers: Apex. Also Sharma Plumbing.", "Sharma Plumbing")).toBe("neutral");
   });
 });
 
@@ -94,5 +106,34 @@ describe("keywords and performance", () => {
     expect(detail?.answers.find((a) => a.provider === "claude")?.named.map((n) => n.name)).toContain("Sharma Plumbing");
     expect(await keywordAnswers(db, other, plumber.id)).toBeNull();
     expect((await performanceFor(db, other)).answers).toBe(0);
+
+    // Gaps: "bathroom fitting" named Apex and not Sharma on both assistants.
+    expect(p.gaps.find((g) => g.keyword === "bathroom fitting")).toMatchObject({ rivals: ["Apex Plumbers"] });
+    expect(p.gaps.find((g) => g.keyword === "bathroom fitting")?.engines).toHaveLength(2);
+    // Filter to one assistant.
+    const onlyGemini = await performanceFor(db, ctx, 30, "gemini");
+    expect(onlyGemini.answers).toBe(2);
+    expect(onlyGemini.score).toBe(0);
+    expect(onlyGemini.engines).toHaveLength(2);
+    // Sources page: justdial.com cited in 3 answers, 1 of them naming the business.
+    const c = await citationsFor(db, ctx);
+    expect(c.domains[0]).toMatchObject({ host: "justdial.com", answers: 3, namedYou: 1 });
+    expect(c.urls.length).toBeGreaterThan(0);
+    expect((await citationsFor(db, other)).domains).toHaveLength(0);
+    // CSV export.
+    const csv = keywordsCsv(p);
+    expect(csv.split("\n")[0]).toContain("Keyword,Question asked,Result");
+    expect(csv).toContain("plumber in Pune,Can you recommend the best plumber in Pune?,Recommended,50");
+  });
+
+  it("finds keyword ideas with AI, without the business name or tracked keywords", async () => {
+    await addKeywords(db, ctx, ["plumber in Pune"]);
+    const ai = fake("claude", () => ({ answer: "1. plumber in Pune\n2. emergency plumber Kothrud\n- Sharma Plumbing reviews\n3. leak repair near Baner\nx" }));
+    const r = await researchKeywords(db, ctx, "", { adapter: ai });
+    expect(r.source).toBe("ai");
+    expect(r.ideas).toEqual(["emergency plumber Kothrud", "leak repair near Baner"]);
+    const offline = await researchKeywords(db, ctx, "", { adapter: null });
+    expect(offline.source).toBe("details");
+    expect(offline.ideas.length).toBeGreaterThan(0);
   });
 });

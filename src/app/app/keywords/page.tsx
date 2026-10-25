@@ -9,6 +9,7 @@ import { listCompetitors, questionLimit } from "@/server/monitoring/service";
 import { performanceFor } from "@/server/insights";
 import { Mini, StatusBadge } from "../overview-parts";
 import { addKeywordsAction, addRivalAction, editKeywordAction, removeKeywordAction, removeRivalAction } from "./actions";
+import { KeywordResearch } from "./research";
 import "../overview.css";
 
 export const metadata = { title: "Keywords" };
@@ -54,6 +55,7 @@ export default async function KeywordsPage() {
             <div style={{ height: 10 }} />
           </ActionForm>
         )}
+        {room > 0 && <KeywordResearch room={room} />}
       </section>
 
       <section className="dash-panel ov-panel" aria-labelledby="kw-list">

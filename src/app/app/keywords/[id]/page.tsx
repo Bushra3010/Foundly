@@ -70,7 +70,10 @@ export default async function KeywordAnswersPage({ params }: { params: Promise<{
                   {!a.ok ? (
                     <span className="ov-badge pending">No answer</span>
                   ) : me ? (
-                    <span className="ov-badge won">Recommends you{me.position ? ` · #${me.position}` : ""}</span>
+                    <span className="ov-row" style={{ gap: 6 }}>
+                      <span className="ov-badge won">Recommends you{me.position ? ` · #${me.position}` : ""}</span>
+                      {a.tone && <span className={`ov-badge ${a.tone === "positive" ? "won" : a.tone === "negative" ? "lost" : "pending"}`} title="Estimated from the wording around your name">{a.tone === "positive" ? "Positive" : a.tone === "negative" ? "Negative" : "Neutral"} tone</span>}
+                    </span>
                   ) : (
                     <span className="ov-badge lost">Doesn&apos;t mention you</span>
                   )}

@@ -21,3 +21,15 @@ Main had meanwhile dropped hosted Foundly websites (and leads), so the port keep
 instead of /app/start, and drops the one-click "publish Foundly website" step and the enquiries card. Kept from this build:
 Performance home, Keywords page, answer viewer, five-item menu, Connections, keyword → question, `tracked_questions.keyword`
 (migration 0015). Main's Compare page, website requests and per-platform score code stay; Compare is under Settings/More.
+
+## 2026-10-26: functionality parity
+
+| feature | status | note |
+| --- | --- | --- |
+| Assistant filter on Performance | done | every number recomputes for one assistant |
+| Tone (sentiment) | partial | estimated from wording, labelled "estimated"; a model-based score needs an AI key |
+| Gap analysis | done | competitor named, business not, with the sites read |
+| Sources AI reads (/app/sources) | done | domain ranking and exact pages |
+| Keyword research with AI | done | needs an AI source in production; falls back to details |
+| CSV export | done | |
+| Checks actually running in production | blocked | needs OPENAI/PERPLEXITY/GEMINI/ANTHROPIC keys + MONITOR_VALIDATED_PROVIDERS |
