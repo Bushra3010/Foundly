@@ -38,7 +38,7 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
   if (!site) {
     return (
       <>
-        <PageHeader icon="website" title="My Website" />
+        <PageHeader icon="website" title="My Website" actions={<LinkButton href="/app/business" variant="secondary">Your details</LinkButton>} />
         {job?.status === "failed" && (
           <div className="mb-4">
             <Notice tone="err" title="The last attempt didn't finish">
@@ -85,6 +85,9 @@ export default async function WebsitePage({ searchParams }: { searchParams: Prom
         description="Edit your draft, preview it, then publish when you're happy."
         actions={
           <>
+            <LinkButton href="/app/business" variant="secondary">
+              Your details
+            </LinkButton>
             <LinkButton href="/app/website/preview" variant="secondary" target="_blank">
               Open private preview
             </LinkButton>

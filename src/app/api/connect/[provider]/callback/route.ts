@@ -12,7 +12,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
   const { provider } = await params;
   const base = process.env.APP_URL ?? "http://localhost:3000";
   const url = new URL(req.url);
-  const back = (q: string) => NextResponse.redirect(`${base}/app/presence?connect=${q}`);
+  const back = (q: string) => NextResponse.redirect(`${base}/app/connections?connect=${q}`);
   const state = readState(url.searchParams.get("state") ?? "");
   const user = await getCurrentUser();
   if (!state || state.provider !== provider || !user || user.id !== state.userId) return back("invalid");
@@ -23,7 +23,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
     const { candidates, refreshToken } = await candidatesFor(provider as Provider, code);
     if (candidates.length === 0) return back("none");
     const res = back(provider);
-    res.cookies.set(CANDIDATES_COOKIE, encodeCandidates(candidates, refreshToken), { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/app/presence", maxAge: 15 * 60 });
+    res.cookies.set(CANDIDATES_COOKIE, encodeCandidates(candidates, refreshToken), { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/app/connections", maxAge: 15 * 60 });
     return res;
   } catch (err) {
     console.error("[connect]", provider, err);

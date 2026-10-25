@@ -102,7 +102,7 @@ export default async function BusinessPage() {
           </Card>
           <Card>
             <h2 className="font-semibold">Get listed where AI looks</h2>
-            <p className="mt-1 text-sm"><Link href="/app/presence" className="font-semibold underline">Open the step-by-step kit</Link> with ready-to-paste text for each platform.</p>
+            <p className="mt-1 text-sm"><Link href="/app/connections" className="font-semibold underline">Open the step-by-step kit</Link> with ready-to-paste text for each platform.</p>
             <p className="mt-1 text-sm text-muted">
               AI assistants trust a business they see in several places with the same name, phone and address. Create these listings with exactly the details above, then paste each link under “Your other listings”.
             </p>

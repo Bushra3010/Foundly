@@ -9,7 +9,7 @@ import { Icon } from "./icon";
 
 function isActive(pathname: string, href: string) {
   return href === "/app"
-    ? pathname === "/app"
+    ? pathname === "/app" || pathname === "/app/start"
     : pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -51,9 +51,10 @@ export function SidebarNav({
 
 export function BottomNav({ locale }: { locale: Locale }) {
   const pathname = usePathname();
-  const moreActive = !MOBILE_NAV.filter((i) => i.href !== "/app/more").some((i) =>
-    isActive(pathname, i.href),
-  );
+  // "More" holds Settings and the secondary pages; setup steps belong to Performance.
+  const moreActive =
+    pathname !== "/app/start" &&
+    !MOBILE_NAV.filter((i) => i.href !== "/app/more").some((i) => isActive(pathname, i.href));
   return (
     <ul className="grid grid-cols-5">
       {MOBILE_NAV.map((item) => {

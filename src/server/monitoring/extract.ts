@@ -6,7 +6,23 @@ import type { Citation } from "@/db/schema";
  */
 export const EXTRACTION_VERSION = 1;
 
-export type BrandSpec = { key: string; name: string; aliases: string[]; domains: string[] };
+export type BrandSpec = {
+  key: string;
+  name: string;
+  aliases: string[];
+  domains: string[];
+  /** Pages on a shared host that belong to the brand, e.g. https://foundly.co.in/s/<slug>. */
+  urlPrefixes?: string[];
+};
+
+/** Whether a cited URL is one of the brand's pages on a shared host. */
+export function urlHasPrefix(url: string, prefixes: string[] = []): boolean {
+  const u = url.toLowerCase().replace(/^https?:\/\/(www\.)?/, "");
+  return prefixes.some((p) => {
+    const q = p.toLowerCase().replace(/^https?:\/\/(www\.)?/, "").replace(/\/+$/, "");
+    return u === q || u.startsWith(`${q}/`) || u.startsWith(`${q}?`) || u.startsWith(`${q}#`);
+  });
+}
 
 export type BrandMatchResult = {
   brandKey: string;
@@ -82,7 +98,7 @@ export function extractBrands(answer: string | null, citations: Citation[], bran
     const cited = citations.some((c) => {
       const host = hostOfUrl(c.url);
       const titleHost = (c.title ?? "").toLowerCase().replace(/^www\./, "");
-      return b.domains.some((d) => (host && domainMatches(host, d)) || (titleHost && domainMatches(titleHost, d)));
+      return b.domains.some((d) => (host && domainMatches(host, d)) || (titleHost && domainMatches(titleHost, d))) || urlHasPrefix(c.url, b.urlPrefixes);
     });
     const mentioned = !!termHit || !!domainInText;
     let listedPosition: number | null = null;

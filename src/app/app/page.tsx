@@ -1,317 +1,237 @@
-import { and, count, desc, eq, gte } from "drizzle-orm";
+import { randomUUID } from "node:crypto";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { ActionForm } from "@/components/action-form";
 import { Icon } from "@/components/icon";
-import { Badge } from "@/components/ui";
-import { ShareLink } from "@/components/share-link";
-import { AiReadiness } from "@/components/ai-readiness";
-import { readinessFor } from "@/server/geo";
-import { siteUrl } from "@/app/s/load";
 import { getDb } from "@/db";
-import { auditEvents, leads } from "@/db/schema";
 import { requireCtx } from "@/lib/auth/session";
-import { missingOptionalFacts } from "@/lib/site/generate";
-import { listVersions } from "@/server/sites";
-import { visibilitySummary } from "@/server/monitoring/service";
-import { currentProfile, currentSite, requireCurrentBusiness } from "@/server/current";
+import { listActions } from "@/server/audit/service";
+import { requireCurrentBusiness } from "@/server/current";
+import { readinessFor } from "@/server/geo";
+import { enabledAdapters } from "@/server/monitoring/registry";
+import { performanceFor } from "@/server/performance";
+import { checkNowAction } from "./keywords/actions";
+import { Mini, ShareBars, StatusBadge, TrendChart } from "./perf-parts";
+import "./perf.css";
 
-export const metadata = { title: "Home" };
+export const metadata = { title: "Performance" };
 
-function daysAgo(days: number) {
-  return new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-}
+const OPEN = new Set(["detected", "proposed", "owner_edited", "approved", "queued"]);
+const PERIODS = [7, 30, 90];
 
-const ACTIVITY_TEXT: Record<string, string> = {
-  "workspace.created": "Account created",
-  "business.created": "Business added",
-  "business.updated": "Business details updated",
-  "site.generated": "Website draft generated",
-  "site.published": "Website published",
-  "site.rolled_back": "Website rolled back",
-  "site.unpublished": "Website taken offline",
-  "site.slug_changed": "Website address changed",
-  "profile.published": "Directory profile published",
-  "profile.unpublished": "Directory profile hidden",
-  "admin.support_access_granted": "Support team was given temporary access",
-  "admin.support_view": "Support team viewed your workspace",
-  "billing.subscription.activated": "Plan activated",
-  "billing.payment.failed": "Payment failed",
-  "monitoring.run_created": "AI visibility check started",
-  "action.applied": "Improvement applied",
-  "team.joined": "Someone joined your team",
-  "account.password_set": "Password updated",
+const STARTED_NOTE: Record<string, { tone: "ok" | "warn"; text: string }> = {
+  running: { tone: "ok", text: "Tracking is on. Your first check is running — results appear here in a few minutes." },
+  busy: { tone: "ok", text: "Tracking is on. A check is already running." },
+  no_engines: { tone: "warn", text: "Tracking is on. AI answer checks are being switched on for your account; your first results will appear here automatically." },
+  no_credits: { tone: "warn", text: "Tracking is on, but there aren't enough credits for a check right now. See your plan in Settings." },
 };
 
-export default async function HomePage() {
+export default async function PerformancePage({ searchParams }: { searchParams: Promise<{ days?: string; started?: string }> }) {
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
-  const weekAgo = daysAgo(7);
-  const [
-    site,
-    versions,
-    profile,
-    [{ n: newLeads }],
-    [{ n: weekLeads }],
-    activity,
-    visibility,
-    readiness,
-  ] = await Promise.all([
-    currentSite(db, ctx),
-    listVersions(db, ctx),
-    currentProfile(db, ctx),
-    db
-      .select({ n: count() })
-      .from(leads)
-      .where(
-        and(eq(leads.workspaceId, ctx.workspaceId), eq(leads.status, "new")),
-      ),
-    db
-      .select({ n: count() })
-      .from(leads)
-      .where(
-        and(
-          eq(leads.workspaceId, ctx.workspaceId),
-          gte(leads.createdAt, weekAgo),
-        ),
-      ),
-    db
-      .select()
-      .from(auditEvents)
-      .where(eq(auditEvents.workspaceId, ctx.workspaceId))
-      .orderBy(desc(auditEvents.createdAt))
-      .limit(8),
-    visibilitySummary(db, ctx, 30),
-    readinessFor(db, ctx, business),
-  ]);
-  const vm = visibility.metrics;
-  const live = site && versions.find((v) => v.id === site.publishedVersionId);
+  if (!business.monitoringStartedAt) redirect("/app/start");
+  const sp = await searchParams;
+  const days = PERIODS.includes(Number(sp.days)) ? Number(sp.days) : 30;
+  const [p, actions, readiness] = await Promise.all([performanceFor(db, ctx, days), listActions(db, ctx), readinessFor(db, ctx, business)]);
+  const weekLeads = p.leadsThisWeek;
 
-  // Three next actions, in order of what unlocks the most for the owner.
-  const actions: { title: string; body: string; href: string; cta: string }[] =
-    [];
-  if (!site && !business.hasWebsite)
-    actions.push({
-      title: "Create your website",
-      body: "Generate a private preview from your details.",
-      href: "/app/website",
-      cta: "Create website",
-    });
-  if (site && !live)
-    actions.push({
-      title: "Publish your website",
-      body: "Your draft is ready. Review it and publish when happy.",
-      href: "/app/website",
-      cta: "Review draft",
-    });
-  if (profile?.status !== "published")
-    actions.push({
-      title: "Publish your directory profile",
-      body: "Give customers an accurate page about your business.",
-      href: "/app/business",
-      cta: "Open My Business",
-    });
-  if (newLeads > 0)
-    actions.push({
-      title: `Reply to ${newLeads} new ${newLeads === 1 ? "enquiry" : "enquiries"}`,
-      body: "Customers are waiting to hear back.",
-      href: "/app/leads",
-      cta: "Open leads",
-    });
-  for (const m of missingOptionalFacts(business)) {
-    actions.push({
-      title: `Add ${m.label.toLowerCase()}`,
-      body: m.why + ".",
-      href: "/app/business",
-      cta: "Add details",
-    });
-  }
-
-  const setupSteps = [
-    { label: "Business details", done: true, href: "/app/business" },
-    {
-      label: "Website published",
-      done: Boolean(live || business.hasWebsite),
-      href: "/app/website",
-    },
-    {
-      label: "Directory profile",
-      done: profile?.status === "published",
-      href: "/app/business",
-    },
-    {
-      label: "AI visibility check",
-      done: vm.valid > 0,
-      href: "/app/visibility",
-    },
-  ];
-  const completed = setupSteps.filter((step) => step.done).length;
-
-  const [focus, ...moreActions] = actions;
-  const mentionRate = vm.valid > 0 && vm.mention.rate !== null ? Math.round(vm.mention.rate * 100) : null;
-  const ringR = 34;
-  const ringC = 2 * Math.PI * ringR;
+  const fixes = [
+    ...actions.filter((a) => OPEN.has(a.status)).map((a) => ({ title: a.title, why: a.hypothesis, href: "/app/improve" })),
+    ...readiness.items.filter((i) => !i.done).map((i) => ({ title: i.label, why: i.why, href: i.href })),
+  ].slice(0, 3);
+  const won = p.keywords.filter((k) => k.status === "won").length;
+  const checked = p.keywords.filter((k) => k.status !== "pending").length;
+  const running = p.lastRun && (p.lastRun.status === "queued" || p.lastRun.status === "running");
+  const note = sp.started ? STARTED_NOTE[sp.started] : undefined;
+  const engineNames = p.engines.length ? p.engines.map((e) => e.label).join(", ") : "ChatGPT, Gemini, Perplexity and Claude";
+  const canCheck = enabledAdapters().length > 0;
 
   return (
-    <div className="dash">
+    <div className="dash pf">
       <header className="dash-hero">
         <div className="dash-hero-text">
-          <span className="dash-eyebrow">Welcome back</span>
+          <span className="dash-eyebrow">Performance</span>
           <h1>{business.name}</h1>
-          <p>{[business.category, business.city].filter(Boolean).join(" · ")}</p>
+          <p>How often AI assistants recommend you · last {days} days</p>
         </div>
         <div className="dash-hero-actions">
-          <span className={`dash-status ${live ? "live" : site ? "draft" : ""}`}>
-            <span aria-hidden="true" />
-            {live ? "Website live" : site ? "Draft ready" : business.hasWebsite ? "Website connected" : "No website yet"}
-          </span>
-          {live && site ? (
-            <a href={`/s/${site.slug}`} target="_blank" rel="noreferrer" className="dash-btn ghost">
-              <Icon name="globe" size={16} /> View website
-            </a>
-          ) : (
-            <Link href="/app/website" className="dash-btn ghost">
-              <Icon name="website" size={16} /> Open website
-            </Link>
+          <nav aria-label="Period" className="pf-row">
+            {PERIODS.map((d) => (
+              <Link key={d} href={`/app?days=${d}`} className={`dash-btn ghost${d === days ? " is-active" : ""}`} aria-current={d === days ? "page" : undefined} style={d === days ? { borderColor: "var(--d-ink)" } : undefined}>
+                {d} days
+              </Link>
+            ))}
+          </nav>
+          {canCheck && (
+            <ActionForm action={checkNowAction} submitLabel={running ? "Checking…" : "Check now"} pendingLabel="Starting…" variant="secondary" className="">
+              <input type="hidden" name="requestId" value={randomUUID()} />
+            </ActionForm>
           )}
         </div>
       </header>
 
-      <section className="dash-focus" aria-label="Your next step">
-        <div className="dash-focus-main">
-          {focus ? (
-            <>
-              <span className="dash-focus-label"><Icon name="spark" size={14} /> Your next step</span>
-              <h2>{focus.title}</h2>
-              <p>{focus.body}</p>
-              <Link href={focus.href} className="dash-btn lime">
-                {focus.cta} <Icon name="arrow" size={17} />
-              </Link>
-              {live && site && <ShareLink url={siteUrl(site.slug)} label="Share your website with customers" shareText={business.name} />}
-            </>
-          ) : (
-            <>
-              <span className="dash-focus-label"><Icon name="check" size={14} /> All caught up</span>
-              <h2>Everything is in place.</h2>
-              <p>Come back to check new enquiries and your latest AI visibility results.</p>
-              <Link href="/app/visibility" className="dash-btn lime">
-                See AI visibility <Icon name="arrow" size={17} />
-              </Link>
-              {live && site && <ShareLink url={siteUrl(site.slug)} label="Share your website with customers" shareText={business.name} />}
-            </>
-          )}
-        </div>
-        <div className="dash-setup">
-          <div className="dash-ring" role="progressbar" aria-label="Setup progress" aria-valuenow={completed} aria-valuemin={0} aria-valuemax={4}>
-            <svg viewBox="0 0 80 80" aria-hidden="true">
-              <circle cx="40" cy="40" r={ringR} className="dash-ring-track" />
-              <circle cx="40" cy="40" r={ringR} className="dash-ring-fill" strokeDasharray={ringC} strokeDashoffset={ringC * (1 - completed / 4)} />
-            </svg>
-            <span><strong>{completed}</strong>/4</span>
+      {note && <p className={`pf-note ${note.tone}`} role="status">{note.text}</p>}
+
+      {p.answers === 0 ? (
+        <section className="dash-panel pf-empty" aria-labelledby="pf-wait">
+          {running ? <div className="pf-pulse" aria-hidden="true" /> : <Icon name="visibility" size={34} />}
+          <h2 id="pf-wait">{running ? "Asking AI assistants about your keywords…" : "No AI answers in this period yet"}</h2>
+          <p>
+            {running
+              ? `We're asking ${engineNames} about your ${p.keywords.length} keyword${p.keywords.length === 1 ? "" : "s"}. Refresh in a few minutes.`
+              : canCheck
+                ? "Run a check to see whether AI assistants recommend you, or pick a longer period."
+                : "Your keywords are saved. Results appear here as soon as the first check finishes. Meanwhile, the fixes below raise your chances."}
+          </p>
+        </section>
+      ) : (
+        <>
+          <section className="pf-kpis" aria-label="Key numbers">
+            <div className="pf-kpi hero">
+              <span className="pf-kpi-label"><Icon name="visibility" size={16} /> AI visibility</span>
+              <strong className="pf-kpi-value">{p.score ?? 0}<small>%</small></strong>
+              <span className="pf-kpi-note">Recommended in {p.named} of {p.answers} AI answers{p.smallSample ? " · early data" : ""}</span>
+              <span className="pf-meter" aria-hidden="true"><span style={{ width: `${p.score ?? 0}%` }} /></span>
+            </div>
+            <div className="pf-kpi">
+              <span className="pf-kpi-label">Keywords you win</span>
+              <strong className="pf-kpi-value">{won}<small>/{checked || p.keywords.length}</small></strong>
+              <span className="pf-kpi-note">AI names you in at least half the answers</span>
+            </div>
+            <div className="pf-kpi">
+              <span className="pf-kpi-label">Average position</span>
+              <strong className="pf-kpi-value">{p.avgPosition ? <>#{p.avgPosition}</> : "—"}</strong>
+              <span className="pf-kpi-note">{p.avgPosition ? "Where you appear when AI lists options" : "Not in any list yet"}</span>
+            </div>
+            <div className="pf-kpi">
+              <span className="pf-kpi-label">Links to your site</span>
+              <strong className="pf-kpi-value">{p.citedRate ?? 0}<small>%</small></strong>
+              <span className="pf-kpi-note">Answers that cite your website as a source</span>
+            </div>
+          </section>
+
+          <div className="pf-two">
+            <section className="dash-panel pf-panel" aria-labelledby="pf-trend">
+              <div className="pf-row between">
+                <div>
+                  <h2 id="pf-trend">Visibility over time</h2>
+                  <p className="pf-sub">Share of answers that recommend you, per check</p>
+                </div>
+              </div>
+              <TrendChart points={p.trend} />
+              <div className="pf-engines" aria-label="By AI assistant">
+                {p.engines.map((e) => (
+                  <span key={e.key} className="pf-engine">
+                    {e.label} <strong>{e.rate === null ? "—" : `${e.rate}%`}</strong>
+                  </span>
+                ))}
+              </div>
+            </section>
+            <section className="dash-panel pf-panel" aria-labelledby="pf-share">
+              <div className="pf-row between">
+                <div>
+                  <h2 id="pf-share">You vs competitors</h2>
+                  <p className="pf-sub">Share of AI recommendations</p>
+                </div>
+                <Link href="/app/keywords#competitors" className="pf-sub">Edit</Link>
+              </div>
+              {p.share.length > 1 ? (
+                <ShareBars share={p.share} />
+              ) : (
+                <p className="pf-sub" style={{ marginTop: 14 }}>
+                  <Link href="/app/keywords#competitors" className="font-semibold underline">Add competitors</Link> to see who AI recommends instead of you.
+                </p>
+              )}
+            </section>
           </div>
-          <ul>
-            {setupSteps.map((step) => (
-              <li key={step.label}>
-                <Link href={step.href} className={step.done ? "done" : ""}>
-                  <span className="dash-tick" aria-hidden="true">{step.done && <Icon name="check" size={11} />}</span>
-                  {step.label}
-                  <span className="sr-only">{step.done ? " (done)" : " (to do)"}</span>
+        </>
+      )}
+
+      <section className="dash-panel pf-panel" aria-labelledby="pf-kw">
+        <div className="pf-row between">
+          <div>
+            <h2 id="pf-kw">Your keywords</h2>
+            <p className="pf-sub">Latest answer for each keyword, across every AI assistant</p>
+          </div>
+          <Link href="/app/keywords" className="dash-btn ghost">Manage keywords <Icon name="arrow" size={15} /></Link>
+        </div>
+        <div className="pf-table-wrap">
+          <table className="pf-table">
+            <thead>
+              <tr>
+                <th scope="col">Keyword</th>
+                <th scope="col">Result</th>
+                <th scope="col">Recommended in</th>
+                <th scope="col">Also named</th>
+              </tr>
+            </thead>
+            <tbody>
+              {p.keywords.slice(0, 8).map((k) => (
+                <tr key={k.id}>
+                  <td>
+                    <Link href={`/app/keywords/${k.id}`} className="pf-kw">{k.keyword}</Link>
+                  </td>
+                  <td><StatusBadge status={k.status} /></td>
+                  <td>
+                    {k.rate === null ? <span className="pf-muted">—</span> : <><Mini rate={k.rate} />{k.rate}% <span className="pf-muted">of {k.answers}</span></>}
+                  </td>
+                  <td>{k.rivals.length ? k.rivals.join(", ") : <span className="pf-muted">—</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {p.keywords.length > 8 && <p className="pf-sub" style={{ marginTop: 8 }}><Link href="/app/keywords" className="underline">See all {p.keywords.length} keywords</Link></p>}
+      </section>
+
+      <div className="pf-two">
+        <section className="dash-panel pf-panel" aria-labelledby="pf-fix">
+          <div className="pf-row between">
+            <div>
+              <h2 id="pf-fix">Next fixes</h2>
+              <p className="pf-sub">The changes most likely to get you recommended</p>
+            </div>
+            <Link href="/app/improve" className="pf-sub">All fixes</Link>
+          </div>
+          {fixes.length === 0 ? (
+            <p className="pf-sub" style={{ marginTop: 12 }}>Nothing to fix right now. We&apos;ll suggest more after the next check.</p>
+          ) : (
+            <div style={{ marginTop: 6 }}>
+              {fixes.map((f, i) => (
+                <Link key={f.title} href={f.href} className="pf-fix">
+                  <span className="pf-fix-n">{i + 1}</span>
+                  <span>
+                    <strong>{f.title}</strong>
+                    <span className="pf-why">{f.why}</span>
+                  </span>
                 </Link>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+          )}
+        </section>
+        <div className="pf" style={{ gap: 14 }}>
+          {p.sources.length > 0 && (
+            <section className="dash-panel pf-panel" aria-labelledby="pf-src">
+              <h2 id="pf-src">Sites AI reads</h2>
+              <p className="pf-sub">Sources cited in answers about your keywords</p>
+              <ul className="pf-list">
+                {p.sources.map((s) => (
+                  <li key={s.host}>
+                    <span className={s.own ? "own" : undefined}>{s.host === "your website" ? "Your website" : s.host}{s.own && s.host !== "your website" ? " (your site)" : ""}</span>
+                    <span className="pf-muted">{s.count} answer{s.count === 1 ? "" : "s"}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          <Link href="/app/leads" className="dash-kpi">
+            <span className="dash-kpi-label">Enquiries <em>7 days</em></span>
+            <strong className="dash-kpi-value">{weekLeads}</strong>
+            <span className="dash-kpi-detail">From your website&apos;s contact form</span>
+            <span className="dash-kpi-link">Open enquiries <Icon name="arrow" size={14} /></span>
+          </Link>
         </div>
-      </section>
-
-      <section className="dash-kpis" aria-label="Business overview">
-        <Link href="/app/website" className="dash-kpi">
-          <span className="dash-kpi-icon peach"><Icon name="website" size={19} /></span>
-          <span className="dash-kpi-label">Website</span>
-          <strong className="dash-kpi-value">
-            {live ? "Live" : site ? "Draft" : business.hasWebsite ? "Connected" : "Not created"}
-          </strong>
-          <span className="dash-kpi-detail">
-            {live ? `Published · version ${live.versionNumber}` : site ? "Review and publish when ready" : business.hasWebsite ? (business.websiteUrl ?? "Your own website") : "Your home on the internet"}
-          </span>
-          <span className="dash-kpi-link">Manage website <Icon name="arrow" size={14} /></span>
-        </Link>
-        <Link href="/app/visibility" className="dash-kpi">
-          <span className="dash-kpi-icon lilac"><Icon name="visibility" size={19} /></span>
-          <span className="dash-kpi-label">AI mention rate <em>30 days</em></span>
-          <strong className="dash-kpi-value">{mentionRate === null ? "—" : `${mentionRate}%`}</strong>
-          <span className="dash-kpi-detail">
-            {vm.valid > 0
-              ? `${vm.mention.numerator} of ${vm.mention.denominator} answers${vm.smallSample ? " · small sample" : ""}`
-              : "Run a check to see your first results"}
-          </span>
-          {mentionRate !== null && (
-            <span className="dash-kpi-meter" aria-hidden="true"><span style={{ width: `${mentionRate}%` }} /></span>
-          )}
-          <span className="dash-kpi-link">{vm.valid > 0 ? "See the evidence" : "Explore AI visibility"} <Icon name="arrow" size={14} /></span>
-        </Link>
-        <Link href="/app/leads" className="dash-kpi">
-          <span className="dash-kpi-icon amber"><Icon name="leads" size={19} /></span>
-          <span className="dash-kpi-label">Enquiries <em>7 days</em></span>
-          <strong className="dash-kpi-value">{weekLeads}</strong>
-          <span className="dash-kpi-detail">
-            {newLeads > 0 ? `${newLeads} waiting for your reply` : "No enquiries waiting"}
-          </span>
-          {newLeads > 0 && <span className="dash-kpi-badge">{newLeads} new</span>}
-          <span className="dash-kpi-link">Open inbox <Icon name="arrow" size={14} /></span>
-        </Link>
-      </section>
-
-      <AiReadiness readiness={readiness} limit={4} fresh />
-
-      <div className="dash-lower">
-        <section className="dash-panel" aria-labelledby="dash-more">
-          <div className="dash-panel-head">
-            <h2 id="dash-more">More ways to grow</h2>
-            <span>{moreActions.length > 0 ? `${Math.min(moreActions.length, 3)} suggestions` : "Nothing pending"}</span>
-          </div>
-          {moreActions.length === 0 ? (
-            <p className="dash-empty">
-              <Badge tone="ok">You’re all caught up</Badge>
-              <span>New suggestions will appear here as your business grows.</span>
-            </p>
-          ) : (
-            <ul className="dash-todo">
-              {moreActions.slice(0, 3).map((a) => (
-                <li key={a.title}>
-                  <Link href={a.href}>
-                    <span className="dash-todo-dot" aria-hidden="true" />
-                    <span className="dash-todo-text">
-                      <strong>{a.title}</strong>
-                      <span>{a.body}</span>
-                    </span>
-                    <span className="dash-todo-cta">{a.cta}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <section className="dash-panel" aria-labelledby="dash-activity">
-          <div className="dash-panel-head">
-            <h2 id="dash-activity">Recent activity</h2>
-            <Link href="/app/reports">Reports <Icon name="arrow" size={13} /></Link>
-          </div>
-          {activity.length === 0 ? (
-            <p className="dash-empty"><span>Your business journey starts here. Updates will appear as you go.</span></p>
-          ) : (
-            <ul className="dash-activity">
-              {activity.slice(0, 5).map((e) => (
-                <li key={e.id}>
-                  <span className="dash-activity-dot" aria-hidden="true" />
-                  <span className="dash-activity-text">{ACTIVITY_TEXT[e.action] ?? e.action}</span>
-                  <time dateTime={e.createdAt.toISOString()}>
-                    {e.createdAt.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}
-                  </time>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
       </div>
     </div>
   );

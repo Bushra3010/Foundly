@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { and, asc, desc, eq, gte, inArray, isNull, lt, lte, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, isNotNull, isNull, lt, lte, or, sql } from "drizzle-orm";
 import type { Db, DbOrTx } from "@/db";
 import {
   brandMatches,
@@ -44,7 +44,15 @@ export async function listQuestions(db: DbOrTx, ctx: Ctx) {
     .orderBy(asc(trackedQuestions.group), asc(trackedQuestions.createdAt));
 }
 
-export type NewQuestion = { text: string; group: (typeof trackedQuestions.$inferInsert)["group"]; location?: string | null; language?: string };
+export type NewQuestion = {
+  text: string;
+  group: (typeof trackedQuestions.$inferInsert)["group"];
+  location?: string | null;
+  language?: string;
+  /** What the owner typed, when the question was built from a keyword. */
+  keyword?: string | null;
+  replacesId?: string | null;
+};
 
 /** The owner approves questions; only approved, unarchived questions are ever sent to a provider. */
 export async function approveQuestions(db: Db, ctx: Ctx, items: NewQuestion[]) {
@@ -52,9 +60,11 @@ export async function approveQuestions(db: Db, ctx: Ctx, items: NewQuestion[]) {
   const b = await requireBusiness(db, ctx);
   const existing = await listQuestions(db, ctx);
   const seen = new Set(existing.map((q) => q.text.trim().toLowerCase()));
+  const seenKeywords = new Set(existing.flatMap((q) => (q.keyword ? [q.keyword.toLowerCase()] : [])));
   const fresh = items
     .map((i) => ({ ...i, text: i.text.trim().replace(/\s+/g, " ") }))
-    .filter((i) => i.text.length >= 8 && i.text.length <= 300 && !seen.has(i.text.toLowerCase()));
+    .filter((i) => i.text.length >= 8 && i.text.length <= 300 && !seen.has(i.text.toLowerCase()))
+    .filter((i) => !i.keyword || !seenKeywords.has(i.keyword.toLowerCase()));
   const limit = await questionLimit(db, ctx.workspaceId);
   if (existing.length + fresh.length > limit) {
     throw new AppError("invalid", `Your plan tracks up to ${limit} keywords. Archive some or upgrade for more.`, { upgrade: true });
@@ -68,6 +78,8 @@ export async function approveQuestions(db: Db, ctx: Ctx, items: NewQuestion[]) {
     group: i.text.toLowerCase().includes(name) ? ("branded" as const) : i.group,
     location: i.location ?? null,
     language: i.language ?? "en",
+    keyword: i.keyword ?? null,
+    replacesId: i.replacesId ?? null,
     approvedBy: ctx.userId,
   }));
   if (rows.length) await db.insert(trackedQuestions).values(rows);
@@ -123,8 +135,11 @@ export async function brandSpecs(db: DbOrTx, workspaceId: string): Promise<Brand
   if (site && process.env.SITES_ROOT_DOMAIN) domains.add(`${site.slug}.${process.env.SITES_ROOT_DOMAIN}`);
   for (const c of custom) domains.add(c.hostname.replace(/^www\./, ""));
   const comps = await db.select().from(competitors).where(eq(competitors.workspaceId, workspaceId));
+  // A Foundly site without its own domain lives under the app's host; match it by path.
+  const appUrl = (process.env.APP_URL ?? "http://localhost:3000").replace(/\/+$/, "");
+  const urlPrefixes = site ? [`${appUrl}/s/${site.slug}`] : [];
   return [
-    { key: "self", name: b.name, aliases: b.aliases, domains: [...domains] },
+    { key: "self", name: b.name, aliases: b.aliases, domains: [...domains], urlPrefixes },
     ...comps.map((c) => ({ key: c.id, name: c.name, aliases: c.aliases, domains: c.domains })),
   ];
 }
@@ -319,13 +334,17 @@ export function checksDue(checks: "weekly" | "biweekly" | null, now: Date) {
   return checks === "weekly" || Number(isoWeek(now).slice(-2)) % 2 === 0;
 }
 
-/** Cron: weekly runs for every workspace with approved questions, on each plan's schedule. */
+/**
+ * Cron: runs for every workspace that pressed Start and has active keywords,
+ * on each plan's schedule.
+ */
 export async function scheduleDueRuns(db: Db, now = new Date()) {
   if (enabledAdapters().length === 0) return { created: 0, skipped: "no providers" };
   const workspaces = await db
     .selectDistinct({ workspaceId: trackedQuestions.workspaceId })
     .from(trackedQuestions)
-    .where(isNull(trackedQuestions.archivedAt));
+    .innerJoin(businesses, eq(businesses.id, trackedQuestions.businessId))
+    .where(and(isNull(trackedQuestions.archivedAt), isNotNull(businesses.monitoringStartedAt)));
   let created = 0;
   for (const { workspaceId } of workspaces) {
     try {

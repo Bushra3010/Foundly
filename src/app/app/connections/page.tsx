@@ -15,7 +15,7 @@ import { toPublicProfile } from "@/lib/profile";
 import { siteUrl } from "@/app/s/load";
 import { currentProfile, currentSite, requireCurrentBusiness } from "@/server/current";
 
-export const metadata = { title: "Get listed" };
+export const metadata = { title: "Connections" };
 
 /**
  * The presence agent. It prepares every listing (same facts, each platform's
@@ -56,7 +56,7 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
     <>
       <PageHeader
         icon="presence"
-        title="Get listed where AI looks"
+        title="Connections"
         description="AI assistants recommend businesses they find in several places with the same details. Everything below is written from your confirmed facts and cut to each platform's limits. Create the listing, paste the text, then paste the link back here."
       />
       <div className="kit-progress">
@@ -69,6 +69,13 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
       {message && (
         <div className="mb-5">
           <Notice tone={message.tone}>{message.text}</Notice>
+        </div>
+      )}
+      {!b.monitoringStartedAt && (
+        <div className="mb-5">
+          <Notice tone="info">
+            Setting up? <Link href="/app/start?step=start" className="font-semibold underline">Continue to the last step</Link> when you&apos;ve linked what you have.
+          </Notice>
         </div>
       )}
       {candidates && candidates.length > 0 && <CandidatePicker candidates={candidates} label={connect === "google" ? "Google" : "Facebook"} />}

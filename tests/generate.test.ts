@@ -35,6 +35,7 @@ const base: Business = {
   hasWebsite: false,
   onboardingStep: 6,
   onboardingCompletedAt: null,
+  monitoringStartedAt: null,
   publicContactConfirmedAt: new Date(),
   version: 1,
   createdAt: new Date(),

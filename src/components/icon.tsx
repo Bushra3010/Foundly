@@ -4,6 +4,9 @@ import appLogo from "../../public/App Logo.png";
 
 const paths: Record<string, string> = {
   home: "M3 10.5 12 3l9 7.5M5 9v11h5v-6h4v6h5V9",
+  performance: "M4 20V10m6 10V4m6 16v-7m4 7H2",
+  keywords: "M10 3 8 21m8-18-2 18M4 8h17M3 16h17",
+  connections: "M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1",
   business: "M4 21V5h16v16M8 5V3h8v2M8 9h2m4 0h2M8 13h2m4 0h2M10 21v-4h4v4",
   website:
     "M3 8h18M7 5h.01M10 5h.01M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM8 12h8m-8 4h5",
@@ -27,7 +30,7 @@ const paths: Record<string, string> = {
     "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z",
 };
 const hrefNames: Record<string, string> = {
-  "/app": "home",
+  "/app": "performance",
   "/admin": "shield",
 };
 export function Icon({

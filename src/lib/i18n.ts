@@ -10,6 +10,10 @@ export const LOCALE_COOKIE = "abgp_lang";
  */
 const dict = {
   "nav.home": { en: "Home", hi: "होम" },
+  "nav.performance": { en: "Performance", hi: "परफॉर्मेंस" },
+  "nav.keywords": { en: "Keywords", hi: "कीवर्ड" },
+  "nav.connections": { en: "Connections", hi: "कनेक्शन" },
+  "nav.connectionsShort": { en: "Connect", hi: "कनेक्ट" },
   "nav.business": { en: "My Business", hi: "मेरा व्यवसाय" },
   "nav.website": { en: "My Website", hi: "मेरी वेबसाइट" },
   "nav.visibility": { en: "AI Visibility", hi: "AI में दिखना" },

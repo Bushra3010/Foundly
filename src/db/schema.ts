@@ -125,6 +125,8 @@ export const businesses = pgTable(
     hasWebsite: boolean("has_website"),
     onboardingStep: integer("onboarding_step").notNull().default(2),
     onboardingCompletedAt: timestamp("onboarding_completed_at", { withTimezone: true }),
+    /** When the owner pressed Start: AI checks run on the plan's schedule from then on. */
+    monitoringStartedAt: timestamp("monitoring_started_at", { withTimezone: true }),
     /** Set when the owner explicitly confirms which contact fields may be public. */
     publicContactConfirmedAt: timestamp("public_contact_confirmed_at", { withTimezone: true }),
     /** Incremented on every fact change; jobs reference the version they used. */
@@ -404,6 +406,8 @@ export const trackedQuestions = pgTable(
     businessId: uuid("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
+    /** What the owner typed ("dentist in Indore"); the question asked is built from it. Null for older questions. */
+    keyword: text("keyword"),
     text: text("text").notNull(),
     group: questionGroupEnum("group").notNull(),
     language: text("language").notNull().default("en"),
@@ -415,7 +419,12 @@ export const trackedQuestions = pgTable(
     archivedAt: timestamp("archived_at", { withTimezone: true }),
     createdAt: createdAt(),
   },
-  (t) => [index("tracked_questions_workspace_idx").on(t.workspaceId)],
+  (t) => [
+    index("tracked_questions_workspace_idx").on(t.workspaceId),
+    uniqueIndex("tracked_questions_ws_keyword_idx")
+      .on(t.workspaceId, sql`lower(${t.keyword})`)
+      .where(sql`${t.keyword} is not null and ${t.archivedAt} is null`),
+  ],
 );
 
 export const competitors = pgTable("competitors", {

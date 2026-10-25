@@ -89,7 +89,7 @@ export async function finishSetupAction(_prev: ActionState, form: FormData): Pro
       if (job.status === "failed") {
         return { ok: false, message: "We couldn't build your website this time. Your details are saved. Try again.", values };
       }
-      destination = "/app/website?generated=1";
+      destination = "/app/start";
     }
     await completeOnboarding(db, ctx);
   } catch (err) {

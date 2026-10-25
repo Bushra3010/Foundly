@@ -55,7 +55,7 @@ export default async function AppLayout({
           </Link>
           <div className="desktop-breadcrumb">
             <Icon name="home" size={14} />
-            <Link href="/app">Home</Link>
+            <Link href="/app">Performance</Link>
             <span className="breadcrumb-divider">/</span>
             <span className="font-medium text-text">{business.name}</span>
           </div>

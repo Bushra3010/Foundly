@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Icon } from "@/components/icon";
+import { SECONDARY_NAV } from "@/components/nav-items";
 import { ActionForm } from "@/components/action-form";
 import { Badge, Card, PageHeader, TextField } from "@/components/ui";
 import { getDb } from "@/db";
@@ -37,6 +40,14 @@ export default async function SettingsPage() {
   return (
     <>
       <PageHeader icon="settings" title={t(locale, "nav.settings")} />
+      <nav aria-label="More in your workspace" className="settings-shortcuts">
+        {SECONDARY_NAV.map((i) => (
+          <Link key={i.href} href={i.href}>
+            <Icon name={i.href} size={17} />
+            {t(locale, i.key)}
+          </Link>
+        ))}
+      </nav>
       <div className="settings-layout grid items-start gap-4 lg:grid-cols-2">
         <Card className="settings-overview lg:col-span-2">
           <div>

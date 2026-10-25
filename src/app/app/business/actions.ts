@@ -179,13 +179,13 @@ export async function linkCandidateAction(_prev: ActionState, form: FormData): P
       await connectFacebookPage(db, ctx, { pageId: chosen.externalId, link: chosen.url, pageToken: decryptSecret(chosen.secret) });
     }
     if (chosen && (chosen.platform === "google" || chosen.platform === "facebook")) after(() => syncConnectedSafe(db, ctx));
-    jar.delete({ name: "foundly_connect", path: "/app/presence" });
+    jar.delete({ name: "foundly_connect", path: "/app/connections" });
     revalidatePath("/app", "layout");
     after(() => resubmitBusiness(db, ctx));
   } catch (err) {
     return toActionError(err);
   }
-  redirect("/app/presence?connect=linked");
+  redirect("/app/connections?connect=linked");
 }
 
 /** "Update Google now": pushes the confirmed facts to the connected listing. */
@@ -193,10 +193,10 @@ export async function syncGoogleAction(): Promise<ActionState> {
   try {
     const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
     await syncGoogle(db, ctx);
-    revalidatePath("/app/presence");
+    revalidatePath("/app/connections");
     return { ok: true, message: "Google Business Profile updated with your current details." };
   } catch (err) {
-    revalidatePath("/app/presence");
+    revalidatePath("/app/connections");
     return toActionError(err);
   }
 }
@@ -216,10 +216,10 @@ export async function syncFacebookAction(): Promise<ActionState> {
   try {
     const [db, ctx] = await Promise.all([getDb(), requireCtx()]);
     await syncFacebook(db, ctx);
-    revalidatePath("/app/presence");
+    revalidatePath("/app/connections");
     return { ok: true, message: "Facebook Page updated with your current details." };
   } catch (err) {
-    revalidatePath("/app/presence");
+    revalidatePath("/app/connections");
     return toActionError(err);
   }
 }
