@@ -45,7 +45,15 @@ export async function listQuestions(db: DbOrTx, ctx: Ctx) {
     .orderBy(asc(trackedQuestions.group), asc(trackedQuestions.createdAt));
 }
 
-export type NewQuestion = { text: string; group: (typeof trackedQuestions.$inferInsert)["group"]; location?: string | null; language?: string };
+export type NewQuestion = {
+  text: string;
+  group: (typeof trackedQuestions.$inferInsert)["group"];
+  location?: string | null;
+  language?: string;
+  /** What the owner typed, when the question was built from a keyword. */
+  keyword?: string | null;
+  replacesId?: string | null;
+};
 
 /** The owner approves questions; only approved, unarchived questions are ever sent to a provider. */
 export async function approveQuestions(db: Db, ctx: Ctx, items: NewQuestion[]) {
@@ -53,9 +61,11 @@ export async function approveQuestions(db: Db, ctx: Ctx, items: NewQuestion[]) {
   const b = await requireBusiness(db, ctx);
   const existing = await listQuestions(db, ctx);
   const seen = new Set(existing.map((q) => q.text.trim().toLowerCase()));
+  const seenKeywords = new Set(existing.flatMap((q) => (q.keyword ? [q.keyword.toLowerCase()] : [])));
   const fresh = items
     .map((i) => ({ ...i, text: i.text.trim().replace(/\s+/g, " ") }))
-    .filter((i) => i.text.length >= 8 && i.text.length <= 300 && !seen.has(i.text.toLowerCase()));
+    .filter((i) => i.text.length >= 8 && i.text.length <= 300 && !seen.has(i.text.toLowerCase()))
+    .filter((i) => !i.keyword || !seenKeywords.has(i.keyword.toLowerCase()));
   const limit = await questionLimit(db, ctx.workspaceId);
   if (existing.length + fresh.length > limit) {
     throw new AppError("invalid", `You can track up to ${limit} keywords. Stop tracking one to add another.`, { upgrade: true });
@@ -69,6 +79,8 @@ export async function approveQuestions(db: Db, ctx: Ctx, items: NewQuestion[]) {
     group: i.text.toLowerCase().includes(name) ? ("branded" as const) : i.group,
     location: i.location ?? null,
     language: i.language ?? "en",
+    keyword: i.keyword ?? null,
+    replacesId: i.replacesId ?? null,
     approvedBy: ctx.userId,
   }));
   if (rows.length) await db.insert(trackedQuestions).values(rows);

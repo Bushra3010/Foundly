@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    // "Get listed" / Social media became Connections; old links and bookmarks keep working.
+    return [{ source: "/app/presence", destination: "/app/connections", permanent: true }];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

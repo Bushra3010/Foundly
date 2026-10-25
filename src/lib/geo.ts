@@ -432,14 +432,14 @@ export function geoReadiness(input: {
       label: "Link your Google Business Profile",
       why: "Gemini and Google read it first for local businesses",
       done: (input.listings ?? []).some((u) => LISTING_SITES[0].match.test(u)),
-      href: "/app/presence",
+      href: "/app/connections",
     },
     {
       key: "listings",
       label: "Be listed in 2 more places with the same details",
       why: "AI trusts facts it sees on several sites",
       done: (input.listings ?? []).filter((u) => !LISTING_SITES[0].match.test(u)).length >= 2,
-      href: "/app/presence",
+      href: "/app/connections",
     },
     {
       key: "site",

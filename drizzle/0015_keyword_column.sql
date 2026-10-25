@@ -1,0 +1,2 @@
+ALTER TABLE "tracked_questions" ADD COLUMN "keyword" text;--> statement-breakpoint
+CREATE UNIQUE INDEX "tracked_questions_ws_keyword_idx" ON "tracked_questions" USING btree ("workspace_id",lower("keyword")) WHERE "tracked_questions"."keyword" is not null and "tracked_questions"."archived_at" is null;

@@ -1,0 +1,38 @@
+feature,area,priority,original,clone,notes
+Sign up without a card and land in setup,onboarding,must,yes,yes,Foundly signup goes straight to onboarding
+Setup stepper: keywords -> website -> social -> start,onboarding,must,partial,yes,/app/start: 4 steps; one-click publish; Start runs first check + audit
+Type a keyword and get buyer questions,keywords,must,yes,yes,free-text + suggested keywords; template question per keyword; Hindi supported
+Pick which questions to track (checklist),keywords,must,yes,yes,approveQuestions()
+Brand name variations and owned domains,brand,must,yes,yes,updateBrandTerms(aliases ownedDomains)
+Add competitors,brand,must,yes,yes,competitors table; no automatic suggestions yet
+Daily or scheduled checks across AI engines,monitoring,must,yes,partial,only after Start; production still needs provider API keys
+ChatGPT Perplexity Gemini Claude answers,monitoring,must,yes,partial,adapters exist; keys missing in production
+Store full answer text and cited sources per run,monitoring,must,yes,yes,observations.rawAnswer and citations
+Mention and listed position per brand,metrics,must,yes,yes,brandMatches.mentioned and listedPosition
+One performance page: score + trend + vs competitors,dashboard,must,yes,yes,"/app: KPIs, trend chart, share bars, per-assistant chips"
+Coverage percent per question (win/lose list),dashboard,must,yes,yes,keywords table: Recommended / Sometimes / Not yet / Waiting
+Read the AI answer for one question,dashboard,must,yes,yes,"/app/keywords/[id]: answer per assistant, names highlighted, sources"
+Next 3 fixes on the performance page,optimization,must,yes,yes,"open improvement tasks first, then readiness items"
+Connect website (Foundly site or own URL),website,must,no,yes,hosted site plus WordPress connector and audit
+Connect Google Business Profile and Facebook,connections,must,no,yes,OAuth sync built; needs app keys and approvals
+Share of voice vs competitors,metrics,should,yes,yes,share of AI recommendations among tracked brands
+Sentiment of mentions,metrics,should,yes,no,add a sentiment field per brand match during extraction
+Domain ranking of cited sources,citations,should,yes,yes,'Sites AI reads' with the business's own pages grouped
+Gap list: competitor mentioned and you are not,optimization,should,yes,partial,'Also named' per keyword; no dedicated gap view yet
+GEO audit: AI crawler access and page readiness,optimization,should,yes,yes,audits and findings and crawlSite
+Recommendation queue with done/dismiss,optimization,should,yes,yes,approve apply verify rollback flow
+Filters: engine and date range,dashboard,should,yes,partial,7/30/90 days; no engine filter on Performance
+CSV export,reports,should,yes,yes,leads and reports exports exist
+Plans priced by keyword count,billing,should,yes,yes,plans.ts keyword plans
+Weekly email summary,notifications,should,no,partial,sendWeeklySummaries; needs Resend key
+Country and language per question,keywords,could,yes,no,most Foundly users are one city; add later
+Bulk import questions from CSV,keywords,could,yes,no,
+Brand profiling: how AI describes you,brand,could,yes,no,needs an extra model call per engine
+Query fan-out variations,keywords,could,yes,no,
+PDF report,reports,could,yes,no,
+Looker Studio connector / public API,integrations,could,yes,no,agency feature; not for local businesses yet
+Multiple brands or clients per account,workspaces,could,yes,partial,workspaces exist; agency plan
+Google AI Overviews and Copilot tracking,monitoring,should,yes,no,no official API; only via a licensed SERP/answer API provider
+Search volume per question,keywords,could,yes,skip,needs a licensed keyword data source
+ChatGPT ads and shopping tracking,monitoring,could,yes,skip,ad surfaces not relevant to local service businesses yet
+Agent analytics from server log uploads,analytics,could,yes,skip,Foundly hosts the sites; can show AI bot visits from its own logs later instead of uploads

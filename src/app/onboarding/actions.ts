@@ -7,12 +7,13 @@ import { resubmitBusiness } from "@/server/indexnow";
 import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
-import { keywordGroup } from "@/lib/questions";
 import { basicsSchema, fieldErrors, websiteChoiceSchema } from "@/lib/validation";
 import { completeOnboarding, confirmReview, getBusiness, publishProfile, saveBasics, saveWebsiteChoice } from "@/server/business";
 import { checkWebsiteSoon } from "@/server/audit/service";
 import { enabledAdapters } from "@/server/monitoring/registry";
-import { approveQuestions, createRun, executeRun, listQuestions, manualRunKey } from "@/server/monitoring/service";
+import { parseKeywordList } from "@/lib/keywords";
+import { addKeywords } from "@/server/keywords";
+import { createRun, executeRun, listQuestions, manualRunKey } from "@/server/monitoring/service";
 
 /**
  * Setup in four steps: keywords, website, social media, start tracking.
@@ -22,9 +23,7 @@ import { approveQuestions, createRun, executeRun, listQuestions, manualRunKey } 
 /** Step 1: who the business is, and the keywords to track. */
 export async function saveKeywordsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const values = formValues(form);
-  const keywords = [...form.getAll("keyword").map(String), ...String(form.get("custom") ?? "").split("\n")]
-    .map((k) => k.trim().replace(/\s+/g, " "))
-    .filter(Boolean);
+  const keywords = parseKeywordList([...form.getAll("keyword").map(String), String(form.get("custom") ?? "")].join("\n"));
   try {
     const ctx = await requireCtx();
     const basics = basicsSchema.safeParse({
@@ -44,7 +43,8 @@ export async function saveKeywordsAction(_prev: ActionState, form: FormData): Pr
     const existing = await getBusiness(db, ctx);
     // Keep contact details the owner already gave; only fill the email for a new business.
     await saveBasics(db, ctx, existing ? { ...basics.data, phone: existing.phone, whatsapp: existing.whatsapp, email: existing.email } : basics.data);
-    await approveQuestions(db, ctx, keywords.map((text) => ({ text, group: keywordGroup(text) })));
+    // Each keyword is asked to AI as a customer's request for a recommendation.
+    await addKeywords(db, ctx, keywords);
   } catch (err) {
     return toActionError(err, values);
   }

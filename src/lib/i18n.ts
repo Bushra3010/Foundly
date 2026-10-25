@@ -8,6 +8,9 @@ export type Locale = (typeof LOCALES)[number];
 const dict = {
   "nav.home": { en: "Home" },
   "nav.dashboard": { en: "Dashboard" },
+  "nav.performance": { en: "Performance" },
+  "nav.connections": { en: "Connections" },
+  "nav.connectionsShort": { en: "Connect" },
   "nav.keywords": { en: "Keywords" },
   "nav.compare": { en: "Compare" },
   "nav.social": { en: "Social media" },

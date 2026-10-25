@@ -16,7 +16,7 @@ import { presenceKit } from "@/lib/presence";
 import { toPublicProfile } from "@/lib/profile";
 import { currentProfile, requireCurrentBusiness } from "@/server/current";
 
-export const metadata = { title: "Social media" };
+export const metadata = { title: "Connections" };
 
 /**
  * The presence agent. It prepares every listing (same facts, each platform's
@@ -57,7 +57,7 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
     <>
       <PageHeader
         icon="presence"
-        title="Social media"
+        title="Connections"
         description="Connect your pages so AI assistants see your business in more places with the same details."
       />
       <section className="dash-panel mb-6">

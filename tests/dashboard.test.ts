@@ -89,7 +89,7 @@ describe("setup progress", () => {
     d = await load();
     expect(d.setup.done).toBe(4);
     // After setup, the same steps open the app pages.
-    expect(d.setup.steps[0].href).toBe("/app/visibility");
+    expect(d.setup.steps[0].href).toBe("/app/keywords");
   });
 
   it("a website request keeps the website step open until a website is connected", async () => {

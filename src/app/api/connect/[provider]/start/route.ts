@@ -14,7 +14,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
   const p = provider as Provider;
   if (!providerConfigured(p)) return to("unavailable");
   const user = await getCurrentUser();
-  if (!user) return NextResponse.redirect(`${base}/login?next=${encodeURIComponent("/app/presence")}`);
+  if (!user) return NextResponse.redirect(`${base}/login?next=${encodeURIComponent("/app/connections")}`);
   const ctx = await contextForUser(await getDb(), user.id);
   if (!ctx) return NextResponse.redirect(`${base}/login`);
   const state = makeState({ provider: p, workspaceId: ctx.workspaceId, userId: user.id, back });

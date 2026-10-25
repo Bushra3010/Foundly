@@ -85,7 +85,7 @@ export default async function VisibilityPage({ searchParams }: { searchParams: P
   return (
     <>
       <PageHeader icon="visibility"
-        title={t(locale, "nav.keywords")}
+        title={t(locale, "nav.visibility")}
         description="The keywords we check on ChatGPT, Gemini, Perplexity and Claude, and what their answers say about you."
       />
 

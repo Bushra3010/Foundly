@@ -65,10 +65,10 @@ export function setupSteps(input: { keywords: number; business: Business; websit
   // Before tracking starts the steps live in setup; afterwards, in the app.
   const inApp = input.trackingStarted;
   const steps = [
-    { key: "keywords", label: "Enter keywords", done: input.keywords > 0, href: inApp ? "/app/visibility" : "/onboarding?step=keywords" },
+    { key: "keywords", label: "Enter keywords", done: input.keywords > 0, href: inApp ? "/app/keywords" : "/onboarding?step=keywords" },
     // A website request isn't a connected website yet, so the step stays open.
     { key: "website", label: input.websiteRequested ? "Connect website (being built)" : "Connect website", done: Boolean(input.business.hasWebsite && input.business.websiteUrl), href: inApp ? "/app/website" : "/onboarding?step=website" },
-    { key: "social", label: "Connect social media", done: input.social.some((s) => s.state !== "none"), href: inApp ? "/app/presence" : "/onboarding?step=social" },
+    { key: "social", label: "Connect social media", done: input.social.some((s) => s.state !== "none"), href: inApp ? "/app/connections" : "/onboarding?step=social" },
     { key: "tracking", label: "Start tracking", done: input.trackingStarted, href: inApp ? "/app" : "/onboarding?step=start" },
   ] as const;
   return { steps, done: steps.filter((s) => s.done).length, total: steps.length };

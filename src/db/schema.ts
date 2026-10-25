@@ -307,6 +307,8 @@ export const trackedQuestions = pgTable(
     businessId: uuid("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
+    /** What the owner typed ("dentist in Indore"); the question asked is built from it. Null for older questions. */
+    keyword: text("keyword"),
     text: text("text").notNull(),
     group: questionGroupEnum("group").notNull(),
     language: text("language").notNull().default("en"),
@@ -318,7 +320,12 @@ export const trackedQuestions = pgTable(
     archivedAt: timestamp("archived_at", { withTimezone: true }),
     createdAt: createdAt(),
   },
-  (t) => [index("tracked_questions_workspace_idx").on(t.workspaceId)],
+  (t) => [
+    index("tracked_questions_workspace_idx").on(t.workspaceId),
+    uniqueIndex("tracked_questions_ws_keyword_idx")
+      .on(t.workspaceId, sql`lower(${t.keyword})`)
+      .where(sql`${t.keyword} is not null and ${t.archivedAt} is null`),
+  ],
 );
 
 export const competitors = pgTable("competitors", {

@@ -46,7 +46,7 @@ function sign(payload: string) {
 export type ConnectReturn = "setup" | "presence";
 
 export function returnPath(back: ConnectReturn | undefined) {
-  return back === "setup" ? "/onboarding?step=social&" : "/app/presence?";
+  return back === "setup" ? "/onboarding?step=social&" : "/app/connections?";
 }
 
 export function makeState(data: { provider: Provider; workspaceId: string; userId: string; back?: ConnectReturn }) {
