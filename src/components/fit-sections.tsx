@@ -19,7 +19,14 @@ export function FitSections() {
     if (bodies.length === 0) return;
 
     const root = document.querySelector<HTMLElement>(".foundly-landing");
+    // Zooming changes how text wraps, which changes the height, which would
+    // change the zoom again: grown back and forth, a section visibly shakes.
+    // So when only the content changed, a section may shrink but never grow;
+    // growing back is allowed only when the window itself changes.
+    let allowGrow = true;
     const fit = () => {
+      const grow = allowGrow;
+      allowGrow = false;
       const header = document.querySelector<HTMLElement>(".landing-header-bar")?.getBoundingClientRect().height ?? 72;
       const footer = document.querySelector<HTMLElement>(".landing-footer")?.getBoundingClientRect().height ?? 0;
       // Anchors and section heights use the real header and footer sizes.
@@ -46,7 +53,7 @@ export function FitSections() {
         const next = natural > room ? Math.max(MIN_ZOOM, room / natural) : 1;
         // Always shrink when content doesn't fit; only grow back for clear gains,
         // so content that animates doesn't make the zoom flicker.
-        if (next < current - 0.001 || next > current + 0.015) body.style.zoom = next >= 0.999 ? "" : next.toFixed(3);
+        if (next < current - 0.001 || (grow && next > current + 0.015)) body.style.zoom = next >= 0.999 ? "" : next.toFixed(3);
       }
     };
 
@@ -57,17 +64,23 @@ export function FitSections() {
       window.clearTimeout(frame);
       frame = window.setTimeout(fit, 30);
     };
+    // A new window size (or the first layout, or fonts arriving) may grow sections back.
+    const rescale = () => {
+      allowGrow = true;
+      bodies.forEach((b) => (b.style.zoom = ""));
+      schedule();
+    };
     schedule();
     const ro = new ResizeObserver(schedule);
     bodies.forEach((b) => ro.observe(b));
-    window.addEventListener("resize", schedule);
-    media.addEventListener("change", schedule);
-    document.fonts?.ready.then(schedule).catch(() => {});
+    window.addEventListener("resize", rescale);
+    media.addEventListener("change", rescale);
+    document.fonts?.ready.then(rescale).catch(() => {});
     return () => {
       window.clearTimeout(frame);
       ro.disconnect();
-      window.removeEventListener("resize", schedule);
-      media.removeEventListener("change", schedule);
+      window.removeEventListener("resize", rescale);
+      media.removeEventListener("change", rescale);
     };
   }, []);
   return null;
