@@ -5,10 +5,11 @@ import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { suggestKeywords } from "@/lib/questions";
 import { requireCurrentBusiness } from "@/server/current";
-import { listCompetitors, questionLimit } from "@/server/monitoring/service";
+import { ADAPTERS } from "@/server/monitoring/registry";
+import { questionLimit } from "@/server/monitoring/service";
 import { performanceFor } from "@/server/insights";
 import { Mini, StatusBadge } from "../overview-parts";
-import { addKeywordsAction, addRivalAction, editKeywordAction, removeKeywordAction, removeRivalAction } from "./actions";
+import { addKeywordsAction, editKeywordAction, removeKeywordAction } from "./actions";
 import { KeywordResearch } from "./research";
 import "../overview.css";
 
@@ -20,7 +21,8 @@ export default async function KeywordsPage() {
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
-  const [p, rivals, limit] = await Promise.all([performanceFor(db, ctx, 90), listCompetitors(db, ctx), questionLimit(db, ctx.workspaceId)]);
+  const [p, limit] = await Promise.all([performanceFor(db, ctx, 90), questionLimit(db, ctx.workspaceId)]);
+  const engines = ADAPTERS.map((a) => ({ key: a.key, label: a.label.replace(/\s*\(.*\)\s*$/, "") }));
   const tracked = new Set(p.keywords.map((k) => k.keyword.toLowerCase()));
   const ideas = suggestKeywords({ category: business.category, city: business.city, services: business.services.map((s) => s.name) }).filter((k) => !tracked.has(k.toLowerCase())).slice(0, 4);
   const room = Math.max(limit - p.keywords.length, 0);
@@ -29,9 +31,9 @@ export default async function KeywordsPage() {
     <div className="dash ov">
       <header className="dash-hero">
         <div className="dash-hero-text">
-          <span className="dash-eyebrow">Keywords</span>
+          <span className="dash-eyebrow">Prompts</span>
           <h1>What customers ask AI</h1>
-          <p>Each keyword is asked to every AI assistant on your plan&apos;s schedule.</p>
+          <p>The keywords and questions customers ask AI. Each one is asked to every assistant on your plan&apos;s schedule.</p>
         </div>
         <div className="dash-hero-actions">
           <span className="ov-engine">{p.keywords.length} of {limit} keywords used</span>
@@ -69,6 +71,9 @@ export default async function KeywordsPage() {
                 <tr>
                   <th scope="col">Keyword</th>
                   <th scope="col">Result</th>
+                  {engines.map((e) => (
+                    <th key={e.key} scope="col">{e.label}</th>
+                  ))}
                   <th scope="col">Recommended in</th>
                   <th scope="col">Last checked</th>
                   <th scope="col"><span className="sr-only">Actions</span></th>
@@ -90,6 +95,20 @@ export default async function KeywordsPage() {
                       </details>
                     </td>
                     <td><StatusBadge status={k.status} /></td>
+                    {engines.map((e) => {
+                      const r = k.byEngine[e.key];
+                      return (
+                        <td key={e.key}>
+                          {!r ? (
+                            <span className="ov-cell none" title="Not checked">—</span>
+                          ) : r.named ? (
+                            <span className="ov-cell yes" title={`${e.label} recommends you${r.position ? ` at #${r.position}` : ""}`}>{r.position ? `#${r.position}` : "✓"}</span>
+                          ) : (
+                            <span className="ov-cell no" title={`${e.label} doesn't mention you`}>✗</span>
+                          )}
+                        </td>
+                      );
+                    })}
                     <td>{k.rate === null ? <span className="ov-muted">—</span> : <><Mini rate={k.rate} />{k.rate}%</>}</td>
                     <td className="ov-muted">{ago(k.checkedAt)}</td>
                     <td>
@@ -105,37 +124,9 @@ export default async function KeywordsPage() {
         )}
       </section>
 
-      <section className="dash-panel ov-panel" id="competitors" aria-labelledby="kw-rivals">
-        <h2 id="kw-rivals">Competitors</h2>
-        <p className="ov-sub">Businesses you want to be compared with. We spot them in the same AI answers.</p>
-        {rivals.length > 0 && (
-          <ul className="ov-list">
-            {rivals.map((r) => (
-              <li key={r.id}>
-                <span>
-                  <strong>{r.name}</strong>
-                  {r.domains[0] && <span className="ov-muted"> · {r.domains[0]}</span>}
-                </span>
-                <ActionForm action={removeRivalAction} submitLabel="Remove" pendingLabel="Removing…" variant="ghost" inline>
-                  <input type="hidden" name="id" value={r.id} />
-                </ActionForm>
-              </li>
-            ))}
-          </ul>
-        )}
-        {rivals.length < 10 && (
-          <ActionForm action={addRivalAction} submitLabel="Add competitor" pendingLabel="Adding…" variant="secondary" inline>
-            <div className="st-field" style={{ marginTop: 10, flex: "1 1 220px" }}>
-              <label htmlFor="rival-name">Business name</label>
-              <input id="rival-name" name="name" placeholder="e.g. Smile Care Clinic" required />
-            </div>
-            <div className="st-field" style={{ marginTop: 10, flex: "1 1 220px" }}>
-              <label htmlFor="rival-domain">Website (optional)</label>
-              <input id="rival-domain" name="domain" placeholder="smilecare.in" />
-            </div>
-          </ActionForm>
-        )}
-      </section>
+      <p className="ov-sub">
+        Competitors to compare with are on <Link href="/app/competitors" className="underline">Competitors</Link>.
+      </p>
 
       <p className="ov-sub">
         Want every answer and filter? <Link href="/app/visibility" className="underline">Open the full AI visibility data <Icon name="arrow" size={12} /></Link>

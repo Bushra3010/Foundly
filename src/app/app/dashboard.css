@@ -1651,3 +1651,7 @@
 .pf-kpi-main strong em, .pf-kpi strong em { font-style:normal; font-size:15px; font-weight:600; color:var(--d-muted); letter-spacing:0; margin-left:2px; }
 .pf-grid-even { grid-template-columns:repeat(2,minmax(0,1fr)); }
 @media (max-width:900px) { .pf-grid-even { grid-template-columns:1fr; } }
+
+/* Sidebar section headings (AI search / Optimize / Account). */
+.nav-caption.nav-section { margin:16px 0 6px; padding:0 12px; }
+li:first-child > .nav-caption.nav-section { margin-top:4px; }

@@ -11,14 +11,15 @@ import { enabledAdapters } from "@/server/monitoring/registry";
 import { performanceFor } from "@/server/insights";
 import { setupSteps, socialStatus } from "@/server/performance";
 import { latestWebsiteRequest, OPEN_STATUSES } from "@/server/website-requests";
+import { CoverageChart } from "./coverage-chart";
 import { checkNowAction } from "./keywords/actions";
-import { Mini, ShareBars, StatusBadge, TrendChart } from "./overview-parts";
+import { brandSlots, Mini, RankingTable } from "./overview-parts";
 import "./overview.css";
 
-export const metadata = { title: "Performance" };
+export const metadata = { title: "Overview" };
 
 const OPEN = new Set(["detected", "proposed", "owner_edited", "approved", "queued"]);
-const PERIODS = [7, 30, 90];
+const PERIODS = [7, 14, 30, 90];
 
 // Set by the last setup step: "1" when the first check started, "later" when it couldn't yet.
 const STARTED_NOTE: Record<string, { tone: "ok" | "warn"; text: string }> = {
@@ -26,14 +27,14 @@ const STARTED_NOTE: Record<string, { tone: "ok" | "warn"; text: string }> = {
   later: { tone: "warn", text: "Tracking is on. AI answer checks are being switched on for your account; your first results will appear here automatically." },
 };
 
-export default async function PerformancePage({ searchParams }: { searchParams: Promise<{ days?: string; started?: string; engine?: string }> }) {
+export default async function OverviewPage({ searchParams }: { searchParams: Promise<{ days?: string; started?: string; engine?: string }> }) {
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
   const sp = await searchParams;
   const days = PERIODS.includes(Number(sp.days)) ? Number(sp.days) : 30;
   const engine = sp.engine && /^[a-z]+$/.test(sp.engine) ? sp.engine : undefined;
-  const qs = (next: { days?: number; engine?: string | null }) => {
+  const href = (next: { days?: number; engine?: string | null }) => {
     const q = new URLSearchParams();
     const d = next.days ?? days;
     const e = next.engine === undefined ? engine : next.engine;
@@ -49,54 +50,65 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
     latestWebsiteRequest(db, ctx),
   ]);
   const requested = !business.hasWebsite && !!request && (OPEN_STATUSES as readonly string[]).includes(request.status);
-  const setup = setupSteps({ keywords: p.keywords.length, business, websiteRequested: requested, social, trackingStarted: true });
-  const todo = setup.steps.filter((s) => !s.done);
-
+  const todo = setupSteps({ keywords: p.keywords.length, business, websiteRequested: requested, social, trackingStarted: true }).steps.filter((s) => !s.done);
   const fixes = [
     ...actions.filter((a) => OPEN.has(a.status)).map((a) => ({ title: a.title, why: a.hypothesis, href: "/app/improve" })),
     ...readiness.items.filter((i) => !i.done).map((i) => ({ title: i.label, why: i.why, href: i.href })),
   ].slice(0, 3);
-  const won = p.keywords.filter((k) => k.status === "won").length;
-  const checked = p.keywords.filter((k) => k.status !== "pending").length;
+
+  const slots = brandSlots(p.brandSeries.series);
+  // The business plus up to four competitors with the most mentions; the full list is in the ranking.
+  const chartSeries = [
+    ...p.brandSeries.series.filter((s) => s.self),
+    ...p.brandSeries.series
+      .filter((s) => !s.self)
+      .sort((a, b) => b.values.reduce((n, v) => n + v, 0) - a.values.reduce((n, v) => n + v, 0))
+      .slice(0, 4),
+  ].map((s) => ({ ...s, slot: slots.get(s.key) ?? 0 }));
+  const me = p.ranking.find((b) => b.self);
   const running = p.lastRun && (p.lastRun.status === "queued" || p.lastRun.status === "running");
   const note = sp.started ? STARTED_NOTE[sp.started] : undefined;
-  const engineNames = p.engines.length ? p.engines.map((e) => e.label).join(", ") : "ChatGPT, Gemini, Perplexity and Claude";
   const canCheck = enabledAdapters().length > 0;
+  const engineLabel = engine ? (p.engines.find((e) => e.key === engine)?.label ?? engine) : null;
 
   return (
     <div className="dash ov">
       <header className="dash-hero">
         <div className="dash-hero-text">
-          <span className="dash-eyebrow">Performance</span>
+          <span className="dash-eyebrow">Overview</span>
           <h1>{business.name}</h1>
-          <p>How often AI assistants recommend you · last {days} days{engine ? ` · ${p.engines.find((e) => e.key === engine)?.label ?? engine} only` : ""}</p>
+          <p>Your brand in AI answers{engineLabel ? ` · ${engineLabel}` : " · all assistants"} · last {days} days</p>
         </div>
         <div className="dash-hero-actions">
-          <nav aria-label="Period" className="ov-row">
-            {PERIODS.map((d) => (
-              <Link key={d} href={qs({ days: d })} className={`dash-btn ghost${d === days ? " is-active" : ""}`} aria-current={d === days ? "page" : undefined} style={d === days ? { borderColor: "var(--d-ink)" } : undefined}>
-                {d} days
-              </Link>
-            ))}
-          </nav>
           {canCheck && (
             <ActionForm action={checkNowAction} submitLabel={running ? "Checking…" : "Check now"} pendingLabel="Starting…" variant="secondary" className="">
               <input type="hidden" name="requestId" value={randomUUID()} />
             </ActionForm>
           )}
+          <a href={`/app/keywords/export?days=${days}`} className="dash-btn ghost" download>Export</a>
         </div>
       </header>
 
-      {p.engines.length > 1 && (
-        <nav aria-label="AI assistant" className="ov-filter">
-          <Link href={qs({ engine: null })} aria-current={!engine ? "page" : undefined}>All assistants</Link>
-          {p.engines.map((e) => (
-            <Link key={e.key} href={qs({ engine: e.key })} aria-current={engine === e.key ? "page" : undefined}>
-              {e.label} <span>{e.rate === null ? "—" : `${e.rate}%`}</span>
+      <div className="ov-filters" role="group" aria-label="Filters">
+        <nav aria-label="Period" className="ov-seg">
+          {PERIODS.map((d) => (
+            <Link key={d} href={href({ days: d })} aria-current={d === days ? "page" : undefined}>
+              {d === 7 ? "7 days" : d === 14 ? "14 days" : d === 30 ? "30 days" : "90 days"}
             </Link>
           ))}
         </nav>
-      )}
+        {p.engines.length > 0 && (
+          <nav aria-label="AI assistant" className="ov-seg">
+            <Link href={href({ engine: null })} aria-current={!engine ? "page" : undefined}>All</Link>
+            {p.engines.map((e) => (
+              <Link key={e.key} href={href({ engine: e.key })} aria-current={engine === e.key ? "page" : undefined}>
+                {e.label}
+              </Link>
+            ))}
+          </nav>
+        )}
+      </div>
+
       {note && <p className={`ov-note ${note.tone}`} role="status">{note.text}</p>}
       {todo.length > 0 && (
         <p className="ov-note" role="note">
@@ -116,186 +128,167 @@ export default async function PerformancePage({ searchParams }: { searchParams: 
           <h2 id="ov-wait">{running ? "Asking AI assistants about your keywords…" : "No AI answers in this period yet"}</h2>
           <p>
             {running
-              ? `We're asking ${engineNames} about your ${p.keywords.length} keyword${p.keywords.length === 1 ? "" : "s"}. Refresh in a few minutes.`
+              ? `We're asking every connected assistant about your ${p.keywords.length} keyword${p.keywords.length === 1 ? "" : "s"}. Refresh in a few minutes.`
               : canCheck
                 ? "Run a check to see whether AI assistants recommend you, or pick a longer period."
                 : "Your keywords are saved. Results appear here as soon as the first check finishes. Meanwhile, the fixes below raise your chances."}
           </p>
+          <p style={{ marginTop: 12 }}>
+            <Link href="/app/keywords" className="font-semibold underline">Review your keywords</Link>
+          </p>
         </section>
       ) : (
         <>
-          <section className="ov-kpis" aria-label="Key numbers">
+          <section className="ov-kpis six" aria-label="Key numbers">
             <div className="ov-kpi hero">
-              <span className="ov-kpi-label"><Icon name="visibility" size={16} /> AI visibility</span>
+              <span className="ov-kpi-label"><Icon name="visibility" size={16} /> Brand mentions</span>
+              <strong className="ov-kpi-value">{p.named}</strong>
+              <span className="ov-kpi-note">of {p.answers} AI answers{p.smallSample ? " · early data" : ""}</span>
+            </div>
+            <div className="ov-kpi">
+              <span className="ov-kpi-label">Coverage</span>
               <strong className="ov-kpi-value">{p.score ?? 0}<small>%</small></strong>
-              <span className="ov-kpi-note">Recommended in {p.named} of {p.answers} AI answers{p.smallSample ? " · early data" : ""}</span>
+              <span className="ov-kpi-note">Answers that name you</span>
               <span className="ov-meter" aria-hidden="true"><span style={{ width: `${p.score ?? 0}%` }} /></span>
             </div>
             <div className="ov-kpi">
-              <span className="ov-kpi-label">Keywords you win</span>
-              <strong className="ov-kpi-value">{won}<small>/{checked || p.keywords.length}</small></strong>
-              <span className="ov-kpi-note">AI names you in at least half the answers</span>
+              <span className="ov-kpi-label">Share of voice</span>
+              <strong className="ov-kpi-value">{me?.share ?? 0}<small>%</small></strong>
+              <span className="ov-kpi-note">Your part of all brand mentions</span>
             </div>
             <div className="ov-kpi">
-              <span className="ov-kpi-label">Average position</span>
+              <span className="ov-kpi-label">Avg. position</span>
               <strong className="ov-kpi-value">{p.avgPosition ? <>#{p.avgPosition}</> : "—"}</strong>
-              <span className="ov-kpi-note">{p.avgPosition ? "Where you appear when AI lists options" : "Not in any list yet"}</span>
+              <span className="ov-kpi-note">{p.avgPosition ? "When AI lists options" : "Not in a list yet"}</span>
             </div>
             <div className="ov-kpi">
-              <span className="ov-kpi-label">Links to your site</span>
+              <span className="ov-kpi-label">Cited your site</span>
               <strong className="ov-kpi-value">{p.citedRate ?? 0}<small>%</small></strong>
-              <span className="ov-kpi-note">Answers that cite your website as a source</span>
+              <span className="ov-kpi-note">Answers linking to your website</span>
             </div>
             <div className="ov-kpi">
-              <span className="ov-kpi-label">Positive tone <em className="ov-est">estimated</em></span>
+              <span className="ov-kpi-label">Positive tone <em className="ov-est">est.</em></span>
               <strong className="ov-kpi-value">{p.tone.positiveRate ?? "—"}{p.tone.positiveRate !== null && <small>%</small>}</strong>
-              <span className="ov-kpi-note">
-                {p.named ? `${p.tone.positive} positive · ${p.tone.neutral} neutral · ${p.tone.negative} negative` : "Shown once AI names you"}
-              </span>
+              <span className="ov-kpi-note">{p.named ? `${p.tone.negative} negative mention${p.tone.negative === 1 ? "" : "s"}` : "Once AI names you"}</span>
             </div>
           </section>
 
+          <section className="dash-panel ov-panel" aria-labelledby="ov-cov">
+            <div className="ov-row between">
+              <div>
+                <h2 id="ov-cov">Brand coverage over time</h2>
+                <p className="ov-sub">Share of AI answers that name each brand, per check</p>
+              </div>
+              <Link href="/app/competitors" className="ov-sub">Competitors</Link>
+            </div>
+            <CoverageChart points={p.brandSeries.points.map((d) => d.toISOString())} series={chartSeries} />
+          </section>
+
+          <section className="dash-panel ov-panel" aria-labelledby="ov-rank">
+            <div className="ov-row between">
+              <div>
+                <h2 id="ov-rank">Brand ranking</h2>
+                <p className="ov-sub">Who AI recommends most for your keywords</p>
+              </div>
+              <Link href="/app/competitors" className="ov-sub">Manage</Link>
+            </div>
+            {p.ranking.length > 1 ? (
+              <RankingTable ranking={p.ranking} slots={slots} />
+            ) : (
+              <p className="ov-sub" style={{ marginTop: 12 }}>
+                <Link href="/app/competitors" className="font-semibold underline">Add competitors</Link> to rank yourself against them.
+              </p>
+            )}
+          </section>
           <div className="ov-two">
-            <section className="dash-panel ov-panel" aria-labelledby="ov-trend">
-              <div className="ov-row between">
-                <div>
-                  <h2 id="ov-trend">Visibility over time</h2>
-                  <p className="ov-sub">Share of answers that recommend you, per check</p>
-                </div>
-              </div>
-              <TrendChart points={p.trend} />
+            <section className="dash-panel ov-panel" aria-labelledby="ov-eng">
+              <h2 id="ov-eng">By AI assistant</h2>
+              <p className="ov-sub">Coverage on each assistant</p>
+              <ul className="ov-engine-bars">
+                {p.engines.map((e) => (
+                  <li key={e.key}>
+                    <div className="ov-bar-top">
+                      <Link href={href({ engine: e.key })} className="ov-link">{e.label}</Link>
+                      <span>{e.rate === null ? "—" : `${e.rate}%`}</span>
+                    </div>
+                    <div className="ov-bar" role="presentation">
+                      <span style={{ width: `${e.rate ?? 0}%` }} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </section>
-            <section className="dash-panel ov-panel" aria-labelledby="ov-share">
+            <section className="dash-panel ov-panel" aria-labelledby="ov-src">
               <div className="ov-row between">
-                <div>
-                  <h2 id="ov-share">You vs competitors</h2>
-                  <p className="ov-sub">Share of AI recommendations</p>
-                </div>
-                <Link href="/app/keywords#competitors" className="ov-sub">Edit</Link>
+                <h2 id="ov-src">Top cited domains</h2>
+                <Link href={`/app/sources?days=${days}`} className="ov-sub">All citations</Link>
               </div>
-              {p.share.length > 1 ? (
-                <ShareBars share={p.share} />
+              <p className="ov-sub">Sites AI reads to answer your keywords</p>
+              {p.sources.length === 0 ? (
+                <p className="ov-sub" style={{ marginTop: 12 }}>No sources cited yet.</p>
               ) : (
-                <p className="ov-sub" style={{ marginTop: 14 }}>
-                  <Link href="/app/keywords#competitors" className="font-semibold underline">Add competitors</Link> to see who AI recommends instead of you.
-                </p>
+                <ul className="ov-list">
+                  {p.sources.map((s) => (
+                    <li key={s.host}>
+                      <span className={s.own ? "own" : undefined}>{s.host}{s.own ? " (your site)" : ""}</span>
+                      <span className="ov-muted"><Mini rate={p.answers ? Math.round((s.count / p.answers) * 100) : 0} />{s.count}</span>
+                    </li>
+                  ))}
+                </ul>
               )}
             </section>
           </div>
+          <section className="dash-panel ov-panel" aria-labelledby="ov-gaps">
+            <h2 id="ov-gaps">Where competitors beat you</h2>
+            <p className="ov-sub">AI recommended a competitor and left you out</p>
+            {p.gaps.length === 0 ? (
+              <p className="ov-sub" style={{ marginTop: 12 }}>No gaps in this period. Nice.</p>
+            ) : (
+              <ul className="ov-list">
+                {p.gaps.slice(0, 6).map((g) => (
+                  <li key={g.id}>
+                    <span>
+                      <Link href={`/app/keywords/${g.id}`} className="ov-link"><strong>{g.keyword}</strong></Link>
+                      <span className="ov-q">
+                        {g.rivals.join(", ")} on {g.engines.join(", ")}
+                        {g.sources.length > 0 && <> · read {g.sources.join(", ")}</>}
+                      </span>
+                    </span>
+                    <Link href={`/app/keywords/${g.id}`} className="ov-sub" aria-label={`See answers for ${g.keyword}`}>
+                      <Icon name="arrow" size={15} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
         </>
       )}
 
-      <section className="dash-panel ov-panel" aria-labelledby="ov-kw">
+      <section className="dash-panel ov-panel" aria-labelledby="ov-fix">
         <div className="ov-row between">
           <div>
-            <h2 id="ov-kw">Your keywords</h2>
-            <p className="ov-sub">Latest answer for each keyword, across every AI assistant</p>
+            <h2 id="ov-fix">Recommendations</h2>
+            <p className="ov-sub">The changes most likely to get you recommended</p>
           </div>
-          <div className="ov-row">
-            <a href={`/app/keywords/export?days=${days}`} className="dash-btn ghost" download>Export CSV</a>
-            <Link href="/app/keywords" className="dash-btn ghost">Manage keywords <Icon name="arrow" size={15} /></Link>
-          </div>
+          <Link href="/app/improve" className="ov-sub">All recommendations</Link>
         </div>
-        <div className="ov-table-wrap">
-          <table className="ov-table">
-            <thead>
-              <tr>
-                <th scope="col">Keyword</th>
-                <th scope="col">Result</th>
-                <th scope="col">Recommended in</th>
-                <th scope="col">Also named</th>
-              </tr>
-            </thead>
-            <tbody>
-              {p.keywords.slice(0, 8).map((k) => (
-                <tr key={k.id}>
-                  <td>
-                    <Link href={`/app/keywords/${k.id}`} className="ov-kw">{k.keyword}</Link>
-                  </td>
-                  <td><StatusBadge status={k.status} /></td>
-                  <td>
-                    {k.rate === null ? <span className="ov-muted">—</span> : <><Mini rate={k.rate} />{k.rate}% <span className="ov-muted">of {k.answers}</span></>}
-                  </td>
-                  <td>{k.rivals.length ? k.rivals.join(", ") : <span className="ov-muted">—</span>}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {p.keywords.length > 8 && <p className="ov-sub" style={{ marginTop: 8 }}><Link href="/app/keywords" className="underline">See all {p.keywords.length} keywords</Link></p>}
-      </section>
-
-      {p.gaps.length > 0 && (
-        <section className="dash-panel ov-panel" aria-labelledby="ov-gaps">
-          <h2 id="ov-gaps">Where competitors beat you</h2>
-          <p className="ov-sub">AI recommended a competitor here and left you out. Open a keyword to see the answer and the sites it trusted.</p>
-          <ul className="ov-list">
-            {p.gaps.slice(0, 6).map((g) => (
-              <li key={g.id}>
-                <span>
-                  <Link href={`/app/keywords/${g.id}`} className="ov-link"><strong>{g.keyword}</strong></Link>
-                  <span className="ov-q">
-                    {g.rivals.join(", ")} on {g.engines.join(", ")}
-                    {g.sources.length > 0 && <> · read {g.sources.join(", ")}</>}
-                  </span>
-                </span>
-                <Link href={`/app/keywords/${g.id}`} className="ov-sub" aria-label={`See answers for ${g.keyword}`}>
-                  <Icon name="arrow" size={15} />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      <div className="ov-two">
-        <section className="dash-panel ov-panel" aria-labelledby="ov-fix">
-          <div className="ov-row between">
-            <div>
-              <h2 id="ov-fix">Next fixes</h2>
-              <p className="ov-sub">The changes most likely to get you recommended</p>
-            </div>
-            <Link href="/app/improve" className="ov-sub">All fixes</Link>
-          </div>
-          {fixes.length === 0 ? (
-            <p className="ov-sub" style={{ marginTop: 12 }}>Nothing to fix right now. We&apos;ll suggest more after the next check.</p>
-          ) : (
-            <div style={{ marginTop: 6 }}>
-              {fixes.map((f, i) => (
-                <Link key={f.title} href={f.href} className="ov-fix">
-                  <span className="ov-fix-n">{i + 1}</span>
-                  <span>
-                    <strong>{f.title}</strong>
-                    <span className="ov-why">{f.why}</span>
-                  </span>
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
-        {p.sources.length > 0 ? (
-          <section className="dash-panel ov-panel" aria-labelledby="ov-src">
-            <div className="ov-row between">
-              <h2 id="ov-src">Sites AI reads</h2>
-              <Link href={`/app/sources?days=${days}`} className="ov-sub">See all</Link>
-            </div>
-            <p className="ov-sub">Sources cited in answers about your keywords</p>
-            <ul className="ov-list">
-              {p.sources.map((s) => (
-                <li key={s.host}>
-                  <span className={s.own ? "own" : undefined}>{s.host}{s.own ? " (your site)" : ""}</span>
-                  <span className="ov-muted">{s.count} answer{s.count === 1 ? "" : "s"}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
+        {fixes.length === 0 ? (
+          <p className="ov-sub" style={{ marginTop: 12 }}>Nothing to fix right now. We&apos;ll suggest more after the next check.</p>
         ) : (
-          <section className="dash-panel ov-panel" aria-labelledby="ov-src">
-            <h2 id="ov-src">Sites AI reads</h2>
-            <p className="ov-sub" style={{ marginTop: 8 }}>After your first check, the websites AI assistants cite for your keywords appear here.</p>
-          </section>
+          <div style={{ marginTop: 6 }}>
+            {fixes.map((f, i) => (
+              <Link key={f.title} href={f.href} className="ov-fix">
+                <span className="ov-fix-n">{i + 1}</span>
+                <span>
+                  <strong>{f.title}</strong>
+                  <span className="ov-why">{f.why}</span>
+                </span>
+              </Link>
+            ))}
+          </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

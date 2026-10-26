@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/icon";
-import { MORE_NAV } from "@/components/nav-items";
+import { MOBILE_NAV, MORE_NAV, NAV } from "@/components/nav-items";
 import { PageHeader } from "@/components/ui";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
@@ -13,7 +13,8 @@ export default async function MorePage() {
     <>
       <PageHeader icon="more" title={t(locale, "nav.more")} />
       <ul className="more-list">
-        {MORE_NAV.map((i) => ({ ...i, label: t(locale, i.key) })).map((item) => (
+        {/* Sidebar pages that don't fit the bottom bar, then everything else. */}
+        {[...NAV.filter((i) => !MOBILE_NAV.some((m) => m.href === i.href)), ...MORE_NAV].map((i) => ({ ...i, label: t(locale, i.key) })).map((item) => (
           <li key={item.href}>
             <Link
               href={item.href}

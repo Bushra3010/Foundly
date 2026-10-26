@@ -39,7 +39,6 @@ export default async function AppLayout({
             </span>
           </span>
         </div>
-        <p className="nav-caption">WORKSPACE</p>
         <nav aria-label="Main">
           <SidebarNav locale={locale} />
         </nav>
@@ -55,7 +54,7 @@ export default async function AppLayout({
           </Link>
           <div className="desktop-breadcrumb">
             <Icon name="home" size={14} />
-            <Link href="/app">Performance</Link>
+            <Link href="/app">Overview</Link>
             <span className="breadcrumb-divider">/</span>
             <span className="font-medium text-text">{business.name}</span>
           </div>

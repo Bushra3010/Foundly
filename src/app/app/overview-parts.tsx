@@ -103,3 +103,55 @@ export function HighlightedAnswer({ text, self, rivals }: { text: string; self: 
     </div>
   );
 }
+
+/** Chart slot per brand: the business is always slot 1; competitors follow in the order they were added. */
+export function brandSlots(brands: { key: string }[]): Map<string, number> {
+  const m = new Map<string, number>();
+  let next = 2;
+  for (const b of brands) m.set(b.key, b.key === "self" ? 1 : next <= 8 ? next++ : 0);
+  return m;
+}
+
+export function Swatch({ slot }: { slot: number }) {
+  return <span className="cv-swatch" style={{ background: slot ? `var(--series-${slot})` : "var(--d-line)" }} aria-hidden="true" />;
+}
+
+/** Brand ranking: every tracked brand by AI recommendations, with share of voice, coverage, position and tone. */
+export function RankingTable({ ranking, slots }: { ranking: Performance["ranking"]; slots: Map<string, number> }) {
+  return (
+    <div className="ov-table-wrap">
+      <table className="ov-table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Mentions</th>
+            <th scope="col">Share of voice</th>
+            <th scope="col">Coverage</th>
+            <th scope="col">Avg. position</th>
+            <th scope="col">Positive tone</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranking.map((b, i) => (
+            <tr key={b.key} className={b.self ? "ov-self-row" : undefined}>
+              <td className="ov-muted">{i + 1}</td>
+              <td>
+                <span className="ov-row" style={{ gap: 8, flexWrap: "nowrap" }}>
+                  <Swatch slot={slots.get(b.key) ?? 0} />
+                  <strong>{b.name}</strong>
+                  {b.self && <span className="ov-badge won">You</span>}
+                </span>
+              </td>
+              <td>{b.answers}</td>
+              <td><Mini rate={b.share} />{b.share}%</td>
+              <td>{b.coverage}%</td>
+              <td>{b.avgPosition ? `#${b.avgPosition}` : <span className="ov-muted">—</span>}</td>
+              <td>{b.positive === null ? <span className="ov-muted">—</span> : `${b.positive}%`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

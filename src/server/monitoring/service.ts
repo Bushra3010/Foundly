@@ -129,7 +129,7 @@ export async function brandSpecs(db: DbOrTx, workspaceId: string): Promise<Brand
   if (!b) return [];
   const domains = new Set<string>(b.ownedDomains);
   if (b.websiteUrl) domains.add(hostOf(b.websiteUrl));
-  const comps = await db.select().from(competitors).where(eq(competitors.workspaceId, workspaceId));
+  const comps = await db.select().from(competitors).where(eq(competitors.workspaceId, workspaceId)).orderBy(asc(competitors.createdAt));
   return [
     { key: "self", name: b.name, aliases: b.aliases, domains: [...domains] },
     ...comps.map((c) => ({ key: c.id, name: c.name, aliases: c.aliases, domains: c.domains })),

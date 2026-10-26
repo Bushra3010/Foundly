@@ -34,6 +34,8 @@ export type KeywordResult = {
   namedOn: string[];
   rivals: string[];
   checkedAt: Date | null;
+  /** The latest answer from each assistant: whether it named the business, and where in its list. */
+  byEngine: Record<string, { named: boolean; position: number | null } | undefined>;
 };
 
 /** Latest answers for each keyword: the run that most recently answered it. */
@@ -93,6 +95,36 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: s
     .map((b) => ({ ...b, share: pct(b.answers, totalNamed) ?? 0 }))
     .sort((a, b) => b.answers - a.answers || Number(b.self) - Number(a.self));
 
+  // Brand ranking: mentions, share of voice, average position and tone for every tracked brand.
+  const ranking = share.map((b) => {
+    const hits = valid.flatMap((o) => o.matches.filter((m) => m.brandKey === b.key && effectiveMention(m)).map((m) => ({ o, m })));
+    const pos = hits.map((h) => h.m.listedPosition).filter((x): x is number => typeof x === "number" && x > 0);
+    const positive = hits.filter((h) => toneAround(h.o.rawAnswer, h.m.matchedText ?? h.m.brandName) === "positive").length;
+    return {
+      ...b,
+      coverage: pct(b.answers, valid.length) ?? 0,
+      avgPosition: pos.length ? Math.round((pos.reduce((a, x) => a + x, 0) / pos.length) * 10) / 10 : null,
+      positive: pct(positive, hits.length),
+    };
+  });
+
+  // Coverage over time for each brand: share of answers naming it, per check.
+  const runOrder = [...new Set(valid.map((o) => o.runId))]
+    .map((id) => ({ id, at: Math.min(...valid.filter((o) => o.runId === id).map((o) => o.capturedAt.getTime())) }))
+    .sort((a, b) => a.at - b.at);
+  const brandSeries = {
+    points: runOrder.map((r) => new Date(r.at)),
+    series: brands.map((b) => ({
+      key: b.key,
+      name: b.name,
+      self: b.key === "self",
+      values: runOrder.map((r) => {
+        const list = valid.filter((o) => o.runId === r.id);
+        return pct(list.filter((o) => o.matches.some((m) => m.brandKey === b.key && effectiveMention(m))).length, list.length) ?? 0;
+      }),
+    })),
+  };
+
   // Per AI source.
   const providers = [...new Set(allRows.map((o) => o.provider))];
   const engines = providers
@@ -122,6 +154,12 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: s
       namedOn: [...new Set(hits.map((o) => engineName(o.provider)))],
       rivals: [...rivalCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k]) => nameOf.get(k) ?? k),
       checkedAt: list.length ? new Date(Math.max(...list.map((o) => o.capturedAt.getTime()))) : null,
+      byEngine: Object.fromEntries(
+        list.map((o) => {
+          const m = selfHit(o);
+          return [o.provider, { named: named(m), position: named(m) ? (m!.listedPosition ?? null) : null }];
+        }),
+      ),
     };
   });
 
@@ -171,6 +209,8 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: s
     sources,
     lastRun: runs[0] ?? null,
     engine: engine ?? null,
+    ranking,
+    brandSeries,
     tone: { ...tones, positiveRate: pct(tones.positive, namedCount) },
     gaps,
   };

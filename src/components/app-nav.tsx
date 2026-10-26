@@ -22,15 +22,17 @@ export function SidebarNav({
 }) {
   const pathname = usePathname();
   const items = [
-    ...NAV.map((i) => ({ ...i, label: t(locale, i.key) })),
-    ...extra,
+    ...NAV.map((i) => ({ ...i, label: t(locale, i.key), section: i.section ? t(locale, i.section) : undefined })),
+    ...extra.map((i) => ({ ...i, section: undefined as string | undefined })),
   ];
   return (
     <ul className="space-y-1">
-      {items.map((item) => {
+      {items.map((item, i) => {
         const active = isActive(pathname, item.href);
+        const heading = item.section && item.section !== items[i - 1]?.section ? item.section : null;
         return (
           <li key={item.href}>
+            {heading && <p className="nav-caption nav-section">{heading}</p>}
             <Link
               href={item.href}
               aria-current={active ? "page" : undefined}
