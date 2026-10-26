@@ -50,3 +50,30 @@ export async function researchKeywords(
   const ideas = clean(lines);
   return ideas.length ? { ideas, source: "ai" } : { ideas: fromDetails(), source: "details" };
 }
+
+/**
+ * Competitor ideas: the businesses an AI assistant names for this category and
+ * city. Uses a connected AI source; without one there are no suggestions and
+ * the owner types names. Never returns the business itself.
+ */
+export async function suggestCompetitors(db: Db, ctx: Ctx, deps: { adapter?: ProviderAdapter | null } = {}): Promise<string[]> {
+  requireRole(ctx, "editor");
+  const b = await requireBusiness(db, ctx);
+  const adapter = deps.adapter === undefined ? enabledAdapters()[0] : deps.adapter;
+  if (!adapter || !b.category || !b.city) return [];
+  if (!(await rateLimit(db, `rivals:${ctx.workspaceId}`, PER_DAY, 86_400_000))) return [];
+  const question =
+    `Which are the best-known ${b.category} businesses in ${b.city}? ` +
+    "List up to 8 business names only, one per line, no numbering, no descriptions.";
+  const result = await adapter
+    .ask({ question, country: b.country || "IN", language: "en", location: b.city }, AbortSignal.timeout(45_000))
+    .catch(() => null);
+  const own = b.name.trim().toLowerCase();
+  const seen = new Set<string>();
+  return (result?.answer ?? "")
+    .split("\n")
+    .map((l) => l.replace(/^\s*(?:[-*•]|\d+[.)])\s*/, "").replace(/\*\*/g, "").split(/\s[–—-]\s|:/)[0].trim())
+    .filter((n) => n.length >= 3 && n.length <= 60 && n.split(" ").length <= 8 && !/^(here|these|note|some|the best)/i.test(n))
+    .filter((n) => n.toLowerCase() !== own && !seen.has(n.toLowerCase()) && seen.add(n.toLowerCase()))
+    .slice(0, 8);
+}

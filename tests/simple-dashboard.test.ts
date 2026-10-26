@@ -7,7 +7,7 @@ import { addKeywords, editKeyword } from "@/server/keywords";
 import { addCompetitor, createRun, executeRun, listQuestions, manualRunKey } from "@/server/monitoring/service";
 import type { AskResult, ProviderAdapter } from "@/server/monitoring/types";
 import { citationsFor, keywordAnswers, keywordsCsv, performanceFor } from "@/server/insights";
-import { researchKeywords } from "@/server/research";
+import { researchKeywords, suggestCompetitors } from "@/server/research";
 import { toneAround } from "@/lib/tone";
 import { makeDb, onboard, signUp } from "./helpers";
 
@@ -132,6 +132,11 @@ describe("keywords and performance", () => {
     const r = await researchKeywords(db, ctx, "", { adapter: ai });
     expect(r.source).toBe("ai");
     expect(r.ideas).toEqual(["emergency plumber Kothrud", "leak repair near Baner"]);
+    const rivals = await suggestCompetitors(db, ctx, {
+      adapter: fake("claude", () => ({ answer: "Here are some options:\n1. **Apex Plumbers** – fast service\n2. Sharma Plumbing\n- Pune Pipe Masters: 24x7\n3. Apex Plumbers" })),
+    });
+    expect(rivals).toEqual(["Apex Plumbers", "Pune Pipe Masters"]);
+    expect(await suggestCompetitors(db, ctx, { adapter: null })).toEqual([]);
     const offline = await researchKeywords(db, ctx, "", { adapter: null });
     expect(offline.source).toBe("details");
     expect(offline.ideas.length).toBeGreaterThan(0);

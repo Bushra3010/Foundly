@@ -76,7 +76,7 @@ describe("setup progress", () => {
   it("counts keywords, website, social media and tracking, and links each step", async () => {
     let d = await load();
     expect(d.setup.done).toBe(0);
-    expect(d.setup.steps.map((s) => s.href)).toEqual(["/onboarding?step=keywords", "/onboarding?step=website", "/onboarding?step=social", "/onboarding?step=start"]);
+    expect(d.setup.steps.map((s) => s.href)).toEqual(["/onboarding?step=prompts", "/onboarding?step=business", "/onboarding?step=social", "/onboarding?step=social"]);
 
     await approveQuestions(db, ctx, [{ text: "best plumber in Pune", group: "comparison" }]);
     await saveWebsiteChoice(db, ctx, true, "https://sharmaplumbing.in");

@@ -11,16 +11,20 @@ import { requireCtx } from "@/lib/auth/session";
 import { decodeCandidates, providerConfigured } from "@/server/connect";
 import { currentBusiness } from "@/server/current";
 import { enabledAdapters } from "@/server/monitoring/registry";
-import { listQuestions } from "@/server/monitoring/service";
-import { setupSteps, socialStatus } from "@/server/performance";
-import { KeywordsStep, StartStep, WebsiteStep } from "./steps";
+import { listCompetitors, listQuestions, questionLimit } from "@/server/monitoring/service";
+import { suggestKeywords } from "@/lib/questions";
+import { socialStatus } from "@/server/performance";
+import { BusinessStep, CompetitorsStep, PromptsStep, StartStep } from "./steps";
+import { readSetupSuggestions } from "./suggestions";
 import "../start.css";
 
 export const metadata: Metadata = { title: "Set up Foundly", robots: { index: false } };
 
-const STEPS = ["keywords", "website", "social", "start"] as const;
+const STEPS = ["business", "prompts", "competitors", "social"] as const;
 type Step = (typeof STEPS)[number];
-const LABEL: Record<Step, string> = { keywords: "Keywords", website: "Website", social: "Social media", start: "Start tracking" };
+const LABEL: Record<Step, string> = { business: "Your business", prompts: "Prompts", competitors: "Competitors", social: "Connect & start" };
+// Older links to the previous steps.
+const ALIAS: Record<string, Step> = { keywords: "prompts", website: "business", start: "social" };
 
 const CONNECT_TEXT: Record<string, string> = {
   linked: "Connected. Foundly keeps it up to date with your details.",
@@ -39,11 +43,16 @@ export default async function SetupPage({ searchParams }: { searchParams: Promis
   const sp = await searchParams;
 
   // Every step after the first needs the business from step 1.
-  const asked = STEPS.find((s) => s === sp.step);
-  const step: Step = !business ? "keywords" : (asked ?? "keywords");
+  const asked = STEPS.find((s) => s === sp.step) ?? (sp.step ? ALIAS[sp.step] : undefined);
+  const step: Step = !business ? "business" : (asked ?? "business");
   const at = STEPS.indexOf(step);
-  const questions = business ? await listQuestions(db, ctx) : [];
-  const social = business ? await socialStatus(db, ctx, business) : [];
+  const [questions, rivals, social, limit, saved] = business
+    ? await Promise.all([listQuestions(db, ctx), listCompetitors(db, ctx), socialStatus(db, ctx, business), questionLimit(db, ctx.workspaceId), readSetupSuggestions()])
+    : [[], [], [], 5, { ideas: null, rivals: null }];
+  const ideas = saved.ideas ?? {
+    items: business ? suggestKeywords({ category: business.category, city: business.city, services: business.services.map((x) => x.name) }) : [],
+    source: "details" as const,
+  };
 
   return (
     <main id="main" className="start-page">
@@ -60,65 +69,61 @@ export default async function SetupPage({ searchParams }: { searchParams: Promis
       </header>
 
       <section className="start-card">
-        {step === "keywords" && (
+        {step === "business" && (
           <>
-            <h1>What should people find you for?</h1>
-            <p className="start-lead">Tell us a little about your business and pick the keywords you want to show up for.</p>
-            <KeywordsStep
-              initial={{ name: business?.name ?? "", category: business?.category ?? "", city: business?.city ?? "" }}
-              tracked={questions.map((q) => q.text)}
-            />
+            <h1>Let&apos;s see how AI sees your business</h1>
+            <p className="start-lead">Tell us who you are. We&apos;ll find what customers ask AI assistants and who they recommend.</p>
+            <BusinessStep initial={{ name: business?.name ?? "", category: business?.category ?? "", city: business?.city ?? "", websiteUrl: business?.websiteUrl ?? "" }} />
           </>
         )}
 
-        {step === "website" && (
+        {step === "prompts" && business && (
           <>
-            <h1>Connect your website</h1>
-            <p className="start-lead">We check what AI assistants can read on it and show you what to fix.</p>
-            <WebsiteStep initialUrl={business?.websiteUrl ?? ""} />
-            <Back to="keywords" />
+            <h1>What do customers ask AI?</h1>
+            <p className="start-lead">Pick the prompts to track. You can change them any time.</p>
+            <PromptsStep ideas={ideas.items} source={ideas.source} tracked={questions.map((q) => q.keyword ?? q.text)} limit={limit} city={business.city} />
+            <Back to="business" />
           </>
         )}
 
-        {step === "social" && (
+        {step === "competitors" && business && (
           <>
-            <h1>Connect your social media</h1>
-            <p className="start-lead">Add your Google, Facebook or Instagram page so AI assistants see your business in more places. Skip it if you don&apos;t have any.</p>
+            <h1>Who do you compete with?</h1>
+            <p className="start-lead">Add the businesses you want to beat in AI answers.</p>
+            <CompetitorsStep ideas={saved.rivals?.items ?? []} tracked={rivals.map((r) => r.name)} />
+            <Back to="prompts" />
+          </>
+        )}
+
+        {step === "social" && business && (
+          <>
+            <h1>Connect your profiles, then start</h1>
+            <p className="start-lead">AI assistants trust businesses they find in several places. Link what you have, or skip it for now.</p>
             {sp.connect && CONNECT_TEXT[sp.connect] && <p className={`start-message ${sp.connect === "linked" ? "ok" : "err"}`} role="status">{CONNECT_TEXT[sp.connect]}</p>}
             <SocialCandidates connect={sp.connect} />
             <SocialConnect social={social} oneClick={{ google: providerConfigured("google"), facebook: providerConfigured("facebook") }} back="setup" />
-            <Link href="/onboarding?step=start" className="start-button start-next">
-              {social.some((s) => s.state !== "none") ? "Continue" : "Skip for now"} <Icon name="arrow" size={18} />
-            </Link>
-            <Back to="website" />
-          </>
-        )}
-
-        {step === "start" && business && (
-          <>
-            <h1>You&apos;re ready to start tracking</h1>
-            <p className="start-lead">We&apos;ll ask the AI assistants your keywords and show the results on your dashboard.</p>
             <ul className="start-summary-list">
-              {setupSteps({ keywords: questions.length, business, websiteRequested: false, social, trackingStarted: false })
-                .steps.filter((s) => s.key !== "tracking")
-                .map((s) => (
-                  <li key={s.key} className={s.done ? "done" : ""}>
-                    <span className="start-step-dot" aria-hidden="true">{s.done ? <Icon name="check" size={11} /> : "–"}</span>
-                    <span>
-                      {s.label}
-                      {s.key === "keywords" && ` · ${questions.length} keyword${questions.length === 1 ? "" : "s"}`}
-                      {s.key === "website" && (business.websiteUrl ? ` · ${business.websiteUrl.replace(/^https?:\/\//, "")}` : " · not yet")}
-                      {s.key === "social" && ` · ${social.filter((x) => x.state !== "none").length} connected`}
-                    </span>
-                    {!s.done && <Link href={s.href} className="start-edit">Add</Link>}
-                  </li>
-                ))}
+              <li className={questions.length ? "done" : ""}>
+                <span className="start-step-dot" aria-hidden="true">{questions.length ? <Icon name="check" size={11} /> : "–"}</span>
+                <span>{questions.length} prompt{questions.length === 1 ? "" : "s"} to track</span>
+                {!questions.length && <Link href="/onboarding?step=prompts" className="start-edit">Add</Link>}
+              </li>
+              <li className={rivals.length ? "done" : ""}>
+                <span className="start-step-dot" aria-hidden="true">{rivals.length ? <Icon name="check" size={11} /> : "–"}</span>
+                <span>{rivals.length} competitor{rivals.length === 1 ? "" : "s"}</span>
+                {!rivals.length && <Link href="/onboarding?step=competitors" className="start-edit">Add</Link>}
+              </li>
+              <li className={business.websiteUrl ? "done" : ""}>
+                <span className="start-step-dot" aria-hidden="true">{business.websiteUrl ? <Icon name="check" size={11} /> : "–"}</span>
+                <span>Website · {business.websiteUrl ? business.websiteUrl.replace(/^https?:\/\//, "") : "not yet"}</span>
+                {!business.websiteUrl && <Link href="/onboarding?step=business" className="start-edit">Add</Link>}
+              </li>
             </ul>
             {enabledAdapters().length === 0 && (
               <p className="start-hint">Our team is switching on the AI checks. Your first results appear on your dashboard as soon as they run.</p>
             )}
             <StartStep requestId={randomUUID()} />
-            <Back to="social" />
+            <Back to="competitors" />
           </>
         )}
       </section>

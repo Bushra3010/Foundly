@@ -1,11 +1,10 @@
 "use client";
 
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useMemo } from "react";
 import { useFormStatus } from "react-dom";
 import { Icon } from "@/components/icon";
 import type { ActionState } from "@/lib/actions";
-import { suggestKeywords } from "@/lib/questions";
-import { saveKeywordsAction, saveWebsiteStepAction, startTrackingAction } from "./actions";
+import { saveBusinessStepAction, saveCompetitorsStepAction, savePromptsStepAction, startTrackingAction } from "./actions";
 
 function Field({
   label,
@@ -46,27 +45,49 @@ function Message({ state }: { state: ActionState }) {
   return state.message ? <p className={`start-message ${state.ok ? "ok" : "err"}`} role="alert">{state.message}</p> : null;
 }
 
-/** Step 1: three facts about the business, then keywords suggested from them. */
-export function KeywordsStep({ initial, tracked }: { initial: { name: string; category: string; city: string }; tracked: string[] }) {
-  const [state, action] = useActionState(saveKeywordsAction, {});
+/** Step 1: the business and its website. */
+export function BusinessStep({ initial }: { initial: { name: string; category: string; city: string; websiteUrl: string } }) {
+  const [state, action] = useActionState<ActionState, FormData>(saveBusinessStepAction, {});
   const v: Record<string, string> = { ...initial, ...state.values };
   const e = state.fieldErrors ?? {};
-  const [category, setCategory] = useState(v.category ?? "");
-  const [city, setCity] = useState(v.city ?? "");
-  const have = useMemo(() => new Set(tracked.map((t) => t.toLowerCase())), [tracked]);
-  const suggestions = suggestKeywords({ category, city }).filter((s) => !have.has(s.toLowerCase()));
-
   return (
     <form action={action} className="start-form" noValidate>
-      <Field label="Business name" name="name" required autoComplete="organization" placeholder="The Sunday Studio" defaultValue={v.name} error={e.name} autoFocus={!v.name} />
+      <Field
+        label="Your website"
+        name="websiteUrl"
+        type="url"
+        inputMode="url"
+        placeholder="yourbusiness.in"
+        hint="Optional. We check what AI assistants can read on it. No website? Leave it empty."
+        defaultValue={v.websiteUrl}
+        error={e.websiteUrl}
+        autoFocus={!v.websiteUrl && !v.name}
+      />
+      <Field label="Business name" name="name" required autoComplete="organization" placeholder="The Sunday Studio" defaultValue={v.name} error={e.name} />
       <div className="start-row">
-        <Field label="What do you do?" name="category" required placeholder="Interior designer" value={category} onChange={(ev) => setCategory(ev.target.value)} error={e.category} />
-        <Field label="City" name="city" required autoComplete="address-level2" placeholder="Pune" value={city} onChange={(ev) => setCity(ev.target.value)} error={e.city} />
+        <Field label="What do you do?" name="category" required placeholder="Interior designer" defaultValue={v.category} error={e.category} />
+        <Field label="City" name="city" required autoComplete="address-level2" placeholder="Pune" defaultValue={v.city} error={e.city} />
       </div>
+      <Message state={state} />
+      <Submit pending="Finding what customers ask AI…">Continue <Icon name="arrow" size={18} /></Submit>
+    </form>
+  );
+}
 
+/** Step 2: prompts to track, suggested by AI (or from the details) and typed. */
+export function PromptsStep({ ideas, source, tracked, limit, city }: { ideas: string[]; source: "ai" | "details"; tracked: string[]; limit: number; city: string }) {
+  const [state, action] = useActionState<ActionState, FormData>(savePromptsStepAction, {});
+  const e = state.fieldErrors ?? {};
+  const have = useMemo(() => new Set(tracked.map((t) => t.toLowerCase())), [tracked]);
+  const fresh = ideas.filter((k) => !have.has(k.toLowerCase()));
+  const room = Math.max(limit - tracked.length, 0);
+  return (
+    <form action={action} className="start-form" noValidate>
       <fieldset className="start-keywords">
-        <legend className="start-label">Keywords to track <em>(up to 5)</em></legend>
-        <p className="start-hint">What would customers type or ask an AI assistant to find you? We score each keyword on ChatGPT, Gemini, Perplexity and Claude.</p>
+        <legend className="start-label">Prompts to track <em>(up to {limit})</em></legend>
+        <p className="start-hint">
+          {source === "ai" ? "What customers ask AI assistants when they look for a business like yours." : "Ideas from your details."} Each one is asked to ChatGPT, Gemini, Perplexity and Claude.
+        </p>
         {tracked.length > 0 && (
           <ul className="start-chips" aria-label="Already tracking">
             {tracked.map((k) => (
@@ -74,51 +95,72 @@ export function KeywordsStep({ initial, tracked }: { initial: { name: string; ca
             ))}
           </ul>
         )}
-        {suggestions.length > 0 ? (
-          <ul className="start-chips" aria-label="Suggested keywords">
-            {suggestions.map((k, i) => (
+        {room > 0 && fresh.length > 0 && (
+          <ul className="start-chips" aria-label="Suggested prompts">
+            {fresh.map((k, i) => (
               <li key={k}>
                 <label className="start-chip">
-                  <input type="checkbox" name="keyword" value={k} defaultChecked={tracked.length === 0 && i < 3} />
+                  <input type="checkbox" name="keyword" value={k} defaultChecked={tracked.length === 0 && i < Math.min(3, room)} />
                   {k}
                 </label>
               </li>
             ))}
           </ul>
-        ) : (
-          tracked.length === 0 && <p className="start-hint">Fill in what you do and your city to see suggestions.</p>
         )}
-        <label className="start-field" htmlFor="custom">
-          <span className="start-label">Your own keywords <em>(one per line, optional)</em></span>
-          <textarea id="custom" name="custom" rows={2} placeholder={city ? `wedding photographer in ${city}` : "wedding photographer in Pune"} defaultValue={v.custom} aria-invalid={e.custom ? true : undefined} />
-          {e.custom && <span className="start-error">{e.custom[0]}</span>}
-        </label>
+        {room > 0 && (
+          <label className="start-field" htmlFor="custom">
+            <span className="start-label">Your own <em>(one per line, optional)</em></span>
+            <textarea id="custom" name="custom" rows={2} placeholder={`wedding photographer in ${city || "Pune"}`} defaultValue={state.values?.custom} aria-invalid={e.custom ? true : undefined} />
+            {e.custom && <span className="start-error">{e.custom[0]}</span>}
+          </label>
+        )}
       </fieldset>
-
       <Message state={state} />
-      <Submit pending="Saving…">Continue <Icon name="arrow" size={18} /></Submit>
+      <Submit pending="Finding your competitors…">Continue <Icon name="arrow" size={18} /></Submit>
     </form>
   );
 }
 
-/** Step 2: the website address. Owners without one can say so and carry on. */
-export function WebsiteStep({ initialUrl }: { initialUrl: string }) {
-  const [state, action] = useActionState(saveWebsiteStepAction, {});
-  const e = state.fieldErrors ?? {};
+/** Step 3: competitors to compare with, suggested by AI and typed. */
+export function CompetitorsStep({ ideas, tracked }: { ideas: string[]; tracked: string[] }) {
+  const [state, action] = useActionState<ActionState, FormData>(saveCompetitorsStepAction, {});
+  const have = useMemo(() => new Set(tracked.map((t) => t.toLowerCase())), [tracked]);
+  const fresh = ideas.filter((k) => !have.has(k.toLowerCase()));
   return (
-    <div className="start-choices">
-      <form action={action} className="start-form" noValidate>
-        <input type="hidden" name="choice" value="connect" />
-        <Field label="Your website address" name="websiteUrl" type="url" inputMode="url" placeholder="example.com" hint="We only read your public pages. We never need your login." defaultValue={state.values?.websiteUrl ?? initialUrl} error={e.websiteUrl} autoFocus />
-        <Message state={state} />
-        <Submit pending="Connecting…">Connect website <Icon name="arrow" size={18} /></Submit>
-      </form>
-      <form action={action}>
-        <input type="hidden" name="choice" value="none" />
-        <Submit pending="One moment…" className="start-choice-alt">I don&apos;t have a website yet</Submit>
-        <p className="start-hint start-center">No problem. Our team can build one for you. You can ask from your dashboard.</p>
-      </form>
-    </div>
+    <form action={action} className="start-form" noValidate>
+      <fieldset className="start-keywords">
+        <legend className="start-label">Competitors <em>(optional, up to 10)</em></legend>
+        <p className="start-hint">We spot them in the same AI answers and rank you against them.</p>
+        {tracked.length > 0 && (
+          <ul className="start-chips" aria-label="Already comparing with">
+            {tracked.map((k) => (
+              <li key={k} className="start-chip on"><Icon name="check" size={13} />{k}</li>
+            ))}
+          </ul>
+        )}
+        {fresh.length > 0 && (
+          <>
+            <p className="start-hint">Businesses AI already recommends in your area:</p>
+            <ul className="start-chips" aria-label="Suggested competitors">
+              {fresh.map((k, i) => (
+                <li key={k}>
+                  <label className="start-chip">
+                    <input type="checkbox" name="rival" value={k} defaultChecked={tracked.length === 0 && i < 3} />
+                    {k}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+        <label className="start-field" htmlFor="custom">
+          <span className="start-label">Add names <em>(comma or one per line)</em></span>
+          <textarea id="custom" name="custom" rows={2} placeholder="Smile Care Clinic, City Dental Studio" defaultValue={state.values?.custom} />
+        </label>
+      </fieldset>
+      <Message state={state} />
+      <Submit pending="Saving…">{fresh.length || tracked.length ? "Continue" : "Skip for now"} <Icon name="arrow" size={18} /></Submit>
+    </form>
   );
 }
 

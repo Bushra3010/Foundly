@@ -1,6 +1,7 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
 import { resubmitBusiness } from "@/server/indexnow";
@@ -13,58 +14,74 @@ import { checkWebsiteSoon } from "@/server/audit/service";
 import { enabledAdapters } from "@/server/monitoring/registry";
 import { parseKeywordList } from "@/lib/keywords";
 import { addKeywords } from "@/server/keywords";
-import { createRun, executeRun, listQuestions, manualRunKey } from "@/server/monitoring/service";
+import { addCompetitor, createRun, executeRun, listCompetitors, listQuestions, manualRunKey } from "@/server/monitoring/service";
+import { researchKeywords, suggestCompetitors } from "@/server/research";
+import { IDEAS_COOKIE, RIVALS_COOKIE, setupCookie } from "./suggestions";
 
 /**
- * Setup in four steps: keywords, website, social media, start tracking.
- * Every step saves as it goes, so owners can leave and come back.
+ * Setup in four steps, like an AI-visibility tool's quick start:
+ * the business (and its website), the prompts to track, the competitors to
+ * compare with, then connect profiles and start. Every step saves as it goes,
+ * so owners can leave and come back.
  */
 
-/** Step 1: who the business is, and the keywords to track. */
-export async function saveKeywordsAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+/** Step 1: the business, and its website if it has one. Then AI suggests prompts. */
+export async function saveBusinessStepAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const values = formValues(form);
-  const keywords = parseKeywordList([...form.getAll("keyword").map(String), String(form.get("custom") ?? "")].join("\n"));
   try {
     const ctx = await requireCtx();
-    const basics = basicsSchema.safeParse({
-      name: values.name ?? "",
-      category: values.category ?? "",
-      city: values.city ?? "",
-      phone: "",
-      whatsapp: "",
-      email: ctx.user.email,
-    });
+    const basics = basicsSchema.safeParse({ name: values.name ?? "", category: values.category ?? "", city: values.city ?? "", phone: "", whatsapp: "", email: ctx.user.email });
     const errors = basics.success ? {} : fieldErrors(basics.error);
-    if (keywords.length === 0) errors.custom = ["Pick or type at least one keyword"];
-    else if (keywords.some((k) => k.length < 8)) errors.custom = ["Make each keyword a little longer, like “plumber in Pune”"];
-    if (!basics.success || errors.custom) return { ok: false, fieldErrors: errors, values };
+    const url = (values.websiteUrl ?? "").trim();
+    const site = url ? websiteChoiceSchema.safeParse({ hasWebsite: "yes", websiteUrl: url }) : null;
+    if (site && !site.success) Object.assign(errors, fieldErrors(site.error));
+    if (!basics.success || (site && !site.success)) return { ok: false, fieldErrors: errors, values };
 
     const db = await getDb();
     const existing = await getBusiness(db, ctx);
     // Keep contact details the owner already gave; only fill the email for a new business.
     await saveBasics(db, ctx, existing ? { ...basics.data, phone: existing.phone, whatsapp: existing.whatsapp, email: existing.email } : basics.data);
-    // Each keyword is asked to AI as a customer's request for a recommendation.
-    await addKeywords(db, ctx, keywords);
+    if (site?.success && "websiteUrl" in site.data) {
+      await saveWebsiteChoice(db, ctx, true, site.data.websiteUrl ?? null);
+      after(() => checkWebsiteSoon(db, ctx));
+    } else if (!existing?.websiteUrl) {
+      await saveWebsiteChoice(db, ctx, false, null);
+    }
+    const ideas = await researchKeywords(db, ctx).catch(() => null);
+    if (ideas) (await cookies()).set(IDEAS_COOKIE, JSON.stringify({ items: ideas.ideas, source: ideas.source }), setupCookie);
   } catch (err) {
     return toActionError(err, values);
   }
-  redirect("/onboarding?step=website");
+  redirect("/onboarding?step=prompts");
 }
 
-/** Step 2: connect the owner's website, or note that they don't have one yet. */
-export async function saveWebsiteStepAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+/** Step 2: the prompts (keywords) to track. Then AI suggests competitors. */
+export async function savePromptsStepAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   const values = formValues(form);
   try {
     const ctx = await requireCtx();
     const db = await getDb();
-    if (values.choice === "none") {
-      await saveWebsiteChoice(db, ctx, false, null);
-    } else {
-      const parsed = websiteChoiceSchema.safeParse({ hasWebsite: "yes", websiteUrl: values.websiteUrl ?? "" });
-      if (!parsed.success) return { ok: false, fieldErrors: fieldErrors(parsed.error), values };
-      await saveWebsiteChoice(db, ctx, true, "websiteUrl" in parsed.data ? (parsed.data.websiteUrl ?? null) : null);
-      after(() => checkWebsiteSoon(db, ctx));
-    }
+    const keywords = parseKeywordList([...form.getAll("keyword").map(String), String(form.get("custom") ?? "")].join("\n"));
+    const tracked = await listQuestions(db, ctx);
+    if (keywords.length === 0 && tracked.length === 0) return { ok: false, fieldErrors: { custom: ["Pick or type at least one prompt"] }, values };
+    if (keywords.length) await addKeywords(db, ctx, keywords);
+    const rivals = await suggestCompetitors(db, ctx).catch(() => []);
+    (await cookies()).set(RIVALS_COOKIE, JSON.stringify({ items: rivals, source: "ai" }), setupCookie);
+  } catch (err) {
+    return toActionError(err, values);
+  }
+  redirect("/onboarding?step=competitors");
+}
+
+/** Step 3: competitors to compare with, picked from AI's suggestions or typed. */
+export async function saveCompetitorsStepAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const values = formValues(form);
+  try {
+    const ctx = await requireCtx();
+    const db = await getDb();
+    const names = parseKeywordList([...form.getAll("rival").map(String), String(form.get("custom") ?? "")].join("\n")).slice(0, 10);
+    const known = new Set((await listCompetitors(db, ctx)).map((c) => c.name.toLowerCase()));
+    for (const name of names) if (!known.has(name.toLowerCase())) await addCompetitor(db, ctx, name);
   } catch (err) {
     return toActionError(err, values);
   }
