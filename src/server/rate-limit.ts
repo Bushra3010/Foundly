@@ -9,14 +9,18 @@ import { rateLimits } from "@/db/schema";
  */
 export async function rateLimit(db: Db, key: string, limit: number, windowMs: number, now = new Date()): Promise<boolean> {
   const resetAt = new Date(now.getTime() + windowMs);
+  // Raw SQL parameters go to the driver as-is, and postgres.js (production)
+  // can't send a Date there, so times are passed as ISO text and cast.
+  const nowTs = sql`${now.toISOString()}::timestamptz`;
+  const resetTs = sql`${resetAt.toISOString()}::timestamptz`;
   const [row] = await db
     .insert(rateLimits)
     .values({ key, count: 1, resetAt })
     .onConflictDoUpdate({
       target: rateLimits.key,
       set: {
-        count: sql`case when ${rateLimits.resetAt} <= ${now} then 1 else ${rateLimits.count} + 1 end`,
-        resetAt: sql`case when ${rateLimits.resetAt} <= ${now} then ${resetAt} else ${rateLimits.resetAt} end`,
+        count: sql`case when ${rateLimits.resetAt} <= ${nowTs} then 1 else ${rateLimits.count} + 1 end`,
+        resetAt: sql`case when ${rateLimits.resetAt} <= ${nowTs} then ${resetTs} else ${rateLimits.resetAt} end`,
       },
     })
     .returning({ count: rateLimits.count });
