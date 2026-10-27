@@ -45,8 +45,14 @@ function hasPlace(keyword: string, city: string): boolean {
  * would ask for a recommendation, so answers name businesses. Built from a
  * template: no model call, no cost. The city is added when the keyword has no place.
  */
+/** Already phrased as a question or request ("Who can I hire for…?", "Which is the best…"), so it is asked as typed. */
+export function isQuestion(keyword: string): boolean {
+  return /\?\s*$/.test(keyword.trim()) || /^(what|who|which|where|when|how|why|can|could|should|is|are|do|does|recommend|suggest)\b/i.test(keyword.trim());
+}
+
 export function questionForKeyword(keyword: string, city: string): string {
   const k = normalizeKeyword(keyword);
+  if (isQuestion(keyword)) return /[?.!]\s*$/.test(keyword.trim()) ? keyword.trim() : `${k}?`;
   if (keywordLanguage(k) === "hi") return `${k} के लिए सबसे अच्छे विकल्प कौन से हैं? कुछ नाम बताइए।`;
   const where = hasPlace(k, city) || !city.trim() ? "" : ` in ${city.trim()}`;
   // "best dentist in Indore" must not become "the best best dentist".

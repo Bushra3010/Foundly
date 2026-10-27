@@ -27,6 +27,27 @@ function migrationCount(): number {
   }
 }
 
+/**
+ * The postgres.js clients for production. Drizzle turns off postgres.js's own
+ * JSON serialisation on the client it is given (it sends JSON as text itself);
+ * the transaction pool must get the same settings, or everything written inside
+ * a transaction is JSON-encoded twice and stored as a string.
+ */
+export function productionClients(url: string) {
+  const options = { prepare: false, max_pipeline: 0, max: 10, idle_timeout: 20, max_lifetime: 60 * 10, connect_timeout: 10 };
+  const client = postgres(url, options as Parameters<typeof postgres>[1]);
+  // With max_pipeline 0, postgres.js never reserves the connection that runs
+  // BEGIN, so every transaction fails with UNSAFE_TRANSACTION. Transactions
+  // get their own small pool that can reserve; their queries are sequential.
+  const txClient = postgres(url, { ...options, max: 5, max_pipeline: 1 } as Parameters<typeof postgres>[1]);
+  // Share the type parsers and serialisers, so Drizzle's changes to `client`
+  // (made when it wraps the client) apply to transactions too.
+  txClient.options.parsers = client.options.parsers;
+  txClient.options.serializers = client.options.serializers;
+  client.begin = txClient.begin.bind(txClient) as typeof client.begin;
+  return { client, txClient };
+}
+
 async function connect(): Promise<Db> {
   const url = process.env.DATABASE_URL;
   if (url) {
@@ -36,13 +57,7 @@ async function connect(): Promise<Db> {
     // So: one query in flight per connection, no prepared statements, and short
     // idle and connect timeouts so a dead serverless socket is never reused.
     // `max_pipeline` is a real postgres.js option that its type definitions omit.
-    const options = { prepare: false, max_pipeline: 0, max: 10, idle_timeout: 20, max_lifetime: 60 * 10, connect_timeout: 10 };
-    const client = postgres(url, options as Parameters<typeof postgres>[1]);
-    // With max_pipeline 0, postgres.js never reserves the connection that runs
-    // BEGIN, so every transaction fails with UNSAFE_TRANSACTION. Transactions
-    // get their own small pool that can reserve; their queries are sequential.
-    const txClient = postgres(url, { ...options, max: 5, max_pipeline: 1 } as Parameters<typeof postgres>[1]);
-    client.begin = txClient.begin.bind(txClient) as typeof client.begin;
+    const { client } = productionClients(url);
     return drizzlePostgres({ client, schema }) as unknown as Db;
   }
   // Local development and tests: embedded Postgres, migrated on first use.

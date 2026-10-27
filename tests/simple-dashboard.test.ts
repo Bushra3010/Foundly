@@ -32,6 +32,9 @@ describe("keywords", () => {
     expect(questionForKeyword("best dentist near Vijay Nagar", "Indore")).toBe("Can you recommend the best dentist near Vijay Nagar?");
     expect(questionForKeyword("affordable braces", "Indore")).toBe("Can you recommend an affordable braces in Indore?");
     expect(questionForKeyword("इंदौर में डेंटिस्ट", "Indore")).toContain("इंदौर में डेंटिस्ट");
+    // Already a question: asked as typed, never wrapped.
+    expect(questionForKeyword("Who can I hire for software in Mumbai?", "Mumbai")).toBe("Who can I hire for software in Mumbai?");
+    expect(questionForKeyword("which dentist is open on Sunday in Indore", "Indore")).toBe("which dentist is open on Sunday in Indore?");
   });
 
   it("cleans pasted lists", () => {
