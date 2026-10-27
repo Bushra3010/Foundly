@@ -13,7 +13,7 @@ function toQuestion(keyword: string, b: Awaited<ReturnType<typeof requireBusines
   if (k.length < KEYWORD_MIN || k.length > KEYWORD_MAX) throw new AppError("invalid", `Keep each keyword between ${KEYWORD_MIN} and ${KEYWORD_MAX} characters.`);
   return {
     keyword: k,
-    text: questionForKeyword(k, b.city),
+    text: questionForKeyword(k, b.city, b.serviceAreas),
     group: keywordGroup(k),
     language: keywordLanguage(k),
     location: b.city || null,

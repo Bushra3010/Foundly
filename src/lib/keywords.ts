@@ -50,11 +50,19 @@ export function isQuestion(keyword: string): boolean {
   return /\?\s*$/.test(keyword.trim()) || /^(what|who|which|where|when|how|why|can|could|should|is|are|do|does|recommend|suggest)\b/i.test(keyword.trim());
 }
 
-export function questionForKeyword(keyword: string, city: string): string {
+/** The keyword names an area rather than the city: a known service area, or a capitalised place like "Andheri East". */
+function namesArea(keyword: string, areas: string[]): boolean {
+  const k = keyword.toLowerCase();
+  if (areas.some((a) => a.trim() && k.includes(a.trim().toLowerCase()))) return true;
+  return /(?:^|\s)[A-Z][a-z]+(?:\s[A-Z][a-z]+)*\s*$/.test(keyword.trim()) && !/^[A-Z]/.test(keyword.trim());
+}
+
+export function questionForKeyword(keyword: string, city: string, areas: string[] = []): string {
   const k = normalizeKeyword(keyword);
   if (isQuestion(keyword)) return /[?.!]\s*$/.test(keyword.trim()) ? keyword.trim() : `${k}?`;
   if (keywordLanguage(k) === "hi") return `${k} के लिए सबसे अच्छे विकल्प कौन से हैं? कुछ नाम बताइए।`;
-  const where = hasPlace(k, city) || !city.trim() ? "" : ` in ${city.trim()}`;
+  // "dental clinic Andheri East" becomes "…Andheri East, Mumbai", not "…Andheri East in Mumbai".
+  const where = hasPlace(k, city) || !city.trim() ? "" : namesArea(k, areas) ? `, ${city.trim()}` : ` in ${city.trim()}`;
   // "best dentist in Indore" must not become "the best best dentist".
   const core = k.replace(/^(the\s+)?(best|top|good|affordable|cheap)\s+/i, "");
   const lead = /^(affordable|cheap)\s/i.test(k) ? "an affordable" : "the best";
