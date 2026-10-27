@@ -42,15 +42,20 @@ export const claudeAdapter: ProviderAdapter = {
       }
       const texts: string[] = [];
       const citations: Citation[] = [];
+      const searched: Citation[] = [];
       for (const block of response.content) {
         if (block.type === "text") {
           texts.push(block.text);
           for (const c of block.citations ?? []) {
             if (c.type === "web_search_result_location") citations.push({ url: c.url, title: c.title });
           }
+        } else if (block.type === "web_search_tool_result" && Array.isArray(block.content)) {
+          for (const r of block.content) if (r.type === "web_search_result") searched.push({ url: r.url, title: r.title });
         }
       }
       const answer = texts.join("").trim();
+      // The model doesn't always cite inline; the pages it searched are still the sources it read.
+      if (citations.length === 0) citations.push(...searched.slice(0, 10));
       // pause_turn / max_tokens mean the answer was cut short.
       const status = response.stop_reason === "end_turn" ? answeredStatus(answer, citations) : "partial";
       return { status, answer, citations: dedupeCitations(citations), model: response.model, appliedLocale: input.location ? "native" : "none", raw: trimRaw(response) };
