@@ -43,7 +43,8 @@ export async function editKeyword(db: Db, ctx: Ctx, questionId: string, keyword:
     .where(and(eq(trackedQuestions.id, questionId), eq(trackedQuestions.workspaceId, ctx.workspaceId), isNull(trackedQuestions.archivedAt)));
   if (!old) throw new AppError("not_found", "Keyword not found.");
   const next = toQuestion(keyword, b, old.id);
-  if (old.keyword?.toLowerCase() === next.keyword?.toLowerCase()) return 0;
+  // Saving the same keyword still refreshes the question when its wording has changed.
+  if (old.keyword?.toLowerCase() === next.keyword?.toLowerCase() && old.text === next.text) return 0;
   return db.transaction(async (tx) => {
     await tx.update(trackedQuestions).set({ archivedAt: new Date() }).where(eq(trackedQuestions.id, old.id));
     return approveQuestions(tx as unknown as Db, ctx, [next]);

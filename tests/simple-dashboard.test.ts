@@ -1,4 +1,6 @@
+import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
+import { trackedQuestions } from "@/db/schema";
 import type { Db } from "@/db";
 import { normalizeKeyword, parseKeywordList, questionForKeyword } from "@/lib/keywords";
 import { AppError, type Ctx } from "@/server/context";
@@ -79,7 +81,15 @@ describe("keywords and performance", () => {
     expect(qs.find((q) => q.keyword === "leak repair")?.text).toBe("Can you recommend the best leak repair in Pune?");
     // Another workspace can't change them.
     await expect(editKeyword(db, other, qs[0].id, "hacked")).rejects.toBeInstanceOf(AppError);
-    await editKeyword(db, ctx, qs[0].id, "emergency plumber in Pune");
+    // Re-saving an unchanged keyword keeps it as is…
+    expect(await editKeyword(db, ctx, qs[0].id, qs[0].keyword!)).toBe(0);
+    // …but refreshes the question when the wording rules changed since it was built.
+    await db.update(trackedQuestions).set({ text: "Old wording?" }).where(eq(trackedQuestions.id, qs[0].id));
+    expect(await editKeyword(db, ctx, qs[0].id, qs[0].keyword!)).toBe(1);
+    const refreshed = (await listQuestions(db, ctx)).find((q) => q.keyword === qs[0].keyword)!;
+    expect(refreshed.id).not.toBe(qs[0].id);
+    expect(refreshed.text).not.toBe("Old wording?");
+    await editKeyword(db, ctx, refreshed.id, "emergency plumber in Pune");
     expect((await listQuestions(db, ctx)).map((q) => q.keyword)).toContain("emergency plumber in Pune");
     expect(await listQuestions(db, other)).toHaveLength(0);
   });
