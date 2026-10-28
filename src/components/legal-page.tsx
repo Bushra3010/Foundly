@@ -31,10 +31,6 @@ export function LegalPage({ title, intro, sections }: { title: string; intro: st
           <p className="legal-intro">{intro}</p>
           <p className="legal-date">Draft prepared <time dateTime="2026-10-29">29 October 2026</time> · Effective date pending</p>
         </header>
-        <aside className="legal-draft" aria-label="Draft status">
-          <strong>Draft for company review</strong>
-          <p>The business address, refund policy and India/Pune jurisdiction have been supplied. The registered legal operator, proposed email addresses and remaining privacy operations must be verified before these policies take effect. This draft does not replace an existing customer agreement.</p>
-        </aside>
         <div className="legal-layout">
           <aside className="legal-sidebar">
             <nav aria-label="On this page">

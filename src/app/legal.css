@@ -3,8 +3,6 @@
 .legal-hero h1 { margin: 20px 0; font-size: clamp(36px, 5.5vw, 66px); line-height: 1.08; letter-spacing: -.045em; }
 .legal-intro { max-width: 700px; font-size: 19px; line-height: 1.65; color: #4b554f; }
 .legal-date { margin-top: 24px; font-size: 13px; color: #59645e; }
-.legal-draft { background: #f3f6e8; border: 1px solid #cdd8af; border-radius: 16px; padding: 22px 26px; margin-bottom: 48px; line-height: 1.7; }
-.legal-draft p { margin: 6px 0 0; font-size: 14px; }
 .legal-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 64px; align-items: start; }
 .legal-sidebar { position: sticky; top: 110px; font-size: 13px; }
 .legal-sidebar h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
@@ -35,7 +33,6 @@
   .legal-sidebar { position: static; }
   .legal-sidebar ol { columns: 2; column-gap: 24px; }
   .legal-sidebar li { break-inside: avoid; }
-  .legal-draft { padding: 18px; margin-bottom: 32px; }
 }
 @media (max-width: 420px) { .legal-sidebar ol { columns: 1; } }
 @media print {
