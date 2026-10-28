@@ -29,7 +29,7 @@ export function LegalPage({ title, intro, sections }: { title: string; intro: st
           <p className="landing-eyebrow">FOUNDLY / LEGAL</p>
           <h1>{title}</h1>
           <p className="legal-intro">{intro}</p>
-          <p className="legal-date">Draft prepared <time dateTime="2026-10-29">29 October 2026</time> · Effective date pending</p>
+          <p className="legal-date">Draft prepared <time dateTime="2026-10-29">29 October 2026</time></p>
         </header>
         <div className="legal-layout">
           <aside className="legal-sidebar">
