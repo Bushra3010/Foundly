@@ -8,34 +8,25 @@ export type PricingMarket = {
   extraKeyword: number;
 };
 
-// Fixed regional list prices, not exchange-rate conversions. Amounts are major currency units.
-// Each price keeps a 90% margin at full credit use; see docs/product/regional-pricing.md.
+// India is priced in rupees; every other country pays the same numbers in US dollars.
 export const PRICING_MARKETS = {
-  IN: { currency: "INR", locale: "en-IN", monthly: { growth: 2999, pro: 10999, agency: 29999 }, extraKeyword: 999 },
-  US: { currency: "USD", locale: "en-US", monthly: { growth: 45, pro: 159, agency: 449 }, extraKeyword: 15 },
-  GB: { currency: "GBP", locale: "en-GB", monthly: { growth: 35, pro: 129, agency: 349 }, extraKeyword: 12 },
-  EU: { currency: "EUR", locale: "de-DE", monthly: { growth: 45, pro: 149, agency: 399 }, extraKeyword: 15 },
-  CA: { currency: "CAD", locale: "en-CA", monthly: { growth: 59, pro: 219, agency: 599 }, extraKeyword: 22 },
-  AU: { currency: "AUD", locale: "en-AU", monthly: { growth: 69, pro: 249, agency: 649 }, extraKeyword: 25 },
-  NZ: { currency: "NZD", locale: "en-NZ", monthly: { growth: 79, pro: 269, agency: 729 }, extraKeyword: 27 },
-  AE: { currency: "AED", locale: "en-AE", monthly: { growth: 159, pro: 579, agency: 1599 }, extraKeyword: 59 },
-  SG: { currency: "SGD", locale: "en-SG", monthly: { growth: 59, pro: 209, agency: 589 }, extraKeyword: 21 },
-  ZA: { currency: "ZAR", locale: "en-ZA", monthly: { growth: 799, pro: 2799, agency: 7999 }, extraKeyword: 279 },
+  IN: { currency: "INR", locale: "en-IN", monthly: { growth: 15000, pro: 20000, agency: 25000 }, extraKeyword: 999 },
+  US: { currency: "USD", locale: "en-US", monthly: { growth: 15000, pro: 20000, agency: 25000 }, extraKeyword: 999 },
 } satisfies Record<string, PricingMarket>;
 
 export type MarketKey = keyof typeof PRICING_MARKETS;
 export const PRICING_COUNTRIES = [
   { code: "IN", name: "India", market: "IN" },
   { code: "US", name: "United States", market: "US" },
-  { code: "GB", name: "United Kingdom", market: "GB" },
-  { code: "CA", name: "Canada", market: "CA" },
-  { code: "AU", name: "Australia", market: "AU" },
-  { code: "NZ", name: "New Zealand", market: "NZ" },
-  { code: "AE", name: "United Arab Emirates", market: "AE" },
-  { code: "SG", name: "Singapore", market: "SG" },
-  { code: "ZA", name: "South Africa", market: "ZA" },
+  { code: "GB", name: "United Kingdom", market: "US" },
+  { code: "CA", name: "Canada", market: "US" },
+  { code: "AU", name: "Australia", market: "US" },
+  { code: "NZ", name: "New Zealand", market: "US" },
+  { code: "AE", name: "United Arab Emirates", market: "US" },
+  { code: "SG", name: "Singapore", market: "US" },
+  { code: "ZA", name: "South Africa", market: "US" },
   ...["AT", "BE", "BG", "HR", "CY", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PT", "SK", "SI", "ES"].map(code => ({
-    code, name: new Intl.DisplayNames(["en"], { type: "region" }).of(code) ?? code, market: "EU" as const,
+    code, name: new Intl.DisplayNames(["en"], { type: "region" }).of(code) ?? code, market: "US" as const,
   })),
   { code: "OTHER", name: "Other countries", market: "US" },
 ] satisfies { code: string; name: string; market: MarketKey }[];

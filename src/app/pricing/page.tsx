@@ -3,13 +3,13 @@ import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { LandingPricing } from "@/components/landing-pricing";
-import { planSpec } from "@/lib/plans";
+import { ALL_PLATFORMS, PLATFORM_LABEL, planSpec } from "@/lib/plans";
 import "../landing.css";
 import "../landing-v2.css";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "Plans priced by the number of prompts you track in ChatGPT, Gemini, Perplexity and Claude. Start free.",
+  description: "Basic GEO on ChatGPT, Gemini, Perplexity and Claude, with the ChatGPT Ads service in every plan. From ₹15,000 a month.",
   alternates: { canonical: "/pricing" },
 };
 
@@ -18,47 +18,58 @@ const pro = planSpec("pro");
 const agency = planSpec("agency");
 const every = (s: string | null) => (s === "daily" ? "Every day" : s === "weekly" ? "Every week" : s === "biweekly" ? "Every 2 weeks" : "On demand");
 
+const PLANS = [growth, pro, agency];
+
 // One row per capability; ✓ / text per plan, in the order the plan cards show.
-const ROWS: { group: string; rows: [string, string, string, string, string][] }[] = [
+const ROWS: { group: string; rows: [string, string, string, string][] }[] = [
+  {
+    group: "ChatGPT Ads",
+    rows: [["ChatGPT Ads service", "✓", "✓", "✓"]],
+  },
+  {
+    group: "Basic GEO",
+    rows: [
+      ["AI platforms", ...PLANS.map((p) => String(p.platforms.length))] as [string, string, string, string],
+      ...ALL_PLATFORMS.map((k) => [PLATFORM_LABEL[k], ...PLANS.map((p) => (p.platforms.includes(k) ? "✓" : "—"))] as [string, string, string, string]),
+    ],
+  },
   {
     group: "AI search tracking",
     rows: [
-      ["Prompts tracked", String(planSpec("free").keywords), String(growth.keywords), String(pro.keywords), `${agency.keywords} per business`],
-      ["Scheduled checks", "Trial credits only", every(growth.checks), every(pro.checks), every(agency.checks)],
-      ["ChatGPT, Gemini, Perplexity, Claude", "✓", "✓", "✓", "✓"],
-      ["Check now (uses credits)", "✓", "✓", "✓", "✓"],
-      ["Businesses", "1", "1", "1", String(agency.maxWorkspaces)],
+      ["Prompts tracked", String(growth.keywords), String(pro.keywords), `${agency.keywords} per business`],
+      ["Scheduled checks", every(growth.checks), every(pro.checks), every(agency.checks)],
+      ["Check now (uses credits)", "✓", "✓", "✓"],
+      ["Businesses", "1", "1", String(agency.maxWorkspaces)],
     ],
   },
   {
     group: "Analytics",
     rows: [
-      ["Brand mentions, coverage, share of voice, position", "✓", "✓", "✓", "✓"],
-      ["Competitor ranking (up to 10)", "✓", "✓", "✓", "✓"],
-      ["Citations: domains and pages AI reads", "✓", "✓", "✓", "✓"],
-      ["Tone of mentions (estimated)", "✓", "✓", "✓", "✓"],
-      ["Full answer for every prompt", "✓", "✓", "✓", "✓"],
-      ["CSV export", "✓", "✓", "✓", "✓"],
+      ["Brand mentions, coverage, share of voice, position", "✓", "✓", "✓"],
+      ["Competitor ranking (up to 10)", "✓", "✓", "✓"],
+      ["Citations: domains and pages AI reads", "✓", "✓", "✓"],
+      ["Tone of mentions (estimated)", "✓", "✓", "✓"],
+      ["Full answer for every prompt", "✓", "✓", "✓"],
+      ["CSV export", "✓", "✓", "✓"],
     ],
   },
   {
     group: "Optimize",
     rows: [
-      ["Prompt research with AI", "✓", "✓", "✓", "✓"],
-      ["GEO audit of your website", "✓", "✓", "✓", "✓"],
-      ["Recommendations and fixes", "✓", "✓", "✓", "✓"],
-      ["Google and Facebook updated when you change details", "✓", "✓", "✓", "✓"],
-      ["Weekly GEO upkeep: profiles refreshed, pages resubmitted", "—", "✓", "✓", "✓"],
-      ["Directory profile with schema", "✓", "✓", "✓", "✓"],
+      ["Prompt research with AI", "✓", "✓", "✓"],
+      ["GEO audit of your website", "✓", "✓", "✓"],
+      ["Recommendations and fixes", "✓", "✓", "✓"],
+      ["Weekly GEO upkeep: profiles refreshed, pages resubmitted", "✓", "✓", "✓"],
+      ["Directory profile with schema", "✓", "✓", "✓"],
     ],
   },
 ];
 
 const FAQ = [
-  { q: "What counts as a prompt?", a: "One question you want AI assistants to answer about your kind of business, like “best dentist in Indore”. Each check asks it to every assistant, so a prompt covers ChatGPT, Gemini, Perplexity and Claude." },
+  { q: "What is included in every plan?", a: "Every plan includes our ChatGPT Ads service and basic GEO. The plans differ in how many AI platforms get basic GEO: ChatGPT on Growth, ChatGPT and Gemini on Pro, and all four (ChatGPT, Gemini, Perplexity and Claude) on Enterprise." },
+  { q: "What counts as a prompt?", a: "One question you want AI assistants to answer about your kind of business, like “best dentist in Indore”. Each check asks it on every AI platform in your plan." },
   { q: "How many prompts do I need?", a: "Start with your main service in your city, then add one per important service or area. Most local businesses begin with 5 and grow from there." },
   { q: "Can I add more prompts later?", a: "Yes. Add prompts one at a time on your plan (see the price on each card), or move to a larger plan." },
-  { q: "Is there a free trial?", a: "Yes. Start free with a few prompts and trial credits, and see your first AI answers before you pay." },
   { q: "Can I cancel any time?", a: "Yes. Plans are monthly and you can cancel from Settings. Your saved answers and history stay available." },
   { q: "Do you guarantee AI recommendations?", a: "No one can. Foundly shows what AI actually says, with the saved answers as evidence, and the changes most likely to help." },
 ];
@@ -70,8 +81,8 @@ export default function PricingPage() {
       <main id="main" className="landing-main">
         <section className="lv-hero lv-pricing-hero" aria-labelledby="pricing-hero-title">
           <p className="landing-eyebrow"><span /> PRICING</p>
-          <h1 id="pricing-hero-title">Simple plans, priced<br />by the prompts you track.</h1>
-          <p className="lv-hero-sub">Every plan checks ChatGPT, Gemini, Perplexity and Claude. Start free, then pick the plan that covers your services and areas.</p>
+          <h1 id="pricing-hero-title">ChatGPT Ads and GEO,<br />priced by platform.</h1>
+          <p className="lv-hero-sub">Every plan includes our ChatGPT Ads service. Start with basic GEO on ChatGPT from ₹15,000 a month, or add Gemini, Perplexity and Claude.</p>
         </section>
 
         <LandingPricing />
@@ -86,7 +97,6 @@ export default function PricingPage() {
               <thead>
                 <tr>
                   <th scope="col"><span className="sr-only">Feature</span></th>
-                  <th scope="col">Free</th>
                   <th scope="col">{growth.name}</th>
                   <th scope="col" className="hl">{pro.name}</th>
                   <th scope="col">{agency.name}</th>
@@ -94,12 +104,12 @@ export default function PricingPage() {
               </thead>
               {ROWS.map((g) => (
                 <tbody key={g.group}>
-                  <tr className="lv-compare-group"><th scope="rowgroup" colSpan={5}>{g.group}</th></tr>
+                  <tr className="lv-compare-group"><th scope="rowgroup" colSpan={4}>{g.group}</th></tr>
                   {g.rows.map(([label, ...cells]) => (
                     <tr key={label}>
                       <th scope="row">{label}</th>
                       {cells.map((c, i) => (
-                        <td key={i} className={i === 2 ? "hl" : undefined}>
+                        <td key={i} className={i === 1 ? "hl" : undefined}>
                           {c === "✓" ? <Icon name="check" size={16} /> : c === "—" ? <span className="lv-muted" aria-label="Not included">—</span> : c}
                         </td>
                       ))}
@@ -118,7 +128,7 @@ export default function PricingPage() {
               <p className="landing-eyebrow">PRICING FAQ</p>
               <h2 id="pfaq-title">Questions about<br /><em>plans.</em></h2>
               <p className="faq-description">Anything else? Write to us from your account and we&apos;ll help you choose.</p>
-              <Link href="/signup" className="faq-start">Start free <Icon name="arrow" size={18} /></Link>
+              <Link href="/signup" className="faq-start">Get started <Icon name="arrow" size={18} /></Link>
             </div>
             <div className="faq-questions">
               {FAQ.map((item, index) => (
@@ -133,9 +143,9 @@ export default function PricingPage() {
 
         <section className="landing-final" style={{ marginTop: 40 }}>
           <span className="final-spark" aria-hidden="true">✳</span>
-          <p className="landing-eyebrow">SEE YOUR FIRST RESULTS FREE.</p>
+          <p className="landing-eyebrow">CHATGPT ADS IN EVERY PLAN.</p>
           <h2>Find out what AI<br />tells your customers.</h2>
-          <div className="final-buttons"><Link href="/signup" className="landing-button lime">Start free <Icon name="arrow" size={18} /></Link></div>
+          <div className="final-buttons"><Link href="/signup" className="landing-button lime">Get started <Icon name="arrow" size={18} /></Link></div>
         </section>
       </main>
       <LandingFooter />

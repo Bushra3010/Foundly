@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { PAID_PLANS, planSpec, SALE_PLANS } from "../src/lib/plans";
+import { ADS_FEATURE, PAID_PLANS, planSpec, SALE_PLANS } from "../src/lib/plans";
 import { checksDue } from "../src/server/monitoring/service";
-import { countryFromHeaders, pricingCountryFor, formatRegionalPrice, PRICING_COUNTRIES, PRICING_MARKETS, regionalPrice, suggestPricingCountry } from "../src/lib/regional-pricing";
+import { countryFromHeaders, pricingCountry, pricingCountryFor, formatRegionalPrice, PRICING_COUNTRIES, PRICING_MARKETS, regionalPrice, suggestPricingCountry } from "../src/lib/regional-pricing";
 
 describe("regional monthly pricing", () => {
-  it("uses fixed local prices and a USD fallback", () => {
-    expect(regionalPrice("IN", "growth")).toBe(2999);
-    expect(regionalPrice("GB", "growth")).toBe(35);
-    expect(regionalPrice("DE", "growth")).toBe(45);
-    expect(regionalPrice("BR", "growth")).toBe(45);
+  it("prices India in rupees and every other country in dollars at the same numbers", () => {
+    expect(SALE_PLANS.map((p) => regionalPrice("IN", p))).toEqual([15000, 20000, 25000]);
+    expect(SALE_PLANS.map((p) => regionalPrice("GB", p))).toEqual([15000, 20000, 25000]);
+    expect(PRICING_MARKETS[pricingCountry("DE")!.market].currency).toBe("USD");
+    expect(regionalPrice("BR", "agency")).toBe(25000);
   });
 
   it("gives every selectable country a complete, ascending price ladder", () => {
@@ -46,10 +46,12 @@ describe("regional monthly pricing", () => {
     }
   });
 
-  it("sizes credits from keywords, four AIs and the check schedule", () => {
-    expect(planSpec("growth")).toMatchObject({ keywords: 5, checks: "biweekly", monthlyCredits: 45 });
-    expect(planSpec("pro")).toMatchObject({ keywords: 10, checks: "weekly", monthlyCredits: 180 });
+  it("sizes credits from keywords, the plan's AI platforms and the check schedule", () => {
+    expect(planSpec("growth")).toMatchObject({ keywords: 5, checks: "biweekly", platforms: ["chatgpt"], monthlyCredits: 12 });
+    expect(planSpec("pro")).toMatchObject({ keywords: 10, checks: "weekly", platforms: ["chatgpt", "gemini"], monthlyCredits: 90 });
     expect(planSpec("agency")).toMatchObject({ keywords: 5, checks: "biweekly", monthlyCredits: 45, maxWorkspaces: 10 });
+    expect(planSpec("agency").platforms).toHaveLength(4);
+    for (const plan of SALE_PLANS) expect(planSpec(plan).features).toContain(ADS_FEATURE);
     // The old Website plan is off sale but still resolves for existing subscribers.
     expect(planSpec("website").retired).toBe(true);
     expect(PAID_PLANS).toContain("website");
@@ -76,7 +78,6 @@ describe("regional monthly pricing", () => {
       const revenue = market.extraKeyword / usdRate[market.currency];
       const fee = revenue * (key === "IN" ? 0.03 : 0.045);
       expect(1 - (credits.biweekly * 0.045 + fee) / revenue, `${key} biweekly`).toBeGreaterThanOrEqual(0.9);
-      // On weekly plans (Pro) the add-on sits right at the line: ₹999 is 89.9% in India.
       expect(1 - (credits.weekly * 0.045 + fee) / revenue, `${key} weekly`).toBeGreaterThanOrEqual(0.895);
     }
   });

@@ -1,9 +1,10 @@
 import type { Plan } from "@/db/schema";
+import type { ProviderKey } from "@/server/monitoring/types";
 
 /**
  * Plans are priced by keywords: each keyword is one tracked question, checked
- * on every AI source on the plan's schedule. One credit is one AI answer, so a
- * plan's monthly credits are keywords × sources × checks per month.
+ * on the plan's AI platforms on the plan's schedule. One credit is one AI answer,
+ * so a plan's monthly credits are keywords × platforms × checks per month.
  * No plan includes unlimited monitoring.
  */
 export type CheckSchedule = "daily" | "weekly" | "biweekly";
@@ -17,6 +18,8 @@ export type PlanSpec = {
   keywords: number;
   /** Scheduled AI checks; null means manual checks with trial credits only. */
   checks: CheckSchedule | null;
+  /** AI platforms the plan's checks ask, once billing is enforced. */
+  platforms: ProviderKey[];
   monthlyCredits: number;
   maxWorkspaces: number;
   priceEnv: string;
@@ -24,30 +27,42 @@ export type PlanSpec = {
   retired?: boolean;
 };
 
-const AI_SOURCES = 4;
+export const ALL_PLATFORMS: ProviderKey[] = ["chatgpt", "gemini", "perplexity", "claude"];
+export const PLATFORM_LABEL: Record<ProviderKey, string> = { chatgpt: "ChatGPT", gemini: "Gemini", perplexity: "Perplexity", claude: "Claude" };
 // 4.5 weekly runs covers 5-Monday months; biweekly is half that.
 const RUNS_PER_MONTH: Record<CheckSchedule, number> = { daily: 30, weekly: 4.5, biweekly: 2.25 };
-const credits = (keywords: number, checks: CheckSchedule) => keywords * AI_SOURCES * RUNS_PER_MONTH[checks];
+const credits = (keywords: number, platforms: ProviderKey[], checks: CheckSchedule) => Math.ceil(keywords * platforms.length * RUNS_PER_MONTH[checks]);
 const GEO = ["Weekly GEO upkeep: Bing, Google and Facebook kept fresh", "AI-ready profile page with schema and llms.txt", "GEO readiness score and next steps"];
-const AI_LIST = "Checked on ChatGPT, Gemini, Perplexity and Claude";
+/** The ChatGPT Ads service comes with every paid plan. */
+export const ADS_FEATURE = "ChatGPT Ads service";
 
-function keywordPlan(key: Plan, name: string, keywords: number, checks: CheckSchedule, extra: string[] = []): PlanSpec {
+export function platformList(platforms: ProviderKey[]) {
+  const names = platforms.map((p) => PLATFORM_LABEL[p]);
+  return names.length > 1 ? `${names.slice(0, -1).join(", ")} and ${names.at(-1)}` : names[0];
+}
+
+// Each tier's card lists the one before it plus more; every plan can use all of them in the app.
+const GROWTH_FEATURES = [GEO[2], "GEO audits and improvement tasks", "Brand mentions and position in AI answers", "Directory profile with schema"];
+const PRO_FEATURES = [...GROWTH_FEATURES, "Competitor ranking and share of voice", "Citations: the sites AI reads before it answers", "Weekly report by email"];
+const ENTERPRISE_FEATURES = [...PRO_FEATURES, "Tone of mentions (estimated)", "Prompt research with AI", "Full AI answers with CSV export"];
+
+function keywordPlan(key: Plan, name: string, keywords: number, checks: CheckSchedule, platforms: ProviderKey[], extra: string[]): PlanSpec {
   const schedule = checks === "daily" ? "every day" : checks === "weekly" ? "every week" : "every 2 weeks";
   return {
-    key, name, summary: `Track ${keywords} keywords in AI answers`,
-    features: [`${keywords} keywords checked ${schedule}`, AI_LIST, ...GEO, "GEO audits and improvement tasks", ...extra],
-    keywords, checks, monthlyCredits: credits(keywords, checks), maxWorkspaces: 1,
+    key, name, summary: `Basic GEO on ${platformList(platforms)}, plus ChatGPT Ads`,
+    features: [`Basic GEO on ${platformList(platforms)}`, ADS_FEATURE, `${keywords} keywords checked ${schedule}`, ...extra],
+    keywords, checks, platforms, monthlyCredits: credits(keywords, platforms, checks), maxWorkspaces: 1,
     priceEnv: `PLAN_PRICE_${key.toUpperCase()}_INR`,
   };
 }
 
 export const PLANS: PlanSpec[] = [
-  { key: "free", name: "Free", summary: "Business profile and your GEO readiness score", features: ["Directory profile", "GEO readiness score", "One-time trial credits"], keywords: 3, checks: null, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "" },
+  { key: "free", name: "Free", summary: "Business profile and your GEO readiness score", features: ["Directory profile", "GEO readiness score", "One-time trial credits"], keywords: 3, checks: null, platforms: ALL_PLATFORMS, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "" },
   // The old Website plan: no longer sold, still honoured for existing subscribers.
-  { key: "website", name: "Base", summary: "Get your business ready for AI answers", features: GEO, keywords: 3, checks: null, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "PLAN_PRICE_WEBSITE_INR", retired: true },
-  keywordPlan("growth", "Growth", 5, "biweekly"),
-  keywordPlan("pro", "Pro", 10, "weekly"),
-  { key: "agency", name: "Enterprise", summary: "Growth for up to 10 businesses", features: ["Growth for every business", "5 keywords per business, checked every 2 weeks", AI_LIST, "Up to 10 businesses", "Portfolio view"], keywords: 5, checks: "biweekly", monthlyCredits: credits(5, "biweekly"), maxWorkspaces: 10, priceEnv: "PLAN_PRICE_AGENCY_INR" },
+  { key: "website", name: "Base", summary: "Get your business ready for AI answers", features: GEO, keywords: 3, checks: null, platforms: ALL_PLATFORMS, monthlyCredits: 0, maxWorkspaces: 1, priceEnv: "PLAN_PRICE_WEBSITE_INR", retired: true },
+  keywordPlan("growth", "Growth", 5, "biweekly", ["chatgpt"], GROWTH_FEATURES),
+  keywordPlan("pro", "Pro", 10, "weekly", ["chatgpt", "gemini"], PRO_FEATURES),
+  { key: "agency", name: "Enterprise", summary: "Basic GEO on all 4 AI platforms, for up to 10 businesses", features: [`Basic GEO on ${platformList(ALL_PLATFORMS)}`, ADS_FEATURE, "5 keywords per business, checked every 2 weeks", ...ENTERPRISE_FEATURES], keywords: 5, checks: "biweekly", platforms: ALL_PLATFORMS, monthlyCredits: credits(5, ALL_PLATFORMS, "biweekly"), maxWorkspaces: 10, priceEnv: "PLAN_PRICE_AGENCY_INR" },
 ];
 
 export const planSpec = (p: Plan) => PLANS.find((x) => x.key === p)!;

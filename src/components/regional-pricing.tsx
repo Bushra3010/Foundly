@@ -38,7 +38,7 @@ export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<str
           <p className="landing-eyebrow">A LITTLE START. ROOM TO GROW.</p>
           <h2 id="pricing-title">The right fit for<br />your next chapter.</h2>
         </div>
-        <p>Start free with your business profile and GEO readiness score. Then choose how many keywords to track in AI answers.</p>
+        <p>Every plan includes our ChatGPT Ads service. Choose how many AI platforms get basic GEO: ChatGPT, then Gemini, then all four.</p>
       </div>
       <div className="pricing-region-bar">
         <p>Monthly plans. Local prices.<span>Choose your country to see regional pricing.</span></p>
@@ -74,8 +74,7 @@ export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<str
               <div className="pricing-includes">WHAT’S INCLUDED</div>
               <ul>
                 {plan.features.map((feature) => <li key={feature}><Icon name="check" size={15} /><span>{feature}</span></li>)}
-                {plan.monthlyCredits > 0 && <li><Icon name="check" size={15} /><span>{plan.monthlyCredits} AI credits per month{plan.key === "agency" ? " per business" : ""}</span></li>}
-                <li><Icon name="check" size={15} /><span>{plan.maxWorkspaces === 1 ? "1 business workspace" : `Up to ${plan.maxWorkspaces} business workspaces`}</span></li>
+                {plan.maxWorkspaces === 1 && <li><Icon name="check" size={15} /><span>1 business workspace</span></li>}
                 <li className="pricing-extra"><Icon name="spark" size={15} /><span>+1 keyword: {formatRegionalPrice(market.extraKeyword, market)} / month each</span></li>
               </ul>
             </article>
@@ -85,7 +84,7 @@ export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<str
       <div className="pricing-footnote">
         <p><Icon name="shield" size={16} /><span>Regional list prices. Applicable taxes are additional.</span></p>
         <span>AI checks use credits: one credit collects one AI answer. Allowances are capped.</span>
-        <span>Billing country, payment currency and final total are confirmed before payment. Start with Free today.</span>
+        <span>Billing country, payment currency and final total are confirmed before payment.</span>
       </div>
       </div>
     </section>

@@ -182,6 +182,14 @@ export function isoWeek(d: Date) {
   return `${year}-W${String(week).padStart(2, "0")}`;
 }
 
+/** Connected AI sources the workspace's plan covers: every one while billing isn't enforced. */
+export async function planAdapters(db: DbOrTx, workspaceId: string) {
+  const adapters = enabledAdapters();
+  if (!billingEnforced()) return adapters;
+  const platforms = planSpec(await effectivePlan(db, workspaceId)).platforms;
+  return adapters.filter((a) => platforms.includes(a.key));
+}
+
 /**
  * Creates a run and reserves its credits in one transaction. The idempotency
  * key makes a repeated request (double click, cron retry) return the same run.
@@ -193,8 +201,11 @@ export async function createRun(
 ) {
   if (opts.trigger === "manual" && ctx.role) requireRole(ctx as Ctx, "editor");
   const samples = Math.min(Math.max(opts.samples ?? (await getSamples(db, ctx.workspaceId)), 1), MAX_SAMPLES);
-  const adapters = opts.adapters ?? enabledAdapters();
-  if (adapters.length === 0) throw new AppError("precondition_failed", "No AI sources are connected yet.");
+  const adapters = opts.adapters ?? (await planAdapters(db, ctx.workspaceId));
+  if (adapters.length === 0) {
+    const message = enabledAdapters().length ? "Your plan's AI platforms aren't connected yet." : "No AI sources are connected yet.";
+    throw new AppError("precondition_failed", message);
+  }
 
   return db.transaction(async (tx) => {
     const [existing] = await tx
