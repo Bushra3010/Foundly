@@ -6,7 +6,7 @@ import type { Plan } from "@/db/schema";
  * plan's monthly credits are keywords × sources × checks per month.
  * No plan includes unlimited monitoring.
  */
-export type CheckSchedule = "weekly" | "biweekly";
+export type CheckSchedule = "daily" | "weekly" | "biweekly";
 
 export type PlanSpec = {
   key: Plan;
@@ -26,13 +26,13 @@ export type PlanSpec = {
 
 const AI_SOURCES = 4;
 // 4.5 weekly runs covers 5-Monday months; biweekly is half that.
-const RUNS_PER_MONTH: Record<CheckSchedule, number> = { weekly: 4.5, biweekly: 2.25 };
+const RUNS_PER_MONTH: Record<CheckSchedule, number> = { daily: 30, weekly: 4.5, biweekly: 2.25 };
 const credits = (keywords: number, checks: CheckSchedule) => keywords * AI_SOURCES * RUNS_PER_MONTH[checks];
 const GEO = ["Weekly GEO upkeep: Bing, Google and Facebook kept fresh", "AI-ready profile page with schema and llms.txt", "GEO readiness score and next steps"];
 const AI_LIST = "Checked on ChatGPT, Gemini, Perplexity and Claude";
 
 function keywordPlan(key: Plan, name: string, keywords: number, checks: CheckSchedule, extra: string[] = []): PlanSpec {
-  const schedule = checks === "weekly" ? "every week" : "every 2 weeks";
+  const schedule = checks === "daily" ? "every day" : checks === "weekly" ? "every week" : "every 2 weeks";
   return {
     key, name, summary: `Track ${keywords} keywords in AI answers`,
     features: [`${keywords} keywords checked ${schedule}`, AI_LIST, ...GEO, "GEO audits and improvement tasks", ...extra],

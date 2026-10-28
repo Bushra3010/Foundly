@@ -3,13 +3,13 @@ import { ActionForm } from "@/components/action-form";
 import { Icon } from "@/components/icon";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
-import { suggestKeywords } from "@/lib/questions";
+import { isTag, suggestKeywords, TAG_LABEL, TAGS } from "@/lib/questions";
 import { requireCurrentBusiness } from "@/server/current";
 import { ADAPTERS } from "@/server/monitoring/registry";
 import { questionLimit } from "@/server/monitoring/service";
 import { performanceFor } from "@/server/insights";
 import { Mini, StatusBadge } from "../overview-parts";
-import { addKeywordsAction, editKeywordAction, removeKeywordAction } from "./actions";
+import { addKeywordsAction, editKeywordAction, removeKeywordAction, setTagAction } from "./actions";
 import { KeywordResearch } from "./research";
 import "../overview.css";
 
@@ -17,7 +17,8 @@ export const metadata = { title: "Keywords" };
 
 const ago = (d: Date | null) => (d ? d.toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "Not checked yet");
 
-export default async function KeywordsPage() {
+export default async function KeywordsPage({ searchParams }: { searchParams: Promise<{ focus?: string }> }) {
+  const focus = (await searchParams).focus?.slice(0, 80) ?? "";
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
@@ -57,7 +58,7 @@ export default async function KeywordsPage() {
             <div style={{ height: 10 }} />
           </ActionForm>
         )}
-        {room > 0 && <KeywordResearch room={room} />}
+        {room > 0 && <KeywordResearch room={room} initialFocus={focus} />}
       </section>
 
       <section className="dash-panel ov-panel" aria-labelledby="kw-list">
@@ -70,6 +71,7 @@ export default async function KeywordsPage() {
               <thead>
                 <tr>
                   <th scope="col">Keyword</th>
+                  <th scope="col">Tag</th>
                   <th scope="col">Result</th>
                   {engines.map((e) => (
                     <th key={e.key} scope="col">{e.label}</th>
@@ -86,13 +88,24 @@ export default async function KeywordsPage() {
                       <Link href={`/app/keywords/${k.id}`} className="ov-kw">{k.keyword}</Link>
                       <span className="ov-q">Asked as: {k.question}</span>
                       <details style={{ marginTop: 6 }}>
-                        <summary className="ov-sub" style={{ cursor: "pointer" }}>Edit</summary>
+                        <summary className="ov-sub" style={{ cursor: "pointer" }}>Edit · <Link href={`/app/keywords?focus=${encodeURIComponent(k.keyword)}#focus`} className="underline">Variations</Link></summary>
                         <ActionForm action={editKeywordAction} submitLabel="Save" pendingLabel="Saving…" variant="secondary" inline>
                           <input type="hidden" name="id" value={k.id} />
                           <label className="sr-only" htmlFor={`kw-${k.id}`}>New keyword</label>
                           <input id={`kw-${k.id}`} name="keyword" defaultValue={k.keyword} maxLength={80} style={{ minHeight: 40, padding: "6px 10px", borderRadius: 10, border: "1px solid var(--d-line)", background: "var(--d-card)", color: "var(--d-ink)", font: "inherit" }} />
                         </ActionForm>
                       </details>
+                    </td>
+                    <td>
+                      <ActionForm action={setTagAction} submitLabel="Save" pendingLabel="…" variant="ghost" inline>
+                        <input type="hidden" name="id" value={k.id} />
+                        <label className="sr-only" htmlFor={`tag-${k.id}`}>Tag</label>
+                        <select id={`tag-${k.id}`} name="tag" defaultValue={isTag(k.tag) ? k.tag : "service"} className="ov-select">
+                          {TAGS.map((t) => (
+                            <option key={t} value={t}>{TAG_LABEL[t]}</option>
+                          ))}
+                        </select>
+                      </ActionForm>
                     </td>
                     <td><StatusBadge status={k.status} /></td>
                     {engines.map((e) => {

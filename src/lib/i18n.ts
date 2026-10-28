@@ -13,6 +13,7 @@ const dict = {
   "nav.prompts": { en: "Prompts" },
   "nav.competitors": { en: "Competitors" },
   "nav.citations": { en: "Citations" },
+  "nav.profile": { en: "Brand profile" },
   "nav.audit": { en: "GEO audit & fixes" },
   "nav.section.search": { en: "AI search" },
   "nav.section.optimize": { en: "Optimize" },

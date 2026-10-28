@@ -15,7 +15,7 @@ function Button({ children, pending }: { children: React.ReactNode; pending: str
 }
 
 /** Ask AI what customers search for, then track the ideas the owner picks. */
-export function KeywordResearch({ room }: { room: number }) {
+export function KeywordResearch({ room, initialFocus = "" }: { room: number; initialFocus?: string }) {
   const [found, research] = useActionState<ResearchState, FormData>(researchKeywordsAction, {});
   const [added, add] = useActionState<ActionState, FormData>(addKeywordsAction, {});
   return (
@@ -23,7 +23,7 @@ export function KeywordResearch({ room }: { room: number }) {
       <form action={research} className="ov-row" style={{ alignItems: "flex-end" }}>
         <div className="st-field" style={{ marginTop: 0, flex: "1 1 260px" }}>
           <label htmlFor="focus">Find keyword ideas with AI</label>
-          <input id="focus" name="focus" placeholder="A service or area, e.g. root canal, Vijay Nagar (optional)" maxLength={80} />
+          <input id="focus" name="focus" placeholder="A service or area, e.g. root canal, Vijay Nagar (optional)" maxLength={80} defaultValue={initialFocus} />
         </div>
         <Button pending="Asking AI…">Find ideas</Button>
       </form>

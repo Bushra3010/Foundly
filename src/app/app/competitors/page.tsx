@@ -5,6 +5,8 @@ import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { performanceFor } from "@/server/insights";
 import { listCompetitors } from "@/server/monitoring/service";
+import { requireCurrentBusiness } from "@/server/current";
+import { saveBrandAction } from "../visibility/actions";
 import { addRivalAction, removeRivalAction } from "../keywords/actions";
 import { brandSlots, RankingTable, Swatch } from "../overview-parts";
 import "../overview.css";
@@ -18,7 +20,7 @@ export default async function CompetitorsPage({ searchParams }: { searchParams: 
   const days = PERIODS.includes(Number(sp.days)) ? Number(sp.days) : 30;
   const ctx = await requireCtx();
   const db = await getDb();
-  const [p, rivals] = await Promise.all([performanceFor(db, ctx, days), listCompetitors(db, ctx)]);
+  const [p, rivals, business] = await Promise.all([performanceFor(db, ctx, days), listCompetitors(db, ctx), requireCurrentBusiness(db, ctx)]);
   const slots = brandSlots(p.brandSeries.series);
 
   return (
@@ -48,6 +50,22 @@ export default async function CompetitorsPage({ searchParams }: { searchParams: 
         ) : (
           <RankingTable ranking={p.ranking} slots={slots} />
         )}
+      </section>
+
+      <section className="dash-panel ov-panel" aria-labelledby="cp-brand">
+        <h2 id="cp-brand">Your brand</h2>
+        <p className="ov-sub">AI assistants don&apos;t always write your name the same way. Add the variations and the domains that are yours, so every mention and link counts.</p>
+        <ActionForm action={saveBrandAction} submitLabel="Save" pendingLabel="Saving…" variant="secondary" inline>
+          <div className="st-field" style={{ marginTop: 10, flex: "1 1 260px" }}>
+            <label htmlFor="aliases">Name variations</label>
+            <input id="aliases" name="aliases" placeholder={`e.g. ${business.name.split(" ")[0]}, ${business.name.replace(/\s+/g, "")}`} defaultValue={business.aliases.join(", ")} />
+          </div>
+          <div className="st-field" style={{ marginTop: 10, flex: "1 1 260px" }}>
+            <label htmlFor="domains">Your domains</label>
+            <input id="domains" name="domains" placeholder="yourbusiness.in, yourbusiness.com" defaultValue={business.ownedDomains.join(", ")} />
+          </div>
+        </ActionForm>
+        <p className="ov-sub" style={{ marginTop: 8 }}>Tracking as <strong>{business.name}</strong>{business.websiteUrl ? ` · ${business.websiteUrl.replace(/^https?:\/\//, "")}` : ""}. Comma separated.</p>
       </section>
 
       <section className="dash-panel ov-panel" aria-labelledby="cp-list">

@@ -20,6 +20,8 @@ import { reserveCredits, settleReservation } from "../credits";
 import { EXTRACTION_VERSION, extractBrands, type BrandSpec } from "./extract";
 import { computeMetrics, matchedPairs, VALID_STATUSES, type MetricObservation } from "./metrics";
 import { adapterFor, enabledAdapters } from "./registry";
+import { claudeSentiment, type SentimentClassifier } from "./sentiment";
+import type { Tone } from "@/lib/tone";
 import type { ProviderAdapter } from "./types";
 
 export const MAX_QUESTIONS = 25;
@@ -221,8 +223,9 @@ export function manualRunKey(requestId: string) {
   return `manual:${requestId.slice(0, 64)}`;
 }
 
+/** One scheduled run per day per workspace. */
 export function scheduledRunKey(now = new Date()) {
-  return `scheduled:${isoWeek(now)}`;
+  return `scheduled:${now.toISOString().slice(0, 10)}`;
 }
 
 /**
@@ -230,7 +233,7 @@ export function scheduledRunKey(now = new Date()) {
  * so a resumed run skips work already captured and never pays twice.
  * Failed provider calls are stored as failures, not as zero visibility.
  */
-export async function executeRun(db: Db, runId: string, deps: { adapters?: ProviderAdapter[] } = {}) {
+export async function executeRun(db: Db, runId: string, deps: { adapters?: ProviderAdapter[]; sentiment?: SentimentClassifier | null } = {}) {
   const [run] = await db.select().from(monitoringRuns).where(eq(monitoringRuns.id, runId));
   if (!run || run.status === "completed" || run.status === "failed" || run.status === "cancelled") return run;
   await db.update(monitoringRuns).set({ status: "running", startedAt: run.startedAt ?? new Date() }).where(eq(monitoringRuns.id, run.id));
@@ -294,8 +297,12 @@ export async function executeRun(db: Db, runId: string, deps: { adapters?: Provi
         if (!obs || !(VALID_STATUSES as readonly string[]).includes(obs.status)) return;
         const matches = extractBrands(obs.rawAnswer, obs.citations, brands);
         if (matches.length) {
+          // Tone of the answer toward each brand it names, from a model when one is connected.
+          const named = matches.filter((m) => m.mentioned && !m.ambiguous).map((m) => ({ key: m.brandKey, name: m.brandName }));
+          const classify = deps.sentiment === undefined ? claudeSentiment : deps.sentiment;
+          const tones: Record<string, Tone> = named.length && classify && obs.rawAnswer ? await classify(obs.rawAnswer, named).catch(() => ({})) : {};
           await tx.insert(brandMatches).values(
-            matches.map((m) => ({ ...m, workspaceId: run.workspaceId, observationId: obs.id, extractionVersion: EXTRACTION_VERSION })),
+            matches.map((m) => ({ ...m, sentiment: tones[m.brandKey] ?? null, workspaceId: run.workspaceId, observationId: obs.id, extractionVersion: EXTRACTION_VERSION })),
           );
         }
       });
@@ -320,13 +327,18 @@ export async function listRuns(db: DbOrTx, ctx: Ctx, limit = 10) {
   return db.select().from(monitoringRuns).where(eq(monitoringRuns.workspaceId, ctx.workspaceId)).orderBy(desc(monitoringRuns.createdAt)).limit(limit);
 }
 
-/** Whether a plan's schedule includes this ISO week. Biweekly plans run on even weeks. */
-export function checksDue(checks: "weekly" | "biweekly" | null, now: Date) {
+/**
+ * Whether a plan's schedule includes today. Daily plans run every day, weekly
+ * plans on Mondays, biweekly plans on the Monday of even ISO weeks.
+ */
+export function checksDue(checks: "daily" | "weekly" | "biweekly" | null, now: Date) {
   if (!checks) return false;
-  return checks === "weekly" || Number(isoWeek(now).slice(-2)) % 2 === 0;
+  if (checks === "daily") return true;
+  const monday = (now.getUTCDay() || 7) === 1;
+  return monday && (checks === "weekly" || Number(isoWeek(now).slice(-2)) % 2 === 0);
 }
 
-/** Cron: weekly runs for every workspace with approved questions, on each plan's schedule. */
+/** Cron (daily): a run for every workspace with approved questions, on each plan's schedule. */
 export async function scheduleDueRuns(db: Db, now = new Date()) {
   if (enabledAdapters().length === 0) return { created: 0, skipped: "no providers" };
   const workspaces = await db

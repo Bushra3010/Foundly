@@ -8,6 +8,7 @@ export const NAV: NavItem[] = [
   { href: "/app/keywords", key: "nav.prompts", icon: "#", section: "nav.section.search" },
   { href: "/app/competitors", key: "nav.competitors", icon: "⇄", section: "nav.section.search" },
   { href: "/app/sources", key: "nav.citations", icon: "◉", section: "nav.section.search" },
+  { href: "/app/profile", key: "nav.profile", icon: "✦", section: "nav.section.search" },
   { href: "/app/improve", key: "nav.audit", icon: "↗", section: "nav.section.optimize" },
   { href: "/app/website", key: "nav.websiteShort", icon: "◧", section: "nav.section.optimize" },
   { href: "/app/connections", key: "nav.connections", icon: "◍", section: "nav.section.optimize" },

@@ -120,6 +120,13 @@
       "when": 1793135071615,
       "tag": "0016_repair_double_encoded_json",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1793210494794,
+      "tag": "0017_sentiment_and_brand_profiles",
+      "breakpoints": true
     }
   ]
 }

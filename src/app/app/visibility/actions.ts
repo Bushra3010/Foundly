@@ -56,7 +56,7 @@ export async function archiveQuestionAction(_prev: ActionState, form: FormData):
 export async function saveBrandAction(_prev: ActionState, form: FormData): Promise<ActionState> {
   try {
     await updateBrandTerms(await getDb(), await requireCtx(), splitList(form.get("aliases")), splitList(form.get("domains")));
-    revalidatePath("/app/visibility");
+    revalidatePath("/app", "layout");
     return { ok: true, message: "Saved. New checks use these names and domains." };
   } catch (err) {
     return toActionError(err);

@@ -9,6 +9,7 @@ import { requireCurrentBusiness } from "@/server/current";
 import { readinessFor } from "@/server/geo";
 import { enabledAdapters } from "@/server/monitoring/registry";
 import { performanceFor } from "@/server/insights";
+import { isTag, TAG_LABEL, TAGS } from "@/lib/questions";
 import { setupSteps, socialStatus } from "@/server/performance";
 import { latestWebsiteRequest, OPEN_STATUSES } from "@/server/website-requests";
 import { CoverageChart } from "./coverage-chart";
@@ -27,23 +28,26 @@ const STARTED_NOTE: Record<string, { tone: "ok" | "warn"; text: string }> = {
   later: { tone: "warn", text: "Tracking is on. AI answer checks are being switched on for your account; your first results will appear here automatically." },
 };
 
-export default async function OverviewPage({ searchParams }: { searchParams: Promise<{ days?: string; started?: string; engine?: string }> }) {
+export default async function OverviewPage({ searchParams }: { searchParams: Promise<{ days?: string; started?: string; engine?: string; tag?: string }> }) {
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
   const sp = await searchParams;
   const days = PERIODS.includes(Number(sp.days)) ? Number(sp.days) : 30;
   const engine = sp.engine && /^[a-z]+$/.test(sp.engine) ? sp.engine : undefined;
-  const href = (next: { days?: number; engine?: string | null }) => {
+  const tag = isTag(sp.tag) ? sp.tag : undefined;
+  const href = (next: { days?: number; engine?: string | null; tag?: string | null }) => {
     const q = new URLSearchParams();
     const d = next.days ?? days;
     const e = next.engine === undefined ? engine : next.engine;
+    const t = next.tag === undefined ? tag : next.tag;
     if (d !== 30) q.set("days", String(d));
     if (e) q.set("engine", e);
+    if (t) q.set("tag", t);
     return q.size ? `/app?${q}` : "/app";
   };
   const [p, actions, readiness, social, request] = await Promise.all([
-    performanceFor(db, ctx, days, engine),
+    performanceFor(db, ctx, days, { engine, tag }),
     listActions(db, ctx),
     readinessFor(db, ctx, business),
     socialStatus(db, ctx, business),
@@ -77,7 +81,7 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
         <div className="dash-hero-text">
           <span className="dash-eyebrow">Overview</span>
           <h1>{business.name}</h1>
-          <p>Your brand in AI answers{engineLabel ? ` · ${engineLabel}` : " · all assistants"} · last {days} days</p>
+          <p>Your brand in AI answers{engineLabel ? ` · ${engineLabel}` : " · all assistants"}{tag ? ` · ${TAG_LABEL[tag]} prompts` : ""} · last {days} days</p>
         </div>
         <div className="dash-hero-actions">
           {canCheck && (
@@ -95,6 +99,12 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
             <Link key={d} href={href({ days: d })} aria-current={d === days ? "page" : undefined}>
               {d === 7 ? "7 days" : d === 14 ? "14 days" : d === 30 ? "30 days" : "90 days"}
             </Link>
+          ))}
+        </nav>
+        <nav aria-label="Prompt tag" className="ov-seg">
+          <Link href={href({ tag: null })} aria-current={!tag ? "page" : undefined}>All prompts</Link>
+          {TAGS.filter((t) => p.keywords.some((k) => k.tag === t) || t === tag).map((t) => (
+            <Link key={t} href={href({ tag: t })} aria-current={tag === t ? "page" : undefined}>{TAG_LABEL[t]}</Link>
           ))}
         </nav>
         {p.engines.length > 0 && (
@@ -167,7 +177,7 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
               <span className="ov-kpi-note">Answers linking to your website</span>
             </div>
             <div className="ov-kpi">
-              <span className="ov-kpi-label">Positive tone <em className="ov-est">est.</em></span>
+              <span className="ov-kpi-label">Positive tone{p.tone.estimated && <em className="ov-est" title="Some answers were rated from their wording, not by a model">est.</em>}</span>
               <strong className="ov-kpi-value">{p.tone.positiveRate ?? "—"}{p.tone.positiveRate !== null && <small>%</small>}</strong>
               <span className="ov-kpi-note">{p.named ? `${p.tone.negative} negative mention${p.tone.negative === 1 ? "" : "s"}` : "Once AI names you"}</span>
             </div>

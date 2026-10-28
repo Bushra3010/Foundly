@@ -59,6 +59,22 @@ export const sessions = pgTable(
 );
 
 /** Fixed-window counters for sign-in and sign-up limits, shared by every server instance. */
+export type BrandProfileData = {
+  summary: string;
+  attributes: { term: string; strength: number; evidence: string }[];
+  objections: { text: string; evidence: string }[];
+};
+
+/** How AI assistants describe the business, built from stored answers. One row per business, replaced on refresh. */
+export const brandProfiles = pgTable("brand_profiles", {
+  workspaceId: uuid("workspace_id")
+    .primaryKey()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  data: jsonb("data").$type<BrandProfileData>().notNull(),
+  fromAnswers: integer("from_answers").notNull(),
+  generatedAt: timestamp("generated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const rateLimits = pgTable(
   "rate_limits",
   {
@@ -440,6 +456,8 @@ export const brandMatches = pgTable(
     correctionReason: text("correction_reason"),
     correctedBy: uuid("corrected_by").references(() => users.id),
     correctedAt: timestamp("corrected_at", { withTimezone: true }),
+    /** How the answer talks about this brand, classified by a model at capture time; null means estimated from wording. */
+    sentiment: text("sentiment"),
   },
   (t) => [index("brand_matches_obs_idx").on(t.observationId), index("brand_matches_ws_idx").on(t.workspaceId, t.brandKey)],
 );

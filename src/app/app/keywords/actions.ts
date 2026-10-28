@@ -6,7 +6,8 @@ import { getDb } from "@/db";
 import { formValues, toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
 import { parseKeywordList } from "@/lib/keywords";
-import { addKeywords, editKeyword } from "@/server/keywords";
+import { addKeywords, editKeyword, setKeywordTag } from "@/server/keywords";
+import { isTag } from "@/lib/questions";
 import { researchKeywords } from "@/server/research";
 import { addCompetitor, archiveQuestion, createRun, executeRun, manualRunKey, removeCompetitor } from "@/server/monitoring/service";
 
@@ -32,6 +33,18 @@ export async function editKeywordAction(_prev: ActionState, form: FormData): Pro
     await editKeyword(await getDb(), await requireCtx(), String(form.get("id")), String(form.get("keyword") ?? ""));
     refresh();
     return { ok: true, message: "Keyword updated." };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+export async function setTagAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    const tag = form.get("tag");
+    if (!isTag(tag)) return { ok: false, message: "Pick a tag." };
+    await setKeywordTag(await getDb(), await requireCtx(), String(form.get("id")), tag);
+    refresh();
+    return { ok: true };
   } catch (err) {
     return toActionError(err);
   }

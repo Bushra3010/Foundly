@@ -11,6 +11,17 @@ export const GROUP_LABEL: Record<QuestionGroup, string> = {
   branded: "About your business by name",
 };
 
+/** Short tag shown on prompts and used to filter reports. */
+export const TAG_LABEL: Record<QuestionGroup, string> = {
+  branded: "Branded",
+  service: "Service",
+  purchase: "Bottom of funnel",
+  comparison: "Comparison",
+  location: "Near me",
+};
+export const TAGS = ["branded", "service", "purchase", "comparison", "location"] as const satisfies readonly QuestionGroup[];
+export const isTag = (v: unknown): v is QuestionGroup => typeof v === "string" && (TAGS as readonly string[]).includes(v);
+
 /**
  * Natural customer questions from the owner's services and areas. Discovery
  * questions never contain the business name (that would bias inclusion);

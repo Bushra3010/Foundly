@@ -56,10 +56,13 @@ describe("regional monthly pricing", () => {
     expect(SALE_PLANS).not.toContain("website");
   });
 
-  it("runs biweekly plans every other ISO week and never schedules manual-only plans", () => {
+  it("runs daily plans every day, weekly plans on Mondays, biweekly on even weeks, and never manual-only plans", () => {
     const evenWeek = new Date("2026-10-26T06:00:00Z"); // 2026-W44
     const oddWeek = new Date("2026-10-19T06:00:00Z"); // 2026-W43
+    const wednesday = new Date("2026-10-28T06:00:00Z");
+    expect(checksDue("daily", wednesday)).toBe(true);
     expect(checksDue("weekly", oddWeek)).toBe(true);
+    expect(checksDue("weekly", wednesday)).toBe(false);
     expect(checksDue("biweekly", evenWeek)).toBe(true);
     expect(checksDue("biweekly", oddWeek)).toBe(false);
     expect(checksDue(null, evenWeek)).toBe(false);

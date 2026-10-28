@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const growth = planSpec("growth");
 const pro = planSpec("pro");
 const agency = planSpec("agency");
-const every = (s: string | null) => (s === "weekly" ? "Every week" : s === "biweekly" ? "Every 2 weeks" : "On demand");
+const every = (s: string | null) => (s === "daily" ? "Every day" : s === "weekly" ? "Every week" : s === "biweekly" ? "Every 2 weeks" : "On demand");
 
 // One row per capability; ✓ / text per plan, in the order the plan cards show.
 const ROWS: { group: string; rows: [string, string, string, string, string][] }[] = [

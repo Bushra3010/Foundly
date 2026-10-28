@@ -237,3 +237,4 @@
 @media (max-width:1280px) { .ov-kpis.six { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media (max-width:640px) { .ov-kpis.six { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 .ov-engine-bars { list-style:none; margin:12px 0 0; padding:0; display:grid; gap:12px; }
+.ov-select { min-height:34px; padding:4px 8px; border-radius:9px; border:1px solid var(--d-line); background:var(--d-card); color:var(--d-ink); font:inherit; font-size:13px; }

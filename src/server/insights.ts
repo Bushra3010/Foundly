@@ -13,6 +13,9 @@ const selfHit = (o: ObservationWithMatches) => o.matches.find((m) => m.brandKey 
 const named = (m: BrandMatch | undefined) => Boolean(m && effectiveMention(m));
 /** "ChatGPT (OpenAI API)" -> "ChatGPT": owners know the assistant, not the API. */
 const engineName = (p: string) => (adapterFor(p)?.label ?? p).replace(/\s*\(.*\)\s*$/, "");
+const isTone = (v: string | null): v is Tone => v === "positive" || v === "neutral" || v === "negative";
+/** The model's classification when stored; otherwise estimated from the wording around the name. */
+const toneOf = (o: ObservationWithMatches, m: BrandMatch): Tone => (isTone(m.sentiment) ? m.sentiment : toneAround(o.rawAnswer, m.matchedText ?? m.brandName));
 const pct = (n: number, d: number) => (d > 0 ? Math.round((n / d) * 100) : null);
 
 function hostOf(url: string): string | null {
@@ -27,6 +30,7 @@ export type KeywordResult = {
   id: string;
   keyword: string;
   question: string;
+  tag: string;
   /** won: named in at least half the latest answers; partly: in some; lost: in none. */
   status: "won" | "partly" | "lost" | "pending";
   rate: number | null;
@@ -56,17 +60,22 @@ function latestPerQuestion(rows: ObservationWithMatches[]) {
  * how often AI names the business, the trend per check, the share against
  * competitors, results per AI source, per keyword, and the sites AI reads.
  */
-export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: string) {
+export type PerformanceFilter = { engine?: string; tag?: string };
+
+export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, filter: PerformanceFilter | string = {}) {
+  const { engine, tag } = typeof filter === "string" ? { engine: filter, tag: undefined } : filter;
   requireRole(ctx, "viewer");
   const from = new Date(Date.now() - days * 86_400_000);
-  const [brands, questions, allRows, runs] = await Promise.all([
+  const [brands, allQuestions, allRows, runs] = await Promise.all([
     brandSpecs(db, ctx.workspaceId),
     listQuestions(db, ctx),
     queryObservations(db, ctx, { from }, 3000),
     listRuns(db, ctx, 1),
   ]);
-  // The engine filter narrows every number; the list of engines comes from all answers.
-  const rows = engine ? allRows.filter((o) => o.provider === engine) : allRows;
+  // Filters narrow every number; the list of engines comes from all answers.
+  const groupOf = new Map(allQuestions.map((q) => [q.id, q.group]));
+  const questions = tag ? allQuestions.filter((q) => q.group === tag) : allQuestions;
+  const rows = allRows.filter((o) => (!engine || o.provider === engine) && (!tag || groupOf.get(o.questionId) === tag));
   const valid = rows.filter(isValid);
   const namedCount = valid.filter((o) => named(selfHit(o))).length;
   const citedCount = valid.filter((o) => selfHit(o)?.cited).length;
@@ -99,7 +108,7 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: s
   const ranking = share.map((b) => {
     const hits = valid.flatMap((o) => o.matches.filter((m) => m.brandKey === b.key && effectiveMention(m)).map((m) => ({ o, m })));
     const pos = hits.map((h) => h.m.listedPosition).filter((x): x is number => typeof x === "number" && x > 0);
-    const positive = hits.filter((h) => toneAround(h.o.rawAnswer, h.m.matchedText ?? h.m.brandName) === "positive").length;
+    const positive = hits.filter((h) => toneOf(h.o, h.m) === "positive").length;
     return {
       ...b,
       coverage: pct(b.answers, valid.length) ?? 0,
@@ -148,6 +157,7 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: s
       id: q.id,
       keyword: q.keyword ?? q.text,
       question: q.text,
+      tag: q.group,
       status: list.length === 0 ? "pending" : rate! >= 50 ? "won" : hits.length > 0 ? "partly" : "lost",
       rate,
       answers: list.length,
@@ -165,9 +175,12 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: s
 
   // Tone of the answers that name the business (estimated from their wording).
   const tones: Record<Tone, number> = { positive: 0, neutral: 0, negative: 0 };
+  let estimatedTones = 0;
   for (const o of valid) {
     const m = selfHit(o);
-    if (named(m)) tones[toneAround(o.rawAnswer, m!.matchedText ?? m!.brandName)]++;
+    if (!named(m)) continue;
+    if (!m!.sentiment) estimatedTones++;
+    tones[toneOf(o, m!)]++;
   }
 
   // Gaps: keywords where AI names a competitor in an answer that leaves the business out.
@@ -209,9 +222,10 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, engine?: s
     sources,
     lastRun: runs[0] ?? null,
     engine: engine ?? null,
+    tag: tag ?? null,
     ranking,
     brandSeries,
-    tone: { ...tones, positiveRate: pct(tones.positive, namedCount) },
+    tone: { ...tones, positiveRate: pct(tones.positive, namedCount), estimated: estimatedTones > 0 },
     gaps,
   };
 }
@@ -247,7 +261,7 @@ export async function keywordAnswers(db: DbOrTx, ctx: Ctx, questionId: string) {
         capturedAt: o.capturedAt,
         citations: o.citations,
         self: selfHit(o) ?? null,
-        tone: named(selfHit(o)) ? toneAround(o.rawAnswer, selfHit(o)!.matchedText ?? selfHit(o)!.brandName) : null,
+        tone: named(selfHit(o)) ? toneOf(o, selfHit(o)!) : null,
         named: o.matches.filter((m) => effectiveMention(m)).map((m) => ({ key: m.brandKey, name: m.brandName, position: m.listedPosition })),
       })),
   };

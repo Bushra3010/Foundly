@@ -10,6 +10,8 @@ import { addCompetitor, createRun, executeRun, listQuestions, manualRunKey } fro
 import type { AskResult, ProviderAdapter } from "@/server/monitoring/types";
 import { citationsFor, keywordAnswers, keywordsCsv, performanceFor } from "@/server/insights";
 import { researchKeywords, suggestCompetitors } from "@/server/research";
+import { buildBrandProfile, getBrandProfile } from "@/server/profile-ai";
+import { setKeywordTag } from "@/server/keywords";
 import { toneAround } from "@/lib/tone";
 import { makeDb, onboard, signUp } from "./helpers";
 
@@ -142,6 +144,34 @@ describe("keywords and performance", () => {
     const csv = keywordsCsv(p);
     expect(csv.split("\n")[0]).toContain("Keyword,Question asked,Result");
     expect(csv).toContain("plumber in Pune,Can you recommend the best plumber in Pune?,Recommended,50");
+  });
+
+  it("stores model sentiment per brand, filters reports by tag, and builds a brand profile", async () => {
+    await addKeywords(db, ctx, ["plumber in Pune", "leak repair"]);
+    await addCompetitor(db, ctx, "Apex Plumbers");
+    await grantCredits(db, ctx.workspaceId, 100, "test", `t2:${ctx.workspaceId}`);
+    const claude = fake("claude", () => ({ answer: "1. Sharma Plumbing — reliable and well reviewed\n2. Apex Plumbers — mixed reviews, delays" }));
+    const seen: string[][] = [];
+    const run = await createRun(db, ctx, { trigger: "manual", idempotencyKey: manualRunKey("sent"), adapters: [claude] });
+    await executeRun(db, run.id, { adapters: [claude], sentiment: async (_a, brands) => { seen.push(brands.map((b) => b.name)); return { self: "positive", [brands.find((b) => b.name === "Apex Plumbers")!.key]: "negative" }; } });
+    expect(seen[0]).toEqual(["Sharma Plumbing", "Apex Plumbers"]);
+    const p = await performanceFor(db, ctx);
+    expect(p.tone).toMatchObject({ positive: 2, negative: 0, estimated: false });
+    expect(p.ranking.find((b) => b.name === "Apex Plumbers")?.positive).toBe(0);
+
+    // Tags: "leak repair" is a service prompt, "plumber in Pune" too; retag one and filter.
+    const q = (await listQuestions(db, ctx)).find((x) => x.keyword === "leak repair")!;
+    await setKeywordTag(db, ctx, q.id, "purchase");
+    await expect(setKeywordTag(db, other, q.id, "branded")).rejects.toBeInstanceOf(AppError);
+    const onlyPurchase = await performanceFor(db, ctx, 30, { tag: "purchase" });
+    expect(onlyPurchase.keywords.map((k) => k.keyword)).toEqual(["leak repair"]);
+    expect(onlyPurchase.answers).toBe(1);
+
+    // Brand profile from the answers that name the business, via an injected model.
+    const r = await buildBrandProfile(db, ctx, { complete: async (_s, user) => { expect(user).toContain("Sharma Plumbing"); return 'Here: {"summary":"Portrayed as reliable.","attributes":[{"term":"reliable","strength":2,"evidence":"reliable and well reviewed"}],"objections":[]}'; } });
+    expect(r.fromAnswers).toBe(2);
+    expect((await getBrandProfile(db, ctx))?.data.attributes[0].term).toBe("reliable");
+    await expect(buildBrandProfile(db, other, { complete: async () => "{}" })).rejects.toBeInstanceOf(AppError);
   });
 
   it("finds keyword ideas with AI, without the business name or tracked keywords", async () => {

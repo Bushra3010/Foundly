@@ -3,7 +3,7 @@ import { and, eq, isNull } from "drizzle-orm";
 import type { Db } from "@/db";
 import { trackedQuestions } from "@/db/schema";
 import { keywordLanguage, normalizeKeyword, questionForKeyword, KEYWORD_MAX, KEYWORD_MIN } from "@/lib/keywords";
-import { keywordGroup } from "@/lib/questions";
+import { keywordGroup, type QuestionGroup } from "@/lib/questions";
 import { requireBusiness } from "./business";
 import { AppError, requireRole, type Ctx } from "./context";
 import { approveQuestions, type NewQuestion } from "./monitoring/service";
@@ -31,6 +31,17 @@ export async function addKeywords(db: Db, ctx: Ctx, keywords: string[]) {
   const items = keywords.map((k) => toQuestion(k, b));
   if (items.length === 0) throw new AppError("invalid", "Type at least one keyword.");
   return approveQuestions(db, ctx, items);
+}
+
+/** Retags a keyword (the tag groups prompts in reports). */
+export async function setKeywordTag(db: Db, ctx: Ctx, questionId: string, tag: QuestionGroup) {
+  requireRole(ctx, "editor");
+  const [row] = await db
+    .update(trackedQuestions)
+    .set({ group: tag })
+    .where(and(eq(trackedQuestions.id, questionId), eq(trackedQuestions.workspaceId, ctx.workspaceId), isNull(trackedQuestions.archivedAt)))
+    .returning({ id: trackedQuestions.id });
+  if (!row) throw new AppError("not_found", "Keyword not found.");
 }
 
 /** Changes a keyword: the old one is archived (its history stays) and the new one replaces it. */
