@@ -6,10 +6,10 @@ import { requireCtx } from "@/lib/auth/session";
 import { isTag, suggestKeywords, TAG_LABEL, TAGS } from "@/lib/questions";
 import { requireCurrentBusiness } from "@/server/current";
 import { ADAPTERS } from "@/server/monitoring/registry";
-import { questionLimit } from "@/server/monitoring/service";
+import { getSamples, questionLimit, SAMPLE_CHOICES } from "@/server/monitoring/service";
 import { performanceFor } from "@/server/insights";
 import { Mini, StatusBadge } from "../overview-parts";
-import { addKeywordsAction, editKeywordAction, removeKeywordAction, setTagAction } from "./actions";
+import { addKeywordsAction, editKeywordAction, removeKeywordAction, setSamplesAction, setTagAction } from "./actions";
 import { KeywordResearch } from "./research";
 import "../overview.css";
 
@@ -22,7 +22,7 @@ export default async function KeywordsPage({ searchParams }: { searchParams: Pro
   const ctx = await requireCtx();
   const db = await getDb();
   const business = await requireCurrentBusiness(db, ctx);
-  const [p, limit] = await Promise.all([performanceFor(db, ctx, 90), questionLimit(db, ctx.workspaceId)]);
+  const [p, limit, samples] = await Promise.all([performanceFor(db, ctx, 90), questionLimit(db, ctx.workspaceId), getSamples(db, ctx.workspaceId)]);
   const engines = ADAPTERS.map((a) => ({ key: a.key, label: a.label.replace(/\s*\(.*\)\s*$/, "") }));
   const tracked = new Set(p.keywords.map((k) => k.keyword.toLowerCase()));
   const ideas = suggestKeywords({ category: business.category, city: business.city, services: business.services.map((s) => s.name) }).filter((k) => !tracked.has(k.toLowerCase())).slice(0, 4);
@@ -115,9 +115,9 @@ export default async function KeywordsPage({ searchParams }: { searchParams: Pro
                           {!r ? (
                             <span className="ov-cell none" title="Not checked">—</span>
                           ) : r.named ? (
-                            <span className="ov-cell yes" title={`${e.label} recommends you${r.position ? ` at #${r.position}` : ""}`}>{r.position ? `#${r.position}` : "✓"}</span>
+                            <span className="ov-cell yes" title={`${e.label} recommends you${r.position ? ` at #${r.position}` : ""}${r.samples > 1 ? ` (${r.samples} samples)` : ""}`}>{r.position ? `#${r.position}` : "✓"}</span>
                           ) : (
-                            <span className="ov-cell no" title={`${e.label} doesn't mention you`}>✗</span>
+                            <span className="ov-cell no" title={`${e.label} doesn't mention you${r.samples > 1 ? ` (${r.samples} samples)` : ""}`}>✗</span>
                           )}
                         </td>
                       );
@@ -135,6 +135,25 @@ export default async function KeywordsPage({ searchParams }: { searchParams: Pro
             </table>
           </div>
         )}
+      </section>
+
+      <section className="dash-panel ov-panel" aria-labelledby="kw-samples">
+        <h2 id="kw-samples">Samples per prompt</h2>
+        <p className="ov-sub">
+          AI answers vary from one ask to the next. Asking each prompt 3 times per check makes coverage and position steadier, and uses 3 times the credits.
+        </p>
+        <ActionForm action={setSamplesAction} submitLabel="Save" pendingLabel="Saving…" variant="secondary" inline>
+          {/* Keyed on the saved value so the radios show it after saving, while the form keeps its message. */}
+          <fieldset key={samples} className="ov-seg" style={{ border: 0, padding: 0, margin: 0 }}>
+            <legend className="sr-only">Samples per prompt</legend>
+            {SAMPLE_CHOICES.map((n) => (
+              <label key={n} className="ov-radio">
+                <input type="radio" name="samples" value={n} defaultChecked={n === samples} />
+                <span>{n === 1 ? "1 — one answer per assistant" : "3 — steadier numbers"}</span>
+              </label>
+            ))}
+          </fieldset>
+        </ActionForm>
       </section>
 
       <p className="ov-sub">

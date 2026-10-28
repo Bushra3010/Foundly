@@ -13,8 +13,11 @@ import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
 import { listingStatus } from "@/lib/geo";
 import { presenceKit } from "@/lib/presence";
-import { toPublicProfile } from "@/lib/profile";
-import { currentProfile, requireCurrentBusiness } from "@/server/current";
+import { requireCurrentBusiness } from "@/server/current";
+import { enabledAdapters } from "@/server/monitoring/registry";
+import { kitInputFor } from "@/server/presence-input";
+import { ActionForm } from "@/components/action-form";
+import { writeListingTextAction } from "./actions";
 
 export const metadata = { title: "Connections" };
 
@@ -40,12 +43,10 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
   const ctx = await requireCtx();
   const db = await getDb();
   const b = await requireCurrentBusiness(db, ctx);
-  const [profile, google, facebook] = await Promise.all([currentProfile(db, ctx), getGoogleConnection(db, ctx), getFacebookConnection(db, ctx)]);
+  const [{ input, aiText, stale }, google, facebook] = await Promise.all([kitInputFor(db, ctx, b), getGoogleConnection(db, ctx), getFacebookConnection(db, ctx)]);
   const social = await socialStatus(db, ctx, b);
-  const appUrl = process.env.APP_URL ?? "http://localhost:3000";
-  const websiteUrl = b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`;
-  const p = toPublicProfile(b);
-  const kit = presenceKit({ ...p, description: p.description, websiteUrl, profileUrl: `${appUrl}/b/${profile?.slug ?? ""}` });
+  const kit = presenceKit(input);
+  const aiOn = enabledAdapters().length > 0;
   const status = listingStatus(b.listings);
   const done = status.filter((s) => s.url).length;
   const next = status.find((s) => !s.url);
@@ -69,6 +70,26 @@ export default async function PresencePage({ searchParams }: { searchParams: Pro
           </div>
         )}
       </section>
+      {aiOn && (
+        <section className="dash-panel mb-6" aria-labelledby="lt-title">
+          <h2 id="lt-title" className="font-semibold">Listing text, written for you</h2>
+          <p className="mt-1 text-sm text-muted">
+            {aiText
+              ? `Descriptions for Google, Justdial, Facebook, Instagram, YouTube and LinkedIn were written from your details on ${aiText.generatedAt.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}. They're in each listing below, cut to each platform's limit${google || facebook ? ", and pushed to your connected pages" : ""}.`
+              : "One click writes a description for Google, Justdial, Facebook, Instagram, YouTube and LinkedIn from the details in My Business, each within that platform's limit. No invented claims, nothing you didn't confirm."}
+          </p>
+          {stale && <p className="mt-2 text-sm text-warn-fg">Your details changed since this text was written. Rewrite it so every listing says the same thing.</p>}
+          <div className="mt-3">
+            <ActionForm action={writeListingTextAction} submitLabel={aiText ? "Rewrite with AI" : "Write my listing text"} pendingLabel="Writing…" variant={aiText && !stale ? "secondary" : "primary"} className="" />
+          </div>
+          {aiText && (
+            <details className="mt-3">
+              <summary className="cursor-pointer text-sm font-semibold">Preview the Google description</summary>
+              <pre className="kit-value mt-2">{aiText.data.description750}</pre>
+            </details>
+          )}
+        </section>
+      )}
       <details className="kit-more">
         <summary>
           <strong>Get listed in more places (optional)</strong>

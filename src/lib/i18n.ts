@@ -30,7 +30,7 @@ const dict = {
   "nav.visibility": { en: "AI Visibility" },
   "nav.improve": { en: "Improve My Business" },
   "nav.presence": { en: "Get listed" },
-  "nav.reports": { en: "Reports" },
+  "nav.reports": { en: "Weekly report" },
   "nav.settings": { en: "Settings" },
   "nav.more": { en: "More" },
   "nav.websiteShort": { en: "Website" },

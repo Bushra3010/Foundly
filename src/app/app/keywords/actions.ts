@@ -9,7 +9,7 @@ import { parseKeywordList } from "@/lib/keywords";
 import { addKeywords, editKeyword, setKeywordTag } from "@/server/keywords";
 import { isTag } from "@/lib/questions";
 import { researchKeywords } from "@/server/research";
-import { addCompetitor, archiveQuestion, createRun, executeRun, manualRunKey, removeCompetitor } from "@/server/monitoring/service";
+import { addCompetitor, archiveQuestion, createRun, executeRun, manualRunKey, removeCompetitor, setSamples } from "@/server/monitoring/service";
 
 function refresh() {
   revalidatePath("/app", "layout");
@@ -76,6 +76,18 @@ export async function removeRivalAction(_prev: ActionState, form: FormData): Pro
     await removeCompetitor(await getDb(), await requireCtx(), String(form.get("id")));
     refresh();
     return { ok: true };
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+/** How many times each prompt is asked per check: 1, or 3 for steadier numbers. */
+export async function setSamplesAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    const n = Number(form.get("samples"));
+    await setSamples(await getDb(), await requireCtx(), n);
+    refresh();
+    return { ok: true, message: n === 3 ? "Each prompt is now asked 3 times per check, from the next check on." : "Each prompt is asked once per check." };
   } catch (err) {
     return toActionError(err);
   }

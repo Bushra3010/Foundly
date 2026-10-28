@@ -1,5 +1,4 @@
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
 import { eq } from "drizzle-orm";
 import type { Db } from "@/db";
 import { brandProfiles, type BrandProfileData } from "@/db/schema";
@@ -9,16 +8,9 @@ import { effectiveMention } from "./monitoring/metrics";
 import { queryObservations } from "./monitoring/service";
 import { rateLimit } from "./rate-limit";
 
-export type Completer = (system: string, user: string) => Promise<string>;
+import { pickCompleter, type Completer } from "./ai/complete";
 
-const claudeComplete: Completer = async (system, user) => {
-  const client = new Anthropic({ maxRetries: 1 });
-  const res = await client.messages.create(
-    { model: process.env.CLAUDE_MONITOR_MODEL || "claude-haiku-5-5", max_tokens: 1500, output_config: { effort: "low" }, system, messages: [{ role: "user", content: user }] },
-    { signal: AbortSignal.timeout(60_000) },
-  );
-  return res.content.map((b) => (b.type === "text" ? b.text : "")).join("");
-};
+export type { Completer };
 
 export async function getBrandProfile(db: Db, ctx: Ctx) {
   const [row] = await db.select().from(brandProfiles).where(eq(brandProfiles.workspaceId, ctx.workspaceId));
@@ -33,7 +25,7 @@ export async function getBrandProfile(db: Db, ctx: Ctx) {
 export async function buildBrandProfile(db: Db, ctx: Ctx, deps: { complete?: Completer | null } = {}) {
   requireRole(ctx, "editor");
   const b = await requireBusiness(db, ctx);
-  const complete = deps.complete === undefined ? (process.env.ANTHROPIC_API_KEY ? claudeComplete : null) : deps.complete;
+  const complete = pickCompleter(deps.complete);
   if (!complete) throw new AppError("precondition_failed", "An AI source needs to be connected to build your brand profile.");
   const rows = (await queryObservations(db, ctx, { from: new Date(Date.now() - 90 * 86_400_000) }, 400)).filter((o) =>
     o.rawAnswer && o.matches.some((m) => m.brandKey === "self" && effectiveMention(m)),

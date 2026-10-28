@@ -6,6 +6,7 @@ import { getDb } from "@/db";
 import { toActionError, type ActionState } from "@/lib/actions";
 import { requireCtx } from "@/lib/auth/session";
 import { applyAction, approveAction, editActionDraft, rejectAction, rollbackAction, runAudit, startAudit, verifyAction } from "@/server/audit/service";
+import { draftActionWithAi } from "@/server/audit/ai-draft";
 
 function done(message: string): ActionState {
   revalidatePath("/app/improve");
@@ -28,6 +29,16 @@ export async function saveDraftAction(_prev: ActionState, form: FormData): Promi
   try {
     await editActionDraft(await getDb(), await requireCtx(), String(form.get("actionId")), String(form.get("draft") ?? ""), Number(form.get("revision")));
     return done("Draft saved. Approve it when it's right.");
+  } catch (err) {
+    return toActionError(err);
+  }
+}
+
+/** Writes the task's draft with AI from the owner's confirmed facts. The owner still reviews and approves it. */
+export async function writeDraftAction(_prev: ActionState, form: FormData): Promise<ActionState> {
+  try {
+    const a = await draftActionWithAi(await getDb(), await requireCtx(), String(form.get("actionId")));
+    return done(/\[[^\]]{3,}\]/.test(a.draft) ? "Draft written. Fill in the [bracketed] details only you know, then approve." : "Draft written from your details. Edit anything, then approve.");
   } catch (err) {
     return toActionError(err);
   }

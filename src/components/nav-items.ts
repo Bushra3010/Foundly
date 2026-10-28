@@ -9,6 +9,7 @@ export const NAV: NavItem[] = [
   { href: "/app/competitors", key: "nav.competitors", icon: "⇄", section: "nav.section.search" },
   { href: "/app/sources", key: "nav.citations", icon: "◉", section: "nav.section.search" },
   { href: "/app/profile", key: "nav.profile", icon: "✦", section: "nav.section.search" },
+  { href: "/app/reports", key: "nav.reports", icon: "▤", section: "nav.section.search" },
   { href: "/app/improve", key: "nav.audit", icon: "↗", section: "nav.section.optimize" },
   { href: "/app/website", key: "nav.websiteShort", icon: "◧", section: "nav.section.optimize" },
   { href: "/app/connections", key: "nav.connections", icon: "◍", section: "nav.section.optimize" },
@@ -28,5 +29,4 @@ export const MORE_NAV: NavItem[] = [
   { href: "/app/compare", key: "nav.compare", icon: "⇄" },
   { href: "/app/business", key: "nav.business", icon: "▣" },
   { href: "/app/visibility", key: "nav.visibility", icon: "◎" },
-  { href: "/app/reports", key: "nav.reports", icon: "▤" },
 ];

@@ -79,7 +79,7 @@ export function templateFor(check: CheckResult, b: Business): ActionTemplate | n
     case "faq":
       return { title: "Answer common customer questions", hypothesis: "Clear answers to real questions make your page more useful to customers and to tools that summarise it.", proposedChange: "Add a questions-and-answers section with these answers.", draft: faqDraft(b), applyKind: "manual", priority: base + 3 };
     case "about":
-      return { title: "Tell customers who you are", hypothesis: "A short, honest background helps customers trust who they're contacting.", proposedChange: "Write a few sentences about your business. We won't write this for you, so the facts stay yours.", draft: b.description ?? "[Who runs the business, since when, and what you focus on — only what's true]", applyKind: "manual", priority: base + 2 };
+      return { title: "Tell customers who you are", hypothesis: "A short, honest background helps customers trust who they're contacting.", proposedChange: "Write a few sentences about your business, or let AI draft them from your confirmed details and edit the result.", draft: b.description ?? "[Who runs the business, since when, and what you focus on — only what's true]", applyKind: "manual", priority: base + 2 };
     case "hours":
       return { title: "Add your opening hours", hypothesis: "Customers often check hours before contacting a business.", proposedChange: "Add your hours in My Business, and show them on your website's contact page.", draft: "", applyKind: "manual", priority: base };
     case "photos":

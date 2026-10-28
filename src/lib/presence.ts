@@ -1,3 +1,4 @@
+import type { ListingTextData } from "@/db/schema";
 import { entitySentence, LISTING_SITES, listToText, type ListingSiteKey } from "./geo";
 import type { PublicProfile } from "./profile";
 
@@ -15,7 +16,7 @@ export function clip(text: string, max: number): string {
   return (space > 0 ? cut.slice(0, space) : cut).replace(/[,;:\-]$/, "") + "…";
 }
 
-type KitInput = Pick<PublicProfile, "name" | "category" | "city" | "region" | "address" | "phone" | "whatsapp" | "email" | "hours" | "serviceAreas" | "services"> & {
+export type KitInput = Pick<PublicProfile, "name" | "category" | "city" | "region" | "address" | "phone" | "whatsapp" | "email" | "hours" | "serviceAreas" | "services"> & {
   description?: string;
   foundedYear?: number;
   teamSize?: number;
@@ -24,18 +25,25 @@ type KitInput = Pick<PublicProfile, "name" | "category" | "city" | "region" | "a
   bookingUrl?: string;
   websiteUrl: string;
   profileUrl: string;
+  /** Descriptions written by a model from the same facts; used in place of the templated text where present. */
+  aiText?: ListingTextData | null;
 };
 
 /**
  * Everything an owner needs to list the business on each platform, written
  * from confirmed facts and cut to each platform's limits. The same wording
  * everywhere is the point: AI assistants trust facts they see repeated.
+ * AI-written descriptions take the place of the templated ones when the
+ * owner has had them written.
  */
 export function presenceKit(b: KitInput): KitPlatform[] {
   const services = b.services.map((s) => s.name.trim());
   const areas = b.serviceAreas.length ? b.serviceAreas : [b.city];
   const summary = entitySentence(b);
   const long = [summary, services.length ? `Services: ${listToText(services)}.` : "", b.description?.trim() ?? ""].filter(Boolean).join(" ");
+  /** The AI text for a field when written, else the templated fallback; always cut to the platform limit. */
+  const ai = (key: keyof ListingTextData, fallback: string, max: number) => clip(b.aiText?.[key]?.trim() || fallback, max);
+  const descriptionFor = (max: number) => ai(max >= 1000 ? "about1000" : max >= 750 ? "description750" : "description500", long, max);
   const hoursText = b.hours.map((h) => `${h.days}: ${h.hours}`).join("\n");
   const place = [b.address, b.city, b.region].filter(Boolean).join(", ");
   const contact: KitField[] = [
@@ -46,7 +54,7 @@ export function presenceKit(b: KitInput): KitPlatform[] {
   const common = (max: number): KitField[] => [
     { label: "Business name", value: b.name, hint: "Same spelling everywhere, no extra keywords" },
     { label: "Category", value: b.category },
-    { label: "Description", value: clip(long, max), limit: max },
+    { label: "Description", value: descriptionFor(max), limit: max },
     ...contact,
     ...(place ? [{ label: "Address", value: place }] : []),
     ...(b.serviceAreas.length ? [{ label: "Areas served", value: b.serviceAreas.join(", ") }] : []),
@@ -79,7 +87,7 @@ export function presenceKit(b: KitInput): KitPlatform[] {
       "Use the bio and website link below. Post at least one photo of your work.",
     ], [
       { label: "Name", value: b.name },
-      { label: "Bio", value: clip(`${b.category} in ${b.city} · ${listToText(services.slice(0, 3))}${b.foundedYear ? ` · Since ${b.foundedYear}` : ""}`, 150), limit: 150 },
+      { label: "Bio", value: ai("bio150", `${b.category} in ${b.city} · ${listToText(services.slice(0, 3))}${b.foundedYear ? ` · Since ${b.foundedYear}` : ""}`, 150), limit: 150 },
       { label: "Website link", value: b.websiteUrl },
       ...(b.whatsapp ? [{ label: "WhatsApp (contact button)", value: b.whatsapp }] : []),
     ]),
@@ -89,8 +97,8 @@ export function presenceKit(b: KitInput): KitPlatform[] {
     ], [
       { label: "Page name", value: b.name },
       { label: "Category", value: b.category },
-      { label: "Short description", value: clip(summary, 255), limit: 255 },
-      { label: "About", value: clip(long, 1000), limit: 1000 },
+      { label: "Short description", value: ai("short255", summary, 255), limit: 255 },
+      { label: "About", value: ai("about1000", long, 1000), limit: 1000 },
       ...contact,
       ...(hoursText ? [{ label: "Hours", value: hoursText }] : []),
     ]),
@@ -99,15 +107,15 @@ export function presenceKit(b: KitInput): KitPlatform[] {
       "Put the description and website link in the channel’s About section.",
     ], [
       { label: "Channel name", value: b.name },
-      { label: "Channel description", value: clip(long, 1000), limit: 1000 },
+      { label: "Channel description", value: ai("about1000", long, 1000), limit: 1000 },
       { label: "Link", value: b.websiteUrl },
     ]),
     platform("sulekha", ["Register as a business and paste the details below."], common(500)),
     platform("indiamart", ["Register as a seller and paste the details below; list each service as a product or service."], common(1000)),
     platform("linkedin", ["Create a company page and paste the details below."], [
       { label: "Company name", value: b.name },
-      { label: "Tagline", value: clip(`${b.category} in ${b.city}`, 120), limit: 120 },
-      { label: "About", value: clip(long, 2000), limit: 2000 },
+      { label: "Tagline", value: ai("tagline120", `${b.category} in ${b.city}`, 120), limit: 120 },
+      { label: "About", value: ai("about1000", long, 2000), limit: 2000 },
       { label: "Website", value: b.websiteUrl },
       { label: "Location", value: [b.city, b.region].filter(Boolean).join(", ") },
     ]),

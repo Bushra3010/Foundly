@@ -8,6 +8,7 @@ import {
   monitoringRuns,
   observations,
   trackedQuestions,
+  workspaces,
   type BrandMatch,
   type Observation,
 } from "@/db/schema";
@@ -144,6 +145,26 @@ export function estimateCredits(questions: number, providers: number, samples: n
   return questions * providers * samples;
 }
 
+export const SAMPLE_CHOICES = [1, 3] as const;
+
+/** How many times each prompt is asked per check for this workspace (1 or 3). */
+export async function getSamples(db: DbOrTx, workspaceId: string) {
+  const [w] = await db.select({ samples: workspaces.samples }).from(workspaces).where(eq(workspaces.id, workspaceId));
+  return Math.min(Math.max(w?.samples ?? 1, 1), MAX_SAMPLES);
+}
+
+/**
+ * Sets how many times each prompt is asked per check. AI answers vary from
+ * one ask to the next; three samples make coverage and position steadier,
+ * and cost three times the credits.
+ */
+export async function setSamples(db: Db, ctx: Ctx, samples: number) {
+  requireRole(ctx, "editor");
+  if (!(SAMPLE_CHOICES as readonly number[]).includes(samples)) throw new AppError("invalid", "Choose 1 or 3 samples per prompt.");
+  await db.update(workspaces).set({ samples }).where(eq(workspaces.id, ctx.workspaceId));
+  await audit(db, ctx, "monitoring.samples_set", undefined, { samples });
+}
+
 function configHash(questionIds: string[], providers: { key: string; method: string; model: string; locale: string }[]) {
   return createHash("sha256")
     .update(JSON.stringify({ q: [...questionIds].sort(), p: providers, x: EXTRACTION_VERSION }))
@@ -151,7 +172,8 @@ function configHash(questionIds: string[], providers: { key: string; method: str
     .slice(0, 16);
 }
 
-function isoWeek(d: Date) {
+/** ISO week key, like "2026-W44". */
+export function isoWeek(d: Date) {
   const t = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
   const day = t.getUTCDay() || 7;
   t.setUTCDate(t.getUTCDate() + 4 - day);
@@ -170,7 +192,7 @@ export async function createRun(
   opts: { trigger: "manual" | "scheduled"; samples?: number; idempotencyKey: string; adapters?: ProviderAdapter[] },
 ) {
   if (opts.trigger === "manual" && ctx.role) requireRole(ctx as Ctx, "editor");
-  const samples = Math.min(Math.max(opts.samples ?? 1, 1), MAX_SAMPLES);
+  const samples = Math.min(Math.max(opts.samples ?? (await getSamples(db, ctx.workspaceId)), 1), MAX_SAMPLES);
   const adapters = opts.adapters ?? enabledAdapters();
   if (adapters.length === 0) throw new AppError("precondition_failed", "No AI sources are connected yet.");
 

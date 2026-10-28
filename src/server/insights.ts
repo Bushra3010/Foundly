@@ -38,8 +38,8 @@ export type KeywordResult = {
   namedOn: string[];
   rivals: string[];
   checkedAt: Date | null;
-  /** The latest answer from each assistant: whether it named the business, and where in its list. */
-  byEngine: Record<string, { named: boolean; position: number | null } | undefined>;
+  /** The latest check on each assistant: whether it named the business in at least half its samples, and its average place in the list. */
+  byEngine: Record<string, { named: boolean; position: number | null; samples: number } | undefined>;
 };
 
 /** Latest answers for each keyword: the run that most recently answered it. */
@@ -60,16 +60,16 @@ function latestPerQuestion(rows: ObservationWithMatches[]) {
  * how often AI names the business, the trend per check, the share against
  * competitors, results per AI source, per keyword, and the sites AI reads.
  */
-export type PerformanceFilter = { engine?: string; tag?: string };
+export type PerformanceFilter = { engine?: string; tag?: string; /** End of the period; defaults to now. Lets a report compare one week with the one before. */ to?: Date };
 
 export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, filter: PerformanceFilter | string = {}) {
-  const { engine, tag } = typeof filter === "string" ? { engine: filter, tag: undefined } : filter;
+  const { engine, tag, to } = typeof filter === "string" ? { engine: filter, tag: undefined, to: undefined } : filter;
   requireRole(ctx, "viewer");
-  const from = new Date(Date.now() - days * 86_400_000);
+  const from = new Date((to ?? new Date()).getTime() - days * 86_400_000);
   const [brands, allQuestions, allRows, runs] = await Promise.all([
     brandSpecs(db, ctx.workspaceId),
     listQuestions(db, ctx),
-    queryObservations(db, ctx, { from }, 3000),
+    queryObservations(db, ctx, { from, to }, 3000),
     listRuns(db, ctx, 1),
   ]);
   // Filters narrow every number; the list of engines comes from all answers.
@@ -165,9 +165,12 @@ export async function performanceFor(db: DbOrTx, ctx: Ctx, days = 30, filter: Pe
       rivals: [...rivalCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k]) => nameOf.get(k) ?? k),
       checkedAt: list.length ? new Date(Math.max(...list.map((o) => o.capturedAt.getTime()))) : null,
       byEngine: Object.fromEntries(
-        list.map((o) => {
-          const m = selfHit(o);
-          return [o.provider, { named: named(m), position: named(m) ? (m!.listedPosition ?? null) : null }];
+        [...new Set(list.map((o) => o.provider))].map((p) => {
+          // One check may ask the same prompt several times; the cell shows the majority and the average place.
+          const samples = list.filter((o) => o.provider === p);
+          const hits = samples.map((o) => selfHit(o)).filter((m) => named(m));
+          const pos = hits.map((m) => m!.listedPosition).filter((x): x is number => typeof x === "number" && x > 0);
+          return [p, { named: hits.length * 2 >= samples.length && hits.length > 0, position: pos.length ? Math.round((pos.reduce((a, x) => a + x, 0) / pos.length) * 10) / 10 : null, samples: samples.length }];
         }),
       ),
     };

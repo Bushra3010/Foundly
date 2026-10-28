@@ -238,3 +238,21 @@
 @media (max-width:640px) { .ov-kpis.six { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 .ov-engine-bars { list-style:none; margin:12px 0 0; padding:0; display:grid; gap:12px; }
 .ov-select { min-height:34px; padding:4px 8px; border-radius:9px; border:1px solid var(--d-line); background:var(--d-card); color:var(--d-ink); font:inherit; font-size:13px; }
+
+/* Radio choices styled like the segmented filters (samples per prompt). */
+.ov-radio { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 0 12px; border-radius: 9px; font-size: 13.5px; font-weight: 600; color: var(--d-muted); cursor: pointer; }
+.ov-radio input { accent-color: var(--d-ink); width: 16px; height: 16px; margin: 0; }
+.ov-radio:has(input:checked) { background: var(--d-card); color: var(--d-ink); box-shadow: 0 1px 2px #0000001a; }
+
+/* Weekly report */
+.ov-kpis.four { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.ov-delta { font-size:13px; font-weight:650; color:var(--d-muted); }
+.ov-delta.up { color:#3f6b1f; }
+.ov-delta.down { color:#a33a2a; }
+.ov-steps { list-style:none; margin:12px 0 0; padding:0; display:grid; gap:12px; }
+.ov-steps li { display:flex; gap:12px; align-items:flex-start; font-size:15px; line-height:1.5; }
+.ov-steps .ov-fix-n { margin-top:2px; }
+.ov-moves { margin:12px 0 0; display:grid; gap:4px; font-size:14.5px; }
+.ov-moves dt { font-weight:650; color:var(--d-muted); font-size:13px; margin-top:8px; }
+.ov-moves dd { margin:0; }
+@media (max-width: 760px) { .ov-kpis.four { grid-template-columns:repeat(2,minmax(0,1fr)); } }

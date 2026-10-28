@@ -3,10 +3,10 @@ import { and, eq } from "drizzle-orm";
 import type { Db } from "@/db";
 import { integrations } from "@/db/schema";
 import { googleLocationUpdate } from "@/lib/presence";
-import { toPublicProfile } from "@/lib/profile";
 import { AppError, audit, requireRole, type Ctx } from "./context";
 import { decryptSecret, encryptSecret } from "./crypto";
-import { getProfile, requireBusiness } from "./business";
+import { requireBusiness } from "./business";
+import { kitInputFor } from "./presence-input";
 
 /**
  * A connected Google Business Profile location. The owner signed in with
@@ -60,11 +60,9 @@ export async function syncGoogle(db: Db, ctx: Ctx) {
   requireRole(ctx, "editor");
   const [row] = await db.select().from(integrations).where(and(eq(integrations.workspaceId, ctx.workspaceId), eq(integrations.kind, KIND)));
   if (!row) throw new AppError("not_found", "Google isn't connected.");
-  const [b, profile] = await Promise.all([requireBusiness(db, ctx), getProfile(db, ctx)]);
-  const appUrl = process.env.APP_URL ?? "http://localhost:3000";
-  const websiteUrl = b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`;
-  const pub = toPublicProfile(b);
-  const { body, updateMask } = googleLocationUpdate({ ...pub, websiteUrl, profileUrl: `${appUrl}/b/${profile?.slug ?? ""}` });
+  const b = await requireBusiness(db, ctx);
+  const { input } = await kitInputFor(db, ctx, b);
+  const { body, updateMask } = googleLocationUpdate(input);
   try {
     const token = await accessToken(decryptSecret(row.secretEncrypted));
     const u = new URL(`https://mybusinessbusinessinformation.googleapis.com/v1/${row.username}`);

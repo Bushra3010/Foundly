@@ -75,6 +75,70 @@ export const brandProfiles = pgTable("brand_profiles", {
   generatedAt: timestamp("generated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** Listing descriptions written by a model from the owner's confirmed facts, one per platform limit. */
+export type ListingTextData = {
+  /** Google Business Profile and Bing Places (750 characters). */
+  description750: string;
+  /** Justdial and Sulekha (500 characters). */
+  description500: string;
+  /** Facebook short description (255 characters). */
+  short255: string;
+  /** Facebook About and YouTube channel description (1000 characters). */
+  about1000: string;
+  /** Instagram bio (150 characters). */
+  bio150: string;
+  /** LinkedIn tagline (120 characters). */
+  tagline120: string;
+};
+
+export const listingTexts = pgTable("listing_texts", {
+  workspaceId: uuid("workspace_id")
+    .primaryKey()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  data: jsonb("data").$type<ListingTextData>().notNull(),
+  /** The business version the text was written from; a later edit shows the text may be stale. */
+  businessVersion: integer("business_version").notNull(),
+  generatedAt: timestamp("generated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** What a weekly report says: a headline, what changed, and what to do, with the numbers it was built from. */
+export type WeeklyReportData = {
+  headline: string;
+  summary: string;
+  actions: string[];
+  numbers: {
+    coverage: number | null;
+    prevCoverage: number | null;
+    avgPosition: number | null;
+    prevAvgPosition: number | null;
+    share: number | null;
+    prevShare: number | null;
+    answers: number;
+    won: string[];
+    lost: string[];
+    gaps: { keyword: string; rivals: string[] }[];
+    sources: string[];
+    openTasks: string[];
+  };
+  /** "ai" when a model wrote the text, "template" when it was built from the numbers alone. */
+  source: "ai" | "template";
+};
+
+export const weeklyReports = pgTable(
+  "weekly_reports",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    /** ISO week, like 2026-W44. */
+    weekKey: text("week_key").notNull(),
+    data: jsonb("data").$type<WeeklyReportData>().notNull(),
+    generatedAt: timestamp("generated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("weekly_reports_week_idx").on(t.workspaceId, t.weekKey)],
+);
+
 export const rateLimits = pgTable(
   "rate_limits",
   {
@@ -90,6 +154,8 @@ export const workspaces = pgTable("workspaces", {
   name: text("name").notNull(),
   country: text("country").notNull().default("IN"),
   currency: text("currency").notNull().default("INR"),
+  /** How many times each prompt is asked per check (1 or 3). More samples make the numbers steadier and cost as many credits. */
+  samples: integer("samples").notNull().default(1),
   createdAt: createdAt(),
 });
 

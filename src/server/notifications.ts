@@ -5,6 +5,7 @@ import { businesses, improvementActions, memberships, notificationLog, notificat
 import { sendEmail } from "@/lib/auth/mailer";
 import type { Ctx } from "./context";
 import { visibilitySummary } from "./monitoring/service";
+import { buildWeeklyReport, latestWeeklyReport, reportToText, weekKeyOf } from "./weekly-report";
 
 export type PrefKind = "weeklySummary" | "leadAlerts";
 
@@ -52,8 +53,8 @@ async function sendOnce(db: Db, dedupeKey: string, userId: string, kind: string,
   return true;
 }
 
-/** Weekly opt-in summary. */
-export async function sendWeeklySummaries(db: Db, weekKey: string) {
+/** Weekly opt-in summary: this week's report when there is one, else the bare numbers. */
+export async function sendWeeklySummaries(db: Db, weekKey: string = weekKeyOf()) {
   const subscribed = await db
     .select({ userId: notificationPrefs.userId, workspaceId: notificationPrefs.workspaceId, email: users.email, role: memberships.role })
     .from(notificationPrefs)
@@ -71,11 +72,15 @@ export async function sendWeeklySummaries(db: Db, weekKey: string) {
     ]);
     const m = vis.metrics;
     const visLine = m.valid > 0 && m.mention.rate !== null ? `AI answers mentioning you: ${m.mention.numerator} of ${m.mention.denominator}${m.smallSample ? " (small sample)" : ""}` : "AI visibility: no valid answers collected this week";
+    // The written report for this week, built now if the Monday job hasn't yet; the bare numbers when there are no answers.
+    let report = await latestWeeklyReport(db, ctx);
+    if (!report || report.weekKey !== weekKey) report = await buildWeeklyReport(db, ctx, {}).catch(() => null);
+    const body = report ? [reportToText(b.name, report.weekKey, report.data), "", `Improvement tasks waiting: ${openTasks}`] : [visLine, `Improvement tasks waiting: ${openTasks}`];
     if (
       await sendOnce(db, `weekly:${s.workspaceId}:${s.userId}:${weekKey}`, s.userId, "weekly_summary", {
         to: s.email,
-        subject: `Your week at ${b.name}`,
-        text: [visLine, `Improvement tasks waiting: ${openTasks}`, "", `${appUrl()}/app`, "", `Unsubscribe: ${unsubscribeLink(s.userId, s.workspaceId, "weeklySummary")}`].join("\n"),
+        subject: report ? `${b.name}: ${report.data.headline}` : `Your week at ${b.name}`,
+        text: [...body, "", `Full report: ${appUrl()}/app/reports`, "", `Unsubscribe: ${unsubscribeLink(s.userId, s.workspaceId, "weeklySummary")}`].join("\n"),
       })
     )
       sent++;

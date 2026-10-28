@@ -5,6 +5,8 @@ import { requireCtx } from "@/lib/auth/session";
 import { t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { CHECK_LABEL, CHECKLIST_VERSION } from "@/server/audit/checks";
+import { canDraftWithAi } from "@/server/audit/ai-draft";
+import { enabledAdapters } from "@/server/monitoring/registry";
 import { latestAudit, listActions } from "@/server/audit/service";
 import { can } from "@/server/context";
 import { readinessFor } from "@/server/geo";
@@ -17,6 +19,7 @@ import {
   saveDraftAction,
   startAuditAction,
   verifyActionAction,
+  writeDraftAction,
 } from "./actions";
 import { requireCurrentBusiness } from "@/server/current";
 import { normalizeSiteUrl } from "@/server/safe-fetch";
@@ -63,6 +66,7 @@ export default async function ImprovePage() {
   const running = audit && (audit.status === "queued" || audit.status === "running");
   const failed = audit?.findings.filter((f) => !f.passed) ?? [];
   const passed = audit?.findings.filter((f) => f.passed) ?? [];
+  const aiOn = enabledAdapters().length > 0;
 
   return (
     <>
@@ -193,15 +197,23 @@ export default async function ImprovePage() {
                   </div>
                 </dl>
                 {a.verificationNote && <p className="mt-2 text-sm">{a.verificationNote}</p>}
-                {canEdit && !["applied", "queued"].includes(a.status) && a.draft && (
+                {canEdit && !["applied", "queued"].includes(a.status) && (a.draft || canDraftWithAi(a.checkKey)) && (
                   <div className="mt-3">
-                    <ActionForm action={saveDraftAction} submitLabel="Save draft" variant="secondary">
+                    {aiOn && canDraftWithAi(a.checkKey) && (
+                      <div className="mb-2">
+                        <ActionForm action={writeDraftAction} submitLabel={a.draft && !/\[[^\]]{3,}\]/.test(a.draft) ? "Rewrite with AI" : "Write with AI"} pendingLabel="Writing…" variant="secondary" inline>
+                          <input type="hidden" name="actionId" value={a.id} />
+                        </ActionForm>
+                        <p className="mt-1 text-xs text-muted">Written only from the details in My Business. Anything AI can&apos;t know is left in [brackets] for you.</p>
+                      </div>
+                    )}
+                    <ActionForm key={a.draftRevision} action={saveDraftAction} submitLabel="Save draft" variant="secondary">
                       <input type="hidden" name="actionId" value={a.id} />
                       <input type="hidden" name="revision" value={a.draftRevision} />
                       <label htmlFor={`draft-${a.id}`} className="block text-sm font-semibold">
                         Draft (copy this to your website)
                       </label>
-                      <textarea id={`draft-${a.id}`} name="draft" defaultValue={a.draft} rows={Math.min(12, Math.max(3, a.draft.split("\n").length + 1))} className="block w-full rounded-lg border border-border bg-surface px-3 py-2 font-mono text-sm" />
+                      <textarea id={`draft-${a.id}`} name="draft" defaultValue={a.draft} rows={Math.min(14, Math.max(3, a.draft.split("\n").length + 1))} className="block w-full rounded-lg border border-border bg-surface px-3 py-2 font-mono text-sm" />
                     </ActionForm>
                   </div>
                 )}

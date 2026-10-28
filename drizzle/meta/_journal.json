@@ -127,6 +127,13 @@
       "when": 1793210494794,
       "tag": "0017_sentiment_and_brand_profiles",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1793212437345,
+      "tag": "0018_ai_writing",
+      "breakpoints": true
     }
   ]
 }

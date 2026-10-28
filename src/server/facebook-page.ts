@@ -3,10 +3,10 @@ import { and, eq } from "drizzle-orm";
 import type { Db } from "@/db";
 import { integrations } from "@/db/schema";
 import { facebookPageUpdate } from "@/lib/presence";
-import { toPublicProfile } from "@/lib/profile";
 import { AppError, audit, requireRole, type Ctx } from "./context";
 import { decryptSecret, encryptSecret } from "./crypto";
-import { getProfile, requireBusiness } from "./business";
+import { requireBusiness } from "./business";
+import { kitInputFor } from "./presence-input";
 
 /** A connected Facebook Page, kept in step with the confirmed facts through Meta's Graph API. */
 const KIND = "facebook_page";
@@ -36,10 +36,9 @@ export async function syncFacebook(db: Db, ctx: Ctx) {
   requireRole(ctx, "editor");
   const [row] = await db.select().from(integrations).where(and(eq(integrations.workspaceId, ctx.workspaceId), eq(integrations.kind, KIND)));
   if (!row) throw new AppError("not_found", "Facebook isn't connected.");
-  const [b, profile] = await Promise.all([requireBusiness(db, ctx), getProfile(db, ctx)]);
-  const appUrl = process.env.APP_URL ?? "http://localhost:3000";
-  const websiteUrl = b.websiteUrl ?? `${appUrl}/b/${profile?.slug ?? ""}`;
-  const body = facebookPageUpdate({ ...toPublicProfile(b), websiteUrl, profileUrl: `${appUrl}/b/${profile?.slug ?? ""}` });
+  const b = await requireBusiness(db, ctx);
+  const { input } = await kitInputFor(db, ctx, b);
+  const body = facebookPageUpdate(input);
   try {
     const res = await fetch(`https://graph.facebook.com/v21.0/${row.username}`, {
       method: "POST",
