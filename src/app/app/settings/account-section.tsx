@@ -1,4 +1,5 @@
 import { ActionForm } from "@/components/action-form";
+import Link from "next/link";
 import { Badge, Card, Checkbox, Notice, TextField } from "@/components/ui";
 import { getDb } from "@/db";
 import { requireCtx } from "@/lib/auth/session";
@@ -60,6 +61,7 @@ export async function AccountSection() {
           {sub.currentPeriodEnd && ` Renews ${sub.currentPeriodEnd.toLocaleDateString("en-IN")}.`}
           {sub.scheduledPlan && ` Changes to ${planSpec(sub.scheduledPlan).name} at the end of this period.`}
         </p>
+        <p className="mt-2 text-xs text-muted">Read the <Link href="/terms" className="underline">Terms &amp; Conditions</Link> and <Link href="/privacy" className="underline">Privacy Policy</Link> before choosing a paid plan. Confirm the final price, tax and renewal terms at checkout.</p>
         <ul className="settings-plans mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4" aria-label="Compare plans">
           {PLANS.filter((p) => !p.retired || p.key === sub.plan).map((p) => {
             const price = planPrice(p);

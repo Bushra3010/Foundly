@@ -37,6 +37,7 @@ export function LandingFooter() {
           <nav aria-label="Account">
             <strong>Account</strong>
             <Link href="/signup">Start free</Link><Link href="/login">Log in</Link>
+            <Link href="/terms">Terms &amp; Conditions</Link><Link href="/privacy">Privacy Policy</Link>
           </nav>
           <span className="lv-copy">© {new Date().getFullYear()} Foundly</span>
         </footer>

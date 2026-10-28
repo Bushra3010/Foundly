@@ -75,7 +75,7 @@ export function RegionalPricing({ indiaOverrides }: { indiaOverrides: Record<str
               <ul>
                 {plan.features.map((feature) => <li key={feature}><Icon name="check" size={15} /><span>{feature}</span></li>)}
                 {plan.maxWorkspaces === 1 && <li><Icon name="check" size={15} /><span>1 business workspace</span></li>}
-                <li className="pricing-extra"><Icon name="spark" size={15} /><span>+1 keyword: {formatRegionalPrice(market.extraKeyword, market)} / month each</span></li>
+                <li className="pricing-extra"><Icon name="spark" size={15} /><span>+1 keyword: {formatRegionalPrice(market.extraKeyword, market)} / month each · by separate order; self-service purchase unavailable</span></li>
               </ul>
             </article>
           );

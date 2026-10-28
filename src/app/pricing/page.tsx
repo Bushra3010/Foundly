@@ -69,7 +69,7 @@ const FAQ = [
   { q: "What is included in every plan?", a: "Every plan includes our ChatGPT Ads service and basic GEO. The plans differ in how many AI platforms get basic GEO: ChatGPT on Growth, ChatGPT and Gemini on Pro, and all four (ChatGPT, Gemini, Perplexity and Claude) on Enterprise." },
   { q: "What counts as a prompt?", a: "One question you want AI assistants to answer about your kind of business, like “best dentist in Indore”. Each check asks it on every AI platform in your plan." },
   { q: "How many prompts do I need?", a: "Start with your main service in your city, then add one per important service or area. Most local businesses begin with 5 and grow from there." },
-  { q: "Can I add more prompts later?", a: "Yes. Add prompts one at a time on your plan (see the price on each card), or move to a larger plan." },
+  { q: "Can I add more prompts later?", a: "You can move to a larger plan. Extra keyword prices are shown on each card, but self-service add-on purchases are not available yet. An extra allowance needs a separately confirmed order." },
   { q: "Can I cancel any time?", a: "Yes. Plans are monthly and you can cancel from Settings. Your saved answers and history stay available." },
   { q: "Do you guarantee AI recommendations?", a: "No one can. Foundly shows what AI actually says, with the saved answers as evidence, and the changes most likely to help." },
 ];
@@ -86,6 +86,7 @@ export default function PricingPage() {
         </section>
 
         <LandingPricing />
+        <p className="landing-section" style={{ marginTop: 0, paddingTop: 0 }}>Review our <Link href="/terms" className="underline">Terms &amp; Conditions</Link> and <Link href="/privacy" className="underline">Privacy Policy</Link>. Final payment currency, taxes and renewal charges are confirmed at checkout.</p>
 
         <section className="landing-section" aria-labelledby="compare-title">
           <div className="lv-heading">

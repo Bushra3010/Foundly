@@ -19,6 +19,7 @@ export default async function SignUpPage({ searchParams }: { searchParams: Promi
         <h1>Create your account</h1>
         <p className="start-lead">Free to start. Your website is ready in about two minutes.</p>
         <SignUpForm next={next} />
+        <p className="start-switch">Read our <Link href="/terms">Terms &amp; Conditions</Link> and <Link href="/privacy">Privacy Policy</Link>.</p>
         <p className="start-switch">Already have an account? <Link href={loginHref}>Log in</Link></p>
         <ul className="start-perks">
           <li><Icon name="check" size={15} /> Free to start</li>
