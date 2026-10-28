@@ -100,7 +100,7 @@ export default async function KeywordsPage({ searchParams }: { searchParams: Pro
                       <ActionForm action={setTagAction} submitLabel="Save" pendingLabel="…" variant="ghost" inline>
                         <input type="hidden" name="id" value={k.id} />
                         <label className="sr-only" htmlFor={`tag-${k.id}`}>Tag</label>
-                        <select id={`tag-${k.id}`} name="tag" defaultValue={isTag(k.tag) ? k.tag : "service"} className="ov-select">
+                        <select key={k.tag} id={`tag-${k.id}`} name="tag" defaultValue={isTag(k.tag) ? k.tag : "service"} className="ov-select">
                           {TAGS.map((t) => (
                             <option key={t} value={t}>{TAG_LABEL[t]}</option>
                           ))}
