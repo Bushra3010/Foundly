@@ -19,8 +19,14 @@ const OFFICE_ADDRESS = {
   streetAddress: "801, C Wing, Phase 2, Shubhshree Residency, Near Akurdi Chowk",
   addressLocality: "Pune",
   addressRegion: "Maharashtra",
+  postalCode: "411035",
   addressCountry: "IN",
 };
+
+const TELEPHONE = "+91-7004054302";
+
+/** Foundly's own profiles on other sites. Keep in line with docs/listings-kit.md; add each new listing here once it is live. */
+const SAME_AS = ["https://clutch.co/profile/foundly", "https://www.crunchbase.com/organization/foundly-d101"];
 
 export function organizationLd() {
   return {
@@ -32,6 +38,11 @@ export function organizationLd() {
     description: SITE_DESCRIPTION,
     address: OFFICE_ADDRESS,
     email: "support@foundly.co.in",
+    telephone: TELEPHONE,
+    foundingDate: "2026",
+    founder: [{ "@type": "Person", name: "Alok Kumar" }, { "@type": "Person", name: "Bushra Khan" }],
+    numberOfEmployees: { "@type": "QuantitativeValue", value: 2 },
+    sameAs: SAME_AS,
     areaServed: [{ "@type": "Country", name: "India" }, "Worldwide"],
     knowsAbout: ["Generative engine optimization", "Answer engine optimization", "AI search visibility", "Local SEO", "ChatGPT", "Gemini", "Perplexity", "Claude"],
   };
@@ -88,6 +99,7 @@ export function officeLd() {
     description: "SEO, AEO and GEO agency in Pune helping businesses get recommended by ChatGPT, Gemini, Perplexity and Claude.",
     address: OFFICE_ADDRESS,
     email: "support@foundly.co.in",
+    telephone: TELEPHONE,
     priceRange: "₹₹₹",
     parentOrganization: { "@id": orgId() },
   };
