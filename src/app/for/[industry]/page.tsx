@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { clip } from "@/lib/presence";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Icon } from "@/components/icon";
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `GEO and AI search visibility for ${i.name.toLowerCase()}`;
   return {
     title,
-    description: i.intro.slice(0, 170),
+    description: clip(i.intro, 158),
     alternates: { canonical: `/for/${i.slug}` },
     openGraph: { title: i.headline, description: i.intro, url: `/for/${i.slug}`, images: "/opengraph-image" },
   };

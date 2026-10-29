@@ -5,7 +5,7 @@ import { GuidePage, guideMeta, type GuideSection } from "@/components/guide-page
 const meta = guideMeta("rank-on-chatgpt");
 
 export const metadata: Metadata = {
-  title: { absolute: `${meta.title} · Foundly` },
+  title: { absolute: `${meta.seoTitle ?? meta.title} · Foundly` },
   description: meta.description,
   alternates: { canonical: `/guides/${meta.slug}` },
   openGraph: { type: "article", title: meta.title, description: meta.description, url: `/guides/${meta.slug}`, images: "/opengraph-image", publishedTime: meta.published, modifiedTime: meta.updated },

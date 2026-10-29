@@ -10,8 +10,8 @@ import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/legal.css";
 
-const TITLE = "SEO, AEO and GEO agency in India, serving businesses worldwide";
-const DESCRIPTION = "Foundly is an AI search visibility agency and platform based in Pune. We help businesses across India and worldwide get recommended by ChatGPT, Gemini, Perplexity and Claude.";
+const TITLE = "SEO, AEO and GEO agency in India";
+const DESCRIPTION = "Foundly is a GEO and AI search visibility agency in Pune, helping businesses in India and worldwide get recommended by ChatGPT, Gemini, Perplexity and Claude.";
 
 export const metadata: Metadata = {
   title: { absolute: `${TITLE} · Foundly` },

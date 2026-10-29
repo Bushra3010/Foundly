@@ -12,8 +12,8 @@ import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/legal.css";
 
-const TITLE = "Free AI Crawler Checker: can ChatGPT and Gemini read your site?";
-const DESCRIPTION = "Free tool. Enter your website to see whether GPTBot, OAI-SearchBot, Google-Extended, PerplexityBot, ClaudeBot and other AI crawlers are allowed by your robots.txt.";
+const TITLE = "Free AI Crawler Checker: can ChatGPT read your site?";
+const DESCRIPTION = "Free tool: check whether GPTBot, OAI-SearchBot, Google-Extended, PerplexityBot, ClaudeBot and other AI crawlers are allowed by your robots.txt.";
 
 type Props = { searchParams: Promise<{ url?: string }> };
 

@@ -4,9 +4,10 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { listToText } from "@/lib/geo";
+import { clip } from "@/lib/presence";
 import { SERVICE_CITIES, serviceCity } from "@/lib/locations";
 import { jsonLdScript } from "@/lib/profile";
-import { NO_GUARANTEE, PROCESS, SERVICES } from "@/lib/services";
+import { NO_GUARANTEE } from "@/lib/services";
 import { breadcrumbLd, faqLd, graph, officeLd, serviceLd, siteUrl } from "@/lib/site-schema";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
@@ -23,10 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const c = serviceCity((await params).city);
   if (!c) return {};
   const title = `SEO, AEO and GEO agency in ${c.name}`;
-  const description = `Get your ${c.name} business recommended by ChatGPT, Gemini, Perplexity and Claude. AI search visibility, local SEO and ChatGPT Ads for businesses in ${listToText(c.areas.slice(0, 3))} and across ${c.name}.`;
+  const description = `Get your ${c.name} business recommended by ChatGPT, Gemini, Perplexity and Claude, in ${listToText(c.areas.slice(0, 3))} and across the city. GEO, AEO and local SEO.`;
   return {
     title: { absolute: `${title} · Foundly` },
-    description: description.slice(0, 170),
+    description: clip(description, 158),
     alternates: { canonical: `/services/${c.slug}` },
     openGraph: { title, description, url: `/services/${c.slug}`, images: "/opengraph-image" },
   };
@@ -68,13 +69,20 @@ export default async function CityServicePage({ params }: Props) {
             <ul className="industry-questions">{c.queries.map((q) => <li key={q}>&ldquo;{q}&rdquo;</li>)}</ul>
             <p>We track questions like these for your business across {listToText(c.areas)} and the rest of {c.name}.</p>
           </section>
-          <section id="services">
-            <h2><span>02</span>What we do for {c.name} businesses</h2>
-            <div className="about-principles industry-facts">{SERVICES.map((s) => <div key={s.title}><h3>{s.title}</h3><p>{s.body}</p></div>)}</div>
+          <section id="playbook">
+            <h2><span>02</span>What gets {c.name} businesses named by AI</h2>
+            <p>What an assistant needs before it recommends you depends on your trade. These are the details that matter most for some of {c.name}&rsquo;s biggest categories.</p>
+            {c.playbook.map((p) => (
+              <div key={p.industry} className="guide-faq">
+                <h3>{p.industry}</h3>
+                <p><em>&ldquo;{p.question}&rdquo;</em></p>
+                <p>{p.advice}</p>
+              </div>
+            ))}
           </section>
-          <section id="process">
-            <h2><span>03</span>How it works</h2>
-            <ol className="guide-steps">{PROCESS.map((p) => <li key={p.title}><strong>{p.title}.</strong> {p.body}</li>)}</ol>
+          <section id="services">
+            <h2><span>03</span>What we do for {c.name} businesses</h2>
+            <p>We record what each AI assistant says about your business today and who it names instead, audit your website and listings, hand you prioritised fixes with ready-to-use text and structured data, and check every week whether you are named more often. The service covers GEO, AEO, local SEO foundations, ChatGPT Ads and weekly reporting. <Link href="/services">See the full service</Link>.</p>
             <p>{c.office ? "Based in Pune, we can meet you in person or work entirely online." : `Our office is in Pune; we work with ${c.name} businesses entirely online.`} Plans start at ₹15,000 a month before tax. <Link href="/pricing">See pricing</Link>.</p>
           </section>
           <section id="faq">

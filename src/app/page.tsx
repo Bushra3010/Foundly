@@ -16,7 +16,7 @@ import "./landing-v2.css";
 
 const TITLE = "Foundly — Get recommended by ChatGPT, Gemini, Perplexity and Claude";
 const DESCRIPTION =
-  "Foundly tracks how AI assistants talk about your business, shows who they recommend instead, and tells you what to fix to be recommended. Built for local businesses in India.";
+  "Foundly tracks what ChatGPT, Gemini, Perplexity and Claude say about your business, shows who they recommend instead, and tells you what to fix to be named.";
 
 export const metadata: Metadata = {
   // Absolute so the layout template doesn't append a second "· Foundly".
