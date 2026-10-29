@@ -8,10 +8,13 @@ import { SERVICE_CITIES } from "@/lib/locations";
 
 export const dynamic = "force-dynamic";
 
+// Published profiles kept out of the sitemap. Their pages stay live.
+const SITEMAP_EXCLUDED_PROFILES = new Set(["alok-mumbai", "kindbridge-pune", "blinks-ai-mumbai"]);
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = await getDb();
   const base = process.env.APP_URL ?? "http://localhost:3000";
-  const profiles = await listPublishedProfiles(db);
+  const profiles = (await listPublishedProfiles(db)).filter((p) => !SITEMAP_EXCLUDED_PROFILES.has(p.slug));
   const cities = new Set<string>();
   const cityCategories = new Set<string>();
   for (const p of profiles) {
