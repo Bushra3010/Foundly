@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     "Create an accurate online presence for your business and see how supported AI answers mention it.",
   applicationName: "Foundly",
   metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3000"),
+  openGraph: { type: "website", siteName: "Foundly", locale: "en_IN" },
+  twitter: { card: "summary_large_image" },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {

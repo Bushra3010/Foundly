@@ -11,11 +11,11 @@ export function LegalContact() {
   return (
     <dl className="legal-contact">
       <div><dt>Service</dt><dd>Foundly</dd></div>
-      <div><dt>Legal operator</dt><dd>Foundly — proposed legal name, subject to verification against the actual registered entity or proprietor.</dd></div>
+      <div><dt>Legal operator</dt><dd>Foundly</dd></div>
       <div><dt>Business address</dt><dd>801, C Wing, Phase 2, Shubhshree Residency, Near Akurdi Chowk, Pune, Maharashtra, India.</dd></div>
-      <div><dt>Support and refund requests</dt><dd>support@foundly.in — proposed address; domain, mailbox availability and receipt of requests must be verified before use.</dd></div>
-      <div><dt>Privacy requests</dt><dd>privacy@foundly.in — proposed address; domain, mailbox availability and receipt of requests must be verified before use.</dd></div>
-      <div><dt>Grievance contact</dt><dd>Name, designation and verified contact details pending confirmation.</dd></div>
+      <div><dt>Support and refund requests</dt><dd><a href="mailto:support@foundly.co.in">support@foundly.co.in</a></dd></div>
+      <div><dt>Privacy requests</dt><dd><a href="mailto:privacy@foundly.co.in">privacy@foundly.co.in</a></dd></div>
+      <div><dt>Grievance contact</dt><dd>Grievance Officer, Foundly — <a href="mailto:privacy@foundly.co.in">privacy@foundly.co.in</a>, at the business address above.</dd></div>
     </dl>
   );
 }
@@ -29,7 +29,7 @@ export function LegalPage({ title, intro, sections }: { title: string; intro: st
           <p className="landing-eyebrow">FOUNDLY / LEGAL</p>
           <h1>{title}</h1>
           <p className="legal-intro">{intro}</p>
-          <p className="legal-date">Draft prepared <time dateTime="2026-10-29">29 October 2026</time></p>
+          <p className="legal-date">Last updated <time dateTime="2026-10-30">30 October 2026</time></p>
         </header>
         <div className="legal-layout">
           <aside className="legal-sidebar">

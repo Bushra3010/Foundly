@@ -7,10 +7,17 @@ import { listPublishedProfiles, searchDirectory } from "@/server/directory";
 import { displayCategory, displayCity, pluralCategory, slugify } from "@/lib/geo";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Business directory",
-  description: "Find local businesses by service and area, with details confirmed by the business owner.",
-};
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string; category?: string; city?: string }> }): Promise<Metadata> {
+  const sp = await searchParams;
+  const filtered = [sp.q, sp.category, sp.city].some((v) => v?.trim());
+  return {
+    title: "Business directory",
+    description: "Find local businesses by service and area, with details confirmed by the business owner.",
+    alternates: { canonical: "/directory" },
+    // Search result pages are thin duplicates; the city and category pages are the indexable versions.
+    ...(filtered && { robots: { index: false, follow: true } }),
+  };
+}
 
 export default async function DirectoryPage({ searchParams }: { searchParams: Promise<{ q?: string; category?: string; city?: string }> }) {
   const sp = await searchParams;

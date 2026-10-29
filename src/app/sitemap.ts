@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { getDb } from "@/db";
 import { listPublishedProfiles } from "@/server/directory";
 import { slugify } from "@/lib/geo";
+import { GUIDES } from "@/lib/guides";
+import { INDUSTRIES } from "@/lib/industries";
+import { SERVICE_CITIES } from "@/lib/locations";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +22,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: base, changeFrequency: "weekly" },
     { url: `${base}/pricing`, changeFrequency: "monthly" },
+    { url: `${base}/about`, changeFrequency: "monthly" },
+    { url: `${base}/guides`, changeFrequency: "monthly" },
+    ...GUIDES.map((g) => ({ url: `${base}/guides/${g.slug}`, lastModified: g.updated, changeFrequency: "monthly" as const })),
+    { url: `${base}/for`, changeFrequency: "monthly" },
+    ...INDUSTRIES.map((i) => ({ url: `${base}/for/${i.slug}`, changeFrequency: "monthly" as const })),
+    { url: `${base}/tools/ai-crawler-checker`, changeFrequency: "monthly" },
+    { url: `${base}/services`, changeFrequency: "monthly" },
+    ...SERVICE_CITIES.map((c) => ({ url: `${base}/services/${c.slug}`, changeFrequency: "monthly" as const })),
+    { url: `${base}/terms`, changeFrequency: "yearly" },
+    { url: `${base}/privacy`, changeFrequency: "yearly" },
     { url: `${base}/directory`, changeFrequency: "daily" },
     { url: `${base}/llms.txt`, changeFrequency: "daily" },
     ...[...cities].map((c) => ({ url: `${base}/directory/${c}`, changeFrequency: "daily" as const })),

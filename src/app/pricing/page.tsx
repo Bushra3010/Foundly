@@ -4,13 +4,18 @@ import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { LandingPricing } from "@/components/landing-pricing";
 import { ALL_PLATFORMS, PLATFORM_LABEL, planSpec } from "@/lib/plans";
+import { jsonLdScript } from "@/lib/profile";
+import { breadcrumbLd, graph, softwareLd } from "@/lib/site-schema";
 import "../landing.css";
 import "../landing-v2.css";
 
+const DESCRIPTION = "Basic GEO on ChatGPT, Gemini, Perplexity and Claude, with the ChatGPT Ads service in every plan. From ₹15,000 a month.";
+
 export const metadata: Metadata = {
-  title: "Pricing",
-  description: "Basic GEO on ChatGPT, Gemini, Perplexity and Claude, with the ChatGPT Ads service in every plan. From ₹15,000 a month.",
+  title: "Pricing: AI search visibility (GEO) plans",
+  description: DESCRIPTION,
   alternates: { canonical: "/pricing" },
+  openGraph: { title: "Foundly pricing", description: DESCRIPTION, url: "/pricing", images: "/opengraph-image" },
 };
 
 const growth = planSpec("growth");
@@ -77,6 +82,7 @@ const FAQ = [
 export default function PricingPage() {
   return (
     <div className="foundly-landing">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(graph(softwareLd(), breadcrumbLd([{ name: "Home", path: "/" }, { name: "Pricing", path: "/pricing" }]))) }} />
       <LandingHeader />
       <main id="main" className="landing-main">
         <section className="lv-hero lv-pricing-hero" aria-labelledby="pricing-hero-title">

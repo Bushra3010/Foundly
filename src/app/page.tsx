@@ -6,13 +6,25 @@ import { AI_ENGINES, LandingDashboard } from "@/components/landing-dashboard";
 import { LandingPricing } from "@/components/landing-pricing";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { FitSections } from "@/components/fit-sections";
+import { GUIDES } from "@/lib/guides";
+import { INDUSTRIES } from "@/lib/industries";
+import { SERVICE_CITIES } from "@/lib/locations";
+import { jsonLdScript } from "@/lib/profile";
+import { faqLd, graph, organizationLd, softwareLd, websiteLd } from "@/lib/site-schema";
 import "./landing.css";
 import "./landing-v2.css";
 
+const TITLE = "Foundly — Get recommended by ChatGPT, Gemini, Perplexity and Claude";
+const DESCRIPTION =
+  "Foundly tracks how AI assistants talk about your business, shows who they recommend instead, and tells you what to fix to be recommended. Built for local businesses in India.";
+
 export const metadata: Metadata = {
-  title: "Foundly — Get recommended by ChatGPT, Gemini, Perplexity and Claude",
-  description:
-    "Foundly tracks how AI assistants talk about your business, shows who they recommend instead, and tells you what to fix to be recommended. Built for local businesses in India.",
+  // Absolute so the layout template doesn't append a second "· Foundly".
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: "/" },
+  twitter: { title: TITLE, description: DESCRIPTION },
 };
 
 const FEATURES = [
@@ -64,6 +76,7 @@ function EngineRow({ label }: { label?: string }) {
 export default function Home() {
   return (
     <div className="foundly-landing">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(graph(organizationLd(), websiteLd(), softwareLd(), faqLd(FAQ))) }} />
       <LandingHeader />
 
       <main id="main" className="landing-main">
@@ -162,6 +175,17 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </section>
+
+        <section className="landing-section lv-resources" aria-labelledby="resources-title">
+          <p className="landing-eyebrow"><span /> LEARN GEO</p>
+          <h2 id="resources-title">Free tools and guides</h2>
+          <div className="lv-resource-grid">
+            <Link href="/tools/ai-crawler-checker"><b>AI Crawler Checker</b><span>See if ChatGPT, Gemini, Perplexity and Claude can read your website. Free.</span></Link>
+            {GUIDES.slice(0, 5).map((g) => <Link key={g.slug} href={`/guides/${g.slug}`}><b>{g.title}</b><span>{g.description}</span></Link>)}
+          </div>
+          <p className="lv-industries">SEO, AEO and GEO agency in: {SERVICE_CITIES.map((c, n) => <span key={c.slug}>{n > 0 && " · "}<Link href={`/services/${c.slug}`}>{c.name}</Link></span>)} · <Link href="/services">India and worldwide</Link></p>
+          <p className="lv-industries">For your industry: {INDUSTRIES.map((i, n) => <span key={i.slug}>{n > 0 && " · "}<Link href={`/for/${i.slug}`}>{i.name}</Link></span>)}</p>
         </section>
 
         <div className="landing-fit landing-last"><div className="fit-body"><section className="landing-final">
