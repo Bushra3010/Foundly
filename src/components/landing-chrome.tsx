@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Brand, Icon } from "@/components/icon";
+import { CookieSettingsButton } from "@/components/meta-pixel";
 import { SERVICE_CITIES } from "@/lib/locations";
 
 /** Top of every public marketing page. */
@@ -37,7 +38,7 @@ export function LandingFooter() {
           </nav>
           <nav aria-label="Company">
             <strong>Company</strong>
-            <Link href="/about">About us</Link><Link href="/services">SEO, AEO &amp; GEO services</Link><Link href="/terms">Terms &amp; Conditions</Link><Link href="/privacy">Privacy Policy</Link>
+            <Link href="/about">About us</Link><Link href="/services">SEO, AEO &amp; GEO services</Link><Link href="/terms">Terms &amp; Conditions</Link><Link href="/privacy">Privacy Policy</Link><CookieSettingsButton className="lv-footer-button" />
           </nav>
           <nav aria-label="Account">
             <strong>Account</strong>

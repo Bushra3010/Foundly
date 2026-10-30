@@ -3,6 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
+import { MetaEvent } from "@/components/meta-pixel";
 import { getDb } from "@/db";
 import { jsonLdScript } from "@/lib/profile";
 import { breadcrumbLd, faqLd, graph, siteUrl } from "@/lib/site-schema";
@@ -104,6 +105,7 @@ export default async function CrawlerCheckerPage({ searchParams }: Props) {
   return (
     <div className="foundly-landing">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ld) }} />
+      {result && !("error" in result) && <MetaEvent name="AICrawlerCheck" custom />}
       <LandingHeader />
       <main id="main" className="landing-main legal-main">
         <header className="legal-hero">

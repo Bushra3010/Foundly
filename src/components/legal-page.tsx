@@ -20,7 +20,9 @@ export function LegalContact() {
   );
 }
 
-export function LegalPage({ title, intro, sections }: { title: string; intro: string; sections: LegalSection[] }) {
+/** `updated` is the ISO date of the page's last material change. */
+export function LegalPage({ title, intro, sections, updated = "2026-10-30" }: { title: string; intro: string; sections: LegalSection[]; updated?: string }) {
+  const updatedLabel = new Date(`${updated}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
   return (
     <div className="foundly-landing">
       <LandingHeader />
@@ -29,7 +31,7 @@ export function LegalPage({ title, intro, sections }: { title: string; intro: st
           <p className="landing-eyebrow">FOUNDLY / LEGAL</p>
           <h1>{title}</h1>
           <p className="legal-intro">{intro}</p>
-          <p className="legal-date">Last updated <time dateTime="2026-10-30">30 October 2026</time></p>
+          <p className="legal-date">Last updated <time dateTime={updated}>{updatedLabel}</time></p>
         </header>
         <div className="legal-layout">
           <aside className="legal-sidebar">

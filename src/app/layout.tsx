@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { MetaPixel } from "@/components/meta-pixel";
 import { ServiceWorkerRegister } from "@/components/sw-register";
 import "./globals.css";
 import "./dropdowns.css";
@@ -35,6 +36,7 @@ export default function RootLayout({
         </a>
         {children}
         <ServiceWorkerRegister />
+        <MetaPixel />
       </body>
     </html>
   );

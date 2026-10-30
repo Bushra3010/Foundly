@@ -11,6 +11,7 @@ import { isPlatformAdmin } from "@/lib/admin";
 import { fieldErrors, loginSchema, type FieldErrors } from "@/lib/validation";
 import { accountExists, adminDummyCheck, consumeLoginToken, contextForUser, createLoginToken, resetPasswordWithToken, revokeSession, signInWithPassword, signUpWithPassword } from "@/server/auth";
 import { getBusiness } from "@/server/business";
+import { sendMetaEvent } from "@/server/meta-capi";
 import { rateLimit } from "@/server/rate-limit";
 
 export type SignInState = ActionState & { devLink?: string };
@@ -62,6 +63,7 @@ export async function signUpAction(_prev: ActionState, form: FormData): Promise<
   } catch (err) {
     return toActionError(err, values);
   }
+  await sendMetaEvent("Lead", { email: parsed.data.email, sourcePath: "/signup" });
   redirect(destination);
 }
 

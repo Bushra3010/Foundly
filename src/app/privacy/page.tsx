@@ -26,10 +26,11 @@ const sections: LegalSection[] = [
   { id: "recipients", title: "Who receives information", content: <><p>Information is disclosed as needed to the following recipients:</p><ul>
     <li><strong>Infrastructure providers:</strong> Vercel for hosting, Supabase for PostgreSQL database storage, and Resend for email delivery.</li>
     <li><strong>AI and listing services:</strong> the providers described above, plus search engine services receiving public page URLs for indexing.</li>
+    <li><strong>Meta Platforms (advertising measurement):</strong> only if you accept marketing cookies, the Meta Pixel on our public pages and our server send Meta the pages you view, the device and browser information Meta collects with them, and events such as starting an account or running a free check. For a sign-up we also send a one-way hash of your email address, your IP address and browser user agent through the Meta Conversions API, so Meta can match the sign-up to an ad. Meta uses this under its own data policy. Signed-in app pages are never tracked.</li>
     <li><strong>Payment providers:</strong> Razorpay for configured live subscriptions, including customer email and subscription or workspace references needed for payment administration.</li>
     <li><strong>Your team and our authorised staff:</strong> workspace members according to their roles, and staff handling support, website briefs, moderation or operational work. Support access is time-limited and audited in the application.</li>
     <li><strong>Legal and corporate recipients:</strong> authorities or advisers where disclosure is legally required or necessary to address fraud, enforce rights or protect people; and a successor in a corporate transaction, subject to applicable law and notice requirements.</li>
-  </ul><p>The current application does not implement the sale of personal information, an advertising data brokerage or third-party behavioural analytics tags. If the company introduces new tracking or a materially different use, the notice and any required choice or consent mechanism must be updated first. Third-party sites you visit from Foundly apply their own policies.</p></> },
+  </ul><p>Foundly does not sell personal information or run an advertising data brokerage. The Meta Pixel is the only third-party advertising tag, and it loads only after you choose Accept in the cookie banner. You can change your choice at any time with Cookie settings in the site footer; declining or withdrawing stops the Pixel from your next page load. If the company introduces other tracking or a materially different use, this notice and the consent choice will be updated first. Third-party sites you visit from Foundly apply their own policies.</p></> },
   { id: "cookies", title: "Cookies and browser storage", content: <div className="legal-table-wrap"><table className="legal-table">
     <caption className="sr-only">Foundly cookies and browser storage</caption>
     <thead><tr><th scope="col">Storage</th><th scope="col">Purpose</th><th scope="col">Duration</th></tr></thead>
@@ -39,6 +40,8 @@ const sections: LegalSection[] = [
       <tr><th scope="row">foundly-geo-country cookie</th><td>Suggests a pricing country using hosting location headers.</td><td>1 day.</td></tr>
       <tr><th scope="row">foundly-pricing-country local storage</th><td>Remembers your manual pricing country choice.</td><td>Until replaced or cleared in your browser.</td></tr>
       <tr><th scope="row">Connection and setup cookies</th><td>Carry short-lived signed connection choices and onboarding suggestions.</td><td>Temporary; connection choices expire after 15 minutes.</td></tr>
+      <tr><th scope="row">foundly-consent cookie</th><td>Remembers whether you accepted or declined marketing cookies.</td><td>180 days, or until you change it in Cookie settings.</td></tr>
+      <tr><th scope="row">Meta Pixel cookies (_fbp, _fbc) and foundly-meta-event</th><td>Only after you accept: measure visits and sign-ups from our ads, and avoid counting one sign-up twice.</td><td>_fbp and _fbc up to 90 days, set by Meta; foundly-meta-event 10 minutes.</td></tr>
       <tr><th scope="row">Service worker cache</th><td>Stores the offline page and an app icon for the installable app.</td><td>Until replaced or cleared. Signed-in pages and API responses are not cached by the service worker.</td></tr>
     </tbody>
   </table><p>Clear or block cookies and local storage through your browser settings. Blocking authentication cookies prevents sign-in; clearing preference storage resets saved choices. Hosted checkout and connected platforms may use their own cookies under their notices.</p></div> },
@@ -50,5 +53,5 @@ const sections: LegalSection[] = [
 ];
 
 export default function PrivacyPage() {
-  return <LegalPage title="Privacy Policy" intro="What information Foundly handles, when business details become public, and how you can manage your data." sections={sections} />;
+  return <LegalPage updated="2026-10-31" title="Privacy Policy" intro="What information Foundly handles, when business details become public, and how you can manage your data." sections={sections} />;
 }
