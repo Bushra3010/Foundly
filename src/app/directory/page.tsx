@@ -5,6 +5,15 @@ import { Card, EmptyState } from "@/components/ui";
 import { getDb } from "@/db";
 import { listPublishedProfiles, searchDirectory } from "@/server/directory";
 import { displayCategory, displayCity, pluralCategory, slugify } from "@/lib/geo";
+import { jsonLdScript } from "@/lib/profile";
+import { breadcrumbLd, faqLd, graph, siteUrl } from "@/lib/site-schema";
+
+const FAQ = [
+  { q: "Is it free to list a business?", a: "Yes. Listing a business in the Foundly directory is free, and there are no paid placements or sponsored positions." },
+  { q: "Who provides the business details?", a: "Each business supplies and confirms its own details, such as services, areas served and contact information, before the listing is published." },
+  { q: "How are businesses ordered?", a: "By how well a listing matches your search, then by how complete it is. Foundly does not rank, rate or review the businesses listed." },
+  { q: "How do I add my business?", a: "Create a free Foundly account, fill in your business details and publish your profile. It appears here and on its own page, with structured data that search engines and AI assistants can read." },
+];
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string; category?: string; city?: string }> }): Promise<Metadata> {
@@ -35,8 +44,27 @@ export default async function DirectoryPage({ searchParams }: { searchParams: Pr
   const browse = [...facets.values()].sort((a, b) => a.label.localeCompare(b.label));
   const filtered = Object.values(filters).some(Boolean);
 
+  const ld = graph(
+    {
+      "@type": "CollectionPage",
+      "@id": siteUrl("/directory"),
+      url: siteUrl("/directory"),
+      name: "Foundly business directory",
+      description: "Local businesses by city and category, with details confirmed by each business.",
+      isPartOf: { "@id": siteUrl("/#website") },
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: all.length,
+        itemListElement: all.map((r, i) => ({ "@type": "ListItem", position: i + 1, url: siteUrl(`/b/${r.slug}`), name: r.profile.name })),
+      },
+    },
+    faqLd(FAQ),
+    breadcrumbLd([{ name: "Home", path: "/" }, { name: "Business directory", path: "/directory" }]),
+  );
+
   return (
     <>
+      {!filtered && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ld) }} />}
       <PublicHeader />
       <main id="main" className="mx-auto max-w-5xl px-4 py-8">
         <h1 className="text-3xl font-bold">Business directory</h1>
@@ -97,6 +125,23 @@ export default async function DirectoryPage({ searchParams }: { searchParams: Pr
               ) : null,
             )}
           </ul>
+        )}
+        {!filtered && (
+          <section className="mt-10 border-t border-border pt-6" aria-labelledby="directory-faq">
+            <h2 id="directory-faq" className="text-lg font-semibold">About the directory</h2>
+            <p className="mt-2 text-sm text-muted">The Foundly directory lists local businesses with facts their owners have confirmed: what they do, where they work and how to reach them. Each listing has its own page with structured data, so search engines and AI assistants such as ChatGPT and Gemini can read the details accurately.</p>
+            <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+              {FAQ.map((f) => (
+                <div key={f.q}>
+                  <dt className="font-semibold">{f.q}</dt>
+                  <dd className="mt-1 text-sm text-muted">{f.a}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-6">
+              <Link href="/signup" className="inline-flex min-h-11 items-center rounded-lg bg-brand px-4 font-semibold text-brand-contrast">Add your business free</Link>
+            </p>
+          </section>
         )}
       </main>
     </>

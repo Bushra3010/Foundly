@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { listToText } from "@/lib/geo";
+import { INDUSTRIES } from "@/lib/industries";
 import { clip } from "@/lib/presence";
 import { SERVICE_CITIES, serviceCity } from "@/lib/locations";
 import { jsonLdScript } from "@/lib/profile";
@@ -79,6 +80,7 @@ export default async function CityServicePage({ params }: Props) {
                 <p>{p.advice}</p>
               </div>
             ))}
+            <p>More on what AI looks for in your trade: {INDUSTRIES.map((ind, i) => <span key={ind.slug}>{i > 0 && (i === INDUSTRIES.length - 1 ? " and " : ", ")}<Link href={`/for/${ind.slug}`}>{ind.name.toLowerCase()}</Link></span>)}.</p>
           </section>
           <section id="services">
             <h2><span>03</span>What we do for {c.name} businesses</h2>

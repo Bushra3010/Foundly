@@ -37,7 +37,7 @@ const sections: GuideSection[] = [
       <thead><tr><th scope="col"></th><th scope="col">SEO</th><th scope="col">AEO</th><th scope="col">GEO</th></tr></thead>
       <tbody>{ROWS.map(([label, seo, aeo, geo]) => <tr key={label}><th scope="row">{label}</th><td>{seo}</td><td>{aeo}</td><td>{geo}</td></tr>)}</tbody>
     </table></div>
-    <p>The three overlap heavily. AEO sits between them: it uses SEO&rsquo;s foundations and produces the quotable answers that GEO depends on. Our guide to <Link href="/guides/geo-vs-seo">GEO vs SEO</Link> covers the other side of the comparison.</p>
+    <p>The three overlap heavily. AEO sits between them: it uses SEO&rsquo;s foundations and produces the quotable answers that GEO depends on. Read <Link href="/guides/what-is-geo">what GEO is</Link>, and our guide to <Link href="/guides/geo-vs-seo">GEO vs SEO</Link> for the other side of the comparison.</p>
   </> },
   { id: "how", title: "How to do AEO", content: <>
     <ol className="guide-steps">

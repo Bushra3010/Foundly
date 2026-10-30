@@ -65,6 +65,14 @@ export const GUIDES: GuideMeta[] = [
     published: "2026-10-30",
     updated: "2026-10-30",
   },
+  {
+    slug: "what-is-geo",
+    seoTitle: "What is GEO? Generative engine optimisation",
+    title: "What is GEO? Generative engine optimisation, explained for businesses",
+    description: "What generative engine optimisation (GEO) means, how ChatGPT, Gemini and other AI assistants choose who to name, what GEO work involves and how to measure it.",
+    published: "2026-10-31",
+    updated: "2026-10-31",
+  },
 ];
 
 export const guideMeta = (slug: string) => GUIDES.find((g) => g.slug === slug)!;
