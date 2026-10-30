@@ -14,7 +14,7 @@ import { faqLd, graph, organizationLd, softwareLd, websiteLd } from "@/lib/site-
 import "./landing.css";
 import "./landing-v2.css";
 
-const TITLE = "Foundly — Get recommended by ChatGPT, Gemini, Perplexity and Claude";
+const TITLE = "Foundly — Get recommended by ChatGPT, Gemini & Claude";
 const DESCRIPTION =
   "Foundly tracks what ChatGPT, Gemini, Perplexity and Claude say about your business, shows who they recommend instead, and tells you what to fix to be named.";
 

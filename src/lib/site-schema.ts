@@ -16,17 +16,29 @@ const orgId = () => siteUrl("/#organization");
 
 const OFFICE_ADDRESS = {
   "@type": "PostalAddress",
-  streetAddress: "801, C Wing, Phase 2, Shubhshree Residency, Near Akurdi Chowk",
+  streetAddress: "801, C Wing, Phase 2, Shubhshree Residency, Near Akurdi Chowk, Akurdi",
   addressLocality: "Pune",
   addressRegion: "Maharashtra",
   postalCode: "411035",
   addressCountry: "IN",
 };
 
-const TELEPHONE = "+91-7004054302";
-
-/** Foundly's own profiles on other sites. Keep in line with docs/listings-kit.md; add each new listing here once it is live. */
-const SAME_AS = ["https://clutch.co/profile/foundly", "https://www.crunchbase.com/organization/foundly-d101"];
+/** Company facts shown on the About page, in llms.txt and in structured data, so every source says the same thing. */
+export const COMPANY = {
+  founded: "2026",
+  founders: ["Alok Kumar", "Bushra Khan"],
+  telephone: "+91-7004054302",
+  telephoneDisplay: "+91 70040 54302",
+  email: "support@foundly.co.in",
+  address: "801, C Wing, Phase 2, Shubhshree Residency, Near Akurdi Chowk, Akurdi, Pune, Maharashtra 411035, India",
+  /** Foundly's own profiles on other sites. Keep in line with docs/listings-kit.md; add each new listing here once it is live. */
+  profiles: [
+    { name: "Clutch", url: "https://clutch.co/profile/foundly" },
+    { name: "Crunchbase", url: "https://www.crunchbase.com/organization/foundly-d101" },
+  ],
+};
+const TELEPHONE = COMPANY.telephone;
+const SAME_AS = COMPANY.profiles.map((p) => p.url);
 
 export function organizationLd() {
   return {
@@ -37,10 +49,10 @@ export function organizationLd() {
     logo: siteUrl("/icon-512.png"),
     description: SITE_DESCRIPTION,
     address: OFFICE_ADDRESS,
-    email: "support@foundly.co.in",
+    email: COMPANY.email,
     telephone: TELEPHONE,
-    foundingDate: "2026",
-    founder: [{ "@type": "Person", name: "Alok Kumar" }, { "@type": "Person", name: "Bushra Khan" }],
+    foundingDate: COMPANY.founded,
+    founder: COMPANY.founders.map((name) => ({ "@type": "Person", name })),
     numberOfEmployees: { "@type": "QuantitativeValue", value: 2 },
     sameAs: SAME_AS,
     areaServed: [{ "@type": "Country", name: "India" }, "Worldwide"],

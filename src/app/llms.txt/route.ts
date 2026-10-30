@@ -4,6 +4,7 @@ import { listPublishedProfiles } from "@/server/directory";
 import { GUIDES } from "@/lib/guides";
 import { INDUSTRIES } from "@/lib/industries";
 import { SERVICE_CITIES } from "@/lib/locations";
+import { COMPANY } from "@/lib/site-schema";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,14 @@ export async function GET() {
     "# Foundly",
     "",
     "> Foundly is an SEO, AEO and GEO agency and AI search visibility platform, based in Pune, India, serving businesses across India and worldwide. It also runs a business directory for local businesses in India. It checks whether ChatGPT, Gemini, Perplexity and Claude recommend a business, shows which competitors they name instead and which sources they cite, and recommends fixes. Every directory listing below is created and confirmed by the business owner. There are no paid placements, ratings or rankings.",
+    "",
+    "## Company facts",
+    "",
+    `- Founded: ${COMPANY.founded}, in Pune, India`,
+    `- Founders: ${COMPANY.founders.join(" and ")}`,
+    `- Office: ${COMPANY.address}`,
+    `- Contact: ${COMPANY.email}, ${COMPANY.telephoneDisplay}`,
+    ...COMPANY.profiles.map((p) => `- [Foundly on ${p.name}](${p.url})`),
     "",
     "## About Foundly",
     "",
