@@ -1,7 +1,7 @@
 /** What Foundly's SEO, AEO and GEO service includes, shared by the services hub and city pages. Keep in line with the pricing page. */
 
 export const SERVICES = [
-  { title: "GEO: generative engine optimisation", body: "We track whether ChatGPT, Gemini, Perplexity and Claude name your business for the questions your customers ask, show who they name instead and which sources they read, and work through the fixes with you." },
+  { title: "GEO: generative engine optimisation", body: "Also called AI SEO or LLM SEO. We track whether ChatGPT, Gemini, Perplexity and Claude name your business for the questions your customers ask, show who they name instead and which sources they read, and work through the fixes with you." },
   { title: "AEO: answer engine optimisation", body: "We help you turn your website and listings into clear, quotable answers: service and location facts, FAQs and structured data that assistants and search features can repeat accurately." },
   { title: "Local SEO foundations", body: "A GEO audit of your website, structured data, a directory profile with schema, sitemap and IndexNow submission, and Google Business Profile and Facebook details kept in line with your confirmed facts." },
   { title: "ChatGPT Ads", body: "Included in every plan: our team plans and runs your ChatGPT Ads campaign where it is available. Scope, eligibility and any ad spend are confirmed in writing before launch." },

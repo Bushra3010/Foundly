@@ -34,11 +34,11 @@ export function LandingFooter() {
           </nav>
           <nav aria-label="Resources">
             <strong>Resources</strong>
-            <Link href="/guides">Guides</Link><Link href="/tools/ai-crawler-checker">AI Crawler Checker</Link><Link href="/for">Industries</Link><Link href="/#faq">FAQ</Link><Link href="/directory">Business directory</Link><a href="/llms.txt">llms.txt</a>
+            <Link href="/guides">Guides</Link><Link href="/ai-visibility-audit">Free AI visibility audit</Link><Link href="/tools/ai-crawler-checker">AI Crawler Checker</Link><Link href="/for">Industries</Link><Link href="/#faq">FAQ</Link><Link href="/directory">Business directory</Link><a href="/llms.txt">llms.txt</a>
           </nav>
           <nav aria-label="Company">
             <strong>Company</strong>
-            <Link href="/about">About us</Link><Link href="/services">SEO, AEO &amp; GEO services</Link><Link href="/terms">Terms &amp; Conditions</Link><Link href="/privacy">Privacy Policy</Link><CookieSettingsButton className="lv-footer-button" />
+            <Link href="/about">About us</Link><Link href="/services">SEO, AEO &amp; GEO services</Link><Link href="/services/chatgpt-ads">ChatGPT Ads</Link><Link href="/services/local-seo">Local SEO</Link><Link href="/terms">Terms &amp; Conditions</Link><Link href="/privacy">Privacy Policy</Link><CookieSettingsButton className="lv-footer-button" />
           </nav>
           <nav aria-label="Account">
             <strong>Account</strong>

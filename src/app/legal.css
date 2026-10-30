@@ -84,3 +84,6 @@
 .industry-questions { list-style: none !important; padding-left: 0 !important; }
 .industry-questions li { border-left: 3px solid #c9d6bf; padding-left: 14px; font-style: italic; }
 @media (min-width: 801px) { .industry-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Two calls to action side by side in a hero (e.g. sign up and WhatsApp). */
+.audit-ctas { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }

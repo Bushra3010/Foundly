@@ -84,7 +84,7 @@ export default async function CityServicePage({ params }: Props) {
           </section>
           <section id="services">
             <h2><span>03</span>What we do for {c.name} businesses</h2>
-            <p>We record what each AI assistant says about your business today and who it names instead, audit your website and listings, hand you prioritised fixes with ready-to-use text and structured data, and check every week whether you are named more often. The service covers GEO, AEO, local SEO foundations, ChatGPT Ads and weekly reporting. <Link href="/services">See the full service</Link>.</p>
+            <p>We record what each AI assistant says about your business today and who it names instead, audit your website and listings, hand you prioritised fixes with ready-to-use text and structured data, and check every week whether you are named more often. The service covers GEO, AEO, <Link href="/services/local-seo">local SEO and Google Business Profile</Link>, <Link href="/services/chatgpt-ads">ChatGPT Ads</Link> and weekly reporting. <Link href="/services">See the full service</Link>, or start with a <Link href="/ai-visibility-audit">free AI visibility audit</Link>.</p>
             <p>{c.office ? "Based in Pune, we can meet you in person or work entirely online." : `Our office is in Pune; we work with ${c.name} businesses entirely online.`} Plans start at ₹15,000 a month before tax. <Link href="/pricing">See pricing</Link>.</p>
           </section>
           <section id="faq">

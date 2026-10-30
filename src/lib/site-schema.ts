@@ -29,6 +29,8 @@ export const COMPANY = {
   founders: ["Alok Kumar", "Bushra Khan"],
   telephone: "+91-7004054302",
   telephoneDisplay: "+91 70040 54302",
+  /** WhatsApp number in wa.me format (country code, no plus). */
+  whatsapp: "917004054302",
   email: "support@foundly.co.in",
   address: "801, C Wing, Phase 2, Shubhshree Residency, Near Akurdi Chowk, Akurdi, Pune, Maharashtra 411035, India",
   /** Foundly's own profiles on other sites. Keep in line with docs/listings-kit.md; add each new listing here once it is live. */
@@ -38,6 +40,9 @@ export const COMPANY = {
   ],
 };
 const TELEPHONE = COMPANY.telephone;
+
+/** A WhatsApp chat link with a prefilled first message. */
+export const whatsappLink = (text: string) => `https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(text)}`;
 const SAME_AS = COMPANY.profiles.map((p) => p.url);
 
 export function organizationLd() {

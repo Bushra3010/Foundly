@@ -23,6 +23,7 @@ const sections: GuideSection[] = [
   { id: "short-answer", title: "The short answer", content: <>
     <p><strong>GEO (generative engine optimisation) is the work of getting your business named, described correctly and cited in answers written by AI assistants such as ChatGPT, Gemini, Perplexity and Claude.</strong></p>
     <p>Where SEO aims to rank a page in a list of links, GEO aims to be one of the few businesses an assistant recommends when someone asks &ldquo;who should I call?&rdquo;. The term comes from a 2023 research paper that studied how content can become more visible in generative search engines.</p>
+    <p>You will also see GEO called <strong>AI SEO</strong>, <strong>LLM SEO</strong>, <strong>LLMO</strong> (large language model optimisation) or <strong>AI search optimisation</strong>. They all describe the same goal: being found, named and cited by AI assistants.</p>
   </> },
   { id: "how", title: "How AI assistants choose who to name", content: <>
     <ul>
@@ -63,6 +64,7 @@ const sections: GuideSection[] = [
 
 const faq = [
   { q: "What does GEO stand for?", a: "GEO stands for generative engine optimisation: improving how often and how accurately AI assistants such as ChatGPT, Gemini, Perplexity and Claude name and cite your business in their answers." },
+  { q: "Is GEO the same as AI SEO or LLM SEO?", a: "Yes. AI SEO, LLM SEO, LLMO and AI search optimisation are other names for generative engine optimisation: improving how AI assistants such as ChatGPT, Gemini, Perplexity and Claude find, name and cite your business." },
   { q: "Is GEO different from AEO?", a: "They overlap. AEO is about being the direct answer to a question in search features and assistants. GEO focuses on generative AI assistants recommending and citing your business. Clear, consistent, quotable facts help both." },
   { q: "How long does GEO take to show results?", a: "Changes to your own pages can be picked up within days of being crawled, but mentions on other sites and consistent listings take weeks to build. Judge progress over several weeks of repeated checks." },
   { q: "Can small local businesses do GEO?", a: "Yes. Most of the work is getting your facts right and consistent: your website, Google Business Profile and directory listings. That is within reach of any business, with or without an agency." },
