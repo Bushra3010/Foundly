@@ -11,6 +11,8 @@ Copy for Clutch, GoodFirms, Crunchbase and Product Hunt. Keep every profile word
 | GoodFirms | — | Account waiting for email verification |
 | Product Hunt | — | Account sign-up not finished |
 
+Phone changed to +91 75660 66503 on 1 November 2026: Clutch and Crunchbase still show +91 70040 54302 and need updating.
+
 Every live profile is also listed in `SAME_AS` in `src/lib/site-schema.ts`, so the site's structured data points to it.
 
 ## Core facts
@@ -23,7 +25,7 @@ Every live profile is also listed in `SAME_AS` in `src/lib/site-schema.ts`, so t
 | Team size | 2 |
 | Founders | Alok Kumar, Bushra Khan (roles: _to confirm_) |
 | Headquarters | 801, C Wing, Phase 2, Shubhshree Residency, Near Akurdi Chowk, Akurdi, Pune, Maharashtra 411035, India |
-| Phone | +91 70040 54302 |
+| Phone | +91 75660 66503 |
 | Email | support@foundly.co.in |
 | Pricing | From ₹15,000 a month (excl. tax). Monthly plans, no long-term contract. |
 | Markets | India and worldwide |

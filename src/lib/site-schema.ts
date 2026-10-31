@@ -27,10 +27,10 @@ const OFFICE_ADDRESS = {
 export const COMPANY = {
   founded: "2026",
   founders: ["Alok Kumar", "Bushra Khan"],
-  telephone: "+91-7004054302",
-  telephoneDisplay: "+91 70040 54302",
+  telephone: "+91-7566066503",
+  telephoneDisplay: "+91 75660 66503",
   /** WhatsApp number in wa.me format (country code, no plus). */
-  whatsapp: "917004054302",
+  whatsapp: "917566066503",
   email: "support@foundly.co.in",
   address: "801, C Wing, Phase 2, Shubhshree Residency, Near Akurdi Chowk, Akurdi, Pune, Maharashtra 411035, India",
   /** Foundly's own profiles on other sites. Keep in line with docs/listings-kit.md; add each new listing here once it is live. */
