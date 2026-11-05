@@ -1,6 +1,8 @@
 import { Icon } from "@/components/icon";
 import { buttonClass, Card, LinkButton, PageHeader } from "@/components/ui";
+import { SoftwareDemo } from "@/components/software-demo";
 import { getProduct, PRODUCTS, SECTORS, type Sector } from "@/lib/software-catalog";
+import { getDemo } from "@/lib/software-demo";
 import { whatsappLink } from "@/lib/site-schema";
 
 type Props = {
@@ -13,6 +15,7 @@ type Props = {
 
 export function SoftwareProductGuide({ product, sector, basePath, backHref, backLabel }: Props) {
   const guide = product.sectors[sector.id];
+  const demo = getDemo(product.id, sector.id);
 
   return (
     <>
@@ -42,6 +45,16 @@ export function SoftwareProductGuide({ product, sector, basePath, backHref, back
           <p className="mt-2 text-sm leading-relaxed text-muted">{guide.outcome}</p>
         </div>
       </Card>
+      {demo && (
+        <SoftwareDemo
+          key={`${product.id}-${sector.id}`}
+          title={product.title}
+          demo={demo}
+          features={guide.features.map(([name, description]) => ({ name, description }))}
+          workflow={guide.workflow}
+          variant={product.id === "app" ? "phone" : "desktop"}
+        />
+      )}
       <div className="mt-4 grid items-start gap-4 lg:grid-cols-[3fr_2fr]">
         <Card key={sector.id}>
           <h2 className="text-lg font-semibold">Explore the features</h2>

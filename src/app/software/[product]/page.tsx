@@ -5,6 +5,7 @@ import { SoftwareProductGuide } from "@/components/software-product-guide";
 import { getProduct, getSector } from "@/lib/software-catalog";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
+import "@/app/software-demo.css";
 
 type PageProps = {
   params: Promise<{ product: string }>;
