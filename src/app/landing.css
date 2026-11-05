@@ -1193,6 +1193,25 @@
   }
 }
 
+/* Nine nav items do not fit beside the logo and buttons on smaller laptops: use the Menu dropdown. */
+.landing-desktop-nav a, .landing-auth a { white-space:nowrap; }
+@media(max-width:1440px) {
+  .landing-header { gap:24px; }
+  .landing-desktop-nav { gap:clamp(14px, 1.5vw, 22px); font-size:14.5px; }
+  .landing-auth { gap:16px; }
+}
+@media(max-width:1240px) {
+  .landing-header { position:relative; }
+  .landing-desktop-nav,.landing-login { display:none; }
+  .landing-auth { margin-left:auto; }
+  .landing-mobile-menu { display:block; }
+  .landing-mobile-menu summary { display:flex; align-items:center; gap:4px; font-size:14px; cursor:pointer; list-style:none; min-height:44px; }
+  .landing-mobile-menu summary::-webkit-details-marker { display:none; }
+  .landing-mobile-menu nav { position:absolute; right:20px; top:calc(100% + 4px); z-index:5; width:220px; padding:12px; background:#fff; border:1px solid var(--lp-line); box-shadow:0 15px 25px #20221e12; border-radius:12px; display:grid; max-height:calc(100dvh - 105px); overflow-y:auto; }
+  .landing-mobile-software { display:grid; padding-left:8px; border-left:2px solid var(--lp-line); }
+  .landing-mobile-menu nav a { padding:10px; font-size:13px; }
+}
+
 @media(max-width:700px) {
   .landing-announcement {
     font-size:12px;

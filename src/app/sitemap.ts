@@ -35,6 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/ai-visibility-audit`, changeFrequency: "monthly" },
     { url: `${base}/services`, changeFrequency: "monthly" },
     ...PRODUCTS.map(({ id }) => ({ url: `${base}/software/${id}`, changeFrequency: "monthly" as const })),
+    { url: `${base}/automation`, changeFrequency: "monthly" },
     { url: `${base}/services/chatgpt-ads`, changeFrequency: "monthly" },
     { url: `${base}/services/local-seo`, changeFrequency: "monthly" },
     ...SERVICE_CITIES.map((c) => ({ url: `${base}/services/${c.slug}`, changeFrequency: "monthly" as const })),

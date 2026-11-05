@@ -1,9 +1,14 @@
+import Link from "next/link";
 import { Icon } from "@/components/icon";
-import { buttonClass, Card, LinkButton, PageHeader } from "@/components/ui";
+import { ScrollLink } from "@/components/scroll-link";
+import { buttonClass, Card, LinkButton } from "@/components/ui";
 import { SoftwareDemo } from "@/components/software-demo";
-import { getProduct, PRODUCTS, SECTORS, type Sector } from "@/lib/software-catalog";
+import { SoftwareShowcase } from "@/components/software-showcase";
+import { getProduct, SECTORS, type Sector } from "@/lib/software-catalog";
 import { getDemo } from "@/lib/software-demo";
 import { whatsappLink } from "@/lib/site-schema";
+
+const SECTOR_ICONS: Record<Sector, string> = { manufacturing: "business", hospitals: "shield", universities: "reports" };
 
 type Props = {
   product: NonNullable<ReturnType<typeof getProduct>>;
@@ -19,25 +24,34 @@ export function SoftwareProductGuide({ product, sector, basePath, backHref, back
 
   return (
     <>
-      <PageHeader
-        title={product.title}
-        icon={product.icon}
-        description={product.summary}
-        actions={<LinkButton href={backHref} variant="secondary">{backLabel}</LinkButton>}
-      />
-      <nav aria-label="Software products" className="mb-6 flex flex-wrap gap-2">
-        {PRODUCTS.map(({ id, title }) => (
-          <LinkButton key={id} href={`${basePath}/${id}?sector=${sector.id}`} variant={id === product.id ? "primary" : "secondary"} aria-current={id === product.id ? "page" : undefined}>{title}</LinkButton>
-        ))}
-      </nav>
-      <Card className="space-y-5">
+      <section className="au-hero">
+        <div className="au-hero-copy">
+          <p className="au-eyebrow"><Icon name={product.icon} size={14} /> {product.title}</p>
+          <h1>{product.headline}</h1>
+          <p className="au-lede">{product.lede}</p>
+          <div className="au-hero-actions">
+            <a className={buttonClass()} href={whatsappLink(`Hi Foundly, I’d like to discuss ${product.title} for ${sector.label.toLowerCase()}.`)}>Discuss your project <Icon name="arrow" size={16} /></a>
+            <ScrollLink className={buttonClass("secondary")} target="industry">See a live demo</ScrollLink>
+          </div>
+          <ul className="au-hero-points">
+            <li><Icon name="check" size={14} /> {product.price}</li>
+            <li><Icon name="check" size={14} /> 100% custom built</li>
+            <li><Icon name="check" size={14} /> <Link href={backHref}>{backLabel}</Link></li>
+          </ul>
+        </div>
+        {demo && <SoftwareShowcase key={`sx-${product.id}-${sector.id}`} variant={product.id === "app" ? "phone" : "desktop"} demo={demo} features={guide.features.map(([name]) => name)} />}
+      </section>
+
+      <Card className="space-y-5" id="industry">
         <div>
           <h2 className="font-semibold">Choose your industry</h2>
-          <p className="mt-1 text-sm text-muted">See features and workflows relevant to your team.</p>
+          <p className="mt-1 text-sm text-muted">Each one has its own features, workflow and demo.</p>
         </div>
-        <nav aria-label="Industries" className="flex flex-wrap gap-2">
+        <nav aria-label="Industries" className="au-depts">
           {SECTORS.map(({ id, label }) => (
-            <LinkButton key={id} href={`${basePath}/${product.id}?sector=${id}`} variant={id === sector.id ? "primary" : "secondary"} aria-current={id === sector.id ? "page" : undefined} scroll={false}>{label}</LinkButton>
+            <LinkButton key={id} href={`${basePath}/${product.id}?sector=${id}#industry`} variant={id === sector.id ? "primary" : "secondary"} aria-current={id === sector.id ? "page" : undefined} scroll={false}>
+              <Icon name={SECTOR_ICONS[id]} size={15} /> {label}
+            </LinkButton>
           ))}
         </nav>
         <div className="border-t border-border pt-5">

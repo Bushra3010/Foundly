@@ -17,7 +17,10 @@ type ProductGuide = {
   id: string;
   title: string;
   icon: string;
+  short: string;
+  headline: string;
   summary: string;
+  lede: string;
   price: string;
   sectors: Record<Sector, SectorGuide>;
 };
@@ -27,7 +30,10 @@ export const PRODUCTS = [
     id: "erp",
     title: "Custom ERP",
     icon: "business",
+    short: "ERP",
+    headline: "Run your whole operation from one system",
     summary: "Connect finance, inventory, people and daily operations in one system.",
+    lede: "We build ERP around the way your team already works: orders, stock, production, people and accounts in one place, so everyone works from the same numbers.",
     price: "Starting at ₹3,00,000",
     sectors: {
       manufacturing: {
@@ -72,7 +78,10 @@ export const PRODUCTS = [
     id: "app",
     title: "Custom Mobile Apps",
     icon: "website",
+    short: "Apps",
+    headline: "Put your business in your customers’ pocket",
     summary: "Give customers, staff or students a focused Android or iOS experience.",
+    lede: "We design and build Android and iOS apps for the people who use your service every day: customers booking, staff on the move or students on campus.",
     price: "Android from ₹60,000 · iOS from ₹1,00,000",
     sectors: {
       manufacturing: {
@@ -117,7 +126,10 @@ export const PRODUCTS = [
     id: "crm",
     title: "Custom CRM",
     icon: "leads",
+    short: "CRM",
+    headline: "Never lose a lead or a follow-up again",
     summary: "Capture enquiries, assign an owner and track every follow-up in one place.",
+    lede: "We build a CRM around your sales process: every enquiry captured, every lead owned and every follow-up on time, from first contact to repeat order.",
     price: "Starting at ₹99,999",
     sectors: {
       manufacturing: {

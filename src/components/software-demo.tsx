@@ -93,9 +93,13 @@ export function SoftwareDemo({ title, demo, features, workflow, variant }: Props
     setPlaying(false);
   };
   const togglePlay = () => {
-    if (!playing && phase === 3) setState({ phase: -1, t: 0 });
+    if (running) {
+      setPlaying(false);
+      return;
+    }
+    if (phase === 3) setState({ phase: -1, t: 0 });
     setUserPlayed(true);
-    setPlaying(p => !p);
+    setPlaying(true);
   };
   const restart = () => {
     setState({ phase: -1, t: 0 });
@@ -126,7 +130,7 @@ export function SoftwareDemo({ title, demo, features, workflow, variant }: Props
   const height = (v: number) => 12 + ((v - floor) / (max - floor)) * 88;
   const recordStage = phase < 0 ? -1 : Math.min(phase, 2);
   const event = phase >= 0 && phase <= 2 ? demo.events[phase] : phase === 3 ? `Workflow complete · ${demo.record.title}` : null;
-  const caption = phase < 0 ? `Press play, or pick a step below, to walk through a ${title.replace(/^Custom /, "").toLowerCase()} workflow.` : phase === 3 ? "That is the whole workflow. Every step is recorded and the dashboard updates itself." : workflow[phase];
+  const caption = phase < 0 ? "Press play, or pick a step below, to walk through the workflow." : phase === 3 ? "That is the whole workflow. Every step is recorded and the dashboard updates itself." : workflow[phase];
   const progress = phase >= 0 && phase <= 2 ? Math.min(100, (t / LENGTH[phase]) * 100) : 0;
   const run = seen;
 

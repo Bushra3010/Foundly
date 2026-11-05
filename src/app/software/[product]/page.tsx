@@ -6,6 +6,7 @@ import { getProduct, getSector } from "@/lib/software-catalog";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/software-demo.css";
+import "@/app/automation.css";
 
 type PageProps = {
   params: Promise<{ product: string }>;
@@ -32,7 +33,7 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
   return (
     <div className="foundly-landing">
       <LandingHeader />
-      <main id="main" className="landing-main public-software-guide">
+      <main id="main" className="landing-main public-software-guide automation-page">
         <SoftwareProductGuide
           product={product}
           sector={sector}
