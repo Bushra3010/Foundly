@@ -62,11 +62,31 @@
 
 .landing-desktop-nav {
   display:flex;
-  gap:34px;
+  align-items:center;
+  gap:clamp(18px, 2vw, 28px);
   margin:auto;
   font-size:15px;
   font-weight:500;
 }
+
+.landing-software-menu { position: relative; }
+.landing-software-menu summary { display: flex; align-items: center; gap: 4px; list-style: none; white-space: nowrap; cursor: pointer; }
+.landing-software-menu summary::-webkit-details-marker { display: none; }
+.landing-software-menu[open] summary svg { transform: rotate(180deg); }
+.landing-software-menu > div {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 12px);
+  left: -12px;
+  min-width: 164px;
+  padding: 6px;
+  border: 1px solid var(--lp-line);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 15px 25px #20221e12;
+}
+.landing-software-menu a { display: block; padding: 9px 12px; border-radius: 7px; }
+.landing-software-menu a:hover, .landing-software-menu a:focus-visible { background: #eef2e7; }
 
 .landing-desktop-nav a,.landing-footer nav a {
   transition:color .2s;
@@ -1231,7 +1251,10 @@
     box-shadow:0 15px 25px #20221e12;
     border-radius:12px;
     display:grid;
+    max-height: calc(100dvh - 105px);
+    overflow-y: auto;
   }
+  .landing-mobile-software { display: grid; padding-left: 8px; border-left: 2px solid var(--lp-line); }
   .landing-mobile-menu nav a {
     padding:10px;
     font-size:13px;

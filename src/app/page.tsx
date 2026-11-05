@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
+import { DevelopmentServices } from "@/components/development-services";
 import { LandingAiAnswers } from "@/components/landing-ai-answers";
 import { AI_ENGINES, LandingDashboard } from "@/components/landing-dashboard";
 import { LandingPricing } from "@/components/landing-pricing";
@@ -154,6 +155,15 @@ export default function Home() {
             <Link href="/signup" className="landing-button">Start free <Icon name="arrow" size={18} /></Link>
           </div>
         </div></section>
+
+        <section id="custom-development" className="landing-section" aria-labelledby="development-title">
+          <div className="lv-heading">
+            <p className="landing-eyebrow"><span /> SOFTWARE DEVELOPMENT</p>
+            <h2 id="development-title">Custom software for your business</h2>
+            <p>Foundly builds ERP systems, mobile apps and CRMs tailored to your needs.</p>
+          </div>
+          <DevelopmentServices />
+        </section>
 
         <LandingPricing />
 

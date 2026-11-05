@@ -3,6 +3,16 @@ import { Brand, Icon } from "@/components/icon";
 import { CookieSettingsButton } from "@/components/meta-pixel";
 import { SERVICE_CITIES } from "@/lib/locations";
 
+function SoftwareNavLinks() {
+  return (
+    <>
+      <Link href="/software/erp">ERP</Link>
+      <Link href="/software/app">Mobile Apps</Link>
+      <Link href="/software/crm">CRM</Link>
+    </>
+  );
+}
+
 /** Top of every public marketing page. */
 export function LandingHeader() {
   return (
@@ -11,10 +21,15 @@ export function LandingHeader() {
         <div className="landing-header-bar"><header className="landing-header">
           <Link href="/" aria-label="Foundly home"><Brand /></Link>
           <nav className="landing-desktop-nav" aria-label="Main">
-            <Link href="/#product">Product</Link><Link href="/#features">Features</Link><Link href="/#how-it-works">How it works</Link><Link href="/services">Services</Link><Link href="/pricing">Pricing</Link><Link href="/guides">Guides</Link><Link href="/directory">Directory</Link>
+            <Link href="/#product">Product</Link><Link href="/#features">Features</Link><Link href="/#how-it-works">How it works</Link><Link href="/services">Services</Link>
+            <details className="landing-software-menu">
+              <summary>Custom Software <Icon name="down" size={14} /></summary>
+              <div><SoftwareNavLinks /></div>
+            </details>
+            <Link href="/pricing">Pricing</Link><Link href="/guides">Guides</Link><Link href="/directory">Directory</Link>
           </nav>
           <div className="landing-auth"><Link href="/login" className="landing-login">Log in</Link><Link href="/signup" className="landing-button small">Start free <Icon name="arrow" size={16} /></Link></div>
-          <details className="landing-mobile-menu"><summary>Menu <Icon name="down" size={15} /></summary><nav aria-label="Mobile navigation"><Link href="/#product">Product</Link><Link href="/#features">Features</Link><Link href="/#how-it-works">How it works</Link><Link href="/services">Services</Link><Link href="/pricing">Pricing</Link><Link href="/guides">Guides</Link><Link href="/tools/ai-crawler-checker">Free AI crawler check</Link><Link href="/directory">Directory</Link><Link href="/login">Log in</Link></nav></details>
+          <details className="landing-mobile-menu"><summary>Menu <Icon name="down" size={15} /></summary><nav aria-label="Mobile navigation"><Link href="/#product">Product</Link><Link href="/#features">Features</Link><Link href="/#how-it-works">How it works</Link><Link href="/services">Services</Link><div className="landing-mobile-software" role="group" aria-label="Custom software"><SoftwareNavLinks /></div><Link href="/pricing">Pricing</Link><Link href="/guides">Guides</Link><Link href="/tools/ai-crawler-checker">Free AI crawler check</Link><Link href="/directory">Directory</Link><Link href="/login">Log in</Link></nav></details>
         </header></div>
     </>
   );

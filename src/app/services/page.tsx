@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DevelopmentServices } from "@/components/development-services";
 import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { SERVICE_CITIES } from "@/lib/locations";
@@ -46,6 +47,7 @@ export default function ServicesPage() {
           <section id="services">
             <h2><span>01</span>What we do</h2>
             <div className="about-principles industry-facts">{SERVICES.map((s) => <div key={s.title}><h3>{s.title}</h3><p>{s.body}</p></div>)}</div>
+            <p><Link href="#custom-development">Explore custom ERP, mobile app and CRM development</Link></p>
           </section>
           <section id="more">
             <h2><span>02</span>More on each service</h2>
@@ -72,6 +74,10 @@ export default function ServicesPage() {
             <h2><span>05</span>Frequently asked questions</h2>
             {FAQ.map((item) => <div key={item.q} className="guide-faq"><h3>{item.q}</h3><p>{item.a}</p></div>)}
             <p>Choosing between agencies? Read <Link href="/guides/choose-seo-aeo-geo-agency">how to choose an SEO, AEO or GEO agency</Link>.</p>
+          </section>
+          <section id="custom-development">
+            <h2><span>06</span>Custom software development</h2>
+            <DevelopmentServices />
           </section>
         </article>
       </main>

@@ -5,6 +5,7 @@ import { slugify } from "@/lib/geo";
 import { GUIDES } from "@/lib/guides";
 import { INDUSTRIES } from "@/lib/industries";
 import { SERVICE_CITIES } from "@/lib/locations";
+import { PRODUCTS } from "@/lib/software-catalog";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/tools/ai-crawler-checker`, changeFrequency: "monthly" },
     { url: `${base}/ai-visibility-audit`, changeFrequency: "monthly" },
     { url: `${base}/services`, changeFrequency: "monthly" },
+    ...PRODUCTS.map(({ id }) => ({ url: `${base}/software/${id}`, changeFrequency: "monthly" as const })),
     { url: `${base}/services/chatgpt-ads`, changeFrequency: "monthly" },
     { url: `${base}/services/local-seo`, changeFrequency: "monthly" },
     ...SERVICE_CITIES.map((c) => ({ url: `${base}/services/${c.slug}`, changeFrequency: "monthly" as const })),
