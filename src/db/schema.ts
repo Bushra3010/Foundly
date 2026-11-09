@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  customType,
   index,
   integer,
   jsonb,
@@ -792,4 +793,59 @@ export const integrations = pgTable(
     createdAt: createdAt(),
   },
   (t) => [uniqueIndex("integrations_ws_kind_idx").on(t.workspaceId, t.kind)],
+);
+
+// ---------- Agency portfolio (/work) ----------
+
+const bytea = customType<{ data: Buffer; driverData: Buffer }>({ dataType: () => "bytea" });
+
+export const portfolioDemoStatusEnum = pgEnum("portfolio_demo_status", ["none", "coming_soon", "live", "maintenance"]);
+
+/** One piece of client or in-house work shown on /work. Nothing is public until `published` is set. */
+export const portfolioProjects = pgTable(
+  "portfolio_projects",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: text("slug").notNull().unique(),
+    name: text("name").notNull(),
+    /** The real client name. Shown publicly only when `showClient` is on (the client has agreed). */
+    clientName: text("client_name"),
+    showClient: boolean("show_client").notNull().default(false),
+    /** What visitors see instead of the client name, e.g. "AC service company · New Delhi". */
+    clientLabel: text("client_label").notNull(),
+    category: text("category").notNull(),
+    industry: text("industry"),
+    summary: text("summary").notNull(),
+    description: text("description"),
+    features: jsonb("features").$type<string[]>().notNull().default([]),
+    techStack: jsonb("tech_stack").$type<string[]>().notNull().default([]),
+    demoUrl: text("demo_url"),
+    /** Logins for the demo copy only — never real credentials. */
+    demoLogins: jsonb("demo_logins").$type<{ role: string; login: string; secret?: string }[]>().notNull().default([]),
+    demoStatus: portfolioDemoStatusEnum("demo_status").notNull().default("none"),
+    /** The demo allows being shown inside an iframe on the detail page. */
+    embeddable: boolean("embeddable").notNull().default(false),
+    published: boolean("published").notNull().default(false),
+    sortOrder: integer("sort_order").notNull().default(100),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index("portfolio_projects_published_idx").on(t.published, t.sortOrder)],
+);
+
+/** Screenshots for a portfolio project, stored in the database so no extra storage service is needed. */
+export const portfolioMedia = pgTable(
+  "portfolio_media",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    projectId: uuid("project_id")
+      .notNull()
+      .references(() => portfolioProjects.id, { onDelete: "cascade" }),
+    contentType: text("content_type").notNull(),
+    bytes: bytea("bytes").notNull(),
+    caption: text("caption"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: createdAt(),
+  },
+  (t) => [index("portfolio_media_project_idx").on(t.projectId, t.sortOrder)],
 );

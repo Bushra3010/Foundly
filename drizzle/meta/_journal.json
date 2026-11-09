@@ -134,6 +134,20 @@
       "when": 1793212437345,
       "tag": "0018_ai_writing",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1794223190152,
+      "tag": "0019_portfolio",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1794223205896,
+      "tag": "0020_portfolio_seed",
+      "breakpoints": true
     }
   ]
 }

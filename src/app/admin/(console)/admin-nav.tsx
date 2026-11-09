@@ -10,6 +10,7 @@ const ITEMS = [
   { href: "/admin/businesses", label: "Businesses", icon: "business" },
   { href: "/admin/websites", label: "Website requests", icon: "website" },
   { href: "/admin/claims", label: "Ownership claims", icon: "shield" },
+  { href: "/admin/portfolio", label: "Portfolio", icon: "reports" },
 ];
 
 function active(pathname: string, href: string) {
