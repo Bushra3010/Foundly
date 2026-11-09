@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>(function(){try{var P="demo:swanidhi:",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;
+S.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};
+S.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};
+S.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};
+if(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error("Service workers are disabled in Foundly demos"))}}}catch(e){}})();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Swanidhi CRM · Live demo by Foundly</title>
+  <link rel="icon" href="/demos/swanidhi/logo.png">
+  <link rel="stylesheet" href="/demos/swanidhi/app.css">
+</head>
+<body>
+  <div id="app"></div>
+  <div id="scrim" class="scrim hidden"></div>
+  <div id="sheet" class="sheet hidden"></div>
+  <div id="toast" class="toast"></div>
+  <script src="/demos/swanidhi/courses.js"></script>
+  <script src="/demos/swanidhi/data.js"></script>
+  <script src="/demos/swanidhi/app.js"></script>
+  <script>window.FDEMO={slug:"swanidhi",title:"Swanidhi CRM",blurb:"Mobile-first admissions CRM on dummy data stored only in this browser. Add and follow up leads, record fees, punch attendance, then try the student and associate portals.",apps:[{href:"/demos/swanidhi/",name:"Staff CRM",login:"demo.admin@swanidhi.test \u00b7 Demo@12345"},{href:"/demos/swanidhi/",name:"Student portal",login:"Student tab \u00b7 DEMO-STU-001 \u00b7 Demo@12345"},{href:"/demos/swanidhi/",name:"Associate portal",login:"Associate tab \u00b7 demo.associate@swanidhi.test \u00b7 Demo@12345"}]};</script>
+  <script src="/demos/swanidhi/demo-mode.js"></script>
+</body>
+</html>

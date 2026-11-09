@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,18566,(e,t,o)=>{t.exports=e.r(76562)},52683,e=>{"use strict";var t=e.i(18566),o=e.i(71645);e.s(["default",0,function(){let e=(0,t.useRouter)();return(0,o.useEffect)(()=>{e.replace("/book")},[e]),null}])}]);

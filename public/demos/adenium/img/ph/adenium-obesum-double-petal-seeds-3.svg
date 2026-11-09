@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Product photograph placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#eef1e7"/>
+      <stop offset="100%" stop-color="#dde3d2"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lighten"><feColorMatrix type="matrix" values="1.12 0 0 0 0  0 1.12 0 0 0  0 0 1.12 0 0  0 0 0 1 0"/></filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#bg)"/><rect width="400" height="400" fill="url(#glow)"/>
+
+  <!-- cast shadow -->
+  <ellipse cx="205" cy="282" rx="118" ry="20" fill="#2b3a2e" opacity=".18" filter="url(#soft)"/>
+
+  <path d="M 130 248 a 70 44 0 0 0 140 0 Z" fill="#f6f3ec"/>
+        <ellipse cx="200" cy="248" rx="70" ry="17" fill="#efe9dd"/><ellipse cx="194.18228455704397" cy="242.85136905429817" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(241.00000000000003 194.18228455704397 242.85136905429817)"/><ellipse cx="240.7753977100992" cy="247.28570009819214" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(6 240.7753977100992 247.28570009819214)"/><ellipse cx="214.0594789871438" cy="238.39080854788725" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(299.00000000000006 214.0594789871438 238.39080854788725)"/><ellipse cx="204.4947239205091" cy="258.8293324502507" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(84 204.4947239205091 258.8293324502507)"/><ellipse cx="188.93068274845666" cy="236.35571052888696" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(251.00000000000003 188.93068274845666 236.35571052888696)"/><ellipse cx="200" cy="246" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(118.00000000000001 200 246)"/><ellipse cx="157.98888080762592" cy="241.16203268113844" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(201 157.98888080762592 241.16203268113844)"/><ellipse cx="193.9519526100083" cy="253.27721794706997" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(104.00000000000001 193.9519526100083 253.27721794706997)"/><ellipse cx="200.15700786872884" cy="246.89876658127912" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(87 200.15700786872884 246.89876658127912)"/><ellipse cx="186.66121441029892" cy="256.9944036631951" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(110 186.66121441029892 256.9944036631951)"/><ellipse cx="181.93347362831082" cy="239.9805269136331" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(228.00000000000003 181.93347362831082 239.9805269136331)"/><ellipse cx="232.96724139496962" cy="240.96070545289103" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(333 232.96724139496962 240.96070545289103)"/><ellipse cx="211.11453392734396" cy="249.45283104162553" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(46 211.11453392734396 249.45283104162553)"/><ellipse cx="200" cy="246" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(337 200 246)"/><ellipse cx="208.65247584249852" cy="238.0111252631207" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(288 208.65247584249852 238.0111252631207)"/><ellipse cx="196.17583207615428" cy="241.0307126695953" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(257 196.17583207615428 241.0307126695953)"/><ellipse cx="178.65349402192808" cy="244.4033154890422" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(194 178.65349402192808 244.4033154890422)"/><ellipse cx="213.08985974665111" cy="253.0844196278291" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(61 213.08985974665111 253.0844196278291)"/><ellipse cx="172.01441282683794" cy="251.24620071590874" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(148 172.01441282683794 251.24620071590874)"/><ellipse cx="200.58474340944548" cy="246.57378285357782" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(252.99999999999997 200.58474340944548 246.57378285357782)"/><ellipse cx="200" cy="246" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(211 200 246)"/><ellipse cx="219.0855057350954" cy="253.3285000085425" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(52.00000000000001 219.0855057350954 253.3285000085425)"/><ellipse cx="196.51377029009367" cy="257.95433637710096" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(95 196.51377029009367 257.95433637710096)"/><ellipse cx="200.5299192642332" cy="245.74558557115307" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(302 200.5299192642332 245.74558557115307)"/><ellipse cx="200.57242698612964" cy="245.1165355348971" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(281 200.57242698612964 245.1165355348971)"/><ellipse cx="204.5148526193402" cy="238.31849952650478" rx="7" ry="3.4" fill="#8a6a45" transform="rotate(280 204.5148526193402 238.31849952650478)"/>
+  
+</svg>

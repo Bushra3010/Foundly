@@ -1,0 +1,2 @@
+:HL["/demos/clatians-lms/_next/static/chunks/0wyz07.hll_jj.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"sFpQi0hHiYtaG8o0kn_lm"}

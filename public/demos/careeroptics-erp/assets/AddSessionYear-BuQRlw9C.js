@@ -1,0 +1,1 @@
+import{p as e}from"./chunk-62JRHF6Z-DNFPxerC.js";import{SessionYearsScreen as t}from"./AllSessionYears-CwBrmz-n.js";var n=e(),r=()=>(0,n.jsx)(t,{openOnLoad:!0});export{r as default};

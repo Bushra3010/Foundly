@@ -1,0 +1,36 @@
+1:"$Sreact.fragment"
+2:I[22016,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js","/demos/hirenova-portal/_next/static/chunks/3viwioq3kp8zx.js","/demos/hirenova-portal/_next/static/chunks/22yzapnox53wr.js"],""]
+3:"$Sreact.suspense"
+4:I[18294,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js","/demos/hirenova-portal/_next/static/chunks/3viwioq3kp8zx.js","/demos/hirenova-portal/_next/static/chunks/22yzapnox53wr.js"],"LoginForm"]
+5:I[97367,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"OutletBoundary"]
+9:I[97367,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"ViewportBoundary"]
+a:I[97367,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"MetadataBoundary"]
+:HL["/demos/hirenova-portal/images/logo-mark.png","image"]
+8:X
+1a:X
+1a:C
+0:{"buildId":"ntnGTcmBYO4EJilEhGwiG","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"id":"main","className":"login-split","children":[["$","div",null,{"className":"hero","style":{"display":"flex","alignItems":"center"},"children":["$","div",null,{"style":{"position":"relative","zIndex":1,"padding":56,"maxWidth":560},"children":[["$","$L2",null,{"className":"wordmark","href":"/","style":{"marginBottom":36},"children":[["$","img",null,{"className":"wm-mark on-dark","src":"/demos/hirenova-portal/images/logo-mark.png","alt":"","aria-hidden":"true","style":{"height":44}}],["$","span",null,{"className":"wm-txt","children":[["$","b",null,{"style":{"color":"#fff"},"children":"HIRENOVA"}],["$","span",null,{"className":"wm-legal","children":"Workforce Pvt. Ltd."}],["$","span",null,{"className":"tagline","style":{"color":"#9FB3CA"},"children":"Global Talent, Trusted Partner."}]]}]]}],["$","hr",null,{"className":"hero-rule","style":{"marginBottom":20}}],["$","h2",null,{"style":{"color":"#fff","fontSize":"clamp(24px,2.6vw,34px)","marginBottom":16},"children":"Your workforce pipeline, in one place"}],["$","p",null,{"className":"lede","style":{"color":"var(--on-navy-muted)","marginBottom":28},"children":"Post vacancies, search screened candidates, shortlist, and run interview requests — without paying a posting fee or handing over your candidates' contact details to anyone."}],["$","div",null,{"className":"stack g12","style":{"fontSize":13.5,"color":"var(--on-navy-muted)"},"children":[["$","span","TLS everywhere, passwords hashed with Argon2id",{"className":"row g10","children":[["$","svg",null,{"aria-hidden":"true","focusable":"false","width":16,"height":16,"style":{"width":16,"height":16,"color":"var(--red)","flex":"none"},"children":["$","use",null,{"href":"#i-lock"}]}],"TLS everywhere, passwords hashed with Argon2id"]}],["$","span","Role-based access — you see only your own company's data",{"className":"row g10","children":[["$","svg",null,{"aria-hidden":"true","focusable":"false","width":16,"height":16,"style":{"width":16,"height":16,"color":"var(--red)","flex":"none"},"children":["$","use",null,{"href":"#i-shield"}]}],"Role-based access — you see only your own company's data"]}],["$","span","Every document view is written to an access log",{"className":"row g10","children":[["$","svg",null,{"aria-hidden":"true","focusable":"false","width":16,"height":16,"style":{"width":16,"height":16,"color":"var(--red)","flex":"none"},"children":["$","use",null,{"href":"#i-eye"}]}],"Every document view is written to an access log"]}]]}]]}]}],["$","div",null,{"style":{"display":"flex","alignItems":"center","justifyContent":"center","padding":"56px 40px","background":"var(--ground)"},"children":["$","div",null,{"className":"stack g20","style":{"width":"100%","maxWidth":400},"children":[["$","$3",null,{"fallback":null,"children":["$","$L4",null,{}]}],["$","div",null,{"className":"notice info","children":[["$","svg",null,{"aria-hidden":"true","focusable":"false","width":16,"height":16,"children":["$","use",null,{"href":"#i-shield"}]}],["$","div",null,{"children":"After five failed attempts this account is locked for 15 minutes. Rate limiting applies per account and per IP address."}]]}],["$","p",null,{"className":"xs","style":{"textAlign":"center"},"children":[["$","$L2",null,{"className":"link","href":"/admin","style":{"fontSize":12},"children":"Administrator sign-in"}]," ","· separate route, two-factor authentication required"]}]]}]}]]}],[["$","script","script-0",{"src":"/demos/hirenova-portal/_next/static/chunks/3viwioq3kp8zx.js","async":true}],["$","script","script-1",{"src":"/demos/hirenova-portal/_next/static/chunks/22yzapnox53wr.js","async":true}]],["$","$L5",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":"$@7","staleTime":"$8","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L9",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#0B2244","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#040C16","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$La",null,{"children":["$","$3",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Sign In | Hirenova Workforce"}],["$","meta","1",{"name":"description","content":"Sign in to the Hirenova Workforce employer portal or job seeker portal."}],["$","meta","2",{"name":"application-name","content":"Hirenova Workforce"}],["$","meta","3",{"name":"author","content":"Hirenova Workforce Pvt. Ltd."}],"$Lb","$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14","$L15","$L16"]}]}]}],null]}],"isPartial":"$@17","staleTime":"$8","varyParams":null},{"rsc":"$L18","isPartial":"$@19","staleTime":"$8","varyParams":"$1a"}],"isUpgradeableISRFallback":false,"a":"$@1b","rootVaryParams":null,"needsRuntimeRequest":"$@1c"}
+1d:I[27201,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"IconMark"]
+1e:I[39756,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"default"]
+1f:I[37457,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"default"]
+6:null
+b:["$","meta","4",{"name":"robots","content":"noindex, nofollow"}]
+c:["$","link","5",{"rel":"canonical","href":"https://foundly.co.in/demos/hirenova-portal/login/"}]
+d:["$","meta","6",{"property":"og:title","content":"Sign In | Hirenova Workforce"}]
+e:["$","meta","7",{"property":"og:description","content":"Sign in to the Hirenova Workforce employer portal or job seeker portal."}]
+f:["$","meta","8",{"property":"og:site_name","content":"Hirenova Workforce Pvt. Ltd."}]
+10:["$","meta","9",{"property":"og:locale","content":"en_GB"}]
+11:["$","meta","10",{"property":"og:type","content":"website"}]
+12:["$","meta","11",{"name":"twitter:card","content":"summary"}]
+13:["$","meta","12",{"name":"twitter:title","content":"Sign In | Hirenova Workforce"}]
+14:["$","meta","13",{"name":"twitter:description","content":"Sign in to the Hirenova Workforce employer portal or job seeker portal."}]
+15:["$","link","14",{"rel":"icon","href":"/demos/hirenova-portal/images/logo-mark.png"}]
+16:["$","$L1d","15",{}]
+18:["$","$1","c",{"children":[null,["$","$L1e",null,{"parallelRouterKey":"children","template":["$","$L1f",null,{}]}]]}]
+1c:true
+8:300
+8:C
+1b:0
+17:"$undefined"
+19:"$undefined"
+7:"$undefined"

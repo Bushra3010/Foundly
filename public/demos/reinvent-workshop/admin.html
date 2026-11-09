@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <script>(function(){try{var P="demo:reinvent-workshop:",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;
+S.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};
+S.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};
+S.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};
+if(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error("Service workers are disabled in Foundly demos"))}}}catch(e){}})();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="data:," />
+  <title>Admin — Reinvent Yourself</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/demos/reinvent-workshop/styles.css" />
+  <style>
+    body { background: #f4fafc; }
+    .admin-header { background: var(--white); border-bottom: 1px solid var(--line); }
+    .admin-header .header-inner { height: 64px; }
+    .admin-tag { font-family: var(--sans); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; background: var(--teal-soft); color: var(--teal-dark); padding: 4px 10px; border-radius: 999px; margin-left: 4px; }
+    .btn-ghost { background: transparent; color: var(--navy); border: 1px solid var(--line); box-shadow: none; font: inherit; font-size: 14px; padding: 9px 16px; border-radius: 8px; cursor: pointer; }
+    .btn-ghost:hover { background: var(--teal-soft); transform: none; }
+    button.btn { border: 0; cursor: pointer; font: inherit; font-weight: 500; }
+
+    /* Login */
+    .login { min-height: calc(100dvh - 64px); display: grid; place-items: center; padding: 24px 16px; }
+    .login-card { width: min(400px, 100%); background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 32px; box-shadow: var(--shadow); }
+    .login-card h1 { font-size: 28px; font-weight: 600; }
+    .login-card > p { color: var(--muted); font-size: 14.5px; margin: 6px 0 22px; }
+    .login-card .btn { width: 100%; justify-content: center; }
+    .demo-hint { margin: -12px 0 18px; font-size: 13px; color: var(--teal-dark); background: var(--teal-soft); padding: 8px 12px; border-radius: 8px; }
+
+    /* Dashboard */
+    .dash { padding: 32px 0 56px; }
+    .dash-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+    .dash-head h1 { font-size: 32px; font-weight: 600; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 24px 0; }
+    .stat { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+    .stat span { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .stat strong { display: block; font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--navy); margin-top: 4px; font-variant-numeric: tabular-nums; }
+    .stat small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+    .search { flex: 1; min-width: 220px; font: inherit; font-size: 15px; padding: 10px 14px; border: 1px solid #c9dfe5; border-radius: 9px; background: var(--white); }
+    .search:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(19, 179, 199, .18); }
+    .count { color: var(--muted); font-size: 14px; }
+
+    .table-wrap { background: var(--white); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+    th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: #f8fcfd; position: sticky; top: 0; }
+    th button { all: unset; cursor: pointer; }
+    th button:hover { color: var(--navy); }
+    th button[aria-sort]::after { content: " ↓"; }
+    th button[aria-sort="ascending"]::after { content: " ↑"; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #f8fcfd; }
+    td.meta { color: var(--muted); font-variant-numeric: tabular-nums; }
+    td a { color: var(--teal-dark); }
+    td a:hover { text-decoration: underline; }
+    .del { background: none; border: 0; color: #b5414a; cursor: pointer; font: inherit; font-size: 13px; padding: 4px 8px; border-radius: 6px; }
+    .del:hover { background: #fbeaec; }
+    .empty { padding: 48px 16px; text-align: center; color: var(--muted); }
+
+    @media (max-width: 760px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .dash-head h1 { font-size: 26px; }
+    }
+  </style>
+  <script>window.FDEMO={slug:"reinvent-workshop",title:"Reinvent Yourself",blurb:"Sample data stored only in this browser. Register for the workshop (payment is simulated), then sign in to the admin to see, search, delete and export registrations.",apps:[{href:"/demos/reinvent-workshop/",name:"Workshop landing page",login:"Reserve My Seat \u2014 \u20b999 (simulated payment)"},{href:"/demos/reinvent-workshop/admin",name:"Admin \u00b7 registrations",login:"Password: launchpad-demo"}]};</script>
+  <script src="/demos/reinvent-workshop/demo-mode.js" defer></script>
+  <script src="/demos/reinvent-workshop/demo-store.js"></script>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="container header-inner">
+      <a href="/demos/reinvent-workshop/" class="logo" aria-label="Back to site">
+        <svg class="logo-mark" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
+          <path d="M24 4c-4 5-4 14 0 22 4-8 4-17 0-22Z"/>
+          <path d="M24 26c-3-7-8-12-14-13 0 7 6 12 14 13Z"/>
+          <path d="M24 26c3-7 8-12 14-13 0 7-6 12-14 13Z"/>
+          <path d="M24 27c-6-1-13-4-18-9-2 6 7 10 18 9Z"/>
+          <path d="M24 27c6-1 13-4 18-9 2 6-7 10-18 9Z"/>
+        </svg>
+        <span>Reinvent Yourself</span>
+        <span class="admin-tag">Admin</span>
+      </a>
+      <button class="btn-ghost" id="logout" hidden>Sign out</button>
+    </div>
+  </header>
+
+  <!-- Login -->
+  <main class="login" id="login-view" hidden>
+    <form class="login-card" id="login-form">
+      <h1>Admin sign in</h1>
+      <p>View and manage workshop registrations.</p>
+      <p class="demo-hint">Demo password: <code>launchpad-demo</code></p>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required />
+        <p class="field-error" id="login-error" role="alert"></p>
+      </div>
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+  </main>
+
+  <!-- Dashboard -->
+  <main class="dash" id="dash-view" hidden>
+    <div class="container">
+      <div class="dash-head">
+        <div>
+          <p class="eyebrow">Life Coach Launchpad</p>
+          <h1>Registrations</h1>
+        </div>
+        <div class="toolbar" style="margin:0">
+          <button class="btn-ghost" id="refresh">Refresh</button>
+          <button class="btn btn-sm" type="button" id="export">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span>Total</span><strong id="s-total">0</strong></div>
+        <div class="stat"><span>Today</span><strong id="s-today">0</strong></div>
+        <div class="stat"><span>Last 7 days</span><strong id="s-week">0</strong></div>
+        <div class="stat"><span>Top city</span><strong id="s-city">—</strong><small id="s-city-n"></small></div>
+      </div>
+
+      <div class="toolbar">
+        <input class="search" id="search" type="search" placeholder="Search name, email, phone, profession or city…" aria-label="Search registrations" />
+        <span class="count" id="count"></span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th><button data-sort="name">Name</button></th>
+              <th><button data-sort="email">Email</button></th>
+              <th><button data-sort="whatsapp">WhatsApp</button></th>
+              <th><button data-sort="profession">Profession</button></th>
+              <th><button data-sort="city">City</button></th>
+              <th><button data-sort="created_at" aria-sort="descending">Registered</button></th>
+              <th><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <p class="empty" id="empty" hidden></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    let all = [];
+    let sortKey = 'created_at', sortDir = -1;
+
+    // Demo: routes the original /api/admin/* calls to the in-browser store (demo-store.js).
+    async function api(path, opts = {}) {
+      const route = path.replace(/^\/api\/admin\/?/, '');
+      let out;
+      if (route === 'login') out = await demoApi.login(JSON.parse(opts.body || '{}').password || '');
+      else if (route === 'logout') out = await demoApi.logout();
+      else if (route === 'session') out = await demoApi.session();
+      else {
+        const s = await demoApi.session();
+        if (!s.body.signedIn) out = { res: { ok: false, status: 401 }, body: { error: 'Not signed in.' } };
+        else if (route === 'registrations') out = await demoApi.registrations();
+        else if (route.startsWith('registrations/') && opts.method === 'DELETE') out = await demoApi.remove(decodeURIComponent(route.slice(14)));
+        else out = { res: { ok: false, status: 404 }, body: { error: 'Not found.' } };
+      }
+      if (out.res.status === 401 && !path.endsWith('/login')) { showLogin(); throw new Error('signed out'); }
+      return out;
+    }
+
+    function showLogin() {
+      $('dash-view').hidden = true; $('logout').hidden = true; $('login-view').hidden = false;
+      $('password').focus();
+    }
+    function showDash() {
+      $('login-view').hidden = true; $('dash-view').hidden = false; $('logout').hidden = false;
+      load();
+    }
+
+    $('login-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      $('login-error').textContent = '';
+      const { res, body } = await api('/api/admin/login', { method: 'POST', body: JSON.stringify({ password: $('password').value }) });
+      if (res.ok) { $('password').value = ''; showDash(); }
+      else $('login-error').textContent = body.error || 'Sign in failed.';
+    });
+
+    $('logout').addEventListener('click', async () => {
+      await api('/api/admin/logout', { method: 'POST' });
+      showLogin();
+    });
+
+    $('refresh').addEventListener('click', load);
+    $('export').addEventListener('click', () => demoApi.exportCsv());
+    $('search').addEventListener('input', render);
+
+    document.querySelectorAll('th [data-sort]').forEach(btn => btn.addEventListener('click', () => {
+      const key = btn.dataset.sort;
+      sortDir = key === sortKey ? -sortDir : 1;
+      sortKey = key;
+      document.querySelectorAll('th [data-sort]').forEach(b => b.removeAttribute('aria-sort'));
+      btn.setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending');
+      render();
+    }));
+
+    async function load() {
+      try {
+        const { body } = await api('/api/admin/registrations');
+        all = body.registrations || [];
+        renderStats();
+        render();
+      } catch {}
+    }
+
+    const fmtDate = iso => new Date(iso).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+    function renderStats() {
+      const now = new Date();
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const weekAgo = now - 7 * 864e5;
+      $('s-total').textContent = all.length;
+      $('s-today').textContent = all.filter(r => new Date(r.created_at) >= startOfDay).length;
+      $('s-week').textContent = all.filter(r => new Date(r.created_at) >= weekAgo).length;
+      const cities = {};
+      all.forEach(r => { const c = r.city.trim().toLowerCase(); cities[c] = cities[c] || { name: r.city.trim(), n: 0 }; cities[c].n++; });
+      const top = Object.values(cities).sort((a, b) => b.n - a.n)[0];
+      $('s-city').textContent = top ? top.name : '—';
+      $('s-city-n').textContent = top ? `${top.n} registration${top.n > 1 ? 's' : ''}` : '';
+    }
+
+    function cell(text, cls) {
+      const td = document.createElement('td');
+      td.textContent = text;
+      if (cls) td.className = cls;
+      return td;
+    }
+
+    function render() {
+      const q = $('search').value.trim().toLowerCase();
+      const rows = all
+        .filter(r => !q || [r.name, r.email, r.whatsapp, r.profession, r.city].some(v => v.toLowerCase().includes(q)))
+        .sort((a, b) => {
+          const x = a[sortKey], y = b[sortKey];
+          return (typeof x === 'number' ? x - y : String(x).localeCompare(String(y))) * sortDir;
+        });
+
+      const tbody = $('rows');
+      tbody.replaceChildren();
+      rows.forEach((r, i) => {
+        const tr = document.createElement('tr');
+        tr.append(cell(i + 1, 'meta'), cell(r.name));
+
+        const email = document.createElement('td');
+        const ea = document.createElement('a');
+        ea.href = 'mailto:' + r.email; ea.textContent = r.email;
+        email.append(ea);
+
+        const wa = document.createElement('td');
+        const wl = document.createElement('a');
+        wl.href = 'https://wa.me/' + r.whatsapp.replace(/\D/g, '');
+        wl.target = '_blank'; wl.rel = 'noopener'; wl.textContent = r.whatsapp;
+        wl.title = 'Open in WhatsApp';
+        wa.append(wl);
+
+        const actions = document.createElement('td');
+        const del = document.createElement('button');
+        del.className = 'del'; del.textContent = 'Delete';
+        del.addEventListener('click', () => removeRow(r, del));
+        actions.append(del);
+
+        tr.append(email, wa, cell(r.profession), cell(r.city), cell(fmtDate(r.created_at), 'meta'), actions);
+        tbody.append(tr);
+      });
+
+      $('count').textContent = q ? `${rows.length} of ${all.length}` : `${all.length} total`;
+      $('empty').hidden = rows.length > 0;
+      $('empty').textContent = all.length ? 'No registrations match your search.' : 'No registrations yet. They’ll appear here as people sign up.';
+    }
+
+    // Two-click delete instead of a browser confirm dialog.
+    async function removeRow(r, btn) {
+      if (btn.dataset.armed !== '1') {
+        btn.dataset.armed = '1';
+        btn.textContent = 'Confirm delete';
+        setTimeout(() => { btn.dataset.armed = ''; btn.textContent = 'Delete'; }, 3000);
+        return;
+      }
+      const { res } = await api('/api/admin/registrations/' + encodeURIComponent(r.id), { method: 'DELETE' });
+      if (res.ok) { all = all.filter(x => x.id !== r.id); renderStats(); render(); }
+    }
+
+    api('/api/admin/session').then(({ body }) => body.signedIn ? showDash() : showLogin());
+  </script>
+</body>
+</html>

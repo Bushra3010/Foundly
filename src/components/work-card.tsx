@@ -22,7 +22,7 @@ export function WorkCover({ project, large = false }: { project: PublicProject; 
   const cover = project.media[0];
   if (cover) {
     // eslint-disable-next-line @next/next/no-img-element -- served from our own database route
-    return <img src={`/work/media/${cover.id}`} alt={cover.caption ?? `${project.name} screenshot`} className="wk-cover" loading="lazy" />;
+    return <img src={cover.url} alt={cover.caption ?? `${project.name} screenshot`} className="wk-cover" loading="lazy" />;
   }
   return (
     <div className={`wk-cover wk-cover-art${large ? " large" : ""}`} aria-hidden="true">

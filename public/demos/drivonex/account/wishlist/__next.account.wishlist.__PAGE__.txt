@@ -1,0 +1,22 @@
+1:"$Sreact.fragment"
+2:I[52166,["/demos/drivonex/_next/static/chunks/3fntmmi971322.js","/demos/drivonex/_next/static/chunks/2ils5952ufo3z.js","/demos/drivonex/_next/static/chunks/1z8kr4m8evfdo.js","/demos/drivonex/_next/static/chunks/20u72lmlq7o46.js"],"Wishlist"]
+3:I[97367,["/demos/drivonex/_next/static/chunks/3fntmmi971322.js","/demos/drivonex/_next/static/chunks/2ils5952ufo3z.js","/demos/drivonex/_next/static/chunks/1z8kr4m8evfdo.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+8:I[97367,["/demos/drivonex/_next/static/chunks/3fntmmi971322.js","/demos/drivonex/_next/static/chunks/2ils5952ufo3z.js","/demos/drivonex/_next/static/chunks/1z8kr4m8evfdo.js"],"ViewportBoundary"]
+9:I[97367,["/demos/drivonex/_next/static/chunks/3fntmmi971322.js","/demos/drivonex/_next/static/chunks/2ils5952ufo3z.js","/demos/drivonex/_next/static/chunks/1z8kr4m8evfdo.js"],"MetadataBoundary"]
+a:I[27201,["/demos/drivonex/_next/static/chunks/3fntmmi971322.js","/demos/drivonex/_next/static/chunks/2ils5952ufo3z.js","/demos/drivonex/_next/static/chunks/1z8kr4m8evfdo.js"],"IconMark"]
+c:I[39756,["/demos/drivonex/_next/static/chunks/3fntmmi971322.js","/demos/drivonex/_next/static/chunks/2ils5952ufo3z.js","/demos/drivonex/_next/static/chunks/1z8kr4m8evfdo.js"],"default"]
+d:I[37457,["/demos/drivonex/_next/static/chunks/3fntmmi971322.js","/demos/drivonex/_next/static/chunks/2ils5952ufo3z.js","/demos/drivonex/_next/static/chunks/1z8kr4m8evfdo.js"],"default"]
+7:X
+f:X
+f:C
+0:{"buildId":"-4Fh52vIVgWg-_9pBoqdH","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/demos/drivonex/_next/static/chunks/20u72lmlq7o46.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":"$@6","staleTime":"$7","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L8",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#0B1226"}]]}],["$","div",null,{"hidden":true,"children":["$","$L9",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Wishlist | Drivonex"}],["$","meta","1",{"name":"description","content":"Dash cameras, wireless CarPlay AI boxes and car electronics, shipped across India with COD and easy returns."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","link","3",{"rel":"icon","href":"/demos/drivonex/icon.jpg?icon.42zbwyb85sqzt.jpg","sizes":"1231x969","type":"image/jpeg"}],["$","$La","4",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":"$@b","staleTime":"$7","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Lc",null,{"parallelRouterKey":"children","template":["$","$Ld",null,{}]}]]}],"isPartial":"$@e","staleTime":"$7","varyParams":"$f"},{"rsc":["$","$1","c",{"children":[null,["$","$Lc",null,{"parallelRouterKey":"children","template":["$","$Ld",null,{}]}]]}],"isPartial":"$@10","staleTime":"$7","varyParams":"$f"}],"isUpgradeableISRFallback":false,"a":"$@11","rootVaryParams":null,"needsRuntimeRequest":"$@12"}
+5:null
+12:true
+7:300
+7:C
+11:0
+b:"$undefined"
+e:"$undefined"
+10:"$undefined"
+6:"$undefined"

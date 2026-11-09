@@ -1,0 +1,3 @@
+:HL["/demos/skyhigh-booking/_next/static/chunks/1mr_5p9phxzsb.css","style"]
+:HL["/demos/skyhigh-booking/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(public)","param":null,"prefetchHints":0,"slots":{"children":{"name":"booking","param":null,"prefetchHints":0,"slots":{"children":{"name":"success","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"6dqHBYnnl7SSs4WvhoWcx"}

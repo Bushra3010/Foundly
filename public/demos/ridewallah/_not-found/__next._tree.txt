@@ -1,0 +1,4 @@
+:HL["/demos/ridewallah/_next/static/chunks/3299efcedtyl6.css","style"]
+2:[["children",{"s":"__PAGE__","h":160}]]
+1:[["children",{"s":"/_not-found","h":96,"c":"$Q2"}]]
+0:{"b":"4esJv_EUlJ6UNZIIN4pdg","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

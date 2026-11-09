@@ -36,7 +36,8 @@ const projectSchema = z.object({
   demoUrl: z
     .string()
     .trim()
-    .refine((v) => v === "" || /^https?:\/\/[^\s]+$/i.test(v), "Enter the full demo address, starting with https://"),
+    // Either a demo hosted on this site (/demos/<project>) or a separate isolated demo address.
+    .refine((v) => v === "" || /^\/demos\/[a-z0-9-]+\/?$/.test(v) || /^https?:\/\/[^\s]+$/i.test(v), "Use /demos/<project> or a full address starting with https://"),
   demoLogins: z.array(z.object({ role: z.string().max(60), login: z.string().max(120), secret: z.string().max(120).optional() })).max(8),
   demoStatus: z.enum(["none", "coming_soon", "live", "maintenance"]),
   embeddable: z.boolean(),

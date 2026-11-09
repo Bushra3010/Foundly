@@ -1,0 +1,32 @@
+1:"$Sreact.fragment"
+2:I[22016,["/demos/newvisa-crm/_next/static/chunks/1hzri_up493hl.js","/demos/newvisa-crm/_next/static/chunks/28ojg5axuhiyb.js","/demos/newvisa-crm/_next/static/chunks/18qs3xp5x5v8l.js","/demos/newvisa-crm/_next/static/chunks/26uba32m3t-ki.js"],""]
+3:I[97367,["/demos/newvisa-crm/_next/static/chunks/1hzri_up493hl.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+8:I[97367,["/demos/newvisa-crm/_next/static/chunks/1hzri_up493hl.js"],"ViewportBoundary"]
+9:I[97367,["/demos/newvisa-crm/_next/static/chunks/1hzri_up493hl.js"],"MetadataBoundary"]
+7:X
+17:X
+17:C
+0:{"buildId":"B3J3UFyTeBjpXCx9YdXL0","data":[{"rsc":["$","$1","c",{"children":[[["$","section",null,{"className":"relative overflow-hidden border-b border-line bg-gradient-to-br from-brand-900 to-brand-700 py-12 text-white sm:py-16","children":["$undefined",["$","div",null,{"className":"mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative","children":["$undefined",["$","p",null,{"className":"text-sm font-semibold uppercase tracking-wider text-brand-200","children":"Visa services"}],["$","h1",null,{"className":"mt-2 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl","children":"Business Immigration"}],["$","p",null,{"className":"mt-3 max-w-2xl text-lg text-brand-100","children":"Investor, entrepreneur and start-up routes."}],["$","div",null,{"className":"mt-6 flex flex-wrap gap-3","children":[["$","$L2",null,{"className":"inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 bg-accent-500 text-white hover:bg-accent-600 h-12 px-6 text-base","href":"/eligibility?visa=business","children":"Get free assessment"}],["$","$L2",null,{"className":"inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 bg-white text-ink ring-1 ring-line hover:bg-canvas h-12 px-6 text-base","href":"/consultation?visa=business","children":"Talk to counsellor"}]]}]]}]]}],["$","section",null,{"className":"py-12 sm:py-16","children":["$","div",null,{"className":"mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8","children":[["$","h2",null,{"className":"text-xl font-semibold","children":"Available programs"}],["$","p",null,{"className":"mt-4 text-ink-soft","children":["Our counsellors can advise on ","business immigration"," options for your destination — ",["$","$L2",null,{"href":"/consultation","className":"text-brand-600 underline","children":"book a consultation"}],"."]}]]}]}],["$","section",null,{"className":"bg-brand-700 py-12 text-white","children":["$","div",null,{"className":"mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-start justify-between gap-6 md:flex-row md:items-center","children":[["$","div",null,{"children":[["$","h2",null,{"className":"text-2xl font-semibold","children":"Not sure which visa is right for you?"}],["$","p",null,{"className":"mt-2 text-brand-100","children":"Take the free eligibility assessment and a counsellor will review your profile."}]]}],["$","div",null,{"className":"flex flex-wrap gap-3","children":[["$","$L2",null,{"className":"inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 bg-accent-500 text-white hover:bg-accent-600 h-12 px-6 text-base","href":"/eligibility","children":"Get free assessment"}],["$","$L2",null,{"className":"inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 bg-white text-ink ring-1 ring-line hover:bg-canvas h-12 px-6 text-base","href":"/consultation","children":"Book consultation"}]]}]]}]}]],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":"$@6","staleTime":"$7","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L8",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L9",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Business Immigration | NewVisa Global Odyssey"}],["$","meta","1",{"name":"description","content":"Investor, entrepreneur and start-up routes."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","link","3",{"rel":"canonical","href":"https://foundly.co.in/demos/newvisa-crm/business-immigration/"}],["$","meta","4",{"property":"og:title","content":"Business Immigration | NewVisa Global Odyssey"}],["$","meta","5",{"property":"og:description","content":"Investor, entrepreneur and start-up routes."}],"$La","$Lb","$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12"]}]}]}],"$L13"]}],"isPartial":"$@14","staleTime":"$7","varyParams":null},{"rsc":"$L15","isPartial":"$@16","staleTime":"$7","varyParams":"$17"}],"isUpgradeableISRFallback":false,"a":"$@18","rootVaryParams":null,"needsRuntimeRequest":"$@19"}
+1a:I[27201,["/demos/newvisa-crm/_next/static/chunks/1hzri_up493hl.js"],"IconMark"]
+1b:I[39756,["/demos/newvisa-crm/_next/static/chunks/1hzri_up493hl.js"],"default"]
+1c:I[37457,["/demos/newvisa-crm/_next/static/chunks/1hzri_up493hl.js"],"default"]
+5:null
+a:["$","meta","6",{"property":"og:site_name","content":"NewVisa Global Odyssey"}]
+b:["$","meta","7",{"property":"og:type","content":"website"}]
+c:["$","meta","8",{"name":"twitter:card","content":"summary"}]
+d:["$","meta","9",{"name":"twitter:title","content":"Business Immigration | NewVisa Global Odyssey"}]
+e:["$","meta","10",{"name":"twitter:description","content":"Investor, entrepreneur and start-up routes."}]
+f:["$","link","11",{"rel":"icon","href":"/demos/newvisa-crm/favicon.ico?favicon.06f35laynrw_7.ico","sizes":"256x256","type":"image/x-icon"}]
+10:["$","link","12",{"rel":"icon","href":"/demos/newvisa-crm/icon.png?icon.1b2ztvdp74s7q.png","sizes":"512x512","type":"image/png"}]
+11:["$","link","13",{"rel":"apple-touch-icon","href":"/demos/newvisa-crm/apple-icon.png?apple-icon.08q-3dv8f0kwi.png","sizes":"180x180","type":"image/png"}]
+12:["$","$L1a","14",{}]
+13:["$","meta",null,{"name":"next-size-adjust","content":""}]
+15:["$","$1","c",{"children":[null,["$","$L1b",null,{"parallelRouterKey":"children","template":["$","$L1c",null,{}]}]]}]
+19:true
+7:300
+7:C
+18:0
+14:"$undefined"
+16:"$undefined"
+6:"$undefined"

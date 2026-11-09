@@ -89,9 +89,9 @@ export default async function WorkProjectPage({ params }: Props) {
             <ul className="wk-shots">
               {p.media.map((m, i) => (
                 <li key={m.id}>
-                  <a href={`/work/media/${m.id}`} target="_blank" rel="noopener">
+                  <a href={m.url} target="_blank" rel="noopener">
                     {/* eslint-disable-next-line @next/next/no-img-element -- served from our own database route */}
-                    <img src={`/work/media/${m.id}`} alt={m.caption ?? `${p.name} screenshot ${i + 1}`} loading="lazy" />
+                    <img src={m.url} alt={m.caption ?? `${p.name} screenshot ${i + 1}`} loading="lazy" />
                   </a>
                   {m.caption && <p>{m.caption}</p>}
                 </li>

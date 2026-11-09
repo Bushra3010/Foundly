@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <script>(function(){try{var P="demo:reinvent-workshop:",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;
+S.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};
+S.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};
+S.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};
+if(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error("Service workers are disabled in Foundly demos"))}}}catch(e){}})();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="data:," />
+  <title>Life Coach Launchpad — Reinvent Yourself · Live demo by Foundly</title>
+  <meta name="description" content="A live workshop exclusively for women: discover how to become a part-time life coach without quitting your job." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/demos/reinvent-workshop/styles.css" />
+  <script>window.FDEMO={slug:"reinvent-workshop",title:"Reinvent Yourself",blurb:"Sample data stored only in this browser. Register for the workshop (payment is simulated), then sign in to the admin to see, search, delete and export registrations.",apps:[{href:"/demos/reinvent-workshop/",name:"Workshop landing page",login:"Reserve My Seat \u2014 \u20b999 (simulated payment)"},{href:"/demos/reinvent-workshop/admin",name:"Admin \u00b7 registrations",login:"Password: launchpad-demo"}]};</script>
+  <script src="/demos/reinvent-workshop/demo-mode.js" defer></script>
+  <script src="/demos/reinvent-workshop/demo-store.js"></script>
+  <style>
+    .pay-summary { margin: 18px 0 14px; border: 1px solid var(--line); border-radius: 12px; padding: 4px 16px; background: var(--sky); }
+    .pay-summary div { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+    .pay-summary div + div { border-top: 1px solid var(--line); }
+    .pay-summary strong { font-family: var(--serif); font-size: 24px; color: var(--navy); }
+    .pay-summary s { color: var(--muted); }
+    .pay-methods { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .pay-methods label { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #c9dfe5; border-radius: 999px; padding: 7px 14px; font-size: 14px; cursor: pointer; }
+    .pay-methods label:has(input:checked) { border-color: var(--teal); background: var(--teal-soft); color: var(--teal-dark); }
+    .pay-demo { font-size: 13px; color: var(--muted); background: #fff8e6; border: 1px solid #f3e1a8; border-radius: 10px; padding: 9px 12px; margin-bottom: 14px; }
+    .reg-pay .reg-submit { width: 100%; justify-content: center; }
+    .pay-back { display: block; margin: 12px auto 0; background: none; border: 0; color: var(--teal-dark); font: inherit; font-size: 14px; cursor: pointer; }
+    .pay-ref { margin-top: 8px; font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="logo" aria-label="Reinvent Yourself home">
+        <svg class="logo-mark" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
+          <path d="M24 4c-4 5-4 14 0 22 4-8 4-17 0-22Z"/>
+          <path d="M24 26c-3-7-8-12-14-13 0 7 6 12 14 13Z"/>
+          <path d="M24 26c3-7 8-12 14-13 0 7-6 12-14 13Z"/>
+          <path d="M24 27c-6-1-13-4-18-9-2 6 7 10 18 9Z"/>
+          <path d="M24 27c6-1 13-4 18-9 2 6-7 10-18 9Z"/>
+        </svg>
+        <span>Reinvent Yourself</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#workshop">The Workshop</a>
+        <a href="#learn">What You’ll Learn</a>
+        <a href="#mentor">Your Mentor</a>
+        <a href="#register" data-register class="btn btn-sm">Register Now <span class="arrow-ne" aria-hidden="true">↗</span></a>
+      </nav>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="mentor">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="pill">Live workshop <span class="dot">•</span> Exclusively for women</p>
+          <h1>Your experience.<br />Your purpose.<br />Serve <em>Humanity.</em></h1>
+          <p class="lead">Discover how to become a part-time life coach — without quitting your job.</p>
+          <p class="sub">Find your niche and explore a practical 10-step roadmap.</p>
+          <div class="cta-row">
+            <a href="#register" data-register class="btn btn-lg">Reserve My Seat — ₹99 <span aria-hidden="true">→</span></a>
+            <s class="old-price" aria-label="Original price 999 rupees">₹999</s>
+          </div>
+          <p class="note">No prior coaching experience needed.</p>
+        </div>
+
+        <figure class="hero-media">
+          <img src="/demos/reinvent-workshop/assets/mentor.png" alt="A smiling woman writing in a notebook" width="440" height="420" />
+          <figcaption class="float-card">
+            <span class="check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 12.5 4 4 8-9"/></svg>
+            </span>
+            Start with what you already know.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Next chapter -->
+    <section class="chapter" id="workshop">
+      <div class="container">
+        <header class="section-head center">
+          <p class="eyebrow">Your next chapter</p>
+          <h2>You already have more to offer than you think.</h2>
+          <p>A fresh direction for women ready to turn their experience into meaningful work.</p>
+        </header>
+        <div class="cards">
+          <article class="card">
+            <span class="icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7Z"/></svg>
+            </span>
+            <div><h3>Returning after a break</h3><p>Build on the experience you already have.</p></div>
+          </article>
+          <article class="card">
+            <span class="icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5Z"/></svg>
+            </span>
+            <div><h3>Looking for your own path</h3><p>Explore work that feels purposeful and yours.</p></div>
+          </article>
+          <article class="card">
+            <span class="icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="13" width="3.5" height="7" rx="1"/><rect x="10.25" y="9" width="3.5" height="11" rx="1"/><rect x="16.5" y="4" width="3.5" height="16" rx="1"/></svg>
+            </span>
+            <div><h3>Ready to move forward</h3><p>Find clarity and practical next steps.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inside the workshop -->
+    <section class="inside" id="learn">
+      <div class="container inside-inner">
+        <header class="section-head">
+          <p class="eyebrow">Inside the workshop</p>
+          <h2>Clarity first.<br />A roadmap next.</h2>
+          <p>Explore the foundations of your coaching journey.</p>
+        </header>
+        <ol class="steps">
+          <li class="step">
+            <span class="num">01</span>
+            <h3>Discover your coaching niche</h3>
+            <p>Connect your strengths, knowledge and passions.</p>
+          </li>
+          <li class="step">
+            <span class="num">02</span>
+            <h3>Understand the coaching model</h3>
+            <p>Explore how a part-time coaching practice works.</p>
+          </li>
+          <li class="step">
+            <span class="num">03</span>
+            <h3>Your 10-step launchpad</h3>
+            <p>Leave with a structured path to get started.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Coaching models -->
+    <section class="models" id="models">
+      <div class="container">
+        <header class="section-head center">
+          <h2>What we offer</h2>
+        </header>
+        <ol class="model-grid">
+          <li class="model">
+            <span class="model-num">01</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <h3>Personal</h3>
+            <p>1:1</p>
+          </li>
+          <li class="model">
+            <span class="model-num">02</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+            <h3>Programs</h3>
+            <p>Live events</p>
+          </li>
+          <li class="model">
+            <span class="model-num">03</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-2-1.5-5-2-8-2v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2Z"/><path d="M12 6v14"/></svg>
+            <h3>Products</h3>
+            <p>Courses</p>
+          </li>
+          <li class="model">
+            <span class="model-num">04</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m17 2 3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12"/><path d="m7 22-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/></svg>
+            <h3>Membership</h3>
+            <p>Recurring</p>
+          </li>
+          <li class="model model-featured">
+            <span class="model-num">05</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 4.5-9 4.5-9-4.5Z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></svg>
+            <h3>Platform</h3>
+            <p>All in one</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="register">
+      <div class="container">
+        <h2>Take the first step towards your next chapter.</h2>
+        <p class="meta"><span class="hl">Life Coach Launchpad</span></p>
+        <a href="#register" data-register class="btn btn-lg">Join the Workshop — ₹99 <span class="arrow-ne" aria-hidden="true">↗</span></a>
+        <p class="fine">© 2026 Reinvent Yourself</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Registration form -->
+  <dialog class="reg-dialog" id="reg-dialog" aria-labelledby="reg-title">
+    <button class="reg-close" type="button" aria-label="Close" data-close>&times;</button>
+
+    <form class="reg-form" id="reg-form" novalidate>
+      <p class="eyebrow">Life Coach Launchpad</p>
+      <h2 id="reg-title">Reserve your seat</h2>
+      <p class="reg-intro">Fill in your details and we’ll send the workshop updates to your WhatsApp and email.</p>
+
+      <div class="field">
+        <label for="f-name">Full name</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" maxlength="100" required />
+        <p class="field-error" data-error-for="name"></p>
+      </div>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" maxlength="254" required />
+        <p class="field-error" data-error-for="email"></p>
+      </div>
+      <div class="field">
+        <label for="f-whatsapp">WhatsApp number</label>
+        <input id="f-whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" value="+91 " required />
+        <p class="field-hint">Include your country code, e.g. +91 98765 43210</p>
+        <p class="field-error" data-error-for="whatsapp"></p>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-profession">Profession</label>
+          <input id="f-profession" name="profession" type="text" autocomplete="organization-title" maxlength="100" placeholder="e.g. Teacher, HR manager" required />
+          <p class="field-error" data-error-for="profession"></p>
+        </div>
+        <div class="field">
+          <label for="f-city">City</label>
+          <input id="f-city" name="city" type="text" autocomplete="address-level2" maxlength="80" required />
+          <p class="field-error" data-error-for="city"></p>
+        </div>
+      </div>
+
+      <p class="form-error" id="form-error" role="alert"></p>
+      <button class="btn btn-lg reg-submit" type="submit">Register Now <span aria-hidden="true">→</span></button>
+    </form>
+
+    <div class="reg-pay" id="reg-pay" hidden>
+      <p class="eyebrow">Life Coach Launchpad</p>
+      <h2>Complete your payment</h2>
+      <p class="reg-intro">Seat for <strong id="pay-name"></strong> · Live workshop · Exclusively for women</p>
+      <div class="pay-summary">
+        <div><span>Workshop seat</span><s>₹999</s></div>
+        <div><span>Early-bird price</span><strong>₹99</strong></div>
+      </div>
+      <div class="pay-methods" role="radiogroup" aria-label="Payment method">
+        <label><input type="radio" name="pay-method" value="UPI" checked /> UPI</label>
+        <label><input type="radio" name="pay-method" value="Card" /> Card</label>
+        <label><input type="radio" name="pay-method" value="Net banking" /> Net banking</label>
+      </div>
+      <p class="pay-demo">Demo mode: this payment is simulated. No money is charged and no payment app opens.</p>
+      <p class="form-error" id="pay-error" role="alert"></p>
+      <button class="btn btn-lg reg-submit" type="button" id="pay-btn">Pay ₹99 <span aria-hidden="true">→</span></button>
+      <button class="pay-back" type="button" id="pay-back">← Edit details</button>
+    </div>
+
+    <div class="reg-success" id="reg-success" hidden>
+      <span class="check check-lg" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 12.5 4 4 8-9"/></svg>
+      </span>
+      <h2>You’re registered!</h2>
+      <p>Thank you for registering. We’ll be in touch on WhatsApp and email with the workshop details.</p>
+      <p class="pay-ref" id="pay-ref"></p>
+      <button class="btn" type="button" data-close>Done</button>
+    </div>
+  </dialog>
+
+  <script>
+    // Mobile menu
+    const toggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('.nav');
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', false);
+    }));
+
+    // Registration dialog
+    const dialog = document.getElementById('reg-dialog');
+    const form = document.getElementById('reg-form');
+    const success = document.getElementById('reg-success');
+    const formError = document.getElementById('form-error');
+    const submitBtn = form.querySelector('.reg-submit');
+
+    document.querySelectorAll('[data-register]').forEach(btn => btn.addEventListener('click', e => {
+      e.preventDefault();
+      dialog.showModal();
+      if (success.hidden) form.querySelector('input').focus();
+    }));
+    dialog.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => dialog.close()));
+    dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+    const payView = document.getElementById('reg-pay');
+    const payBtn = document.getElementById('pay-btn');
+    let pending = null;
+    dialog.addEventListener('close', () => {
+      if (!success.hidden) { form.reset(); form.hidden = false; success.hidden = true; }
+      if (!payView.hidden) { payView.hidden = true; form.hidden = false; }
+    });
+    document.getElementById('pay-back').addEventListener('click', () => { payView.hidden = true; form.hidden = false; });
+
+    function showErrors(fields = {}) {
+      form.querySelectorAll('[data-error-for]').forEach(el => {
+        const msg = fields[el.dataset.errorFor] || '';
+        el.textContent = msg;
+        form.elements[el.dataset.errorFor].setAttribute('aria-invalid', msg ? 'true' : 'false');
+      });
+    }
+
+    function clientValidate(data) {
+      const errors = {};
+      for (const [k, v] of Object.entries(data)) if (!v.trim()) errors[k] = 'This field is required.';
+      if (!errors.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email.trim())) errors.email = 'Enter a valid email address.';
+      const phone = data.whatsapp.replace(/[\s\-()]/g, '');
+      if (!errors.whatsapp && !/^\+?[0-9]{10,15}$/.test(phone)) errors.whatsapp = 'Enter a valid WhatsApp number with country code.';
+      return errors;
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      formError.textContent = '';
+      const data = Object.fromEntries(new FormData(form));
+      if (data.whatsapp.trim() === '+91') data.whatsapp = '';
+      const errors = clientValidate(data);
+      showErrors(errors);
+      if (Object.keys(errors).length) {
+        form.querySelector('[aria-invalid="true"]').focus();
+        return;
+      }
+
+      // Demo: same validation and duplicate-email rule as the real /api/register, then a simulated ₹99 payment.
+      submitBtn.disabled = true;
+      submitBtn.firstChild.textContent = 'Checking… ';
+      try {
+        const { body } = await demoApi.registrations();
+        const email = data.email.trim().toLowerCase();
+        if ((body.registrations || []).some(r => r.email.toLowerCase() === email)) {
+          showErrors({ email: 'This email is already registered.' });
+          formError.textContent = 'This email is already registered.';
+          return;
+        }
+        pending = data;
+        document.getElementById('pay-name').textContent = data.name.trim();
+        document.getElementById('pay-error').textContent = '';
+        form.hidden = true;
+        payView.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.firstChild.textContent = 'Register Now ';
+      }
+    });
+
+    payBtn.addEventListener('click', async () => {
+      if (!pending) return;
+      payBtn.disabled = true;
+      payBtn.firstChild.textContent = 'Processing payment… ';
+      await new Promise(r => setTimeout(r, 900));
+      const { res, body } = await demoApi.register(pending);
+      payBtn.disabled = false;
+      payBtn.firstChild.textContent = 'Pay ₹99 ';
+      if (res.ok) {
+        document.getElementById('pay-ref').textContent = 'Demo payment ID ' + body.payment_ref + ' · ₹99 (simulated)';
+        pending = null;
+        payView.hidden = true;
+        success.hidden = false;
+      } else {
+        payView.hidden = true; form.hidden = false;
+        showErrors(body.fields);
+        formError.textContent = body.error || 'Something went wrong. Please try again.';
+      }
+    });
+  </script>
+</body>
+</html>

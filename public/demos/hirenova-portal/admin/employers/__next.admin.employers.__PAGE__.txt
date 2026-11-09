@@ -1,0 +1,23 @@
+1:"$Sreact.fragment"
+2:I[86605,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js","/demos/hirenova-portal/_next/static/chunks/0fvscicg9ip7h.js","/demos/hirenova-portal/_next/static/chunks/22yzapnox53wr.js"],"RequireRole"]
+3:"$Sreact.suspense"
+4:I[69356,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js","/demos/hirenova-portal/_next/static/chunks/0fvscicg9ip7h.js","/demos/hirenova-portal/_next/static/chunks/22yzapnox53wr.js"],"AdminEmployers"]
+5:I[97367,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"OutletBoundary"]
+9:I[97367,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"ViewportBoundary"]
+a:I[97367,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"MetadataBoundary"]
+b:I[27201,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"IconMark"]
+d:I[39756,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"default"]
+e:I[37457,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js"],"default"]
+8:X
+10:X
+10:C
+0:{"buildId":"ntnGTcmBYO4EJilEhGwiG","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"role":"admin","children":["$","$3",null,{"fallback":null,"children":["$","$L4",null,{}]}]}],[["$","script","script-0",{"src":"/demos/hirenova-portal/_next/static/chunks/0fvscicg9ip7h.js","async":true}],["$","script","script-1",{"src":"/demos/hirenova-portal/_next/static/chunks/22yzapnox53wr.js","async":true}]],["$","$L5",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":"$@7","staleTime":"$8","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L9",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#0B2244","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#040C16","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$La",null,{"children":["$","$3",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Employers | Hirenova Workforce"}],["$","meta","1",{"name":"description","content":"Hire skilled and semi-skilled international workers for Serbia, North Macedonia, Bosnia, Albania, Montenegro, Croatia and Bulgaria. Free employer registration and vacancy posting."}],["$","meta","2",{"name":"application-name","content":"Hirenova Workforce"}],["$","meta","3",{"name":"author","content":"Hirenova Workforce Pvt. Ltd."}],["$","meta","4",{"name":"robots","content":"noindex, nofollow"}],["$","meta","5",{"property":"og:title","content":"Employers | Hirenova Workforce"}],["$","meta","6",{"property":"og:description","content":"Hire skilled and semi-skilled international workers for Serbia, North Macedonia, Bosnia, Albania, Montenegro, Croatia and Bulgaria. Free employer registration and vacancy posting."}],["$","meta","7",{"property":"og:site_name","content":"Hirenova Workforce Pvt. Ltd."}],["$","meta","8",{"property":"og:locale","content":"en_GB"}],["$","meta","9",{"property":"og:type","content":"website"}],["$","meta","10",{"name":"twitter:card","content":"summary"}],["$","meta","11",{"name":"twitter:title","content":"Employers | Hirenova Workforce"}],["$","meta","12",{"name":"twitter:description","content":"Hire skilled and semi-skilled international workers for Serbia, North Macedonia, Bosnia, Albania, Montenegro, Croatia and Bulgaria. Free employer registration and vacancy posting."}],["$","link","13",{"rel":"icon","href":"/demos/hirenova-portal/images/logo-mark.png"}],["$","$Lb","14",{}]]}]}]}],null]}],"isPartial":"$@c","staleTime":"$8","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Ld",null,{"parallelRouterKey":"children","template":["$","$Le",null,{}]}]]}],"isPartial":"$@f","staleTime":"$8","varyParams":"$10"},{"rsc":["$","$1","c",{"children":[null,["$","$Ld",null,{"parallelRouterKey":"children","template":["$","$Le",null,{}]}]]}],"isPartial":"$@11","staleTime":"$8","varyParams":"$10"}],"isUpgradeableISRFallback":false,"a":"$@12","rootVaryParams":null,"needsRuntimeRequest":"$@13"}
+6:null
+13:true
+8:300
+8:C
+12:0
+c:"$undefined"
+f:"$undefined"
+11:"$undefined"
+7:"$undefined"

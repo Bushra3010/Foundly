@@ -64,8 +64,8 @@ export function ProjectForm({ project }: { project?: Project }) {
         <legend className="px-1 text-sm font-semibold">Live demo</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className={label}>Demo address
-            <input name="demoUrl" defaultValue={p?.demoUrl ?? ""} className={`${field} mt-1`} placeholder="https://pushpak.demo.foundly.co.in" />
-            <span className={hint}>Only ever an isolated demo copy, never the client&apos;s live app.</span>
+            <input name="demoUrl" defaultValue={p?.demoUrl ?? ""} className={`${field} mt-1`} placeholder="/demos/pushpak" />
+            <span className={hint}>/demos/&lt;project&gt; for demos built into this site, or the address of a separate demo copy — never the client&apos;s live app.</span>
           </label>
           <label className={label}>Demo status
             <select name="demoStatus" defaultValue={p?.demoStatus ?? "none"} className={`${field} mt-1`}>

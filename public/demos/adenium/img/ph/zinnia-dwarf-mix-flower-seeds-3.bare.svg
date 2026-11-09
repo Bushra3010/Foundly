@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Product photograph placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#f4e9ed"/>
+      <stop offset="100%" stop-color="#e8d5dd"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lighten"><feColorMatrix type="matrix" values="1.12 0 0 0 0  0 1.12 0 0 0  0 0 1.12 0 0  0 0 0 1 0"/></filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  
+
+  <!-- cast shadow -->
+  <ellipse cx="205" cy="384" rx="118" ry="20" fill="#2b3a2e" opacity=".12" filter="url(#soft)"/>
+
+  <path d="M 160 282 Q 146 206.5 160 131"
+          stroke="#4a6b4f" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="160" cy="121" r="15" fill="#c4638f"/>
+          <circle cx="154" cy="115" r="9" fill="#d882a8" opacity=".8"/><path d="M 200 282 Q 214 217 200 152"
+          stroke="#4a6b4f" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="200" cy="142" r="15" fill="#c4638f"/>
+          <circle cx="194" cy="136" r="9" fill="#d882a8" opacity=".8"/><path d="M 240 282 Q 226 209.5 240 137"
+          stroke="#4a6b4f" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="240" cy="127" r="15" fill="#c4638f"/>
+          <circle cx="234" cy="121" r="9" fill="#d882a8" opacity=".8"/>
+  
+    <path d="M 119.5 288 h 161 l -20.93 92 h -119.14 Z" fill="#e6e0d8"/>
+    <ellipse cx="200" cy="288" rx="80.5" ry="15" fill="#e6e0d8" filter="url(#lighten)"/>
+    <ellipse cx="200" cy="288" rx="70.5" ry="10" fill="#cbbba4"/>
+</svg>

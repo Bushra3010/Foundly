@@ -1,0 +1,4 @@
+:HL["/demos/weddingmall/_next/static/chunks/2obkh4utx-0jy.css","style"]
+:HL["/demos/weddingmall/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/demos/weddingmall/_next/static/media/96cf155e359290ce-s.p.23ep72p29q6zo.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"admin","param":null,"prefetchHints":0,"slots":{"children":{"name":"vendors","param":null,"prefetchHints":0,"slots":{"children":{"name":"vendorId","param":{"type":"d","key":"_","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"listing","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}}}},"staleTime":300,"buildId":"rOopj4eTbWfKFe4nlJCuc"}

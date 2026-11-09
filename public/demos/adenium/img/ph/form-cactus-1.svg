@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Product photograph placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#eef1e7"/>
+      <stop offset="100%" stop-color="#dde3d2"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lighten"><feColorMatrix type="matrix" values="1.12 0 0 0 0  0 1.12 0 0 0  0 0 1.12 0 0  0 0 0 1 0"/></filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#bg)"/><rect width="400" height="400" fill="url(#glow)"/>
+
+  <!-- cast shadow -->
+  <ellipse cx="205" cy="384" rx="118" ry="20" fill="#2b3a2e" opacity=".18" filter="url(#soft)"/>
+
+  <circle cx="200" cy="229" r="53" fill="#4a6b4f"/><path d="M 200 229 l 53 0" stroke="#38553d" stroke-width="2.5" opacity=".55"/><path d="M 200 229 l 37.47665940288702 37.476659402887016" stroke="#38553d" stroke-width="2.5" opacity=".55"/><path d="M 200 229 l 3.245314017740486e-15 53" stroke="#38553d" stroke-width="2.5" opacity=".55"/><path d="M 200 229 l -37.476659402887016 37.47665940288702" stroke="#38553d" stroke-width="2.5" opacity=".55"/><path d="M 200 229 l -53 6.490628035480972e-15" stroke="#38553d" stroke-width="2.5" opacity=".55"/><path d="M 200 229 l -37.47665940288703 -37.476659402887016" stroke="#38553d" stroke-width="2.5" opacity=".55"/><path d="M 200 229 l -9.735942053221457e-15 -53" stroke="#38553d" stroke-width="2.5" opacity=".55"/><path d="M 200 229 l 37.47665940288701 -37.47665940288703" stroke="#38553d" stroke-width="2.5" opacity=".55"/><circle cx="200" cy="229" r="53" fill="none" stroke="#38553d" stroke-width="2" opacity=".4"/><ellipse cx="215" cy="182" rx="12" ry="8"
+          fill="#e8a3bb" transform="rotate(0 215 182)"/><ellipse cx="207.5" cy="190.6602540378444" rx="12" ry="8"
+          fill="#e8a3bb" transform="rotate(59.99999999999999 207.5 190.6602540378444)"/><ellipse cx="192.5" cy="190.6602540378444" rx="12" ry="8"
+          fill="#e8a3bb" transform="rotate(119.99999999999999 192.5 190.6602540378444)"/><ellipse cx="185" cy="182" rx="12" ry="8"
+          fill="#e8a3bb" transform="rotate(180 185 182)"/><ellipse cx="192.5" cy="173.3397459621556" rx="12" ry="8"
+          fill="#e8a3bb" transform="rotate(239.99999999999997 192.5 173.3397459621556)"/><ellipse cx="207.5" cy="173.3397459621556" rx="12" ry="8"
+          fill="#e8a3bb" transform="rotate(300.00000000000006 207.5 173.3397459621556)"/><circle cx="200" cy="182" r="7" fill="#f2d98b"/>
+  
+    <path d="M 120.5 288 h 159 l -20.67 92 h -117.66 Z" fill="#7d8a6a"/>
+    <ellipse cx="200" cy="288" rx="79.5" ry="15" fill="#7d8a6a" filter="url(#lighten)"/>
+    <ellipse cx="200" cy="288" rx="69.5" ry="10" fill="#c7b696"/>
+</svg>

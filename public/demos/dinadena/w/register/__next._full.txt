@@ -1,0 +1,40 @@
+1:"$Sreact.fragment"
+2:"/demos/dinadena/_next/static/chunks/2hwutouq54ocw.js"
+3:"/demos/dinadena/_next/static/chunks/3dq774yuy1yx5.js"
+4:I[44636,["$2","$3"],"Providers"]
+5:I[39756,["$2","$3"],"default"]
+6:I[37457,["$2","$3"],"default"]
+7:I[54458,["$2","$3"],"DemoMode"]
+9:"ClientSegmentRoot"
+a:I[92825,["$2","$3"],"$9"]
+b:"/demos/dinadena/_next/static/chunks/2pwmgi1vnunl3.js"
+c:"/demos/dinadena/_next/static/chunks/05om8c1m8z0ju.js"
+d:I[3770,["$2","$3","$b","$c"],"default"]
+14:"ViewportBoundary"
+15:I[97367,["$2","$3"],"$14"]
+17:"MetadataBoundary"
+18:I[97367,["$2","$3"],"$17"]
+19:"$Sreact.suspense"
+1b:I[68027,["$2","$3"],"default",1]
+:HL["/demos/dinadena/_next/static/chunks/2giitembsbqxc.css","style"]
+:HL["/demos/dinadena/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/demos/dinadena/_next/static/media/e92fa6abd9c612ef-s.p.2oqonvbxcl6a7.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+11:X
+12:[["children",{"s":"__PAGE__","h":512,"d":{"r":"$L13","p":false,"v":null}}]]
+f:[["children",{"s":"register","h":512,"d":{"r":["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":"$L10","templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],"p":false,"v":"$11"},"c":"$Q12"}]]
+8:[["children",{"s":"w","h":512,"d":{"r":["$","$1","c",{"children":[[["$","script","script-0",{"src":"/demos/dinadena/_next/static/chunks/2pwmgi1vnunl3.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/demos/dinadena/_next/static/chunks/05om8c1m8z0ju.js","async":true,"nonce":"$undefined"}]],["$","$La",null,{"Component":"$d","slots":{"children":["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]},"serverProvidedParams":{"params":{},"promises":["$@e"]}}]]}],"p":false,"v":null},"c":"$Qf"}]]
+0:{"P":null,"c":["","w","register",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/demos/dinadena/_next/static/chunks/2giitembsbqxc.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/demos/dinadena/_next/static/chunks/2hwutouq54ocw.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/demos/dinadena/_next/static/chunks/3dq774yuy1yx5.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"ec5Qua_variable _0IYMRq_variable","children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"(function(){try{var P=\"demo:dinadena:\",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;\nS.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};\nS.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};\nS.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};\nif(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error(\"Service workers are disabled in Foundly demos\"))}}}catch(e){}})();"}}]}],["$","body",null,{"className":"antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{"children":["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}],["$","$L7",null,{"slug":"dinadena","title":"DiNaDeNa · Chowk to Home","blurb":"Sample data stored only in this browser. Post a job as a customer, use the demo button to play the worker accepting, then share OTP 1234 and pay. Every login OTP is 1234.","apps":[{"href":"/demos/dinadena/login/?as=customer","name":"Customer app","login":"Phone 99999 00001 · OTP 1234"},{"href":"/demos/dinadena/login/?as=worker","name":"Worker app","login":"Phone 99999 10001 · OTP 1234"},{"href":"/demos/dinadena/login/?as=admin","name":"Admin console","login":"Phone 99999 00000 · OTP 1234"}]}]]}]]}]]}],"p":false,"v":null},"c":"$Q8"},"h":{"r":["$","$1","h",{"children":[null,["$","$L15",null,{"children":"$L16"}],["$","$L18",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$19",null,{"name":"Next.Metadata","children":"$L1a"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":false,"v":null}},"m":"$undefined","G":["$1b",[["$","link","0",{"rel":"stylesheet","href":"/demos/dinadena/_next/static/chunks/2giitembsbqxc.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"GevqaQ1xDLKL7CjbXXWy6"}
+1c:I[47257,["$2","$3"],"ClientPageRoot"]
+1d:"/demos/dinadena/_next/static/chunks/1qhzyalklr_5n.js"
+1e:I[31767,["$2","$3","$b","$c","$1d"],"default"]
+21:I[97367,["$2","$3"],"OutletBoundary"]
+10:["$","$L6",null,{}]
+13:["$","$1","c",{"children":[["$","$L1c",null,{"Component":"$1e","serverProvidedParams":{"searchParams":{},"params":"$8:0:1:d:r:props:children:1:props:serverProvidedParams:params","promises":["$@1f","$@20"]}}],[["$","script","script-0",{"src":"/demos/dinadena/_next/static/chunks/1qhzyalklr_5n.js","async":true,"nonce":"$undefined"}]],["$","$L21",null,{"children":["$","$19",null,{"name":"Next.MetadataOutlet","children":"$@22"}]}]]}]
+e:"$8:0:1:d:r:props:children:1:props:serverProvidedParams:params"
+11:C
+1f:{}
+20:"$8:0:1:d:r:props:children:1:props:serverProvidedParams:params"
+16:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}],["$","meta","2",{"name":"theme-color","content":"#d9540b"}]]
+23:I[27201,["$2","$3"],"IconMark"]
+1a:[["$","title","0",{"children":"DiNaDeNa · Chowk to Home"}],["$","meta","1",{"name":"description","content":"Hire verified daily wage workers in minutes, with OTP attendance and UPI payment."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","link","3",{"rel":"icon","href":"/demos/dinadena/icon.png?icon.2qwz0281u885f.png","sizes":"512x512","type":"image/png"}],["$","link","4",{"rel":"apple-touch-icon","href":"/demos/dinadena/apple-icon.png?apple-icon.2hc_80rp5q7_s.png","sizes":"180x180","type":"image/png"}],["$","$L23","5",{}]]
+22:null

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Product photograph placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#e9f0e8"/>
+      <stop offset="100%" stop-color="#d5e3d4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lighten"><feColorMatrix type="matrix" values="1.12 0 0 0 0  0 1.12 0 0 0  0 0 1.12 0 0  0 0 0 1 0"/></filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#bg)"/><rect width="400" height="400" fill="url(#glow)"/>
+
+  <!-- cast shadow -->
+  <ellipse cx="205" cy="384" rx="118" ry="20" fill="#2b3a2e" opacity=".18" filter="url(#soft)"/>
+
+  <path d="M 120 282 Q 106 222 120 162"
+          stroke="#4a6b4f" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="120" cy="152" r="15" fill="#c4638f"/>
+          <circle cx="114" cy="146" r="9" fill="#d882a8" opacity=".8"/><path d="M 160 282 Q 174 212 160 142"
+          stroke="#4a6b4f" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="160" cy="132" r="15" fill="#c4638f"/>
+          <circle cx="154" cy="126" r="9" fill="#d882a8" opacity=".8"/><path d="M 200 282 Q 186 207 200 132"
+          stroke="#4a6b4f" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="200" cy="122" r="15" fill="#c4638f"/>
+          <circle cx="194" cy="116" r="9" fill="#d882a8" opacity=".8"/><path d="M 240 282 Q 254 204.5 240 127"
+          stroke="#4a6b4f" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="240" cy="117" r="15" fill="#c4638f"/>
+          <circle cx="234" cy="111" r="9" fill="#d882a8" opacity=".8"/><path d="M 280 282 Q 266 203.5 280 125"
+          stroke="#4a6b4f" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="280" cy="115" r="15" fill="#c4638f"/>
+          <circle cx="274" cy="109" r="9" fill="#d882a8" opacity=".8"/>
+  
+    <path d="M 120 288 h 160 l -20.8 92 h -118.4 Z" fill="#3f5c47"/>
+    <ellipse cx="200" cy="288" rx="80" ry="15" fill="#3f5c47" filter="url(#lighten)"/>
+    <ellipse cx="200" cy="288" rx="70" ry="10" fill="#c9b89a"/>
+</svg>

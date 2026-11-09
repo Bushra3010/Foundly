@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Presenter addressing students at the career guidance session">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dbeafe"/><stop offset="100%" stop-color="#eff6ff"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c7d9ef"/><stop offset="100%" stop-color="#aec5e2"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#sky)"/>
+  <rect x="0" y="330" width="800" height="110" fill="url(#floor)"/>
+  <rect x="150" y="60" width="500" height="250" rx="8" fill="#12386e"/>
+  <rect x="166" y="76" width="468" height="218" rx="4" fill="#1e5fae"/>
+  <text x="400" y="150" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="bold" fill="#ffffff">CAREER</text>
+  <text x="400" y="192" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="bold" fill="#ffffff">OPPORTUNITIES</text>
+  <rect x="250" y="222" width="300" height="8" rx="4" fill="#93c5fd" opacity="0.8"/>
+  <rect x="300" y="242" width="200" height="8" rx="4" fill="#93c5fd" opacity="0.55"/>
+  <rect x="86" y="300" width="86" height="112" rx="6" fill="#0f2f5c" opacity="0.9"/>
+  <circle cx="129" cy="272" r="26" fill="#0f2f5c" opacity="0.9"/>
+  <circle cx="40" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M13.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <circle cx="126" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M99.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <circle cx="212" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M185.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <circle cx="298" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M271.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <circle cx="384" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M357.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <circle cx="470" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M443.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <circle cx="556" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M529.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <circle cx="642" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M615.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <circle cx="728" cy="392" r="18" fill="#0f2f5c" opacity="0.35"/>
+  <path d="M701.0 447.8 a27.0 34.199999999999996 0 0 1 54 0 z" fill="#0f2f5c" opacity="0.35"/>
+  <rect x="0" y="430" width="800" height="70" fill="#0f2f5c" opacity="0.82"/>
+  <text x="28" y="463" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="bold" fill="#ffffff">Presenter addressing students at the career guidance session</text>
+  <text x="28" y="485" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#b9d1ee">Illustration - replace with a real event photograph</text>
+</svg>

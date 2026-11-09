@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Product photograph placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#e9f0e8"/>
+      <stop offset="100%" stop-color="#d5e3d4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lighten"><feColorMatrix type="matrix" values="1.12 0 0 0 0  0 1.12 0 0 0  0 0 1.12 0 0  0 0 0 1 0"/></filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#bg)"/><rect width="400" height="400" fill="url(#glow)"/>
+
+  <!-- cast shadow -->
+  <ellipse cx="205" cy="384" rx="118" ry="20" fill="#2b3a2e" opacity=".18" filter="url(#soft)"/>
+
+  <ellipse cx="200" cy="250.65" rx="62" ry="57" fill="#cbbfa6"/>
+        <ellipse cx="181.4" cy="239.25" rx="24.8" ry="28.5" fill="#d9cfb9" opacity=".7"/><path d="M 180.5 219.3 Q 161 167.4 133.7 117.60000000000002"
+          stroke="#c6b99f" stroke-width="15" fill="none" stroke-linecap="round"/><ellipse cx="133.7" cy="113.60000000000002" rx="16" ry="11" fill="#4a6b4f"/>
+          <ellipse cx="121.69999999999999" cy="122.60000000000002" rx="12" ry="8" fill="#38553d"/><path d="M 193.5 219.3 Q 187 164.4 177.9 112.60000000000002"
+          stroke="#c6b99f" stroke-width="14" fill="none" stroke-linecap="round"/><ellipse cx="177.9" cy="108.60000000000002" rx="16" ry="11" fill="#4a6b4f"/>
+          <ellipse cx="165.9" cy="117.60000000000002" rx="12" ry="8" fill="#38553d"/><path d="M 206.5 219.3 Q 213 163.2 222.1 110.60000000000002"
+          stroke="#c6b99f" stroke-width="13" fill="none" stroke-linecap="round"/><ellipse cx="222.1" cy="106.60000000000002" rx="16" ry="11" fill="#4a6b4f"/>
+          <ellipse cx="210.1" cy="115.60000000000002" rx="12" ry="8" fill="#38553d"/><path d="M 219.5 219.3 Q 239 162.6 266.3 109.60000000000002"
+          stroke="#c6b99f" stroke-width="12" fill="none" stroke-linecap="round"/><ellipse cx="266.3" cy="105.60000000000002" rx="16" ry="11" fill="#4a6b4f"/>
+          <ellipse cx="254.3" cy="114.60000000000002" rx="12" ry="8" fill="#38553d"/>
+  
+    <path d="M 130 288 h 140 l -18.2 92 h -103.6 Z" fill="#3f5c47"/>
+    <ellipse cx="200" cy="288" rx="70" ry="15" fill="#3f5c47" filter="url(#lighten)"/>
+    <ellipse cx="200" cy="288" rx="60" ry="10" fill="#c9b89a"/>
+</svg>

@@ -12,29 +12,39 @@ const admin = async (db: Awaited<ReturnType<typeof makeDb>>) => {
 const png = { type: "image/png", bytes: Buffer.from([0x89, 0x50, 0x4e, 0x47, 1, 2, 3]) };
 
 describe("portfolio", () => {
-  it("seeds the scanned projects hidden, with neutral client labels", async () => {
+  it("seeds the scanned projects with neutral client labels, publishing only those with a working demo", async () => {
     const db = await makeDb();
     const all = await adminListProjects(db);
     expect(all.length).toBe(30);
-    expect(all.every((p) => !p.published && !p.showClient)).toBe(true);
-    expect(await listPublishedProjects(db)).toEqual([]);
+    expect(all.every((p) => !p.showClient)).toBe(true);
+    expect(all.filter((p) => p.published).every((p) => p.demoStatus === "live" && p.demoUrl?.startsWith("/demos/"))).toBe(true);
+    const pub = await listPublishedProjects(db);
+    expect(pub.map((p) => p.slug)).toContain("pushpak-ac-service");
+    // No real client name leaks while the client hasn't agreed to be named.
+    for (const p of pub) {
+      const row = all.find((r) => r.slug === p.slug)!;
+      if (row.clientName) expect(JSON.stringify(p)).not.toContain(row.clientName);
+    }
+    const pushpak = pub.find((p) => p.slug === "pushpak-ac-service")!;
+    expect(pushpak.media[0]?.url).toBe("/work-shots/pushpak-1.webp");
   });
 
   it("shows the client label until the client agrees, and the demo only when live", async () => {
     const db = await makeDb();
     const a = await admin(db);
-    const [p] = await db.select().from(portfolioProjects).where(eq(portfolioProjects.slug, "pushpak-ac-service"));
+    const id = await createProject(db, a, { slug: "label-test", name: "Label test", clientName: "Real Client Pvt Ltd", clientLabel: "AC service company · New Delhi", category: "ERP / CRM", summary: "A project used only to test client labels.", demoStatus: "coming_soon" });
+    const [p] = await db.select().from(portfolioProjects).where(eq(portfolioProjects.id, id));
     await updateProject(db, a, p.id, { published: true, demoUrl: "https://pushpak.demo.example", demoLogins: [{ role: "Admin", login: "admin@demo", secret: "demo" }] });
 
-    let pub = await getPublishedProject(db, "pushpak-ac-service");
+    let pub = await getPublishedProject(db, "label-test");
     expect(pub?.client).toBe("AC service company · New Delhi");
-    expect(JSON.stringify(pub)).not.toContain("Pushpak Refrigeration Centre");
+    expect(JSON.stringify(pub)).not.toContain("Real Client Pvt Ltd");
     expect(pub?.demoUrl).toBeNull(); // status is still "coming soon"
     expect(pub?.demoLogins).toEqual([]);
 
     await updateProject(db, a, p.id, { showClient: true, demoStatus: "live" });
-    pub = await getPublishedProject(db, "pushpak-ac-service");
-    expect(pub?.client).toBe("Pushpak Refrigeration Centre");
+    pub = await getPublishedProject(db, "label-test");
+    expect(pub?.client).toBe("Real Client Pvt Ltd");
     expect(pub?.demoUrl).toBe("https://pushpak.demo.example");
     expect(pub?.demoLogins).toHaveLength(1);
 

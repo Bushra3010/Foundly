@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[8907,["/demos/aquaphil/_next/static/chunks/0n88.n7dfn964.js","/demos/aquaphil/_next/static/chunks/0d3shmwh5_nmn.js","/demos/aquaphil/_next/static/chunks/0a89x-z485zfh.js","/demos/aquaphil/_next/static/chunks/0rdkqqkag~050.js","/demos/aquaphil/_next/static/chunks/0jmop0otzisve.js"],"default"]
+3:I[97367,["/demos/aquaphil/_next/static/chunks/0n88.n7dfn964.js","/demos/aquaphil/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/demos/aquaphil/_next/static/chunks/0a89x-z485zfh.js","async":true}],["$","script","script-1",{"src":"/demos/aquaphil/_next/static/chunks/0rdkqqkag~050.js","async":true}],["$","script","script-2",{"src":"/demos/aquaphil/_next/static/chunks/0jmop0otzisve.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"19uREWIHCHQLAAZDMlfpN"}
+5:null

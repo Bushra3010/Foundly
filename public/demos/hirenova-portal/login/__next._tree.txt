@@ -1,0 +1,3 @@
+:HL["/demos/hirenova-portal/_next/static/chunks/0hkznpwh-yc2q.css","style"]
+:HL["/demos/hirenova-portal/images/logo-mark.png","image"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"login","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"ntnGTcmBYO4EJilEhGwiG"}

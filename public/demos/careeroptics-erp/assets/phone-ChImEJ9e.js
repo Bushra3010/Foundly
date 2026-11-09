@@ -1,0 +1,1 @@
+function e(e){let t=String(e??``).replace(/\D/g,``);return t.length<10?null:t.slice(-10)}function t(t){let n=e(t);return n?`tel:+91${n}`:null}function n(t){let n=e(t);return n?`https://wa.me/91${n}`:null}function r(t){let n=e(t);return n?`+91 ${n.slice(0,5)} ${n.slice(5)}`:String(t??``).trim()||`—`}export{n as i,e as n,t as r,r as t};

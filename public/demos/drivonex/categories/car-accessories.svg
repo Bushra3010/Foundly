@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-label="Car Accessories placeholder">
+  <rect width="400" height="400" fill="#f5f6fa"/>
+  <rect x="90" y="130" width="220" height="150" rx="14" fill="#0b0b0f"/><rect x="90" y="185" width="220" height="14" fill="#3b4252"/>
+  <text x="200" y="360" font-family="system-ui,sans-serif" font-size="20" fill="#5b6478" text-anchor="middle">Car Accessories</text>
+</svg>

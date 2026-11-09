@@ -48,7 +48,7 @@ export default async function EditPortfolioProject({ params, searchParams }: { p
               {media.map((m, i) => (
                 <li key={m.id} className="overflow-hidden rounded-lg border border-border">
                   {/* eslint-disable-next-line @next/next/no-img-element -- served from our own database route */}
-                  <img src={`/work/media/${m.id}`} alt={m.caption ?? `Screenshot ${i + 1}`} className="aspect-video w-full bg-surface-2 object-cover" />
+                  <img src={m.url} alt={m.caption ?? `Screenshot ${i + 1}`} className="aspect-video w-full bg-surface-2 object-cover" />
                   <div className="space-y-2 p-3 text-sm">
                     <p className="font-medium">{i === 0 ? "Thumbnail · " : ""}{m.caption ?? "No caption"}</p>
                     <div className="flex flex-wrap gap-2">

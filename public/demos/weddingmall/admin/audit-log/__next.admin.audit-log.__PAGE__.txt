@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[18663,["/demos/weddingmall/_next/static/chunks/0dv713p48nma1.js","/demos/weddingmall/_next/static/chunks/0os00pjxcrq9t.js","/demos/weddingmall/_next/static/chunks/14mrh2-p_w84d.js","/demos/weddingmall/_next/static/chunks/1nim0fdi31drg.js","/demos/weddingmall/_next/static/chunks/3szwarg70504l.js","/demos/weddingmall/_next/static/chunks/005c63p6q4ble.js","/demos/weddingmall/_next/static/chunks/1fc-mteywp1lf.js"],"default"]
+3:I[97367,["/demos/weddingmall/_next/static/chunks/0dv713p48nma1.js","/demos/weddingmall/_next/static/chunks/0os00pjxcrq9t.js","/demos/weddingmall/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"params":{}}],[["$","script","script-0",{"src":"/demos/weddingmall/_next/static/chunks/1fc-mteywp1lf.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"rOopj4eTbWfKFe4nlJCuc"}
+5:null

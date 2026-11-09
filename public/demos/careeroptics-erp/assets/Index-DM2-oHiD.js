@@ -1,0 +1,1 @@
+import{p as e}from"./chunk-62JRHF6Z-DNFPxerC.js";import{l as t}from"./index-DbunPdHg.js";import{t as n}from"./CentreHome-vjsJyVDJ.js";var r=e(),i=()=>(0,r.jsx)(t,{children:(0,r.jsx)(n,{})});export{i as default};

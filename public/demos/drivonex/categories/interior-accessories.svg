@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-label="Interior Accessories placeholder">
+  <rect width="400" height="400" fill="#f5f6fa"/>
+  <rect x="120" y="90" width="160" height="130" rx="24" fill="#0b0b0f"/><rect x="105" y="215" width="190" height="90" rx="20" fill="#2b2f3a"/>
+  <text x="200" y="360" font-family="system-ui,sans-serif" font-size="20" fill="#5b6478" text-anchor="middle">Interior Accessories</text>
+</svg>

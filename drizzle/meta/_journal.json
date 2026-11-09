@@ -148,6 +148,20 @@
       "when": 1794223205896,
       "tag": "0020_portfolio_seed",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1794253505215,
+      "tag": "0021_portfolio_static_media",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1794253565056,
+      "tag": "0022_portfolio_live_demos",
+      "breakpoints": true
     }
   ]
 }

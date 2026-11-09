@@ -29,10 +29,10 @@ export type PublicProject = {
   demoLogins: { role: string; login: string; secret?: string }[];
   demoStatus: DemoStatus;
   embeddable: boolean;
-  media: { id: string; caption: string | null }[];
+  media: { id: string; caption: string | null; url: string }[];
 };
 
-function toPublic(p: Row, media: { id: string; caption: string | null }[]): PublicProject {
+function toPublic(p: Row, media: { id: string; caption: string | null; url: string }[]): PublicProject {
   const live = p.demoStatus === "live" && !!p.demoUrl;
   return {
     slug: p.slug,
@@ -53,15 +53,20 @@ function toPublic(p: Row, media: { id: string; caption: string | null }[]): Publ
   };
 }
 
+/** Static screenshots are served from /public; uploaded ones from the media route. */
+function mediaUrl(m: { id: string; src: string | null }) {
+  return m.src ?? `/work/media/${m.id}`;
+}
+
 async function mediaFor(db: Db, ids: string[]) {
-  if (ids.length === 0) return new Map<string, { id: string; caption: string | null }[]>();
+  if (ids.length === 0) return new Map<string, { id: string; caption: string | null; url: string }[]>();
   const rows = await db
-    .select({ id: portfolioMedia.id, projectId: portfolioMedia.projectId, caption: portfolioMedia.caption })
+    .select({ id: portfolioMedia.id, projectId: portfolioMedia.projectId, caption: portfolioMedia.caption, src: portfolioMedia.src })
     .from(portfolioMedia)
     .where(inArray(portfolioMedia.projectId, ids))
     .orderBy(asc(portfolioMedia.sortOrder), asc(portfolioMedia.createdAt));
-  const map = new Map<string, { id: string; caption: string | null }[]>();
-  for (const r of rows) map.set(r.projectId, [...(map.get(r.projectId) ?? []), { id: r.id, caption: r.caption }]);
+  const map = new Map<string, { id: string; caption: string | null; url: string }[]>();
+  for (const r of rows) map.set(r.projectId, [...(map.get(r.projectId) ?? []), { id: r.id, caption: r.caption, url: mediaUrl(r) }]);
   return map;
 }
 
@@ -87,8 +92,8 @@ export async function getMedia(db: Db, id: string, isAdmin: boolean) {
     .innerJoin(portfolioProjects, eq(portfolioProjects.id, portfolioMedia.projectId))
     .where(eq(portfolioMedia.id, id))
     .limit(1);
-  if (!row || (!row.published && !isAdmin)) return null;
-  return row;
+  if (!row?.bytes || (!row.published && !isAdmin)) return null;
+  return { ...row, bytes: row.bytes };
 }
 
 // ---------- Admin ----------
@@ -105,11 +110,11 @@ export async function adminGetProject(db: Db, id: string) {
   const [row] = await db.select().from(portfolioProjects).where(eq(portfolioProjects.id, id)).limit(1);
   if (!row) return null;
   const media = await db
-    .select({ id: portfolioMedia.id, caption: portfolioMedia.caption, sortOrder: portfolioMedia.sortOrder, contentType: portfolioMedia.contentType })
+    .select({ id: portfolioMedia.id, caption: portfolioMedia.caption, sortOrder: portfolioMedia.sortOrder, contentType: portfolioMedia.contentType, src: portfolioMedia.src })
     .from(portfolioMedia)
     .where(eq(portfolioMedia.projectId, id))
     .orderBy(asc(portfolioMedia.sortOrder), asc(portfolioMedia.createdAt));
-  return { project: row, media };
+  return { project: row, media: media.map((m) => ({ ...m, url: mediaUrl(m) })) };
 }
 
 export type ProjectInput = Omit<typeof portfolioProjects.$inferInsert, "id" | "createdAt" | "updatedAt">;

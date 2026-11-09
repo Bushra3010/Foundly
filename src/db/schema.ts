@@ -842,7 +842,10 @@ export const portfolioMedia = pgTable(
       .notNull()
       .references(() => portfolioProjects.id, { onDelete: "cascade" }),
     contentType: text("content_type").notNull(),
-    bytes: bytea("bytes").notNull(),
+    /** Uploaded image. Null when the screenshot ships as a static file instead (see `src`). */
+    bytes: bytea("bytes"),
+    /** Path of a static screenshot in /public, e.g. "/work-shots/pushpak-1.webp". */
+    src: text("src"),
     caption: text("caption"),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: createdAt(),

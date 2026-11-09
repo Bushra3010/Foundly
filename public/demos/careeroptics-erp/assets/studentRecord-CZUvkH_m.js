@@ -1,0 +1,1 @@
+function e(e){let t=e.documents?.passportPhoto?.dataUrl;if(t)return t;let n=e.photo;if(typeof n==`string`)return n;if(n&&typeof n==`object`){let e=n.dataUrl;if(typeof e==`string`)return e}return``}export{e as t};

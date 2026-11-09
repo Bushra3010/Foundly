@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[47257,["/demos/skyhigh-booking/_next/static/chunks/0sr9u_45mhmn8.js","/demos/skyhigh-booking/_next/static/chunks/14mrh2-p_w84d.js"],"ClientPageRoot"]
+3:I[28030,["/demos/skyhigh-booking/_next/static/chunks/0sr9u_45mhmn8.js","/demos/skyhigh-booking/_next/static/chunks/14mrh2-p_w84d.js","/demos/skyhigh-booking/_next/static/chunks/0nabql2lvd0oc.js","/demos/skyhigh-booking/_next/static/chunks/2s5sblzc1c2s8.js","/demos/skyhigh-booking/_next/static/chunks/2341hb-kg9yqd.js","/demos/skyhigh-booking/_next/static/chunks/36eaia0q9n2cr.js"],"default"]
+6:I[97367,["/demos/skyhigh-booking/_next/static/chunks/0sr9u_45mhmn8.js","/demos/skyhigh-booking/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/demos/skyhigh-booking/_next/static/chunks/36eaia0q9n2cr.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"6dqHBYnnl7SSs4WvhoWcx"}
+4:{}
+5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
+8:null
