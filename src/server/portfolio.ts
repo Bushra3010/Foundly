@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, notInArray, sql } from "drizzle-orm";
 import { auditEvents, portfolioMedia, portfolioProjects } from "@/db/schema";
 import type { Db } from "@/db";
 import type { AdminCtx } from "@/server/admin";
@@ -70,14 +70,26 @@ async function mediaFor(db: Db, ids: string[]) {
   return map;
 }
 
+/** Projects kept off the public /work pages regardless of their published flag (hidden by the owner, Nov 2026). */
+export const HIDDEN_PROJECT_SLUGS: readonly string[] = [
+  "careeroptics-web",
+  "safar-ai-travel-assistant",
+  "shera-travels-booking-crm",
+  "blinks-ai-strategy-landing",
+  "admission-pramarsh-site",
+  "admission-aasharay-site",
+];
+
+const isPublic = and(eq(portfolioProjects.published, true), notInArray(portfolioProjects.slug, [...HIDDEN_PROJECT_SLUGS]));
+
 export async function listPublishedProjects(db: Db): Promise<PublicProject[]> {
-  const rows = await db.select().from(portfolioProjects).where(eq(portfolioProjects.published, true)).orderBy(asc(portfolioProjects.sortOrder), asc(portfolioProjects.name));
+  const rows = await db.select().from(portfolioProjects).where(isPublic).orderBy(asc(portfolioProjects.sortOrder), asc(portfolioProjects.name));
   const media = await mediaFor(db, rows.map((r) => r.id));
   return rows.map((r) => toPublic(r, media.get(r.id) ?? []));
 }
 
 export async function getPublishedProject(db: Db, slug: string): Promise<PublicProject | null> {
-  const [row] = await db.select().from(portfolioProjects).where(and(eq(portfolioProjects.slug, slug), eq(portfolioProjects.published, true))).limit(1);
+  const [row] = await db.select().from(portfolioProjects).where(and(eq(portfolioProjects.slug, slug), isPublic)).limit(1);
   if (!row) return null;
   const media = await mediaFor(db, [row.id]);
   return toPublic(row, media.get(row.id) ?? []);

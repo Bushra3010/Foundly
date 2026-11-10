@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 import { eq } from "drizzle-orm";
 import { auditEvents, portfolioProjects } from "@/db/schema";
-import { addMedia, adminListProjects, createProject, deleteProject, getMedia, getPublishedProject, listPublishedProjects, makeCover, updateProject } from "@/server/portfolio";
+import { addMedia, adminListProjects, createProject, deleteProject, getMedia, getPublishedProject, HIDDEN_PROJECT_SLUGS, listPublishedProjects, makeCover, updateProject } from "@/server/portfolio";
 import { makeDb, signUp } from "./helpers";
 
 const admin = async (db: Awaited<ReturnType<typeof makeDb>>) => {
@@ -30,6 +30,16 @@ describe("portfolio", () => {
     }
     const pushpak = pub.find((p) => p.slug === "pushpak-ac-service")!;
     expect(pushpak.media[0]?.url).toBe("/work-shots/pushpak-1.webp");
+  });
+
+  it("keeps hidden projects off the public pages", async () => {
+    const db = await makeDb();
+    const slugs = (await listPublishedProjects(db)).map((p) => p.slug);
+    for (const slug of HIDDEN_PROJECT_SLUGS) {
+      expect(slugs).not.toContain(slug);
+      expect(await getPublishedProject(db, slug)).toBeNull();
+    }
+    expect(slugs).toContain("xealedu-admissions-site");
   });
 
   it("shows the client label until the client agrees, and the demo only when live", async () => {
