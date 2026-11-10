@@ -44,3 +44,7 @@ next-env.d.ts
 /.data
 /backups
 
+
+# Private documents and scratch files (never push: repo is public)
+/output/
+/tmp/
