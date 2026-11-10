@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Research FAQs | SWAMITRA Foundation</title>
+<meta name="description" content="Explore SWAMITRA Foundation's Research Centre featuring publications, policy papers, national frameworks, standards, surveys and collaborative research initiatives.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<meta property="og:title" content="Research FAQs">
+<meta property="og:description" content="Publications, policy papers, national frameworks, standards, surveys and collaborative research from SWAMITRA Foundation.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="research" data-title="Research FAQs">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><a href="research.html">Research</a><span class="sep">/</span><span>FAQs</span>
+      </nav>
+      <h1>Research Centre questions</h1>
+    </div>
+  </section>
+
+
+  <section class="section section--cream" id="faqs">
+    <div class="wrap wrap-narrow">
+      <div class="acc reveal">
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">How do I submit a research proposal?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Use the collaboration form on this page. Include the research question, your proposed method, the timeline and the institutional support available to you. A concept note of two to four pages is usually sufficient for a first review. Proposals are considered on a rolling basis and every submission receives a written response.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">Are publications free to access?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Yes. Every framework, standard, policy brief, working paper and survey report published by the Centre is free to download and free to use for educational and non-commercial purposes with attribution. There is no registration wall and no institutional subscription.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">Do you offer research fellowships or internships?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Fellowship and research internship opportunities are announced periodically under Get Involved. Openings, eligibility conditions and application windows are published there as they are confirmed; we do not maintain a standing waiting list.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">How should I cite SWAMITRA research?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Cite the publication title, the version number where one is given, SWAMITRA Foundation as the publisher, and the year of publication. Frameworks carry version numbers precisely so that a citation points to a fixed text; please cite the version you actually consulted rather than the latest release.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">Can I request the underlying data from a study?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Anonymised datasets are released alongside the report they support wherever participant consent allows it. For data that has not been released, submit a request through the collaboration form describing the intended use. Requests are assessed against our consent conditions, safeguarding obligations and the risk of re-identification.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">Does funding influence what you publish?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>No. Funding arrangements are disclosed in the publication itself, and funders have no right of approval over findings, wording or the decision to publish. Where a study is commissioned, that fact is stated on the cover page.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+
+  function fmt(d) {
+    return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  }
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+  /* Inline icons declared with data-icon */
+  document.querySelectorAll("[data-icon]").forEach(function (el) {
+    el.innerHTML = I(el.getAttribute("data-icon"));
+  });
+
+  /* ---- Research themes ---- */
+  var THEMES = [
+    ["scale", "Legal Education", "How legal knowledge is taught outside law schools, and what a non-specialist actually needs to know to act on their own rights."],
+    ["book", "Constitutional Literacy", "Whether people can connect constitutional values to the decisions and disputes they encounter in ordinary life."],
+    ["school", "Safe Schools", "What makes a school safe as a working system — committees, procedures and review — rather than as a policy on a shelf."],
+    ["building", "Safe Workplaces", "The distance between a compliant document and a workplace where a person is genuinely able to raise a concern."],
+    ["shield", "Child Protection", "How institutions recognise, record and report concerns, and what shortens the interval between noticing and acting."],
+    ["chart", "Public Policy", "Where education, safety and justice policy meet in practice, and which interventions survive contact with implementation."],
+    ["globe", "Governance", "Transparency, accountability and ethical conduct inside institutions that hold public trust."],
+    ["users", "Civic Responsibility", "What moves a citizen from knowing a right to exercising it, and from holding an opinion to participating."]
+  ];
+  set("themes-grid", THEMES.map(function (t) {
+    return '<article class="card focus-card"><span class="card__icon">' + I(t[0]) + "</span>" +
+      "<h3>" + t[1] + "</h3><p>" + t[2] + "</p></article>";
+  }).join(""));
+
+  /* Populate the research-area select from the same themes */
+  var sel = document.getElementById("rc-area");
+  if (sel) {
+    THEMES.forEach(function (t) {
+      var o = document.createElement("option");
+      o.value = t[1]; o.textContent = t[1];
+      sel.appendChild(o);
+    });
+    var other = document.createElement("option");
+    other.value = "Other"; other.textContent = "Other / cross-cutting";
+    sel.appendChild(other);
+  }
+
+  /* ---- Publications with a type filter ---- */
+  var PUBS = D.publications || [];
+  var TYPES = ["Research Paper", "White Paper", "Policy Brief", "Working Paper", "Policy Paper", "Survey Report"];
+  var activeType = "All";
+
+  set("pub-chips",
+    ['<button class="chip" type="button" aria-pressed="true" data-type="All">All types</button>']
+      .concat(TYPES.map(function (t) {
+        return '<button class="chip" type="button" aria-pressed="false" data-type="' + t + '">' + t + "s</button>";
+      })).join(""));
+
+  function renderPubs() {
+    var list = activeType === "All" ? PUBS : PUBS.filter(function (p) { return p.type === activeType; });
+    set("pub-grid", list.map(function (p) {
+      return '<article class="card news-card">' +
+        '<div class="news-card__media"><span>' + p.type.split(" ")[0].toUpperCase() + "</span></div>" +
+        '<div class="news-card__body">' +
+          '<div class="news-card__meta"><span class="tag tag--grey">' + p.theme + "</span><span>" + fmt(p.date) + "</span></div>" +
+          "<h4>" + p.title + "</h4>" +
+          '<p style="font-size:var(--fs-sm)">' + p.type + " · " + p.pages + " pages · PDF</p>" +
+          '<a class="card__foot link-more" href="#" data-dl="' + p.title + '">Download</a>' +
+        "</div></article>";
+    }).join(""));
+
+    var count = document.getElementById("pub-count");
+    if (count) count.textContent = "Showing " + list.length + " of " + PUBS.length + " publications";
+    var empty = document.getElementById("pub-empty");
+    if (empty) empty.hidden = list.length > 0;
+  }
+
+  var chips = document.getElementById("pub-chips");
+  if (chips) {
+    chips.addEventListener("click", function (e) {
+      var b = e.target.closest(".chip");
+      if (!b) return;
+      activeType = b.getAttribute("data-type");
+      chips.querySelectorAll(".chip").forEach(function (c) {
+        c.setAttribute("aria-pressed", String(c === b));
+      });
+      renderPubs();
+    });
+  }
+  renderPubs();
+
+  /* ---- National frameworks & standards ---- */
+  var NAMED = ["National Safe School Framework", "National Safe Workplace Standards", "NLEM Curriculum Framework"];
+  var frameworks = (D.resources || []).filter(function (r) {
+    return r.type === "Framework" || NAMED.indexOf(r.title) > -1;
+  });
+  set("framework-list", frameworks.map(function (r) {
+    return '<a class="res-item" href="#" data-dl="' + r.title + '">' +
+      '<span class="res-item__ext">' + r.ext + "</span>" +
+      '<span class="res-item__body"><b>' + r.title + "</b><small>" + r.cat + " · " + r.type + " · " + r.size + " · " + fmt(r.date) + "</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+
+  /* ---- Research statistics ---- */
+  var wanted = ["Research Publications", "Institutions Engaged", "States Reached", "Strategic Partnerships"];
+  set("research-stats", (D.stats || []).filter(function (s) {
+    return wanted.indexOf(s.label) > -1;
+  }).map(function (s) {
+    return '<div class="stat"><b data-count="' + s.n + '" data-suffix="' + s.suffix + '">0</b><span>' + s.label + "</span></div>";
+  }).join(""));
+
+  /* ---- Surveys & reports (report-type resources + survey publications) ---- */
+  var surveys = (D.resources || []).filter(function (r) { return r.type === "Report"; })
+    .map(function (r) {
+      return { title: r.title, ext: r.ext, meta: r.cat + " · " + r.type + " · " + r.size + " · " + fmt(r.date) };
+    })
+    .concat(PUBS.filter(function (p) { return p.type === "Survey Report"; }).map(function (p) {
+      return { title: p.title, ext: "PDF", meta: p.theme + " · " + p.type + " · " + p.pages + " pages · " + fmt(p.date) };
+    }));
+  set("survey-list", surveys.map(function (s) {
+    return '<a class="res-item" href="#" data-dl="' + s.title + '">' +
+      '<span class="res-item__ext">' + s.ext + "</span>" +
+      '<span class="res-item__body"><b>' + s.title + "</b><small>" + s.meta + "</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+
+  /* ---- Research partners marquee ---- */
+  var partners = ["Universities", "Law Schools", "Government Agencies", "State Education Boards",
+    "Think Tanks", "Research Centres", "NGOs & Civil Society", "Corporate & CSR"];
+  var row = partners.map(function (p) { return '<div class="partner-logo">' + p + "</div>"; }).join("");
+  set("partner-track", row + row);
+
+  /* ---- Research news ---- */
+  set("research-news-grid", (D.news || []).filter(function (n) {
+    return n.cat === "Research" || n.cat === "Announcement";
+  }).slice(0, 3).map(function (n) {
+    return '<a class="card news-card" href="news.html">' +
+      '<div class="news-card__media"><span>' + n.cat.toUpperCase() + "</span></div>" +
+      '<div class="news-card__body">' +
+        '<div class="news-card__meta"><span class="tag tag--maroon">' + n.cat + "</span><span>" + fmt(n.date) + "</span></div>" +
+        "<h4>" + n.title + '</h4><p style="font-size:var(--fs-sm)">' + n.summary + "</p>" +
+        '<span class="card__foot link-more">Read more</span>' +
+      "</div></a>";
+  }).join(""));
+
+  /* ---- Download links are placeholders until publication ---- */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-dl]");
+    if (!a) return;
+    e.preventDefault();
+    window.swToast("“" + a.getAttribute("data-dl") + "” will be available to download on publication.");
+  });
+})();
+</script>
+</body>
+</html>

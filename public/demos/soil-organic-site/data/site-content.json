@@ -1,0 +1,130 @@
+{
+  "home": {
+    "hero": {
+      "eyebrow": "Transforming Agriculture Through Nature, Science & Sustainability",
+      "title": "Here The Life",
+      "accent": "Germinates",
+      "body": "SOIL promotes sustainable farming through bio-fertilizers, bio-inputs, organic farming solutions, soil health support, and trusted market linkages for farmers.",
+      "image": "assets/media/hero-billboard-farmer.jpeg",
+      "primaryButton": "Explore Solutions",
+      "secondaryButton": "Become a Partner"
+    },
+    "about": {
+      "label": "About Us",
+      "title": "Restoring Soil. Empowering Farmers.",
+      "body": "At SOIL (Sheevar Organic Industrial Limited), healthy soil is the foundation of healthy food, healthy farmers, and a healthy nation. We support Indian agriculture with sustainable bio-products, organic farming guidance, and long-term farmer partnerships.",
+      "image": "assets/media/farmer-p-soul-field.jpeg"
+    },
+    "why": {
+      "label": "Why Choose Us",
+      "title": "Why Choose SOIL",
+      "body": "Scientifically developed bio-products, expert field guidance, and a support system built for farmers, dealers, distributors, and sustainable agriculture partners."
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "About SOIL",
+      "title": "Transforming Agriculture Through Nature, Science & Sustainability",
+      "body": "At SOIL, healthy soil is the foundation of healthy food, healthy farmers, and a healthy nation. We restore soil health, empower farmers, and create sustainable farm-to-market opportunities.",
+      "image": "assets/media/sustainability-contrast.jpeg"
+    },
+    "intro": {
+      "label": "Welcome to SOIL",
+      "title": "Restoring soil for a stronger agricultural future",
+      "body": "SOIL (Sheevar Organic Industrial Limited) promotes sustainable farming through bio-fertilizers, bio-inputs, organic farming solutions, and assured market linkages for farmers."
+    }
+  },
+  "solutions": {
+    "hero": {
+      "eyebrow": "SOIL Solutions",
+      "title": "Bio-products, organic farming guidance, and market support",
+      "body": "SOIL supports farmers from soil health management to organic transition, quality inspection, and eligible crop procurement.",
+      "image": "assets/media/soil-root-glow.jpeg"
+    },
+    "heading": {
+      "label": "What We Do",
+      "title": "Detailed Solutions"
+    },
+    "items": [
+      {
+        "category": "Bio Products",
+        "title": "Bio Fertilizers",
+        "body": "Scientifically developed bio-fertilizers improve soil fertility naturally by increasing beneficial microorganisms, enhancing nutrient availability, and promoting healthy plant growth.",
+        "image": "assets/media/product-nitrogrow-front.jpeg"
+      },
+      {
+        "category": "Organic Farming",
+        "title": "Organic Farming Solutions",
+        "body": "SOIL helps farmers gradually transition from conventional chemical farming to sustainable organic farming with farm assessment, soil health analysis, crop nutrition planning, and field support.",
+        "image": "assets/media/soil-root-glow.jpeg"
+      },
+      {
+        "category": "Farmer Support",
+        "title": "Chemical Residue Reduction Program",
+        "body": "A structured transition program that focuses on reducing chemical residues through scientific biological solutions and improved cultivation practices.",
+        "image": "assets/media/dry-green-transition.jpeg"
+      },
+      {
+        "category": "Market Linkage",
+        "title": "Organic Crop Procurement",
+        "body": "SOIL supports eligible organic produce procurement cultivated under recommended practices, subject to quality standards and procurement policies.",
+        "image": "assets/media/product-nitrogrow-farmer.jpeg"
+      }
+    ]
+  },
+  "dealer": {
+    "hero": {
+      "eyebrow": "Join the SOIL Family",
+      "title": "Grow with SOIL - together we build sustainable agriculture",
+      "body": "SOIL invites entrepreneurs, agri-professionals, retailers, distributors, and sales experts to build long-term growth with quality products, training, technical support, and market credibility.",
+      "image": "assets/media/event-products-bouquet.jpeg"
+    },
+    "supportHeading": {
+      "label": "Complete Support",
+      "title": "Marketing, Sales, Branding & Technical Support"
+    },
+    "mediaHeading": {
+      "label": "SOIL Network",
+      "title": "Events, Products & Partner Presence"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "eyebrow": "SOIL Media Gallery",
+      "title": "Products, farmers, events, and field-ready brand visuals",
+      "body": "All provided SOIL photos and video are organized here so visitors can see the product range, farmer communication, and partner presence together.",
+      "image": "assets/media/hero-billboard-farmer.jpeg"
+    },
+    "sections": [
+      {
+        "label": "Brand & Farmer Creatives",
+        "title": "Campaign Visuals"
+      },
+      {
+        "label": "SOIL Products",
+        "title": "Product Range"
+      },
+      {
+        "label": "Soil Health Concepts",
+        "title": "Nature & Science"
+      },
+      {
+        "label": "Events & Team Presence",
+        "title": "SOIL Network"
+      }
+    ]
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Contact SOIL",
+      "title": "Apply today and join the SOIL family",
+      "body": "Send your enquiry for products, farmer support, District Dealer, Block Distributor, Retailer, Sales Executive, or market linkage opportunities.",
+      "image": "assets/media/hands-sapling.jpeg"
+    },
+    "form": {
+      "label": "Get in Touch",
+      "title": "SOIL team is ready to support your next step",
+      "body": "Share your state, district, business type, and requirement. The SOIL team can guide you with the right product, support, or partnership opportunity."
+    }
+  }
+}

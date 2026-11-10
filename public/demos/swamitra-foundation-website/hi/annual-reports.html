@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="hi" data-base="" data-assets="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>वार्षिक रिपोर्ट | SWAMITRA Foundation</title>
+<meta name="description" content="फाउंडेशन अपने विषय में जो कुछ भी प्रकाशित करता है, वह यहाँ संकलित है: वार्षिक एवं प्रभाव रिपोर्टिंग, तथा वह अनुसंधान कार्य जिस पर हमारे कार्यक्रम आधारित हैं।">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<meta property="og:title" content="वार्षिक रिपोर्ट | SWAMITRA Foundation">
+<meta property="og:description" content="SWAMITRA Foundation में दृष्टि, मिशन, मूल्य, दृष्टिकोण, नेतृत्व, शासन और पारदर्शिता।">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="about" data-title="वार्षिक रिपोर्ट">
+<a class="skip-link" href="#main">मुख्य सामग्री पर जाएँ</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="ब्रेडक्रम्ब">
+        <a href="index.html">होम</a><span class="sep">/</span><a href="about.html">हमारे बारे में</a><span class="sep">/</span><span>वार्षिक रिपोर्ट</span>
+      </nav>
+      <h1>रिपोर्ट, प्रभाव और प्रकाशन</h1>
+      <p class="lead">फाउंडेशन अपने विषय में जो कुछ भी प्रकाशित करता है, वह यहाँ संकलित है: वार्षिक एवं प्रभाव रिपोर्टिंग, तथा वह अनुसंधान कार्य जिस पर हमारे कार्यक्रम आधारित हैं।</p>
+    </div>
+  </section>
+
+
+  <section class="section section--cream" id="reports">
+    <div class="wrap">
+
+      <h3 class="reveal">वार्षिक और प्रभाव रिपोर्ट</h3>
+      <div class="grid g-2 mt-6 reveal" id="report-rows"></div>
+
+      <h3 class="mt-8 reveal">चुनिंदा प्रकाशन</h3>
+      <div class="grid g-2 mt-6 reveal" id="publication-rows"></div>
+      <div class="btn-row mt-8">
+        <a class="btn btn--outline" href="research.html">अनुसंधान केंद्र देखें</a>
+        <a class="btn btn--ghost" href="resources.html">सभी संसाधन देखें</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="../assets/js/ui.hi.js"></script>
+<script src="../assets/js/data.hi.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+  function fmt(d) {
+    return new Date(d).toLocaleDateString("hi-IN", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  /* Impact statistics */
+  set("stats-grid", D.stats.map(function (s) {
+    return '<div class="stat"><b data-count="' + s.n + '" data-suffix="' + s.suffix + '">0</b><span>' + s.label + "</span></div>";
+  }).join(""));
+
+  /* Registered office from org data */
+  var addr = document.getElementById("tx-address");
+  if (addr && D.org && D.org.address) addr.textContent = D.org.address;
+
+  /* Annual and impact reports */
+  var reports = [
+    ["वार्षिक रिपोर्ट", "2025–26", "शासन, गतिविधियाँ, कार्यक्रम पहुँच और अंकेक्षित वित्तीय विवरण।"],
+    ["प्रभाव रिपोर्ट", "2025–26", "विद्यालयों, कार्यस्थलों और समुदायों में आधाररेखा के सापेक्ष मापे गए परिणाम।"],
+    ["लेखा विवरण", "2025–26", "श्रेणी-वार अंकेक्षित आय, व्यय और निधियों का उपयोग।"],
+    ["अनुपालन एवं संरक्षण सारांश", "2025–26", "सांविधिक समिति गतिविधि, प्रशिक्षण कवरेज और नीति समीक्षा अभिलेख।"]
+  ];
+  set("report-rows", reports.map(function (r) {
+    return '<div class="res-item"><span class="res-item__ext">PDF</span>' +
+      '<span class="res-item__body"><b>' + r[0] + " " + r[1] + "</b><small>" + r[2] +
+      " · रिपोर्टिंग चक्र के समापन पर प्रकाशन हेतु निर्धारित</small></span>" +
+      '<span style="color:var(--muted-2)">' + I("clock") + "</span></div>";
+  }).join(""));
+
+  /* Publications from the Research Centre */
+  set("publication-rows", D.publications.slice(0, 3).map(function (p) {
+    return '<a class="res-item" href="featured-publications.html">' +
+      '<span class="res-item__ext">PDF</span>' +
+      '<span class="res-item__body"><b>' + p.title + "</b><small>" + p.type + " · " + p.theme +
+      " · " + p.pages + " पृष्ठ · " + fmt(p.date) + "</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+
+  /* Policies from the legal library */
+  var policySlugs = ["privacy-policy", "child-protection-policy", "posh-policy",
+    "code-of-ethics", "conflict-of-interest-policy", "whistleblower-policy"];
+  set("policy-grid", policySlugs.map(function (slug) {
+    var p = D.legal[slug];
+    if (!p) return "";
+    return '<a class="res-item" href="legal.html?doc=' + slug + '">' +
+      '<span class="res-item__ext">' + I("shield") + "</span>" +
+      '<span class="res-item__body"><b>' + p.title + "</b><small>अंतिम बार अद्यतन " + p.updated +
+      " · " + p.sections.length + " अनुभाग</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

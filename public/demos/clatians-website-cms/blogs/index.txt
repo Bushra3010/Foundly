@@ -1,0 +1,525 @@
+1:"$Sreact.fragment"
+3:I[39756,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+4:I[37457,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+6:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+a:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"ViewportBoundary"]
+c:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"MetadataBoundary"]
+e:I[68027,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default",1]
+:HL["/demos/clatians-website-cms/_next/static/chunks/0m-tw5g9h5755.css","style"]
+:HL["/demos/clatians-website-cms/_next/static/media/fba5a26ea33df6a3-s.p.0eehd8tgys7nv.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"P":null,"c":["","blogs",""],"q":"","i":false,"f":[[["",{"children":["blogs",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/demos/clatians-website-cms/_next/static/chunks/0m-tw5g9h5755.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","async":true,"nonce":"$undefined"}]],"$L2"]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/10076n0ay22py.js","async":true,"nonce":"$undefined"}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,null]},null,false,"$@9"]},null,false,null],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$e",[["$","link","0",{"rel":"stylesheet","href":"/demos/clatians-website-cms/_next/static/chunks/0m-tw5g9h5755.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"qUGiI2hLtG2nds025c7Wg"}
+f:[]
+9:"$Wf"
+10:I[78527,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"SiteSettingsProvider"]
+13:I[45678,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/10076n0ay22py.js"],"default"]
+14:I[93567,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/10076n0ay22py.js"],"default"]
+15:I[78593,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/10076n0ay22py.js"],"default"]
+2:["$","html",null,{"lang":"en","className":"plus_jakarta_sans_6a83704a-module__ugZDJG__variable","children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"(function(){try{var P=\"demo:clatians-website-cms:\",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;\nS.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};\nS.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};\nS.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};\nif(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error(\"Service workers are disabled in Foundly demos\"))}}}catch(e){}})();"}}]}],["$","body",null,{"className":"plus_jakarta_sans_6a83704a-module__ugZDJG__className","style":{"overflowX":"clip","maxWidth":"100%"},"children":[["$","$L10",null,{"settings":{"logoSrc":"/demos/clatians-website-cms/logo.png","logoAlt":"CLATians","phone":"8507700177","whatsapp":"918507700177","desktopNav":[{"label":"Home","href":"/"},{"label":"Courses","href":"/courses","children":[{"label":"🏫 Offline Course","href":"/courses?cat=offline"},{"label":"💻 Online Course","href":"/courses?cat=online"},{"label":"🎯 Mentorship","href":"/courses?cat=mentorship"},{"label":"📝 Mock Tests","href":"/courses?cat=mock"}]},{"label":"Exams","href":"/exams/clat","children":[{"label":"🏛️ CLAT","href":"/exams/clat"},{"label":"⚖️ AILET","href":"/exams/ailet"},{"label":"📍 MH-CET Law","href":"/exams/mh-cet-law"},{"label":"🎓 CUET","href":"/exams/cuet"},{"label":"🎖️ AIL-LET","href":"/exams/ail-let"},{"label":"🌐 LSAT India","href":"/exams/lsat"}]},{"label":"Admission","href":"/admission"},{"label":"The CLATians Journal","href":"/blogs"},{"label":"About","href":"/about"},{"label":"Contact","href":"/contact"}],"mobileMenu":[{"label":"Courses","href":"/courses","icon":"📚"},{"label":"Exams","href":"/exams/clat","icon":"🏛️"},{"label":"Admission","href":"/admission","icon":"🎓"},{"label":"The CLATians Journal","href":"/blogs","icon":"✍️"},{"label":"About","href":"/about","icon":"👥"},{"label":"Contact","href":"/contact","icon":"📞"}],"mobileBottomNav":[{"label":"Home","href":"/","icon":"home","color":"#06b6d4"},{"label":"Courses","href":"/courses","icon":"courses","color":"#8b5cf6"},{"label":"Exams","href":"/exams/clat","icon":"exams","color":"#f59e0b"},{"label":"Admission","href":"/admission","icon":"admission","color":"#f97316"},{"label":"More","href":"/about","icon":"more","color":"#ec4899"}],"desktopCtas":[{"label":"College Predictor","href":"/college-predictor"},{"label":"Admission 2026","href":"/admission"}],"mobilePredictorLabel":"🔮 Predictor","mobilePredictorHref":"/college-predictor","footerDescription":"Your trusted institute for CLAT, AILET, and all major law entrance exams. Expert guidance by NLU alumni and advocates.","footerMobileDescription":"India's #1 CLAT coaching — 1.25L+ students, 5000+ NLU selections since 2012.","footerCopyright":"© 2026 CLATians – All rights reserved.","footerCoursesTitle":"Courses","footerExamsTitle":"Exams","footerQuickLinksTitle":"Quick Links","footerCourses":[{"label":"Offline Course","href":"/courses?cat=offline"},{"label":"Online Course","href":"/courses?cat=online"},{"label":"CLAT Navigator™","href":"/courses/clat-mentorship-program/clat-navigator"},{"label":"Mock Tests","href":"/courses?cat=mock"}],"footerExams":[{"label":"CLAT","href":"/exams/clat"},{"label":"AILET","href":"/exams/ailet"},{"label":"MH-CET Law","href":"/exams/mh-cet-law"},{"label":"CUET","href":"/exams/cuet"},{"label":"AIL-LET","href":"/exams/ail-let"},{"label":"LSAT","href":"/exams/lsat"}],"footerQuickLinks":[{"label":"About Us","href":"/about"},{"label":"Faculty","href":"/faculty"},{"label":"Admission","href":"/admission"},{"label":"The CLATians Journal","href":"/blogs"},{"label":"College Predictor","href":"/college-predictor"}],"socials":[{"label":"Facebook","href":"#","icon":"f","color":"#1877f2","bg":"rgba(24,119,242,0.15)"},{"label":"YouTube","href":"#","icon":"▶","color":"#ff0000","bg":"rgba(255,0,0,0.12)"},{"label":"Instagram","href":"#","icon":"📷","color":"#e1306c","bg":"rgba(225,48,108,0.12)"},{"label":"LinkedIn","href":"#","icon":"in","color":"#0a66c2","bg":"rgba(10,102,194,0.15)"}],"pageBanners":[{"key":"about","enabled":false,"eyebrow":"About CLATians","title":"Learn, Practice, Achieve","subtitle":"Add a custom about page announcement or intro from admin.","ctaLabel":"Explore Courses","ctaHref":"/courses"},{"key":"admission","enabled":false,"eyebrow":"Admission Open","title":"Start your CLAT journey","subtitle":"Add a custom admission message from admin.","ctaLabel":"Call Now","ctaHref":"tel:8507700177"},{"key":"contact","enabled":false,"eyebrow":"Contact CLATians","title":"Speak to our counsellors","subtitle":"Add contact page instructions or offer text from admin.","ctaLabel":"WhatsApp Us","ctaHref":"https://wa.me/918507700177"},{"key":"college-predictor","enabled":false,"eyebrow":"College Predictor","title":"Check your NLU chances","subtitle":"Add predictor page copy from admin.","ctaLabel":"Try Now","ctaHref":"/college-predictor"},{"key":"blogs","enabled":false,"eyebrow":"CLATians Journal","title":"Latest preparation insights","subtitle":"Add blog page intro or announcement from admin.","ctaLabel":"View Courses","ctaHref":"/courses"},{"key":"faculty","enabled":false,"eyebrow":"Faculty","title":"Meet our mentors","subtitle":"Add faculty page intro or announcement from admin.","ctaLabel":"Get Counselling","ctaHref":"/admission"}]},"children":"$L11"}],"$L12"]}]]}]
+16:Tb70,CLAT 2026 is one of the most anticipated law entrance exams in India. Whether you are just starting your preparation or looking to fine-tune your strategy, this comprehensive guide will walk you through everything you need to know.
+
+## Understanding the CLAT Exam Pattern
+
+CLAT 2026 is a 2-hour Computer Based Test with 150 questions worth 150 marks. The five sections are:
+- English Language (28 questions)
+- Current Affairs & GK (35 questions)
+- Legal Reasoning (35 questions)
+- Logical Reasoning (28 questions)
+- Quantitative Techniques (13 questions)
+
+Each correct answer gives 1 mark. An incorrect answer results in a 0.25 mark deduction.
+
+## Creating Your Study Plan
+
+A well-structured study plan is the foundation of CLAT success. Here is a recommended 12-month plan:
+
+**Months 1-3: Foundation Building**
+Focus on understanding concepts in all five sections. Do not rush into mock tests. Build your reading habit and start daily newspaper reading.
+
+**Months 4-6: Concept Mastery**
+Deep dive into Legal Reasoning — understand legal principles, landmark cases, and their applications. Strengthen English comprehension speed.
+
+**Months 7-9: Practice Intensive**
+Start taking sectional tests. Analyze performance and identify weak areas. Begin full-length mock tests towards the end of this phase.
+
+**Months 10-12: Test Series and Revision**
+Take 2-3 full mock tests per week. Focus on revision rather than learning new topics. Work on time management and accuracy.
+
+## Most Important Topics
+
+### Legal Reasoning (Highest Priority)
+Legal Reasoning is the most important section. Focus on:
+- Principles of law and their applications
+- Constitutional provisions and Fundamental Rights
+- Law of Torts, Contracts, and Criminal Law
+- Reading and applying legal passages
+
+### Current Affairs & GK (Daily Practice)
+Read The Hindu or Indian Express every day. Focus on:
+- Legal news and Supreme Court judgements
+- National and international affairs
+- Historical events and their legal implications
+
+### English Language (Speed + Accuracy)
+Practice reading 500+ word passages quickly and accurately. Focus on:
+- Inference-based questions
+- Vocabulary in context
+- Author's tone and purpose
+
+## Top Tips from CLATians Toppers
+
+1. **Start early**: Begin preparation at least 12 months before the exam
+2. **Mock tests are non-negotiable**: Take at least 50 full-length mock tests
+3. **Current affairs daily**: Never miss a day of newspaper reading
+4. **Legal Reasoning focus**: Dedicate 40% of your time to Legal Reasoning
+5. **Analyze every mock**: Spend as much time analyzing as taking the test
+
+## Recommended Resources
+
+- CLATians Study Material (all 5 sections)
+- CLATians Mock Test Series (150+ tests)
+- The Hindu / Indian Express (daily)
+- CLATians Monthly GK Magazine
+- Previous Year CLAT Papers (2010-2025)
+
+Start your CLAT 2026 journey today with CLATians and join 5000+ successful students who have cracked their dream NLU.17:T647,The CLAT 2025 results have been declared and the cutoffs have been finalized. Here is a comprehensive analysis of the closing ranks for all 23 National Law Universities.
+
+## Top 5 NLUs and Their CLAT 2025 Cutoffs
+
+### 1. NLSIU Bangalore (Rank 1)
+The top-ranked NLU in India had the most competitive cutoffs:
+- General: ~50
+- OBC: ~120
+- SC: ~250
+- ST: ~300
+
+### 2. NLU Delhi (AILET)
+NLU Delhi takes admissions through AILET, not CLAT. AILET cutoffs:
+- General: ~45
+- OBC: ~100
+
+### 3. NALSAR Hyderabad (Rank 2)
+- General: ~200
+- OBC: ~400
+- SC: ~800
+- ST: ~600
+
+### 4. WBNUJS Kolkata (Rank 3)
+- General: ~350
+- OBC: ~600
+- SC: ~1000
+- ST: ~800
+
+### 5. NLU Jodhpur (Rank 4)
+- General: ~500
+- OBC: ~900
+- SC: ~1500
+- ST: ~1200
+
+## How to Use This Data
+
+These cutoffs are based on previous year data and should be used as a reference point. Your actual chance of admission depends on:
+1. Your CLAT rank
+2. Your category
+3. Your state of domicile (for state NLUs)
+4. Number of applicants that year
+
+Use CLATians' AI College Predictor for a personalized prediction based on your expected rank.
+
+## Preparation Strategy Based on Target NLU
+
+If you are targeting **Top 5 NLUs**: Aim for rank under 500 (General)
+If you are targeting **Tier 2 NLUs**: Aim for rank 500-1500 (General)
+If you are targeting **All NLUs**: A rank under 5000 ensures some NLU admission
+
+## Contact CLATians for Counselling
+
+Our counselling team can help you:
+- Select the right NLU based on your preferences
+- Understand category-specific advantages
+- Plan your preparation to hit target ranks
+
+Call us at 8507700177 for free counselling.18:T7f5,AILET and CLAT are two of the most important law entrance exams in India. While they test similar subjects, there are crucial differences that every aspirant must understand.
+
+## Overview Comparison
+
+| Feature | CLAT | AILET |
+|---------|------|-------|
+| Conducting Body | Consortium of NLUs | NLU Delhi |
+| Participating Institutions | 23 NLUs | NLU Delhi only |
+| Seats | 2700+ | 110 |
+| Duration | 2 hours | 90 minutes |
+| Questions | 150 | 100 |
+| Mode | Online (CBT) | Offline (Pen-Paper) |
+| Negative Marking | 0.25 marks | 0.25 marks |
+
+## Key Differences in Exam Pattern
+
+### Section Weightage
+CLAT gives more weight to Current Affairs (35 questions) while AILET has more Legal Aptitude questions.
+
+AILET has a Mathematics section with 10 questions — CLAT has Quantitative Techniques with 13 questions.
+
+### Difficulty Level
+AILET is generally considered more difficult in terms of legal aptitude questions. The questions test deeper legal knowledge rather than just principle application.
+
+### Time Pressure
+AILET gives you 90 seconds per question on average (90 min / 100 questions), while CLAT gives 48 seconds per question (120 min / 150 questions). AILET allows more thinking time per question.
+
+## Should You Prepare Separately for AILET?
+
+**If you are targeting NLU Delhi specifically**: Yes, prepare separately. AILET demands deeper legal knowledge.
+
+**If you are preparing for CLAT first**: Your CLAT preparation covers 70% of AILET syllabus. You need additional AILET-specific preparation.
+
+**CLATians AILET Strategy**: Our AILET-specialized batch runs alongside the CLAT batch with additional sessions on AILET-specific legal aptitude topics.
+
+## Preparation Tips for Both
+
+1. **Common preparation (70%)**: English, GK, Logical Reasoning, basic Legal concepts
+2. **CLAT-specific (15%)**: CLAT pattern practice, Computer-based test practice
+3. **AILET-specific (15%)**: Deep legal aptitude, offline test-taking practice, NLU Delhi specific GK
+
+Appear in both exams for maximum chances. Most serious law aspirants do!19:T8a0,Current Affairs and GK is the section that separates top rankers from average performers in CLAT. With 35 questions carrying 35 marks, it is the single largest section in CLAT 2026. Here is the complete strategy from CLATians' GK specialist, Dr. Neha Verma.
+
+## What CLAT Really Tests in Current Affairs
+
+CLAT does NOT test rote memorization of facts. It tests your ability to:
+- Read a passage about a recent event
+- Answer questions based on that passage
+- Apply your background knowledge to interpret correctly
+
+This means: You need to know events well enough to understand questions about them, not memorize every detail.
+
+## The 80/20 Rule for Current Affairs
+
+Focus 80% of your time on these high-priority areas:
+1. **Supreme Court judgements** — Most likely to appear
+2. **Constitutional amendments** — Regular feature
+3. **International legal developments** — 3-5 questions
+4. **Major national policies** — Budget, schemes, laws passed
+5. **Appointments** — Chief Justice, CEC, CAG, Governors
+
+Spend only 20% of time on:
+- Sports (only major championships)
+- Entertainment (Oscar, Booker winners)
+- Science discoveries (major ones only)
+
+## Daily Reading Plan (30 Minutes)
+
+**Morning (20 minutes)**:
+- Read front page of The Hindu or Indian Express
+- Focus on national and legal news
+- Note 3-5 important facts per article
+
+**Evening (10 minutes)**:
+- Review CLATians Daily News Digest
+- Revise notes from morning reading
+
+## Weekly and Monthly Practice
+
+- **Weekly**: Attempt CLATians Current Affairs Quiz (20 questions)
+- **Monthly**: Read CLATians Monthly GK Magazine cover to cover
+- **Every 3 months**: Full revision of all notes
+
+## What to Skip (Important!)
+
+Strictly avoid spending time on:
+- Celebrity gossip
+- Movie releases (unless major award-winning)
+- Sports scores (unless major tournaments)
+- Regional state news (unless it becomes national issue)
+- Detailed state election results (just know winner)
+
+## Resources
+
+1. CLATians Daily News Digest (free on website)
+2. CLATians Monthly GK Magazine
+3. The Hindu epaper (recommended)
+4. CLATians Current Affairs Tests on portal
+
+Remember: 35 marks in current affairs can change your rank by hundreds. Never neglect this section!1a:T875,Legal Reasoning is the heart of CLAT. With 35 questions and the highest weightage, your performance here largely determines your rank. Here is the CLATians Method that has helped thousands score 30+ in this section.
+
+## Understanding CLAT Legal Reasoning
+
+CLAT Legal Reasoning is NOT a test of law knowledge. It is a test of your ability to:
+1. Read a legal principle stated in the question
+2. Apply it to a given factual scenario
+3. Arrive at the correct legal conclusion
+
+You do NOT need to memorize Indian law to score in Legal Reasoning. The principle is always given to you.
+
+## The 4-Step CLATians Method
+
+### Step 1: Read the Principle Carefully
+Read the legal principle stated in the question slowly and completely. Underline key conditions and exceptions.
+
+### Step 2: Identify the Key Elements
+What must be proven for the principle to apply? List the essential elements.
+
+### Step 3: Apply to the Facts
+Read the factual scenario and check: Do the facts satisfy all elements of the principle?
+
+### Step 4: Eliminate Wrong Answers
+Use the principle strictly as stated — do not bring in outside legal knowledge or personal opinions.
+
+## Common Mistake: Importing Outside Knowledge
+
+The biggest mistake students make is using their own legal knowledge instead of the stated principle.
+
+**Example**: If the question says "Principle: X is true in all cases", and you know from real law that X has exceptions — ignore that! Apply the principle as stated.
+
+## Practice Strategy
+
+**Weeks 1-4**: Understand the method, practice 10 questions daily
+**Weeks 5-8**: Increase to 20 questions daily, focus on accuracy
+**Weeks 9-12**: Full section practice in 30 minutes, aim for 30+ correct
+
+## Common Question Types
+
+1. **Direct application**: Apply stated principle to given facts
+2. **Exception-based**: Principle has exceptions, determine if exception applies
+3. **Multiple principles**: Two principles given, determine which applies
+4. **Policy-based**: What decision would a court likely make
+
+Target: 30+ correct out of 35 in Legal Reasoning to secure a top rank.
+
+Join CLATians Legal Reasoning sessions with Adv. Ravi Kumar for detailed practice and guidance.1b:T801,You have been preparing for months, taking mock tests, sacrificing weekends. But what actually happens after you crack CLAT and get into an NLU? Here is an honest look at life at a National Law University.
+
+## The First Year: Adjustment Phase
+
+The first year at an NLU is typically the most challenging. You transition from being a school topper to being surrounded by equally brilliant students from across India.
+
+**Academic load**: NLUs are academically rigorous. Expect 6-7 subjects per semester with no passive learning — participation is mandatory.
+
+**Moot Courts and Competitions**: These start in first year itself. Moot court competitions, client counseling, negotiation — all are integral to NLU life.
+
+## Opportunities at NLUs
+
+**Internships**: NLUs provide excellent internship opportunities. Students intern at top law firms, courts (Supreme Court, High Courts), and legal aid organizations.
+
+**Placements**: Top NLUs have excellent placement records. NLU Delhi, NLSIU Bangalore, and NALSAR Hyderabad see placements at Magic Circle and Indian Tier-1 firms.
+
+**Exchange Programs**: Many NLUs have exchange programs with international universities.
+
+## Social Life
+
+NLU life is vibrant with cultural festivals, sports events, and student-run organizations covering everything from legal aid to debate to music.
+
+**Hostel life**: Most NLUs are residential. You live, eat, study, and grow alongside your batchmates.
+
+## Career After NLU
+
+An NLU degree opens multiple pathways:
+1. **Law firms**: Top firms recruit heavily from top NLUs
+2. **Litigation**: Junior Advocate → Independent Practice
+3. **Judiciary**: Judicial Services and High Court/Supreme Court
+4. **Corporate (In-house counsel)**: Working for companies
+5. **Higher education**: LLM and academia
+
+## Is It Worth the Preparation?
+
+Absolutely. An NLU education is transformative — academically, professionally, and personally. The preparation may be intense, but the opportunity is life-changing.
+
+Start your preparation with CLATians today. Your NLU journey begins here.1c:T822,India has 23 National Law Universities (NLUs) that accept CLAT scores. Choosing the right NLU is just as important as cracking CLAT. Here is the definitive ranking guide for 2026.
+
+## Tier 1 NLUs (AIR 1–200)
+
+**1. NLSIU Bengaluru (National Law School of India University)**
+Founded in 1987, NLSIU is the crown jewel of Indian legal education. Consistent #1 ranking for 35+ years. Expected CLAT cutoff: AIR 1–65. Average placement: ₹18–22 LPA.
+
+**2. NALSAR Hyderabad (National Academy of Legal Studies and Research)**
+NALSAR is famous for its student-led legal aid clinics and moot court culture. Expected cutoff: AIR 65–130. Average placement: ₹14–18 LPA.
+
+**3. NLU Delhi (National Law University, Delhi)**
+Conducts its own exam (AILET). Only 110 seats. Exceptional placement record — multiple students placed at Magic Circle law firms. AILET cutoff: AIR 1–110.
+
+**4. WBNUJS Kolkata (West Bengal National University of Juridical Sciences)**
+One of the oldest and most prestigious NLUs. Strong alumni network in corporate law. CLAT cutoff: AIR 130–250. Average placement: ₹12–16 LPA.
+
+**5. NLUJ Jodhpur (National Law University, Jodhpur)**
+Known for excellent infrastructure and strong placement record. CLAT cutoff: AIR 250–400. Average placement: ₹10–14 LPA.
+
+## Tier 2 NLUs (AIR 200–600)
+
+**6. GNLU Gandhinagar** — CLAT cutoff: AIR 400–650
+**7. RMLNLU Lucknow** — CLAT cutoff: AIR 500–750
+**8. HNLU Raipur** — CLAT cutoff: AIR 450–700
+**9. RGNUL Patiala** — CLAT cutoff: AIR 600–850
+**10. CNLU Patna** — CLAT cutoff: AIR 700–1000
+
+## How to Choose Your NLU
+
+When deciding which NLU to target, consider:
+- Your expected CLAT rank range
+- Location preference (city vs smaller town)
+- Specialization interest (Corporate, Criminal, Constitutional)
+- Placement record and alumni network
+- Fee structure and scholarship availability
+
+## CLATians Pro Tip
+
+At CLATians, we run specialized College Predictor sessions where A.K. Sir personally helps students identify their target NLUs based on their mock test performance. Join us today!1d:T9bb,Legal Reasoning is the most important section of CLAT — carrying 37 marks and determining whether you crack a top NLU or not. Here are 10 proven strategies.
+
+## Why Legal Reasoning Matters Most
+
+Most students can improve their English and Logical Reasoning scores through practice. But Legal Reasoning requires a different kind of understanding — one that combines reading comprehension with legal thinking.
+
+## Tip 1: Read the Principle First, Facts Second
+
+Always read the legal principle stated in the passage BEFORE reading the facts. This primes your mind to apply the law correctly.
+
+## Tip 2: Never Use Outside Knowledge
+
+This is the biggest mistake. CLAT tests your ability to apply the GIVEN principle, not your pre-existing knowledge of law. Even if the principle stated in the passage is wrong in real law, apply it as given.
+
+## Tip 3: Master "Principle-Fact Application"
+
+The standard format is: Principle → Facts → Question asks you to apply principle to facts.
+Step 1: Identify what the principle says.
+Step 2: Check if the facts satisfy all conditions of the principle.
+Step 3: Apply logically.
+
+## Tip 4: Watch for Exception Clauses
+
+Most legal principles have exceptions. "Unless," "except," "provided that," "notwithstanding" — these words signal exceptions. Identify them carefully.
+
+## Tip 5: Understand Tortious Liability Basics
+
+- Negligence: Duty + Breach + Causation + Damage
+- Strict Liability: Dangerous activity + escape + damage
+- Vicarious Liability: Employer liable for employee acts
+
+## Tip 6: Contract Law Essentials
+
+- Offer + Acceptance + Consideration + Capacity = Valid Contract
+- Minor's agreement is void, not voidable
+- Free consent — coercion, undue influence, fraud, misrepresentation
+
+## Tip 7: Constitutional Law Patterns
+
+Fundamental Rights, DPSPs, their interplay — frequently tested.
+Know Article 14, 19, 21, 32, 226, 136 basics.
+
+## Tip 8: Practice 20 Passages Per Day
+
+From September onwards, attempt at least 20 legal reasoning passages daily from previous year CLATs and mock tests.
+
+## Tip 9: Maintain an Error Log
+
+Every wrong answer goes into an error log with: question, why you got it wrong, correct reasoning. Review weekly.
+
+## Tip 10: Join CLATians Legal Reasoning Classes
+
+A.K. Singh's specialized Legal Reasoning sessions at CLATians systematically cover all areas — Torts, Contracts, Constitutional Law, Criminal Law — with 500+ practice passages. Students consistently score 30+/37 after completing the course.1e:T675,Every law aspirant faces the CLAT vs AILET dilemma. Both lead to prestigious destinations — CLAT to 23 NLUs and AILET exclusively to NLU Delhi. Here is a complete comparison.
+
+## Basic Differences at a Glance
+
+**CLAT 2026:**
+- Conducted by: Consortium of NLUs
+- Duration: 2 Hours
+- Questions: 120
+- Marks: 120
+- Colleges: 23 NLUs
+- Negative marking: 0.25
+
+**AILET 2026:**
+- Conducted by: NLU Delhi
+- Duration: 90 Minutes
+- Questions: 100
+- Marks: 100
+- Colleges: Only NLU Delhi
+- Negative marking: 0.25
+
+## Which is Harder?
+
+Honestly, AILET is significantly harder than CLAT for most students. Here is why:
+
+### Competition Level
+AILET has only 110 seats (General category: ~65 seats). CLAT has 2700+ seats. The competition ratio is almost 300:1 for AILET vs 150:1 for CLAT.
+
+### Exam Pattern
+AILET has a more diverse pattern including Elementary Mathematics (not in CLAT). The English and GK sections in AILET tend to be more factual and less passage-based than CLAT.
+
+### Cutoffs
+AILET cutoff: typically 65–70/100 for General category.
+CLAT cutoff for NLSIU: typically 95–105/120.
+
+## Should You Attempt Both?
+
+Yes! Most CLATians coaching students prepare for both. The syllabi overlap significantly. Additional preparation needed for AILET:
+- Elementary Mathematics (basic level — 10 questions)
+- Slightly higher GK depth
+- More rote-based GK vs passage-based GK
+
+## CLATians Strategy for Both Exams
+
+At CLATians, we have a combined preparation program covering both CLAT and AILET. Students who join our Offline Batch typically attempt both exams and secure admissions in either NLU Delhi or NALSAR/NLSIU. Call us at 8507700177 to know more.1f:T739,Stay updated with the most important current affairs for CLAT 2026. This monthly capsule covers all key events relevant for law entrance exams.
+
+## National Affairs
+
+**Supreme Court Judgments:**
+- Key judgments on Article 21 (Right to Life) and privacy law
+- Important constitutional bench decisions
+
+**Parliament & Legislature:**
+- Bills passed in recent Parliament sessions
+- Constitutional amendments and their implications
+
+**Legal Developments:**
+- New laws affecting criminal procedure
+- Changes in contract and commercial law
+
+## International Affairs
+
+**India's Foreign Relations:**
+- Bilateral agreements signed
+- India's position in international organizations (UN, WTO, ICJ)
+- Key diplomatic developments
+
+**International Law Developments:**
+- ICJ rulings relevant for Indian law students
+- International treaties ratified by India
+
+## Legal GK Focus Areas for CLAT 2026
+
+**Important Supreme Court Judgments (Must Know):**
+1. Kesavananda Bharati Case — Basic Structure Doctrine
+2. Maneka Gandhi Case — Article 21 expanded
+3. Vishaka Guidelines — Sexual harassment at workplace
+4. Shreya Singhal Case — Section 66A struck down
+
+**Important Legal Appointments:**
+- Chief Justice of India appointments
+- Law Commission of India reports
+- NHRC, SEBI, and other regulatory body heads
+
+## Science & Technology
+
+- Space missions (ISRO updates)
+- AI regulation developments in India
+- Cybersecurity laws
+
+## Sports GK
+
+- Major sporting events and champions
+- Indian sports awards
+
+## CLATians Daily GK Programme
+
+At CLATians, we provide daily GK capsules to all enrolled students. Our GK program covers:
+- Daily newspaper analysis (The Hindu + Indian Express)
+- Weekly legal news summary
+- Monthly GK magazine
+- Emergency updates on breaking legal news
+
+Join CLATians today to never miss an important current affairs update for CLAT 2026!5:[["$","$L13",null,{}],["$","$L14",null,{"pageKey":"blogs"}],["$","main",null,{"className":"pb-20 md:pb-0","children":[["$","div",null,{"className":"relative overflow-hidden py-10 md:py-20","style":{"background":"linear-gradient(135deg, #060d1f, #0D1837)"},"children":[["$","div",null,{"className":"absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-10","style":{"background":"#06b6d4"}}],["$","div",null,{"className":"max-w-7xl mx-auto px-4 text-center","children":[["$","span",null,{"className":"inline-block text-xs font-bold px-3 py-1.5 rounded-full text-white mb-4","style":{"background":"rgba(6,182,212,0.3)","border":"1px solid rgba(6,182,212,0.5)"},"children":"✍️ The CLATians Journal"}],["$","h1",null,{"className":"text-3xl md:text-5xl font-black text-white","children":"CLAT Prep Insights"}],["$","p",null,{"className":"text-white/60 mt-3 text-base md:text-lg max-w-xl mx-auto","children":"Expert articles, strategy guides, and insights from CLATians faculty — updated regularly."}]]}]]}],["$","$L15",null,{"blogs":[{"slug":"clat-2026-complete-guide","title":"CLAT 2026: Complete Preparation Guide for Beginners","excerpt":"Everything you need to know to start your CLAT 2026 journey — from exam pattern to study schedule.","content":"$16","category":"Law Preparation","categoryColor":"#f77420","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"May 10, 2026","readTime":"8 min read","tags":["CLAT 2026","Preparation","Study Plan","Beginner Guide"]},{"slug":"top-nlu-cutoffs-2025","title":"CLAT 2025 Cutoff Ranks for All 23 NLUs: Category-Wise Analysis","excerpt":"Complete analysis of CLAT 2025 closing ranks for all 23 NLUs — General, SC, ST, OBC, and PWD categories.","content":"$17","category":"Law Preparation","categoryColor":"#f77420","author":"CLATians Team","authorAvatar":"CT","date":"May 5, 2026","readTime":"6 min read","tags":["NLU Cutoffs","CLAT 2025","Admission","College Selection"]},{"slug":"ailet-vs-clat-differences","title":"AILET vs CLAT: Key Differences Every Law Aspirant Must Know","excerpt":"Should you prepare separately for AILET or will CLAT preparation be enough? A complete comparison.","content":"$18","category":"Law Preparation","categoryColor":"#f77420","author":"Adv. Priya Singh","authorAvatar":"PS","date":"April 28, 2026","readTime":"7 min read","tags":["AILET","CLAT","Comparison","NLU Delhi","Exam Strategy"]},{"slug":"current-affairs-strategy-clat","title":"Current Affairs Strategy for CLAT 2026: What to Read and What to Skip","excerpt":"Dr. Neha Verma shares the exact current affairs strategy that has helped 3000+ students ace this section.","content":"$19","category":"Current Affairs","categoryColor":"#f97316","author":"Dr. Neha Verma","authorAvatar":"NV","date":"April 20, 2026","readTime":"9 min read","tags":["Current Affairs","CLAT Strategy","GK","Preparation Tips"]},{"slug":"legal-reasoning-tips-clat","title":"How to Score 30+ in Legal Reasoning: The CLATians Method","excerpt":"Master the most important CLAT section with Adv. Ravi Kumar's proven methodology.","content":"$1a","category":"Legal","categoryColor":"#6366f1","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"April 15, 2026","readTime":"10 min read","tags":["Legal Reasoning","CLAT Preparation","Scoring Tips","Study Strategy"]},{"slug":"life-at-nlu-what-to-expect","title":"Life at an NLU: What to Expect After Cracking CLAT","excerpt":"A CLATians alumna shares what life at a National Law University really looks like.","content":"$1b","category":"Law Preparation","categoryColor":"#f77420","author":"CLATians Team","authorAvatar":"CT","date":"April 8, 2026","readTime":"8 min read","tags":["NLU Life","After CLAT","Law School","Career"]},{"slug":"top-nlu-colleges-india-ranking-2026","title":"Top 10 NLU Colleges in India: Complete Ranking & Cutoffs 2026","excerpt":"Complete guide to all 23 NLUs — rankings, cutoffs, placements, and which one is right for you.","content":"$1c","category":"Law Preparation","categoryColor":"#f77420","author":"A.K. Singh","authorAvatar":"AK","date":"15 May, 2026","readTime":"10 min read","tags":["NLU Rankings","CLAT Cutoffs","NLU Guide","Law College"]},{"slug":"legal-reasoning-tips-clat-2026","title":"Legal Reasoning for CLAT 2026: 10 Proven Tips to Score 30+/37","excerpt":"Master legal reasoning with these expert strategies from A.K. Singh. Score full marks in the highest-weightage section.","content":"$1d","category":"Legal","categoryColor":"#6366f1","author":"A.K. Singh","authorAvatar":"AK","date":"12 May, 2026","readTime":"7 min read","tags":["Legal Reasoning","CLAT Strategy","CLAT 2026","Study Tips"]},{"slug":"clat-vs-ailet-which-is-harder","title":"CLAT vs AILET 2026: Which is Harder? Complete Comparison","excerpt":"Detailed comparison of CLAT and AILET — difficulty level, pattern, cutoffs, and which exam you should prioritize.","content":"$1e","category":"Law Preparation","categoryColor":"#f77420","author":"A.K. Singh","authorAvatar":"AK","date":"8 May, 2026","readTime":"6 min read","tags":["CLAT vs AILET","AILET 2026","Exam Comparison","Strategy"]},{"slug":"current-affairs-clat-may-2026","title":"Current Affairs for CLAT – May 2026 Complete Capsule","excerpt":"All important current affairs events of May 2026 relevant for CLAT, AILET, and other law entrance exams.","content":"$1f","category":"Current Affairs","categoryColor":"#f97316","author":"CLATians Faculty","authorAvatar":"CF","date":"20 May, 2026","readTime":"8 min read","tags":["Current Affairs","CLAT 2026","GK","Legal GK","Monthly Capsule"]}],"categories":[]}]]}],"$L20"]
+21:I[52155,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+22:I[13642,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/10076n0ay22py.js"],"default"]
+11:["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]
+12:["$","$L21",null,{}]
+20:["$","$L22",null,{}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+23:I[27201,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"IconMark"]
+8:null
+d:[["$","title","0",{"children":"The CLATians Journal | Expert CLAT Prep Insights"}],["$","meta","1",{"name":"description","content":"Expert articles on CLAT, AILET, MH-CET preparation strategy, NLU cutoffs, legal reasoning tips and more from CLATians faculty."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","link","3",{"rel":"icon","href":"/demos/clatians-website-cms/favicon.ico?favicon.07jdwhooua.5g.ico","sizes":"64x64","type":"image/x-icon"}],["$","link","4",{"rel":"icon","href":"/demos/clatians-website-cms/icon.png?icon.0y6~nnrothwy-.png","sizes":"512x512","type":"image/png"}],["$","link","5",{"rel":"apple-touch-icon","href":"/demos/clatians-website-cms/apple-icon.png?apple-icon.11-u--y3duiwd.png","sizes":"180x180","type":"image/png"}],["$","$L23","6",{}]]

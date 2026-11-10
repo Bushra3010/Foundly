@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Featured Resources | SWAMITRA Foundation</title>
+<meta name="description" content="Knowing which type of document you actually need saves a great deal of time. Each type is written to do one thing well.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<meta property="og:title" content="Featured Resources | SWAMITRA Foundation">
+<meta property="og:description" content="Free toolkits, templates, SOPs, checklists, handbooks and reports for schools, workplaces and communities.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="resources" data-title="Featured Resources">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><a href="resources.html">Resources</a><span class="sep">/</span><span>Featured Resources</span>
+      </nav>
+      <h1>Six kinds of document, six different jobs</h1>
+      <p class="lead">Knowing which type of document you actually need saves a great deal of time. Each type is written to do one thing well.</p>
+    </div>
+  </section>
+
+
+  <section class="section" id="featured">
+    <div class="wrap">
+      <div class="grid g-3 grid--rail reveal">
+        <article class="card">
+          <span class="card__icon" data-icon="book"></span>
+          <h3>Toolkits</h3>
+          <p>Complete implementation kits. A toolkit takes a framework and breaks it into sequenced steps, with the forms, session plans and review points needed at each stage.</p>
+        </article>
+        <article class="card">
+          <span class="card__icon" data-icon="file"></span>
+          <h3>Templates</h3>
+          <p>Editable documents you adapt and adopt — policies, committee constitutions, consent formats, registers and reporting formats. Adapt them to your context before adoption.</p>
+        </article>
+        <article class="card">
+          <span class="card__icon" data-icon="check"></span>
+          <h3>Checklists</h3>
+          <p>Audit and readiness instruments. A checklist tells you whether a requirement is met, partially met or absent, so that a claim of compliance can be evidenced rather than asserted.</p>
+        </article>
+        <article class="card">
+          <span class="card__icon" data-icon="shield"></span>
+          <h3>SOPs</h3>
+          <p>Standard operating procedures for situations where hesitation causes harm — receiving a disclosure, responding to an incident, escalating a concern, recording what was done.</p>
+        </article>
+        <article class="card">
+          <span class="card__icon" data-icon="scale"></span>
+          <h3>Policy Documents</h3>
+          <p>Model policies covering child protection, workplace dignity, governance and ethics, written to sit alongside statutory obligations rather than restate them loosely.</p>
+        </article>
+        <article class="card">
+          <span class="card__icon" data-icon="school"></span>
+          <h3>Handbooks</h3>
+          <p>Reference material for the person delivering the work — educators, committee members and community facilitators — with explanation, examples and common errors.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+  var RES = (D.resources || []).slice();
+
+  function fmt(d) {
+    return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  }
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function uniq(key) {
+    var out = [];
+    RES.forEach(function (r) { if (out.indexOf(r[key]) === -1) out.push(r[key]); });
+    return out;
+  }
+
+  /* Inline icons declared with data-icon */
+  document.querySelectorAll("[data-icon]").forEach(function (el) {
+    el.innerHTML = I(el.getAttribute("data-icon"));
+  });
+  set("hero-search-icon", I("search"));
+  set("lib-search-icon", I("search"));
+
+  /* ---------- Resource categories ---------- */
+  var CATS = [
+    ["Legal Education", "scale", "Curriculum frameworks, educator handbooks and classroom activity kits for legal literacy teaching."],
+    ["Constitutional Literacy", "book", "Session plans and ready reckoners on rights, duties and constitutional values."],
+    ["Safe Schools", "school", "The Safe School Framework, audit checklists and incident response material."],
+    ["Safe Workplaces", "building", "Workplace dignity standards, compliance checklists and committee material."],
+    ["POSH", "shield", "Policy templates, the internal committee handbook and awareness poster sets."],
+    ["POCSO", "heart", "Child protection policy templates and staff guidance on receiving a disclosure."],
+    ["Child Protection", "users", "Reporting pathways, flowcharts and institutional safeguarding material."],
+    ["Governance", "globe", "Governance, ethics and institutional integrity policy packs."],
+    ["Research", "chart", "Survey reports, baseline studies and the evidence behind the frameworks."]
+  ];
+  set("cat-grid", CATS.map(function (c) {
+    var n = RES.filter(function (r) { return r.cat === c[0]; }).length;
+    return '<button class="card" type="button" data-setcat="' + esc(c[0]) + '" style="text-align:left">' +
+      '<span class="card__icon">' + I(c[1]) + "</span>" +
+      "<h3>" + c[0] + "</h3><p>" + c[2] + "</p>" +
+      '<span class="card__foot tag tag--grey">' + n + (n === 1 ? " resource" : " resources") + "</span></button>";
+  }).join(""));
+
+  /* ---------- Library state ---------- */
+  var state = { q: "", cat: "All", ext: "All", lang: "All" };
+
+  /* Category chips */
+  set("lib-cats",
+    ['<button class="chip" type="button" aria-pressed="true" data-cat="All">All categories</button>']
+      .concat(uniq("cat").sort().map(function (c) {
+        return '<button class="chip" type="button" aria-pressed="false" data-cat="' + esc(c) + '">' + c + "</button>";
+      })).join(""));
+
+  /* Selects */
+  function fill(id, values) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    values.sort().forEach(function (v) {
+      var o = document.createElement("option");
+      o.value = v; o.textContent = v;
+      el.appendChild(o);
+    });
+  }
+  fill("lib-ext", uniq("ext"));
+  fill("lib-lang", uniq("lang"));
+
+  function matches(r) {
+    if (state.q && r.title.toLowerCase().indexOf(state.q) === -1) return false;
+    if (state.cat !== "All" && r.cat !== state.cat) return false;
+    if (state.ext !== "All" && r.ext !== state.ext) return false;
+    if (state.lang !== "All" && r.lang !== state.lang) return false;
+    return true;
+  }
+
+  function render() {
+    var list = RES.filter(matches);
+
+    set("lib-results", list.map(function (r) {
+      return '<a class="res-item" href="#" data-dl="' + esc(r.title) + '">' +
+        '<span class="res-item__ext">' + r.ext + "</span>" +
+        '<span class="res-item__body"><b>' + r.title + "</b><small>" +
+          r.cat + " · " + r.type + " · " + r.size + " · " + fmt(r.date) + " · " + r.lang +
+        "</small></span>" +
+        '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+    }).join(""));
+
+    var count = document.getElementById("lib-count");
+    if (count) count.textContent = "Showing " + list.length + " of " + RES.length + " resources";
+    var empty = document.getElementById("lib-empty");
+    if (empty) empty.hidden = list.length > 0;
+  }
+
+  /* Wire the search inputs (hero + library stay in sync) */
+  function setQuery(v, source) {
+    state.q = v.trim().toLowerCase();
+    var hero = document.getElementById("hero-search");
+    var lib = document.getElementById("lib-search");
+    if (hero && source !== "hero") hero.value = v;
+    if (lib && source !== "lib") lib.value = v;
+    render();
+  }
+  var heroInput = document.getElementById("hero-search");
+  var libInput = document.getElementById("lib-search");
+  if (heroInput) heroInput.addEventListener("input", function () { setQuery(this.value, "hero"); });
+  if (libInput) libInput.addEventListener("input", function () { setQuery(this.value, "lib"); });
+
+  /* Category chips */
+  var chips = document.getElementById("lib-cats");
+  function selectCat(cat) {
+    state.cat = cat;
+    if (chips) chips.querySelectorAll(".chip").forEach(function (c) {
+      c.setAttribute("aria-pressed", String(c.getAttribute("data-cat") === cat));
+    });
+    render();
+  }
+  if (chips) chips.addEventListener("click", function (e) {
+    var b = e.target.closest(".chip");
+    if (b) selectCat(b.getAttribute("data-cat"));
+  });
+
+  /* Category cards set the filter and jump to the library */
+  document.addEventListener("click", function (e) {
+    var card = e.target.closest("[data-setcat]");
+    if (!card) return;
+    selectCat(card.getAttribute("data-setcat"));
+    var lib = document.getElementById("library");
+    if (lib) lib.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  /* Selects */
+  var extSel = document.getElementById("lib-ext");
+  var langSel = document.getElementById("lib-lang");
+  if (extSel) extSel.addEventListener("change", function () { state.ext = this.value; render(); });
+  if (langSel) langSel.addEventListener("change", function () { state.lang = this.value; render(); });
+
+  /* Clear filters */
+  var clear = document.getElementById("lib-clear");
+  if (clear) clear.addEventListener("click", function () {
+    state = { q: "", cat: "All", ext: "All", lang: "All" };
+    if (heroInput) heroInput.value = "";
+    if (libInput) libInput.value = "";
+    if (extSel) extSel.value = "All";
+    if (langSel) langSel.value = "All";
+    if (chips) chips.querySelectorAll(".chip").forEach(function (c) {
+      c.setAttribute("aria-pressed", String(c.getAttribute("data-cat") === "All"));
+    });
+    render();
+    window.swToast("Filters cleared. Showing all " + RES.length + " resources.");
+  });
+
+  render();
+
+  /* ---------- Latest uploads ---------- */
+  var latest = RES.slice().sort(function (a, b) { return new Date(b.date) - new Date(a.date); }).slice(0, 4);
+  set("latest-list", latest.map(function (r) {
+    return '<a class="res-item" href="#" data-dl="' + esc(r.title) + '">' +
+      '<span class="res-item__ext">' + r.ext + "</span>" +
+      '<span class="res-item__body"><b>' + r.title + "</b><small>" + r.cat + " · " + r.type + " · " + fmt(r.date) + "</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+
+  /* ---------- Most downloaded ---------- */
+  var POPULAR = [
+    "National Safe School Framework",
+    "POSH Policy Template",
+    "School Safety Audit Checklist",
+    "Child Protection Policy Template",
+    "NLEM Curriculum Framework",
+    "Internal Committee Handbook"
+  ];
+  set("popular-list", POPULAR.map(function (title) {
+    var r = RES.filter(function (x) { return x.title === title; })[0];
+    if (!r) return "";
+    return '<li><span><a href="#" data-dl="' + esc(r.title) + '"><strong>' + r.title + "</strong></a>" +
+      '<br><small style="color:var(--muted);font-size:var(--fs-xs)">' + r.cat + " · " + r.type + " · " + r.ext + " · " + r.size + "</small></span></li>";
+  }).join(""));
+
+  /* ---------- Downloads are placeholders until publication ---------- */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-dl]");
+    if (!a) return;
+    e.preventDefault();
+    window.swToast("“" + a.getAttribute("data-dl") + "” will be available to download on publication.");
+  });
+})();
+</script>
+</body>
+</html>

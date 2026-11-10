@@ -1,0 +1,74 @@
+1:"$Sreact.fragment"
+2:I[11645,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js"],"default"]
+6:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+3:Tb70,CLAT 2026 is one of the most anticipated law entrance exams in India. Whether you are just starting your preparation or looking to fine-tune your strategy, this comprehensive guide will walk you through everything you need to know.
+
+## Understanding the CLAT Exam Pattern
+
+CLAT 2026 is a 2-hour Computer Based Test with 150 questions worth 150 marks. The five sections are:
+- English Language (28 questions)
+- Current Affairs & GK (35 questions)
+- Legal Reasoning (35 questions)
+- Logical Reasoning (28 questions)
+- Quantitative Techniques (13 questions)
+
+Each correct answer gives 1 mark. An incorrect answer results in a 0.25 mark deduction.
+
+## Creating Your Study Plan
+
+A well-structured study plan is the foundation of CLAT success. Here is a recommended 12-month plan:
+
+**Months 1-3: Foundation Building**
+Focus on understanding concepts in all five sections. Do not rush into mock tests. Build your reading habit and start daily newspaper reading.
+
+**Months 4-6: Concept Mastery**
+Deep dive into Legal Reasoning — understand legal principles, landmark cases, and their applications. Strengthen English comprehension speed.
+
+**Months 7-9: Practice Intensive**
+Start taking sectional tests. Analyze performance and identify weak areas. Begin full-length mock tests towards the end of this phase.
+
+**Months 10-12: Test Series and Revision**
+Take 2-3 full mock tests per week. Focus on revision rather than learning new topics. Work on time management and accuracy.
+
+## Most Important Topics
+
+### Legal Reasoning (Highest Priority)
+Legal Reasoning is the most important section. Focus on:
+- Principles of law and their applications
+- Constitutional provisions and Fundamental Rights
+- Law of Torts, Contracts, and Criminal Law
+- Reading and applying legal passages
+
+### Current Affairs & GK (Daily Practice)
+Read The Hindu or Indian Express every day. Focus on:
+- Legal news and Supreme Court judgements
+- National and international affairs
+- Historical events and their legal implications
+
+### English Language (Speed + Accuracy)
+Practice reading 500+ word passages quickly and accurately. Focus on:
+- Inference-based questions
+- Vocabulary in context
+- Author's tone and purpose
+
+## Top Tips from CLATians Toppers
+
+1. **Start early**: Begin preparation at least 12 months before the exam
+2. **Mock tests are non-negotiable**: Take at least 50 full-length mock tests
+3. **Current affairs daily**: Never miss a day of newspaper reading
+4. **Legal Reasoning focus**: Dedicate 40% of your time to Legal Reasoning
+5. **Analyze every mock**: Spend as much time analyzing as taking the test
+
+## Recommended Resources
+
+- CLATians Study Material (all 5 sections)
+- CLATians Mock Test Series (150+ tests)
+- The Hindu / Indian Express (daily)
+- CLATians Monthly GK Magazine
+- Previous Year CLAT Papers (2010-2025)
+
+Start your CLAT 2026 journey today with CLATians and join 5000+ successful students who have cracked their dream NLU.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"clat-2026-complete-guide","title":"CLAT 2026: Complete Preparation Guide for Beginners","excerpt":"Everything you need to know to start your CLAT 2026 journey — from exam pattern to study schedule.","content":"$3","category":"Law Preparation","categoryColor":"#f77420","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"May 10, 2026","readTime":"8 min read","tags":["CLAT 2026","Preparation","Study Plan","Beginner Guide"]},"isNew":false}],["$L4"],"$L5"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
+4:["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true}]
+5:["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]
+8:null

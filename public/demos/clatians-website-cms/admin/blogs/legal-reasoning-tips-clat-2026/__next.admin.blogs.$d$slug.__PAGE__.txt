@@ -1,0 +1,58 @@
+1:"$Sreact.fragment"
+2:I[11645,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js"],"default"]
+4:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+3:T9bb,Legal Reasoning is the most important section of CLAT — carrying 37 marks and determining whether you crack a top NLU or not. Here are 10 proven strategies.
+
+## Why Legal Reasoning Matters Most
+
+Most students can improve their English and Logical Reasoning scores through practice. But Legal Reasoning requires a different kind of understanding — one that combines reading comprehension with legal thinking.
+
+## Tip 1: Read the Principle First, Facts Second
+
+Always read the legal principle stated in the passage BEFORE reading the facts. This primes your mind to apply the law correctly.
+
+## Tip 2: Never Use Outside Knowledge
+
+This is the biggest mistake. CLAT tests your ability to apply the GIVEN principle, not your pre-existing knowledge of law. Even if the principle stated in the passage is wrong in real law, apply it as given.
+
+## Tip 3: Master "Principle-Fact Application"
+
+The standard format is: Principle → Facts → Question asks you to apply principle to facts.
+Step 1: Identify what the principle says.
+Step 2: Check if the facts satisfy all conditions of the principle.
+Step 3: Apply logically.
+
+## Tip 4: Watch for Exception Clauses
+
+Most legal principles have exceptions. "Unless," "except," "provided that," "notwithstanding" — these words signal exceptions. Identify them carefully.
+
+## Tip 5: Understand Tortious Liability Basics
+
+- Negligence: Duty + Breach + Causation + Damage
+- Strict Liability: Dangerous activity + escape + damage
+- Vicarious Liability: Employer liable for employee acts
+
+## Tip 6: Contract Law Essentials
+
+- Offer + Acceptance + Consideration + Capacity = Valid Contract
+- Minor's agreement is void, not voidable
+- Free consent — coercion, undue influence, fraud, misrepresentation
+
+## Tip 7: Constitutional Law Patterns
+
+Fundamental Rights, DPSPs, their interplay — frequently tested.
+Know Article 14, 19, 21, 32, 226, 136 basics.
+
+## Tip 8: Practice 20 Passages Per Day
+
+From September onwards, attempt at least 20 legal reasoning passages daily from previous year CLATs and mock tests.
+
+## Tip 9: Maintain an Error Log
+
+Every wrong answer goes into an error log with: question, why you got it wrong, correct reasoning. Review weekly.
+
+## Tip 10: Join CLATians Legal Reasoning Classes
+
+A.K. Singh's specialized Legal Reasoning sessions at CLATians systematically cover all areas — Torts, Contracts, Constitutional Law, Criminal Law — with 500+ practice passages. Students consistently score 30+/37 after completing the course.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"legal-reasoning-tips-clat-2026","title":"Legal Reasoning for CLAT 2026: 10 Proven Tips to Score 30+/37","excerpt":"Master legal reasoning with these expert strategies from A.K. Singh. Score full marks in the highest-weightage section.","content":"$3","category":"Legal","categoryColor":"#6366f1","author":"A.K. Singh","authorAvatar":"AK","date":"12 May, 2026","readTime":"7 min read","tags":["Legal Reasoning","CLAT Strategy","CLAT 2026","Study Tips"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
+6:null

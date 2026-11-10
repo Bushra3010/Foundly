@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[977861,["/demos/hello-doctor-neet-counselling/_next/static/chunks/15w5nycft0v7..js","/demos/hello-doctor-neet-counselling/_next/static/chunks/09ghcg~vvdj6k.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0-uihte8i~1fz.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0-d~p6ob7j_~9.js"],"default"]
+3:I[897367,["/demos/hello-doctor-neet-counselling/_next/static/chunks/0x.73w57rn4ou.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0i.l9589uvx0j.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"initialExam":"ug"}],[["$","script","script-0",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/15w5nycft0v7..js","async":true}],["$","script","script-1",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/09ghcg~vvdj6k.js","async":true}],["$","script","script-2",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/0-uihte8i~1fz.js","async":true}],["$","script","script-3",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/0-d~p6ob7j_~9.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"JiCNyjpkPUJaPPMCDaiJC"}
+5:null

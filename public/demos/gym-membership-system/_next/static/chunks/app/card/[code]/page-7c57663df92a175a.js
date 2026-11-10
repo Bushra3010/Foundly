@@ -1,0 +1,31 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8105],{8666:function(e,t,n){Promise.resolve().then(n.bind(n,4469))},4469:function(e,t,n){"use strict";n.d(t,{default:function(){return m}});var r=n(57437),s=n(2265),a=n(16463),i=n(47586),c=n(68812),l=n(71935),o=n(3274),d=n(92940);function m(){var e,t,n;let m=String((0,a.useParams)().code||""),[u,h]=(0,s.useState)(null),[x,f]=(0,s.useState)(null);if((0,s.useEffect)(()=>{m&&fetch("/api/public/member-card?code=".concat(encodeURIComponent(m))).then(async e=>{let t=await e.json();if(!e.ok)throw Error(t.error||"Not found");h(t)}).catch(e=>f(e.message))},[m]),x)return(0,r.jsx)("main",{className:"min-h-screen bg-gym-base flex items-center justify-center p-6",children:(0,r.jsxs)("div",{className:"text-center text-gym-secondary",children:[(0,r.jsx)(l.Z,{className:"w-12 h-12 mx-auto mb-3 text-red-400"}),(0,r.jsx)("p",{children:x})]})});if(!u)return(0,r.jsx)("main",{className:"min-h-screen bg-gym-base flex items-center justify-center",children:(0,r.jsx)(o.Z,{className:"w-8 h-8 animate-spin text-accent-orange"})});let g=!u.valid_till||new Date(u.valid_till)<new Date;return(0,r.jsx)("main",{className:"min-h-screen bg-gym-base flex items-center justify-center p-4",children:(0,r.jsxs)("div",{className:"w-full max-w-sm bg-gym-card border border-gym rounded-3xl overflow-hidden shadow-2xl",children:[(0,r.jsxs)("div",{className:"gradient-gym p-5 flex items-center gap-3",children:[(0,r.jsx)("div",{className:"w-12 h-12 rounded-xl bg-white p-1 flex items-center justify-center overflow-hidden",children:(0,r.jsx)("img",{src:(null===(e=u.gym)||void 0===e?void 0:e.logo_url)||"/demos/gym-membership-system/logo.png",alt:(null===(t=u.gym)||void 0===t?void 0:t.name)||"Gym",className:"w-full h-full object-contain"})}),(0,r.jsxs)("div",{children:[(0,r.jsx)("p",{className:"text-white font-semibold text-lg leading-tight",children:(null===(n=u.gym)||void 0===n?void 0:n.name)||"Optyma Fitness"}),(0,r.jsx)("p",{className:"text-white/80 text-xs uppercase tracking-[0.25em]",children:"Member Card"})]})]}),(0,r.jsxs)("div",{className:"p-6 text-center space-y-4",children:[(0,r.jsx)("div",{className:"bg-white rounded-2xl p-4 inline-block",children:(0,r.jsx)(i.t,{value:u.code,size:220,level:"M",includeMargin:!1})}),(0,r.jsx)("p",{className:"font-mono text-sm tracking-widest text-gym-secondary",children:u.code}),(0,r.jsxs)("div",{children:[(0,r.jsx)("p",{className:"text-2xl font-semibold text-text-primary",children:u.name}),u.plan&&(0,r.jsx)("p",{className:"text-gym-secondary",children:u.plan})]}),(0,r.jsxs)("div",{className:"inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ".concat(u.active&&!g?"bg-green-500/20 text-green-400":"bg-red-500/20 text-red-400"),children:[u.active&&!g?(0,r.jsx)(d.Z,{className:"w-4 h-4"}):(0,r.jsx)(l.Z,{className:"w-4 h-4"}),u.active&&!g?"Active till ".concat((0,c.WU)(new Date(u.valid_till),"dd MMM yyyy")):u.valid_till?"Expired on ".concat((0,c.WU)(new Date(u.valid_till),"dd MMM yyyy")):"No active membership"]}),(0,r.jsx)("p",{className:"text-xs text-gym-secondary pt-2",children:"Show this QR at the gym entrance to mark your attendance."})]})]})})}},78030:function(e,t,n){"use strict";n.d(t,{Z:function(){return l}});var r=n(2265);/**
+ * @license lucide-react v0.378.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */let s=e=>e.replace(/([a-z0-9])([A-Z])/g,"$1-$2").toLowerCase(),a=function(){for(var e=arguments.length,t=Array(e),n=0;n<e;n++)t[n]=arguments[n];return t.filter((e,t,n)=>!!e&&n.indexOf(e)===t).join(" ")};/**
+ * @license lucide-react v0.378.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */var i={xmlns:"http://www.w3.org/2000/svg",width:24,height:24,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"};/**
+ * @license lucide-react v0.378.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */let c=(0,r.forwardRef)((e,t)=>{let{color:n="currentColor",size:s=24,strokeWidth:c=2,absoluteStrokeWidth:l,className:o="",children:d,iconNode:m,...u}=e;return(0,r.createElement)("svg",{ref:t,...i,width:s,height:s,stroke:n,strokeWidth:l?24*Number(c)/Number(s):c,className:a("lucide",o),...u},[...m.map(e=>{let[t,n]=e;return(0,r.createElement)(t,n)}),...Array.isArray(d)?d:[d]])}),l=(e,t)=>{let n=(0,r.forwardRef)((n,i)=>{let{className:l,...o}=n;return(0,r.createElement)(c,{ref:i,iconNode:t,className:a("lucide-".concat(s(e)),l),...o})});return n.displayName="".concat(e),n}},92940:function(e,t,n){"use strict";n.d(t,{Z:function(){return r}});/**
+ * @license lucide-react v0.378.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */let r=(0,n(78030).Z)("CircleCheckBig",[["path",{d:"M22 11.08V12a10 10 0 1 1-5.93-9.14",key:"g774vq"}],["path",{d:"m9 11 3 3L22 4",key:"1pflzl"}]])},71935:function(e,t,n){"use strict";n.d(t,{Z:function(){return r}});/**
+ * @license lucide-react v0.378.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */let r=(0,n(78030).Z)("CircleX",[["circle",{cx:"12",cy:"12",r:"10",key:"1mglay"}],["path",{d:"m15 9-6 6",key:"1uzhvr"}],["path",{d:"m9 9 6 6",key:"z0biqf"}]])},3274:function(e,t,n){"use strict";n.d(t,{Z:function(){return r}});/**
+ * @license lucide-react v0.378.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */let r=(0,n(78030).Z)("LoaderCircle",[["path",{d:"M21 12a9 9 0 1 1-6.219-8.56",key:"13zald"}]])},16463:function(e,t,n){"use strict";var r=n(71169);n.o(r,"useParams")&&n.d(t,{useParams:function(){return r.useParams}}),n.o(r,"usePathname")&&n.d(t,{usePathname:function(){return r.usePathname}}),n.o(r,"useRouter")&&n.d(t,{useRouter:function(){return r.useRouter}}),n.o(r,"useSearchParams")&&n.d(t,{useSearchParams:function(){return r.useSearchParams}})}},function(e){e.O(0,[8812,7586,2971,7023,1744],function(){return e(e.s=8666)}),_N_E=e.O()}]);

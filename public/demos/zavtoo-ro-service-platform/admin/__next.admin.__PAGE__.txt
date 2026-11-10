@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[74395,["/demos/zavtoo-ro-service-platform/_next/static/chunks/0yjdecm~1yvj2.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/0d3shmwh5_nmn.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/0ce2fe0kkrkp3.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/119-dse5kek_l.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/0t4nf3veva6kh.js"],"default"]
+3:I[97367,["/demos/zavtoo-ro-service-platform/_next/static/chunks/0yjdecm~1yvj2.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+:HL["/demos/zavtoo-ro-service-platform/_next/static/chunks/09muwftoqntns.css","style"]
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","link","0",{"rel":"stylesheet","href":"/demos/zavtoo-ro-service-platform/_next/static/chunks/09muwftoqntns.css","precedence":"next"}],["$","script","script-0",{"src":"/demos/zavtoo-ro-service-platform/_next/static/chunks/0ce2fe0kkrkp3.js","async":true}],["$","script","script-1",{"src":"/demos/zavtoo-ro-service-platform/_next/static/chunks/119-dse5kek_l.js","async":true}],["$","script","script-2",{"src":"/demos/zavtoo-ro-service-platform/_next/static/chunks/0t4nf3veva6kh.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"pWWcgfcTsPwo4bSHCYVwp"}
+5:null

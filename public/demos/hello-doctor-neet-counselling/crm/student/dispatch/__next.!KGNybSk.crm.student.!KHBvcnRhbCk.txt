@@ -1,0 +1,3 @@
+1:"$Sreact.fragment"
+0:{"rsc":["$","$1","c",{"children":[[["$","script","script-0",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/0s8tmhcb~spza.js","async":true}],["$","script","script-1",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/0-d~p6ob7j_~9.js","async":true}],["$","script","script-2",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/0pok~fawdewgl.js","async":true}]],"$L2"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"JiCNyjpkPUJaPPMCDaiJC"}
+2:E{"digest":"NEXT_REDIRECT;replace;/crm/student/login;307;"}

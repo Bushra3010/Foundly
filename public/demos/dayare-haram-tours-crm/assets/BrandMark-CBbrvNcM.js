@@ -1,0 +1,1 @@
+import{t as e}from"./react-vendor-BBiLddrr.js";import{t}from"./brand-D8FDglYg.js";var n=e();function r({className:e,size:r=38,variant:i=`mark`}){return i===`full`?(0,n.jsx)(`img`,{className:e,src:t.logo,alt:t.legalName,style:{height:r,width:`auto`}}):(0,n.jsx)(`img`,{className:e,src:t.mark,alt:t.name,width:r,height:r,style:{objectFit:`contain`}})}export{r as t};

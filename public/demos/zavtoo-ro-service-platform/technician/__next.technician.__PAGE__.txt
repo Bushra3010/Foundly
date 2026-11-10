@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[12667,["/demos/zavtoo-ro-service-platform/_next/static/chunks/0yjdecm~1yvj2.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/0d3shmwh5_nmn.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/0wyekz552.slu.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/0mck2mqmt850k.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/06l-ilbokay56.js"],"default"]
+3:I[97367,["/demos/zavtoo-ro-service-platform/_next/static/chunks/0yjdecm~1yvj2.js","/demos/zavtoo-ro-service-platform/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+:HL["/demos/zavtoo-ro-service-platform/_next/static/chunks/12sdsrknuf09k.css","style"]
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"initialRole":"technician"}],[["$","link","0",{"rel":"stylesheet","href":"/demos/zavtoo-ro-service-platform/_next/static/chunks/12sdsrknuf09k.css","precedence":"next"}],["$","script","script-0",{"src":"/demos/zavtoo-ro-service-platform/_next/static/chunks/0wyekz552.slu.js","async":true}],["$","script","script-1",{"src":"/demos/zavtoo-ro-service-platform/_next/static/chunks/0mck2mqmt850k.js","async":true}],["$","script","script-2",{"src":"/demos/zavtoo-ro-service-platform/_next/static/chunks/06l-ilbokay56.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"pWWcgfcTsPwo4bSHCYVwp"}
+5:null

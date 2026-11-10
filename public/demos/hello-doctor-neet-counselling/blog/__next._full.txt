@@ -1,0 +1,324 @@
+1:"$Sreact.fragment"
+2:I[339756,["/demos/hello-doctor-neet-counselling/_next/static/chunks/0x.73w57rn4ou.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0i.l9589uvx0j.js"],"default"]
+3:I[837457,["/demos/hello-doctor-neet-counselling/_next/static/chunks/0x.73w57rn4ou.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0i.l9589uvx0j.js"],"default"]
+4:"$Sreact.suspense"
+6:I[897367,["/demos/hello-doctor-neet-counselling/_next/static/chunks/0x.73w57rn4ou.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0i.l9589uvx0j.js"],"OutletBoundary"]
+9:I[897367,["/demos/hello-doctor-neet-counselling/_next/static/chunks/0x.73w57rn4ou.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0i.l9589uvx0j.js"],"ViewportBoundary"]
+b:I[897367,["/demos/hello-doctor-neet-counselling/_next/static/chunks/0x.73w57rn4ou.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0i.l9589uvx0j.js"],"MetadataBoundary"]
+d:I[168027,[],"default",1]
+:HL["/demos/hello-doctor-neet-counselling/_next/static/chunks/13wtj8qk4k5l3.css","style"]
+:HL["/demos/hello-doctor-neet-counselling/_next/static/chunks/0tau5g65kda96.css","style"]
+:HL["/demos/hello-doctor-neet-counselling/_next/static/media/797e433ab948586e-s.p.08e28id.o-okb.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/demos/hello-doctor-neet-counselling/_next/static/media/caa3a2e1cccd8315-s.p.09~u27dqhyhd6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"P":null,"c":["","blog",""],"q":"","i":false,"f":[[["",{"children":["(site)",{"children":["blog",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16]}],[["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/demos/hello-doctor-neet-counselling/_next/static/chunks/13wtj8qk4k5l3.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/demos/hello-doctor-neet-counselling/_next/static/chunks/0tau5g65kda96.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable h-full antialiased","children":["$","body",null,{"className":"min-h-full flex flex-col","children":["$","$4",null,{"fallback":null,"children":["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":"$0:f:0:1:0:props:children:1:props:notFound:0:1:props:style","children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":"$0:f:0:1:0:props:children:1:props:notFound:0:1:props:children:props:children:1:props:style","children":404}],["$","div",null,{"style":"$0:f:0:1:0:props:children:1:props:notFound:0:1:props:children:props:children:2:props:style","children":["$","h2",null,{"style":"$0:f:0:1:0:props:children:1:props:notFound:0:1:props:children:props:children:2:props:children:props:style","children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",[["$","script","script-0",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/13afbu270fovo.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/0-d~p6ob7j_~9.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/demos/hello-doctor-neet-counselling/_next/static/chunks/09ghcg~vvdj6k.js","async":true,"nonce":"$undefined"}]],["$","$L6",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]]}],{},null,false,null]},null,false,"$@8"]},null,false,null]},null,false,"$@8"],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$La"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":"$Lc"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"JiCNyjpkPUJaPPMCDaiJC"}
+e:[]
+8:"$We"
+f:I[726172,["/demos/hello-doctor-neet-counselling/_next/static/chunks/13afbu270fovo.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0-d~p6ob7j_~9.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/09ghcg~vvdj6k.js"],"default"]
+10:T694,## The First Few Weeks
+
+The first month at a new medical college — whether in another Indian state or abroad — is usually the hardest. New routine, new people, and a much heavier study load than school. Give yourself time to adjust rather than expecting to have it figured out immediately.
+
+## Hostel Life Basics
+
+- Pack light but smart — bedding, basic medicines, and weather-appropriate clothing matter more than you'd think
+- Most hostels have shared rooms in the first year — a good roommate relationship makes a big difference
+- Keep copies of all your important documents (admission letter, ID, passport for abroad students) both physically and digitally
+
+## Balancing Study & Life
+
+Medical college coursework is intense from day one. A simple, sustainable routine — regular lecture attendance, daily revision, and scheduled breaks — beats last-minute cramming over a full semester.
+
+## For Students Going Abroad
+
+- Learn a handful of basic local-language phrases before you leave — it helps enormously in daily life
+- Connect with the existing Indian student community at your university before you arrive, if possible
+- Keep your family updated on your visa, residence permit and any local registration deadlines
+
+## Mental Health Matters
+
+It's normal to feel homesick or overwhelmed in the first semester, especially abroad. Stay connected with family, build a support circle among fellow students, and don't hesitate to use your university's counselling resources if things feel heavy.
+
+## Final Word
+
+Every doctor you admire went through this same adjustment period. Give yourself grace in the first semester — it does get easier once you find your routine.11:T650,## Why These Three Countries
+
+Russia, Georgia and Uzbekistan are among the most commonly chosen MBBS-abroad destinations for NEET-qualified Indian students, largely due to public state medical universities offering English-medium programs with direct admission.
+
+## Russia
+
+- Long-established medical education system with several public universities offering MBBS in English
+- Comparatively lower cost than private Indian colleges
+- Large, well-settled Indian student communities at most universities
+
+## Georgia
+
+- European-standard curriculum, increasingly popular in recent years
+- Generally considered a safe, welcoming environment for international students
+- Slightly higher average tuition than some Central Asian options, but still well below private Indian college fees
+
+## Uzbekistan
+
+- Among the more budget-friendly options, with established public universities in Tashkent and Samarkand
+- Lower cost of living compared to Russia and Georgia
+- Growing but still relatively newer Indian student presence compared to Russia
+
+## What Matters More Than the Country
+
+Regardless of country, always independently verify:
+1. WHO World Directory of Medical Schools listing
+2. NMC screening-test (FMGE/NExT) eligibility
+3. Actual, current total cost — tuition, hostel, food and travel
+4. Genuine English-medium teaching, not just an English-medium claim
+
+## Our Recommendation
+
+There's no single "best" country — the right fit depends on your budget, comfort level, and the specific university's recognition status. Talk to our counsellors for a side-by-side comparison based on your NEET UG score and budget.12:T60b,## Government Scholarships Open to Medical Students
+
+Several national scholarship schemes are open to students across streams, including medical courses:
+
+- **Central Sector Scheme of Scholarships** — merit-cum-means based, for college and university students including medical courses
+- **Post-Matric Scholarships (SC/OBC/Minority)** — category-based schemes for eligible students
+- **State Government Scholarships** (e.g. UP Scholarship Scheme) — for domicile students of that state, including those pursuing MBBS/BDS
+
+## Private & Institutional Scholarships
+
+Several private foundations and trusts run merit-cum-means scholarship programs open to "any stream," which medical students can apply for alongside engineering, commerce and other students. Always check each scheme's current eligibility criteria and income limits, as these are revised periodically.
+
+## Tips for a Strong Scholarship Application
+
+1. Apply well before the deadline — most schemes work on a first-come, document-verification basis
+2. Keep income certificates, category certificates and academic records ready and updated
+3. Apply to multiple schemes rather than relying on just one
+4. Double-check eligibility criteria before applying — the biggest reason applications get rejected is a mismatch in eligibility, not application quality
+
+## How We Help
+
+Our team can help you identify which government and private scholarships you're genuinely eligible for based on your category, income, and course, and guide you through the application and document process.13:T639,## Exam Pattern at a Glance
+
+NEET UG is a 200-question (180 to be attempted), pen-and-paper multiple-choice test covering Physics, Chemistry, and Biology (Botany + Zoology), each correct answer worth 4 marks with a 1 mark penalty for incorrect answers.
+
+## Subject-wise Weightage (Approximate)
+
+- **Biology (Botany + Zoology):** ~50% of total marks — the single most important section
+- **Chemistry:** ~25%, split roughly evenly between Physical, Organic and Inorganic
+- **Physics:** ~25%, generally considered the most time-consuming section per question
+
+## Understanding Cutoff Trends
+
+NEET UG cutoffs (qualifying marks/percentile) and the actual rank required for a specific college vary every year based on difficulty level, number of candidates, and seat availability. A rank that secured a government seat last year may not do the same this year — always check the latest official cutoff data during counselling rather than relying on old figures.
+
+## How to Use Cutoff Data Sensibly
+
+1. Look at cutoff trends over the last 2–3 years, not just one year, to spot a realistic range
+2. Separate All-India Quota cutoffs from your specific state's quota cutoffs — they can differ significantly
+3. Keep a realistic shortlist of government, deemed, private and abroad options rather than fixating on one college
+
+## Final Tips
+
+Don't let last year's cutoff numbers create false confidence or unnecessary panic — they're a guide, not a guarantee. Once your actual NEET UG result is out, our counsellors can help you map your rank to realistic, current options across India and abroad.14:T756,## They All Start With the Same Exam
+
+MBBS, BDS, BAMS and BHMS are all admitted through NEET UG counselling in India, but they lead to very different practice areas and career paths.
+
+## MBBS (Bachelor of Medicine, Bachelor of Surgery)
+
+- **Duration:** 5.5 years including internship
+- **Focus:** General allopathic medicine and surgery
+- **Career paths:** General physician, surgeon, specialist (after MD/MS)
+- **Best for:** Students wanting the broadest scope of practice and specialisation options
+
+## BDS (Bachelor of Dental Surgery)
+
+- **Duration:** 5 years including internship
+- **Focus:** Dental and oral healthcare
+- **Career paths:** Dentist, orthodontist, oral surgeon, own clinical practice
+- **Best for:** Students interested in a more predictable work-life balance and clinic ownership
+
+## BAMS (Bachelor of Ayurvedic Medicine and Surgery)
+
+- **Duration:** 5.5 years including internship
+- **Focus:** Traditional Ayurvedic medicine alongside modern medical science
+- **Career paths:** Ayurvedic physician, panchakarma specialist, wellness consultant
+- **Best for:** Students interested in traditional and integrative medicine
+
+## BHMS (Bachelor of Homeopathic Medicine and Surgery)
+
+- **Duration:** 5.5 years including internship
+- **Focus:** Homeopathic medicine
+- **Career paths:** Homeopathic physician, own clinical practice
+- **Best for:** Students interested in homeopathy as a system of medicine
+
+## How to Decide
+
+If your NEET UG rank doesn't yet secure the MBBS seat you want, BDS, BAMS or BHMS are legitimate, NMC/NCISM/NCH-recognised medical career paths worth considering — not "fallback" options. The right choice depends on your genuine interest in the field, not rank alone.
+
+## Talk to a Counsellor
+
+If you're unsure which path fits your NEET UG score and interests, our counsellors can walk you through realistic options across all four courses.15:T6e0,## Why NMC Guidelines Matter
+
+If you plan to pursue MBBS outside India and later practise in India, the National Medical Commission's (NMC) regulations determine whether your degree will actually be recognised. Ignoring these guidelines is the single most common — and costly — mistake families make.
+
+## Key Points to Know (Always Verify the Latest Official Notification)
+
+- A qualifying NEET UG score is mandatory before you can pursue MBBS abroad as an Indian student
+- The university/medical institute abroad should be recognised by the relevant local authority and listed with the World Directory of Medical Schools (WHO)
+- On completing your MBBS abroad, you must clear the **Foreign Medical Graduate Examination (FMGE)** or its successor, the **National Exit Test (NExT)**, to practise medicine in India
+- There are minimum course duration and internship requirements that must be fulfilled at the foreign institution
+
+## Why This Matters Before You Apply
+
+Enrolling at a university that isn't properly recognised, or skipping the NEET UG eligibility requirement, can mean your degree isn't valid for practice in India — regardless of how good the education itself was. Always verify a university's status independently before paying any fees.
+
+## How We Help
+
+Every college and university we recommend is checked for WHO listing and NMC screening-test eligibility as part of our counselling process. If you already have an offer from another agent, we're happy to help you independently verify it before you commit.
+
+## Disclaimer
+
+NMC guidelines are updated periodically. This article is for general awareness only — always cross-check the latest requirements on the official NMC website or with your counsellor before making a final decision.16:T765,## 1. NEET UG Rank Realism
+
+Start with an honest assessment of your NEET UG rank and category — it determines which government and deemed colleges are realistically within reach.
+
+## 2. Total Cost, Not Just Tuition
+
+Add up tuition, hostel, food, travel (for abroad options) and living costs over the full course — not just the advertised annual fee.
+
+## 3. Recognition & Approvals
+
+For India, confirm NMC approval. For abroad, confirm WHO listing and NMC screening-test (FMGE/NExT) eligibility before applying anywhere.
+
+## 4. Clinical Exposure
+
+A college attached to a large, busy hospital generally offers richer hands-on clinical training than one with a smaller patient base.
+
+## 5. Location & Language
+
+Consider how far the college is from home, the local language of instruction outside class, and how that affects your day-to-day comfort.
+
+## 6. Hostel & Safety
+
+For students moving away from home — especially abroad — check hostel facilities, safety record, and the presence of an existing Indian student community.
+
+## 7. Faculty & Batch Size
+
+Smaller batch sizes generally mean more individual attention during clinical postings.
+
+## 8. Post-MBBS Pathway
+
+Understand what's required after graduation — internship rules, licensing exams (FMGE/NExT for abroad), and postgraduate options.
+
+## 9. Visa & Documentation (For Abroad)
+
+Understand the visa process, required documents, and processing timelines well before your intended admission date.
+
+## 10. Talk to Current Students or Alumni
+
+Wherever possible, get a first-hand account of campus life, teaching quality and support systems from someone who has actually studied there.
+
+## Final Word
+
+No single factor should decide your choice alone — weigh them together against your own priorities. Our counsellors are happy to walk through this checklist with you for any specific college or university you're considering.17:T70d,## Why Government Medical Colleges Are the First Choice
+
+Government medical colleges in India offer MBBS at a fraction of private college fees, along with strong clinical exposure through large attached hospitals. Admission is entirely through NEET UG counselling (All-India Quota or State Quota).
+
+## Top Government Medical Colleges (Indicative NIRF Standing)
+
+- **AIIMS New Delhi** — consistently ranked #1 in NIRF Medical
+- **Christian Medical College, Vellore** — top-ranked deemed medical university
+- **Armed Forces Medical College, Pune** — defence-run, with a service bond
+- **Seth GS Medical College (KEM Hospital), Mumbai** — one of India's oldest, high patient volume
+- **Madras Medical College, Chennai** — among Asia's oldest medical colleges
+- **King George's Medical University, Lucknow** — a leading UP government medical university
+- **Institute of Medical Sciences, BHU, Varanasi** — strong research reputation
+
+## What NIRF Ranking Does (and Doesn't) Tell You
+
+NIRF ranks colleges on research output, teaching resources, and outreach — useful, but it doesn't fully capture clinical exposure, faculty mentorship, or fit for your specific goals. Rankings shift year to year, so always check the latest official NIRF release before finalising a choice.
+
+## A Note on Fees
+
+Government medical college fees typically range from a few thousand to around ₹30,000 a year — far lower than private colleges. Always confirm exact, current fees directly with the college or through official counselling brochures, as they can change each academic year.
+
+## How We Help
+
+Our counsellors help you shortlist realistic government and private college options based on your NEET UG rank, category and home state quota — so you're not guessing which college is actually within reach.18:T6f7,## The Real Decision Point: Your NEET UG Score
+
+The choice between MBBS in India and MBBS abroad usually comes down to your NEET UG rank and your family's budget — not a simple "better or worse" comparison. Both paths lead to the same MBBS degree pathway, provided you choose recognised institutions.
+
+## MBBS in India
+
+**Pros:**
+- Widely recognised, no additional licensing exam needed to practise in India
+- Government college fees can be as low as a few thousand rupees a year
+- Familiar language, culture and food
+
+**Cons:**
+- Extremely high NEET UG cutoffs for government seats
+- Private/deemed college fees can run into ₹15–25 lakh a year
+
+## MBBS Abroad
+
+**Pros:**
+- Direct admission at many universities once you have a qualifying NEET UG score — no separate entrance test at most destinations
+- Lower total program cost at several public universities compared to private Indian colleges
+- Exposure to an international environment
+
+**Cons:**
+- You must clear the NMC-mandated FMGE/NExT screening test to practise in India after returning
+- Always verify a university is WHO-listed and NMC screening-test eligible before applying
+- Adjustment to a new country, language and climate
+
+## What to Actually Check Before Deciding
+
+1. Is the university WHO-listed and NMC screening-test eligible?
+2. What is the total cost over the full course — tuition, hostel, food and travel?
+3. What is the medium of instruction — is it genuinely English-medium?
+4. What is the visa and travel process like for that country?
+
+## Our Recommendation
+
+There's no universal right answer — it depends on your NEET score, budget, and comfort with studying abroad. Talk to our counsellors with your NEET UG rank and we'll walk you through realistic, verified options in India and abroad.19:T979,## What is NEET UG?
+
+NEET UG (National Eligibility cum Entrance Test — Undergraduate) is the single entrance exam for admission to MBBS, BDS, BAMS, BHMS and other medical courses across India. It is also the qualifying exam that Indian students must clear before pursuing MBBS abroad.
+
+## Eligibility Criteria
+
+- Passed or appearing in Class 12 with Physics, Chemistry, Biology/Biotechnology and English
+- Minimum qualifying percentage as prescribed by NMC (varies by category)
+- No fixed upper age limit currently applies as per the latest NMC guidelines — always confirm the current rule on the official NTA notification before applying
+
+## Exam Pattern
+
+NEET UG is a pen-and-paper test with 200 multiple-choice questions (180 to be attempted) across Physics, Chemistry and Biology (Botany + Zoology), each carrying 4 marks with negative marking of 1 mark for a wrong answer.
+
+## Month-by-Month Study Plan
+
+### 12 Months Before
+Build strong NCERT fundamentals in Biology, Physics and Chemistry. Biology carries the highest weightage — start there.
+
+### 6 Months Before
+Move to standard reference books and previous years' NEET papers. Start topic-wise mock tests to identify weak areas.
+
+### 3 Months Before
+Take full-length mock tests every week under exam conditions. Revise NCERT line-by-line for Biology — a large share of NEET Biology questions are directly NCERT-based.
+
+### Last Month
+Pure revision — formula sheets, diagrams, and previous 5–10 years' papers. Avoid starting new topics.
+
+## Common Mistakes to Avoid
+
+1. Underestimating NCERT — most NEET Biology and Chemistry questions trace back to it
+2. Ignoring negative marking — avoid guesswork on questions you're unsure of
+3. Skipping mock tests — time management is often the biggest score-killer
+4. Neglecting Biology in favour of Physics/Chemistry — Biology alone carries 50% weightage
+
+## After NEET UG: What Next?
+
+Once your NEET UG result and rank are out, counselling begins — for MBBS/BDS in India through MCC/state counselling, or for MBBS abroad through direct university admission. Our counsellors can help you understand realistic options based on your score before counselling rounds begin.
+
+## Final Words
+
+NEET UG rewards consistent, NCERT-first preparation over flashy shortcuts. Start early, track your progress with regular mock tests, and reach out for counselling as soon as your result is out — seats fill up fast.5:["$","$Lf",null,{"blogs":[{"id":10,"slug":"medical-college-hostel-life-survival-tips","title":"Life at a Medical College: Hostel, Study Routine & Survival Tips","excerpt":"What to actually expect in your first year of medical college — hostel life, study balance, and settling in, in India or abroad.","content":"$10","category":"College Life","tags":["Hostel Life","Medical College","Student Life","MBBS Abroad"],"author":"Hello Doctor Team","authorRole":"NEET & MBBS Admission Counsellors","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-03-15","readTime":7,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":false},{"id":9,"slug":"mbbs-russia-georgia-uzbekistan-comparison","title":"MBBS in Russia vs Georgia vs Uzbekistan: A Cost & Quality Comparison","excerpt":"How three of the most popular MBBS-abroad destinations for Indian students compare on cost, curriculum and recognition.","content":"$11","category":"Study Abroad","tags":["MBBS Russia","MBBS Georgia","MBBS Uzbekistan","Study Abroad"],"author":"Aman","authorRole":"Founder, Hello Doctor","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-03-08","readTime":9,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":true},{"id":8,"slug":"scholarships-for-medical-students-india-2026","title":"Top Scholarships for Medical Students in India 2026","excerpt":"Government and private scholarship schemes that MBBS, BDS, BAMS and BHMS students in India can apply for.","content":"$12","category":"Scholarships","tags":["Scholarships","Medical Students","MBBS","Government Schemes"],"author":"Hello Doctor Team","authorRole":"NEET & MBBS Admission Counsellors","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-03-01","readTime":7,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":true},{"id":7,"slug":"neet-ug-2026-exam-pattern-cutoff-trends","title":"NEET UG 2026: Exam Pattern, Syllabus & Cutoff Trends","excerpt":"A breakdown of the NEET UG exam pattern, subject-wise weightage, and how to read cutoff trends before counselling.","content":"$13","category":"Entrance Exams","tags":["NEET UG","Exam Pattern","Cutoff","Syllabus"],"author":"Hello Doctor Team","authorRole":"NEET & MBBS Admission Counsellors","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-02-22","readTime":7,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":false},{"id":6,"slug":"mbbs-vs-bds-vs-bams-vs-bhms","title":"MBBS vs BDS vs BAMS vs BHMS: Which Medical Course Should You Choose?","excerpt":"All four are NEET UG based medical courses — here's how they actually differ in scope, duration and career paths.","content":"$14","category":"Career Advice","tags":["MBBS","BDS","BAMS","BHMS","Career Guide"],"author":"Aman","authorRole":"Founder, Hello Doctor","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-02-16","readTime":8,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":false},{"id":5,"slug":"nmc-guidelines-mbbs-abroad","title":"NMC Guidelines for MBBS Abroad: What Every Student Must Know","excerpt":"A plain-language summary of the National Medical Commission's key requirements for Indian students pursuing MBBS abroad.","content":"$15","category":"Study Abroad","tags":["NMC","FMGE","NExT","MBBS Abroad","Regulations"],"author":"Hello Doctor Team","authorRole":"NEET & MBBS Admission Counsellors","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-02-10","readTime":7,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":false},{"id":4,"slug":"how-to-choose-right-medical-college","title":"How to Choose the Right Medical College: 10 Factors to Consider","excerpt":"Beyond rankings — a practical checklist for choosing between MBBS colleges in India and abroad.","content":"$16","category":"Admission Guide","tags":["Medical College","Admission Guide","MBBS","Checklist"],"author":"Aman","authorRole":"Founder, Hello Doctor","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-02-02","readTime":9,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":false},{"id":3,"slug":"top-government-medical-colleges-india-2026","title":"Top Government Medical Colleges in India 2026: NIRF Rankings & Fees","excerpt":"A NEET-counselling ready list of India's top government medical colleges, with indicative fees and NIRF standing.","content":"$17","category":"Rankings","tags":["NIRF","Medical Colleges","Government Colleges","MBBS India"],"author":"Hello Doctor Team","authorRole":"NEET & MBBS Admission Counsellors","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-01-25","readTime":8,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":true},{"id":2,"slug":"mbbs-india-vs-mbbs-abroad","title":"MBBS in India vs MBBS Abroad: Which Should You Choose?","excerpt":"A practical, NEET-score-based comparison of MBBS in India versus MBBS abroad — cost, recognition, and what actually matters.","content":"$18","category":"Study Abroad","tags":["MBBS Abroad","MBBS India","NEET UG","Comparison"],"author":"Aman","authorRole":"Founder, Hello Doctor","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-01-18","readTime":9,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":true},{"id":1,"slug":"neet-ug-2026-complete-preparation-guide","title":"NEET UG 2026: Complete Preparation Guide for Medical Aspirants","excerpt":"A month-by-month NEET UG 2026 preparation plan covering syllabus priorities, mock test strategy, and common mistakes to avoid.","content":"$19","category":"Entrance Exams","tags":["NEET UG","NEET 2026","MBBS Entrance","Preparation"],"author":"Hello Doctor Team","authorRole":"NEET & MBBS Admission Counsellors","authorAvatar":"/demos/hello-doctor-neet-counselling/brand-logo.png","publishedAt":"2026-01-10","readTime":10,"image":"/demos/hello-doctor-neet-counselling/hero-bg.png","featured":true}]}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+1a:I[27201,["/demos/hello-doctor-neet-counselling/_next/static/chunks/0x.73w57rn4ou.js","/demos/hello-doctor-neet-counselling/_next/static/chunks/0i.l9589uvx0j.js"],"IconMark"]
+7:null
+c:[["$","title","0",{"children":"Hello Doctor - Medical Education Consultancy in India & Abroad"}],["$","meta","1",{"name":"description","content":"Noida-based medical education consultancy. Expert NEET counselling and guidance for MBBS admission in India and abroad (Russia, Georgia, Uzbekistan, Kyrgyzstan, Nepal). Call/WhatsApp +91 92116 07005."}],["$","link","2",{"rel":"icon","href":"/demos/hello-doctor-neet-counselling/favicon.ico?favicon.0fztvgcc7j0y1.ico","sizes":"48x48","type":"image/x-icon"}],["$","link","3",{"rel":"icon","href":"/demos/hello-doctor-neet-counselling/icon.png?icon.0t3am3d~1okx~.png","sizes":"512x512","type":"image/png"}],["$","link","4",{"rel":"apple-touch-icon","href":"/demos/hello-doctor-neet-counselling/apple-icon.png?apple-icon.0zow.2tl5~gbt.png","sizes":"180x180","type":"image/png"}],["$","$L1a","5",{}]]

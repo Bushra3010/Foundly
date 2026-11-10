@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[47257,["/demos/edumatch-consultancy-crm/_next/static/chunks/ff1a16fafef87110.js","/demos/edumatch-consultancy-crm/_next/static/chunks/a2dfb6fc5208ab9b.js"],"ClientPageRoot"]
+3:I[23426,["/demos/edumatch-consultancy-crm/_next/static/chunks/beac4d988104cfce.js","/demos/edumatch-consultancy-crm/_next/static/chunks/6915693ba7b373d2.js","/demos/edumatch-consultancy-crm/_next/static/chunks/9379953c08cbc0ed.js","/demos/edumatch-consultancy-crm/_next/static/chunks/c86b80873e2efd3d.js","/demos/edumatch-consultancy-crm/_next/static/chunks/bcec30813899f472.js","/demos/edumatch-consultancy-crm/_next/static/chunks/5b47fa25b8bd8361.js"],"default"]
+6:I[97367,["/demos/edumatch-consultancy-crm/_next/static/chunks/ff1a16fafef87110.js","/demos/edumatch-consultancy-crm/_next/static/chunks/a2dfb6fc5208ab9b.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+0:{"buildId":"amp9r95k2KdJCI1U67FoM","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/demos/edumatch-consultancy-crm/_next/static/chunks/9379953c08cbc0ed.js","async":true}],["$","script","script-1",{"src":"/demos/edumatch-consultancy-crm/_next/static/chunks/c86b80873e2efd3d.js","async":true}],["$","script","script-2",{"src":"/demos/edumatch-consultancy-crm/_next/static/chunks/bcec30813899f472.js","async":true}],["$","script","script-3",{"src":"/demos/edumatch-consultancy-crm/_next/static/chunks/5b47fa25b8bd8361.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+4:{}
+5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
+8:null

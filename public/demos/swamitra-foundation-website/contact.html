@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact SWAMITRA Foundation | Get in Touch</title>
+<meta name="description" content="Contact SWAMITRA Foundation for programmes, partnerships, training, research, media enquiries and institutional support.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="contact" data-title="Contact Us">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== 1. Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><span>Contact Us</span>
+      </nav>
+      <h1>Contact Us</h1>
+      <p class="lead">Whether you are a school looking at the Safe School Framework, a company preparing for a compliance review, a researcher after a data set or a journalist on a deadline — one form reaches the right person. Tell us what you need and by when.</p>
+      <div class="btn-row">
+        <a class="btn btn--gold" href="#form">Send an Enquiry</a>
+        <a class="btn btn--light" href="partnership-opportunities.html">Become a Partner</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. Contact information ===== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Contact Information</span>
+        <h2>How to reach the Foundation</h2>
+        <p>One email address currently reaches every function. Enquiries are routed internally by the category you select on the form.</p>
+      </div>
+      <div class="grid g-2 grid--rail reveal" id="contact-info"></div>
+      <p class="form-note mt-6">The registered office address will be published in full, with the pin code and directions, once the Foundation's registration formalities are complete. Until then, correspondence by email reaches us fastest.</p>
+    </div>
+  </section>
+
+  <!-- ===== 3. Contact form ===== -->
+  <section class="section section--cream" id="form">
+    <div class="wrap split reveal" style="align-items:start">
+      <div>
+        <div class="sec-head">
+          <span class="eyebrow">Contact Form</span>
+          <h2>Send an enquiry</h2>
+          <p>Choose the category that best fits your enquiry. It determines who reads it first and how quickly you hear back.</p>
+        </div>
+        <h3>Before you write</h3>
+        <ul class="ticks mt-4">
+          <li>If you are asking about a specific programme or course, name it — it saves a round of email</li>
+          <li>If you are working to a deadline, say so in the message and we will prioritise accordingly</li>
+          <li>If you represent an institution, tell us your role, so we can involve the right people from our side</li>
+          <li>If you need a document that is already published, the Resource Centre is usually faster than we are</li>
+        </ul>
+        <div class="alert alert--warning mt-8">
+          <span>This form is not a channel for reporting an emergency, a crime, or an immediate risk to a child or an adult. Please see the emergency and compliance section further down this page.</span>
+        </div>
+        <p class="mt-6">Nothing on this website, and nothing in a reply from us, constitutes legal advice or creates a lawyer–client relationship. For advice on a specific matter, please consult a qualified legal practitioner.</p>
+      </div>
+
+      <form class="form" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="c-name">Full Name <span class="req">*</span></label>
+            <input class="input" id="c-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="c-org">Organisation</label>
+            <input class="input" id="c-org" name="organisation" type="text" autocomplete="organization">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="c-email">Email <span class="req">*</span></label>
+            <input class="input" id="c-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="c-phone">Phone</label>
+            <input class="input" id="c-phone" name="phone" type="tel" autocomplete="tel">
+          </div>
+        </div>
+        <div class="field">
+          <label for="c-subject">Subject <span class="req">*</span></label>
+          <input class="input" id="c-subject" name="subject" type="text" required>
+        </div>
+        <div class="field">
+          <label for="c-category">Category</label>
+          <select class="select" id="c-category" name="category">
+            <option value="">Select a category</option>
+            <option>General Enquiry</option>
+            <option>Programmes</option>
+            <option>Training</option>
+            <option>Research</option>
+            <option>Partnerships</option>
+            <option>Media</option>
+            <option>Careers</option>
+            <option>Finance &amp; Accounts</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="c-message">Message <span class="req">*</span></label>
+          <textarea class="textarea" id="c-message" name="message" required></textarea>
+        </div>
+        <div class="field">
+          <label for="c-file">Attachment (optional)</label>
+          <label class="file-drop" for="c-file">Choose a file or drop it here — PDF, DOCX, XLSX or image, up to 10 MB</label>
+          <input class="sr-only" id="c-file" name="attachment" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg">
+          <span class="hint">Please do not attach documents containing personal data about children or complainants.</span>
+        </div>
+        <label class="check">
+          <input type="checkbox" name="consent" required>
+          <span>I consent to SWAMITRA Foundation using the details I have provided to respond to this enquiry. <span class="req">*</span></span>
+        </label>
+        <button class="btn btn--primary" type="submit">Send Enquiry</button>
+        <p class="form-note">Enquiries are acknowledged within two working days and answered substantively within five. Media enquiries are acknowledged within one working day. We use your details only to respond to you, we do not sell or share them for marketing, and you may ask us to delete them at any time — see the <a href="legal.html?doc=privacy-policy">Privacy Policy</a>.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== 4. Department directory ===== -->
+  <section class="section" id="departments">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Department Directory</span>
+        <h2>Who handles what</h2>
+        <p>Select the matching category on the enquiry form and it reaches the function listed below.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <caption class="sr-only">SWAMITRA Foundation department directory</caption>
+          <thead>
+            <tr><th scope="col">Department</th><th scope="col">What they handle</th><th scope="col">Email</th></tr>
+          </thead>
+          <tbody id="dept-rows"></tbody>
+        </table>
+      </div>
+      <div class="alert alert--info mt-6 reveal">
+        <span>Department-specific email addresses will be published as the team expands. Until then, every department is reached through the single Foundation address above, and enquiries are routed internally by the category selected on the form. We would rather list one address that works than several that do not.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. Office location ===== -->
+  <section class="section section--cream" id="location">
+    <div class="wrap split reveal">
+      <div>
+        <div class="sec-head">
+          <span class="eyebrow">Office Location</span>
+          <h2>Finding us</h2>
+          <p>Visits are by prior appointment so that the person you need to meet is actually present.</p>
+        </div>
+        <div class="grid" style="gap:var(--s-4)">
+          <div class="res-item">
+            <span class="res-item__ext">MAP</span>
+            <span class="res-item__body"><b>Embedded map</b><small>To be published once the registered office address is finalised for publication</small></span>
+          </div>
+          <div class="res-item">
+            <span class="res-item__ext">WAY</span>
+            <span class="res-item__body"><b>Directions</b><small>To be published — metro, bus and road directions will be listed alongside the map</small></span>
+          </div>
+          <div class="res-item">
+            <span class="res-item__ext">NEAR</span>
+            <span class="res-item__body"><b>Nearby landmarks</b><small>To be published with the address, including the nearest metro station and parking guidance</small></span>
+          </div>
+          <div class="res-item">
+            <span class="res-item__ext">CAL</span>
+            <span class="res-item__body"><b>Appointments</b><small>Write to us with your preferred date and the subject of the meeting</small></span>
+          </div>
+        </div>
+        <div class="btn-row mt-6">
+          <a class="btn btn--primary" href="#form">Request an Appointment</a>
+        </div>
+      </div>
+      <div class="figure" style="aspect-ratio:1/1;background:linear-gradient(150deg,var(--cream-2),var(--cream));border:1px solid var(--line)">
+        <div style="text-align:center;padding:var(--s-8)">
+          <div style="font-family:var(--font-display);font-size:1.4rem;color:var(--maroon-700);letter-spacing:.08em">SWAMITRA FOUNDATION</div>
+          <p style="color:var(--muted);font-size:var(--fs-sm);margin:12px auto 0;max-width:34ch" id="map-address"></p>
+          <p style="color:var(--muted-2);font-size:var(--fs-xs);margin:20px auto 0;max-width:40ch">An embedded map will be shown here once the registered office address is finalised for publication. We would rather show nothing than point you to the wrong building.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. Office hours ===== -->
+  <section class="section" id="hours">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Office Hours</span>
+        <h2>When we are available</h2>
+      </div>
+      <div class="grid g-3 grid--rail reveal">
+        <article class="card">
+          <h3>Working days</h3>
+          <p>Monday to Friday. The office is closed on Saturdays, Sundays and gazetted public holidays.</p>
+          <p>Training delivery and community camps frequently run on weekends; those are scheduled directly with the host institution and are not affected by office hours.</p>
+        </article>
+        <article class="card">
+          <h3>Working hours</h3>
+          <p id="hours-text"></p>
+          <p>Email is monitored through the working day. Messages received after hours or over a weekend are picked up on the next working morning.</p>
+        </article>
+        <article class="card">
+          <h3>Holiday notice</h3>
+          <p>The Foundation observes gazetted public holidays. Response times extend by the length of any holiday period, and enquiries received during a closure are answered in the order they arrived.</p>
+          <p>Closures of more than two consecutive working days are announced in advance on the News page.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. Social media ===== -->
+  <section class="section section--cream" id="social">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Social Media</span>
+        <h2>Follow the Foundation</h2>
+        <p>Programme updates, publication releases and event notices. We do not run direct-message support — enquiries should come through the form above.</p>
+      </div>
+      <div class="grid g-auto grid--rail reveal" id="social-grid"></div>
+      <p class="form-note mt-6">Official channel links are published here as each account is verified. If you find an account using the SWAMITRA name that is not linked from this page, please tell us — we do not operate unlisted accounts.</p>
+    </div>
+  </section>
+
+  <!-- ===== 8. Emergency & compliance contacts ===== -->
+  <section class="section" id="compliance">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Emergency &amp; Compliance</span>
+        <h2>Compliance contacts</h2>
+        <p>These roles exist inside the Foundation and cover conduct by our own people, our trainers, volunteers and partners in the course of our work.</p>
+      </div>
+
+      <div class="alert alert--warning reveal">
+        <span><strong>This website is not an emergency service.</strong> If a child or an adult is in immediate danger, do not use this form. Contact the police, the national emergency number 112, the childline service 1098, or the women's helpline 181, and where the law requires it, report the matter to the Child Welfare Committee or the Special Juvenile Police Unit without delay. A message sent here may not be read until the next working day, and that delay could matter.</span>
+      </div>
+
+      <div class="grid g-4 mt-8 grid--rail reveal" id="compliance-grid"></div>
+
+      <div class="grid g-2 mt-8 grid--rail reveal">
+        <article class="card card--flat">
+          <h3>How a concern is handled</h3>
+          <p>Every concern is acknowledged, recorded and assessed. The identity of the person raising it is protected to the fullest extent possible, and retaliation against anyone who raises a concern in good faith is itself a disciplinary offence under our <a href="legal.html?doc=whistleblower-policy">Whistleblower Policy</a>.</p>
+          <p>Where a matter falls to a statutory authority, we report it as the law requires and do not conduct our own investigation first.</p>
+        </article>
+        <article class="card card--flat">
+          <h3>A note on names</h3>
+          <p>We publish roles rather than individuals. The person holding a role changes; the obligation does not. Naming the role means a concern reaches whoever currently holds it, including during a handover, and it protects the privacy of the officers concerned.</p>
+          <p>When you write, mark your message for the role. It will be routed to that officer and will not be read by anyone else in the Foundation.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 9. FAQ ===== -->
+  <section class="section section--cream">
+    <div class="wrap wrap-narrow">
+      <div class="sec-head center reveal">
+        <span class="eyebrow">FAQs</span>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="acc reveal">
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">How quickly will I get a response?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Enquiries are acknowledged within two working days and answered substantively within five. Media enquiries are acknowledged within one working day. Partnership and CSR enquiries receive a substantive response within seven working days, because they usually need input from more than one team. If a holiday period intervenes, add the length of the closure.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">How do I book a training programme for my institution?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Select the Training category on the form and tell us the programme, the approximate number of participants, your preferred delivery mode and a target month. We will confirm availability, the delivery format and any cost-recovery charge in writing before anything is scheduled. Core awareness material is free; customised institutional training is charged on a cost-recovery basis.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">We want to propose a partnership. Where do we start?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Use the partnership enquiry form on the Get Involved page rather than the general form — it captures what we need to scope properly. Tell us the geography, the institutions involved, the outcome you are after and any budget window. We respond within seven working days with an honest assessment, including when the answer is that the partnership is not workable.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">A download or page is not working. Who fixes that?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Select General Enquiry and tell us the page address, what you were trying to do and what happened instead. Include your browser and device if you can. Technical faults are treated as priority because a broken download means somebody cannot get a resource they need. Accessibility barriers are treated the same way — see our <a href="legal.html?doc=accessibility-statement">Accessibility Statement</a>.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">Can I get legal advice from the Foundation?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>No. The Foundation provides legal education, not legal advice, and nothing we publish or write to you creates a lawyer–client relationship. We can point you to plain-language material on your rights and to legal aid mechanisms. For advice on your specific matter, consult a qualified legal practitioner or approach the legal services authority in your district.</div></div>
+        </div>
+        <div class="acc__item">
+          <button class="acc__btn" type="button" aria-expanded="false">Can I visit the office?<span class="acc__ico"></span></button>
+          <div class="acc__panel"><div>Visits are by prior appointment. Write to us with your preferred date, who you need to meet and the subject of the meeting, and we will confirm. Full address details, directions and landmarks will be published on this page once the registered office address is finalised for publication.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 10. CTA band ===== -->
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <span class="eyebrow" style="color:var(--gold-500)">Contact</span>
+        <h2>Start with a conversation</h2>
+        <p>Institutions, government departments, companies, community groups and newsrooms — tell us what you need and we will tell you honestly whether we can help.</p>
+        <div class="btn-row">
+          <a class="btn btn--gold btn--lg" href="#form">Send an Enquiry</a>
+          <a class="btn btn--light btn--lg" href="partnership-opportunities.html">Partner With Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon, o = D.org;
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+  function text(id, t) { var el = document.getElementById(id); if (el) el.textContent = t; }
+
+  var site = "www.swamitrafoundation.org";
+
+  /* ---- Contact information ---- */
+  set("contact-info",
+    '<div class="res-item"><span class="res-item__ext">' + I("pin") + '</span><span class="res-item__body"><b>Registered Office</b><small>' + o.address + "</small></span></div>" +
+    '<div class="res-item"><span class="res-item__ext">' + I("building") + '</span><span class="res-item__body"><b>Correspondence Address</b><small>Same as registered office</small></span></div>' +
+    '<div class="res-item"><span class="res-item__ext">' + I("mail") + '</span><span class="res-item__body"><b>Email</b><small><a href="mailto:' + o.email + '">' + o.email + "</a></small></span></div>" +
+    '<div class="res-item"><span class="res-item__ext">' + I("phone") + '</span><span class="res-item__body"><b>Phone</b><small><a href="tel:' + o.phoneHref + '">' + o.phone + "</a> · " + o.hours + "</small></span></div>" +
+    '<div class="res-item"><span class="res-item__ext">' + I("globe") + '</span><span class="res-item__body"><b>Website</b><small>' + site + "</small></span></div>" +
+    '<div class="res-item"><span class="res-item__ext">' + I("clock") + '</span><span class="res-item__body"><b>Office Hours</b><small>' + o.hours + "</small></span></div>"
+  );
+
+  /* ---- Department directory ---- */
+  var depts = [
+    ["General Enquiries", "Anything that does not fit another category, plus website and accessibility issues"],
+    ["Programmes", "Flagship programme participation, institutional rollout and implementation support"],
+    ["Training", "Course scheduling, cohort registration, certification and master trainer queries"],
+    ["Research", "Data requests, methodology notes, research collaboration and fellowship enquiries"],
+    ["Partnerships", "Government, institutional, NGO, corporate and CSR partnership proposals"],
+    ["Media", "Interview requests, press kit, embargoed material and fact-checking support"],
+    ["Careers", "Job applications, speculative applications and internship queries"],
+    ["Finance &amp; Accounts", "Invoices, receipts, cost-recovery charges and contribution enquiries"]
+  ];
+  set("dept-rows", depts.map(function (d) {
+    return "<tr><th scope=\"row\" style=\"background:transparent;font-weight:600\">" + d[0] + "</th><td>" + d[1] +
+      '</td><td><a href="mailto:' + o.email + '">' + o.email + "</a></td></tr>";
+  }).join(""));
+
+  /* ---- Map / hours ---- */
+  text("map-address", o.address);
+  text("hours-text", o.hours);
+
+  /* ---- Social media ---- */
+  var socials = [
+    ["linkedin", "LinkedIn", "Institutional updates, publications and openings"],
+    ["facebook", "Facebook", "Community programmes, camps and awareness drives"],
+    ["x", "X (Twitter)", "Short announcements, event notices and release links"],
+    ["youtube", "YouTube", "Session recordings, explainers and framework briefings"],
+    ["instagram", "Instagram", "Programme documentation and campaign highlights"]
+  ];
+  var s = o.social || {};
+  set("social-grid", socials.map(function (n) {
+    var href = s[n[0]] || "#";
+    var live = href && href !== "#";
+    return '<a class="card focus-card" href="' + href + '"' + (live ? ' rel="noopener"' : "") + ">" +
+      '<span class="card__icon">' + I("globe") + "</span>" +
+      "<h3>" + n[1] + "</h3><p>" + n[2] + "</p>" +
+      '<span class="card__foot"><span class="tag tag--grey">' + (live ? "Follow" : "Channel being set up") + "</span></span></a>";
+  }).join(""));
+
+  /* ---- Compliance contacts ---- */
+  var roles = [
+    ["shield", "POSH Contact", "Presiding Officer, Internal Committee", "Write here about any conduct of a sexual nature by a person associated with the Foundation, at any of our workplaces, training venues, field locations or virtual sessions. Mark your message for the Presiding Officer; it will not be read by anyone else."],
+    ["heart", "Child Protection Contact", "Child Protection Officer", "Write here about any concern, disclosure or suspicion relating to a child in a SWAMITRA activity. Do not investigate first and do not delay. If the child is in immediate danger, contact the emergency numbers above before writing to us."],
+    ["users", "Grievance Officer", "Grievance Redressal Officer", "Write here about the conduct of a trainer, volunteer, employee or partner, about the quality or fairness of a programme, or about a complaint that has not been dealt with properly. State what happened, when, and what outcome you are seeking."],
+    ["scale", "Compliance Officer", "Compliance &amp; Ethics Officer", "Write here about a breach of the Code of Ethics, a conflict of interest, misuse of funds, misuse of the SWAMITRA name, or any legal or regulatory non-compliance. Anonymous reports are accepted and are reviewed."]
+  ];
+  set("compliance-grid", roles.map(function (r) {
+    return '<article class="card"><span class="card__icon">' + I(r[0]) + "</span>" +
+      "<h3>" + r[1] + "</h3>" +
+      '<span class="tag tag--maroon">' + r[2] + "</span>" +
+      "<p>" + r[3] + "</p>" +
+      '<a class="card__foot link-more" href="mailto:' + o.email + '">' + o.email + "</a></article>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOIL Admin</title>
+    <link rel="icon" href="../assets/soil-logo-mark.png" />
+    <link rel="stylesheet" href="admin.css?v=2" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <section class="login-card" data-login-panel>
+        <img src="../assets/soil-logo-web.png" alt="SOIL" />
+        <h1>SOIL Admin</h1>
+        <p>Enter admin password to update website content and products.</p>
+        <form data-login-form>
+          <label>
+            Password
+            <input type="password" name="password" placeholder="Enter password" autocomplete="current-password" required />
+          </label>
+          <button type="submit">Login</button>
+          <span class="status" data-login-status></span>
+        </form>
+      </section>
+
+      <section class="editor" data-editor hidden>
+        <header class="editor-header">
+          <div>
+            <img src="../assets/soil-logo-web.png" alt="SOIL" />
+            <p>Website Content & Product Editor</p>
+          </div>
+          <div class="editor-actions">
+            <button type="button" class="ghost" data-refresh>Refresh</button>
+          </div>
+        </header>
+
+        <nav class="editor-tabs">
+          <button type="button" class="tab active" data-tab="content">Website Content</button>
+          <button type="button" class="tab" data-tab="products">Products</button>
+        </nav>
+
+        <!-- Website content tab -->
+        <div data-tab-panel="content">
+          <div class="tab-toolbar">
+            <p class="status editor-status" data-editor-status></p>
+            <button type="button" data-save>Save Content</button>
+          </div>
+          <div class="form-grid" data-fields></div>
+        </div>
+
+        <!-- Products tab -->
+        <div data-tab-panel="products" hidden>
+          <div class="tab-toolbar">
+            <p class="status" data-products-status></p>
+            <div class="editor-actions">
+              <button type="button" class="ghost" data-add-product>+ Add Product</button>
+              <button type="button" data-save-products>Save Products</button>
+            </div>
+          </div>
+          <div class="products-editor" data-products-editor></div>
+        </div>
+      </section>
+    </main>
+    <script src="admin.js?v=2"></script>
+  </body>
+</html>

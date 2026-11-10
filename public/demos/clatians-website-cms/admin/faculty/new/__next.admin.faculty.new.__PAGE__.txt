@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[99215,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/02hpczrgod8n-.js"],"default"]
+3:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"member":{"slug":"","name":"","designation":"","subject":"","specialization":"","rating":4.5,"students":"","experience":"","avatar":"","color":"#f77420","photo":"","bg":"#fff1e8","tags":[""],"bio":"","education":[""],"achievements":[""],"courses":[""],"expertise":[{"area":"","level":80}]},"isNew":true}],[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/02hpczrgod8n-.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
+5:null

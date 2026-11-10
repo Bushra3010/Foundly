@@ -1,0 +1,47 @@
+1:"$Sreact.fragment"
+2:I[11645,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website/_next/static/chunks/0de.u2b-yxxd3.js","/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js"],"default"]
+4:I[97367,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+3:T7f5,AILET and CLAT are two of the most important law entrance exams in India. While they test similar subjects, there are crucial differences that every aspirant must understand.
+
+## Overview Comparison
+
+| Feature | CLAT | AILET |
+|---------|------|-------|
+| Conducting Body | Consortium of NLUs | NLU Delhi |
+| Participating Institutions | 23 NLUs | NLU Delhi only |
+| Seats | 2700+ | 110 |
+| Duration | 2 hours | 90 minutes |
+| Questions | 150 | 100 |
+| Mode | Online (CBT) | Offline (Pen-Paper) |
+| Negative Marking | 0.25 marks | 0.25 marks |
+
+## Key Differences in Exam Pattern
+
+### Section Weightage
+CLAT gives more weight to Current Affairs (35 questions) while AILET has more Legal Aptitude questions.
+
+AILET has a Mathematics section with 10 questions — CLAT has Quantitative Techniques with 13 questions.
+
+### Difficulty Level
+AILET is generally considered more difficult in terms of legal aptitude questions. The questions test deeper legal knowledge rather than just principle application.
+
+### Time Pressure
+AILET gives you 90 seconds per question on average (90 min / 100 questions), while CLAT gives 48 seconds per question (120 min / 150 questions). AILET allows more thinking time per question.
+
+## Should You Prepare Separately for AILET?
+
+**If you are targeting NLU Delhi specifically**: Yes, prepare separately. AILET demands deeper legal knowledge.
+
+**If you are preparing for CLAT first**: Your CLAT preparation covers 70% of AILET syllabus. You need additional AILET-specific preparation.
+
+**CLATians AILET Strategy**: Our AILET-specialized batch runs alongside the CLAT batch with additional sessions on AILET-specific legal aptitude topics.
+
+## Preparation Tips for Both
+
+1. **Common preparation (70%)**: English, GK, Logical Reasoning, basic Legal concepts
+2. **CLAT-specific (15%)**: CLAT pattern practice, Computer-based test practice
+3. **AILET-specific (15%)**: Deep legal aptitude, offline test-taking practice, NLU Delhi specific GK
+
+Appear in both exams for maximum chances. Most serious law aspirants do!0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"ailet-vs-clat-differences","title":"AILET vs CLAT: Key Differences Every Law Aspirant Must Know","excerpt":"Should you prepare separately for AILET or will CLAT preparation be enough? A complete comparison.","content":"$3","category":"Law Preparation","categoryColor":"#08BD80","author":"Adv. Priya Singh","authorAvatar":"PS","date":"April 28, 2026","readTime":"7 min read","tags":["AILET","CLAT","Comparison","NLU Delhi","Exam Strategy"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
+6:null

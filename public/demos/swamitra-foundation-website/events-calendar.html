@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Events Calendar | SWAMITRA Foundation</title>
+<meta name="description" content="Registration for every listed event is handled through the Contact page until the online registration system is live.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="news" data-title="Events Calendar">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><a href="news.html">News</a><span class="sep">/</span><span>Events Calendar</span>
+      </nav>
+      <h1>Upcoming workshops, cohorts and convenings</h1>
+      <p class="lead">Registration for every listed event is handled through the Contact page until the online registration system is live.</p>
+    </div>
+  </section>
+
+
+  <section class="section section--cream" id="events">
+    <div class="wrap">
+      <div class="grid g-2 grid--rail reveal" id="events-grid"></div>
+
+      <div class="grid g-2 mt-8 grid--rail reveal">
+        <article class="card card--flat">
+          <h3>Past events</h3>
+          <p>Completed workshops, cohorts and consultations are archived with their dates, host institutions and participant numbers. The archive is being compiled from programme records and will be published here once every entry has been verified against attendance and certification data.</p>
+        </article>
+        <article class="card card--flat">
+          <h3>Event reports</h3>
+          <p>Each national workshop and consultation produces a short report covering what was discussed, what was agreed and what follows. Reports are published in the Resource Centre within four weeks of the event, and are free to download and cite.</p>
+          <a class="link-more card__foot" href="resource-library.html">Browse the Resource Centre</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+
+  function fmt(d) {
+    return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  }
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+  /* Related page for each news category — "Read more" leads somewhere useful */
+  function linkFor(cat) {
+    if (cat === "Research") return "featured-publications.html";
+    if (cat === "Event") return "events-calendar.html";
+    if (cat === "Programme") return "programs.html";
+    if (cat === "Community") return "community-legal-awareness-programme.html";
+    return "resource-library.html";
+  }
+
+  var items = D.news.slice().sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+
+  /* ---- Featured news (most recent) ---- */
+  var f = items[0];
+  set("featured-news",
+    '<article class="card" style="padding:0;overflow:hidden">' +
+      '<div class="split" style="gap:0;align-items:stretch">' +
+        '<div class="news-card__media" style="aspect-ratio:16/10"><span>' + f.cat.toUpperCase() + "</span></div>" +
+        '<div style="padding:var(--s-8);display:flex;flex-direction:column;gap:var(--s-4);justify-content:center">' +
+          '<div class="news-card__meta"><span class="tag tag--maroon">' + f.cat + "</span><span>" + fmt(f.date) + "</span></div>" +
+          "<h3>" + f.title + "</h3>" +
+          "<p>" + f.summary + "</p>" +
+          '<a class="link-more" href="' + linkFor(f.cat) + '">Read More</a>' +
+        "</div>" +
+      "</div>" +
+    "</article>"
+  );
+
+  /* ---- Latest updates grid ---- */
+  set("news-grid", items.map(function (n) {
+    return '<article class="card news-card" data-cat="' + n.cat + '">' +
+      '<div class="news-card__media"><span>' + n.cat.toUpperCase() + "</span></div>" +
+      '<div class="news-card__body">' +
+        '<div class="news-card__meta"><span class="tag tag--maroon">' + n.cat + "</span><span>" + fmt(n.date) + "</span></div>" +
+        "<h4>" + n.title + "</h4>" +
+        '<p style="font-size:var(--fs-sm)">' + n.summary + "</p>" +
+        '<a class="card__foot link-more" href="' + linkFor(n.cat) + '">Read more</a>' +
+      "</div></article>";
+  }).join(""));
+
+  /* ---- Category filter ---- */
+  var chips = document.getElementById("news-chips");
+  var cards = [].slice.call(document.querySelectorAll("#news-grid [data-cat]"));
+  var count = document.getElementById("news-count");
+
+  function applyFilter(cat) {
+    var shown = 0;
+    cards.forEach(function (c) {
+      var match = cat === "all" || c.getAttribute("data-cat") === cat;
+      c.style.display = match ? "" : "none";
+      if (match) shown++;
+    });
+    if (count) {
+      count.textContent = shown === cards.length
+        ? "Showing all " + cards.length + " updates."
+        : "Showing " + shown + " of " + cards.length + " updates" + (shown ? " in " + cat + "." : ". No updates in " + cat + " yet.");
+    }
+  }
+
+  if (chips) {
+    chips.addEventListener("click", function (e) {
+      var b = e.target.closest(".chip");
+      if (!b) return;
+      chips.querySelectorAll(".chip").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+      applyFilter(b.getAttribute("data-cat"));
+    });
+  }
+  applyFilter("all");
+
+  /* ---- Events ---- */
+  set("events-grid", D.events.map(function (ev) {
+    return '<article class="card">' +
+      '<span class="card__icon">' + I("calendar") + "</span>" +
+      '<div class="tag-row"><span class="tag tag--green">Upcoming</span><span class="tag tag--grey">' + ev.mode + "</span></div>" +
+      "<h3>" + ev.title + "</h3>" +
+      '<p><strong>' + fmt(ev.date) + "</strong><br>" + ev.place + " · " + ev.mode + "</p>" +
+      '<a class="card__foot btn btn--outline btn--sm" href="contact.html">Register</a>' +
+    "</article>";
+  }).join(""));
+
+  /* ---- Media gallery ---- */
+  var gallery = [
+    ["news", "Photos", "Classroom sessions, training workshops, community camps and institutional consultations, filed by programme and date."],
+    ["globe", "Videos", "Session recordings, explainer films on rights and duties, and short briefings on each framework."],
+    ["sparkle", "Campaign Highlights", "Material from awareness weeks, safety drives and constitutional literacy campaigns run with partner institutions."],
+    ["calendar", "Event Albums", "Albums from national workshops, certification cohorts and conclaves, each with the date, venue and host institution."]
+  ];
+  set("gallery-grid", gallery.map(function (g) {
+    return '<article class="card focus-card"><span class="card__icon">' + I(g[0]) + "</span>" +
+      "<h3>" + g[1] + "</h3><p>" + g[2] + "</p></article>";
+  }).join(""));
+
+  /* ---- Media contact email ---- */
+  var pk = document.getElementById("pk-email");
+  if (pk) { pk.href = "mailto:" + D.org.email; pk.textContent = D.org.email; }
+})();
+</script>
+</body>
+</html>

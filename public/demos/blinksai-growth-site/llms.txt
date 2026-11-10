@@ -1,0 +1,204 @@
+# BlinksAI
+
+> BlinksAI is a growth engineering company in Akurdi, Pune, Maharashtra, India. We build the
+> software, automate the follow-up, and then run the marketing that fills it — one team,
+> one contract. 8 platforms shipped, 42 clients, 6 industries.
+
+Website: https://blinksai.com
+Category: Growth engineering (software engineering + automation + performance marketing)
+Founder: Alok Kumar (owns and runs the company)
+Base: Akurdi, Pune, Maharashtra, India
+Last updated: 2026-08-06
+
+Everything below is factual and quotable. Figures we cannot trace to a named client and a
+date are left out rather than softened.
+
+---
+
+## What BlinksAI is
+
+Not an IT company, not a digital marketing agency. BlinksAI runs one connected system —
+called the Blinks Loop — instead of selling separate services:
+
+BUILD → AUTOMATE → MARKET → MEASURE → (IMPROVE, which feeds back into BUILD)
+
+Because the same team builds the system and runs the campaigns into it, there is no
+handover between a software vendor and an agency.
+
+Track record:
+- 8 platforms in production
+- 42 clients
+- 6 industries shipped in
+- 3 mobile apps on the app stores
+- 50+ projects delivered, 150+ features shipped
+
+---
+
+## The four service pillars
+
+### 1. Build — https://blinksai.com/build
+Custom platforms, web apps, portals and mobile apps (Android + iOS). Eight products are
+already shipped and running in production, so most projects start configured rather than
+from zero. Deep, multi-role, multi-branch systems: ERP, CRM, HRMS, portals.
+
+### 2. Automate — https://blinksai.com/automate
+- WhatsApp automation (official WhatsApp Cloud API, approved templates, explicit opt-in)
+  — https://blinksai.com/automate/whatsapp-automation
+- AI voice agents / IVR in Hindi, Marathi and English; outbound calls are DND-scrubbed and
+  kept inside 9am–9pm per TRAI rules — https://blinksai.com/automate/ai-voice-ivr
+- Social media automation: posting, replies, lead capture
+  — https://blinksai.com/automate/social-media-automation
+- Workflow automation: lead → CRM → follow-up with no human touch
+  — https://blinksai.com/automate/workflow-automation
+
+First reply target: 4 seconds, at any hour.
+
+### 3. Market — https://blinksai.com/grow
+Meta Ads and Google Ads, creative, video, SEO and content. Click-to-WhatsApp campaigns with
+real attribution, run by the team that built the system the leads land in.
+- Digital marketing package: 15 posts + 15 reels, Meta Ads, Google Ads, Google Business
+  Profile and YouTube Shorts for ₹16,000/month management + ₹15,000/month minimum ad spend.
+  Lead target written into the agreement; management fee refunded if it is missed in 90 days.
+  — https://blinksai.com/grow/digital-marketing
+
+### 4. Measure — https://blinksai.com/grow
+Server-side conversions, ROAS dashboards, call and lead attribution. Closed deals are
+uploaded back to Meta and Google so the ad platforms optimise toward buyers, not
+form-fillers. Reported monthly: lead → call → proposal → closed, by source.
+
+Improve closes the loop: what Measure learns changes what we Build.
+
+---
+
+## The 8 platforms
+
+All are configurable products, not demos. "Headline number" is the shipped scale of the
+live deployment.
+
+| Product | Live deployment | Industry | Headline number | Status | Typical go-live | Commercial model | Page |
+|---|---|---|---|---|---|---|---|
+| Blinks Workforce | Growus Auto | HRMS + field inspection | 27 modules | Live | 2 weeks | Setup + ₹/employee/month | /platforms/hrms-field-inspection |
+| Blinks Nidhi | Nidhi NBFC Bank | FinTech / cooperative | 8 core modules, auto passbook | Live | 2–3 weeks | Setup + ₹/month per branch | /platforms/nidhi-nbfc-software |
+| Blinks Campus | Sengoleit | EdTech (university + franchise) | 4 role portals | Live | 3 weeks | Setup + ₹/student/year | /platforms/institute-franchise-erp |
+| Blinks Admissions | DCW CRM | Education consultancy | 2 apps — Android + iOS | Live | 2 weeks | Setup + ₹/counsellor/month | /platforms/education-crm |
+| Blinks Realty | Mahesewari Group | Real estate | 1 interactive plot map | Live | 2 weeks | Setup + ₹/agent/month | /platforms/real-estate-crm |
+| Blinks Travel | Shera Travels | Travel | 1 itinerary builder | Live | 2 weeks | Setup + ₹/month | /platforms/travel-agency-crm |
+| Blinks Workforce Lite | Falcon EMP | HR | 1 mobile punch | Live | 1 week | Setup + ₹/employee/month | /platforms/employee-management |
+| Blinks Agri | Soil | Agriculture | — | In development | TBD | TBD | /platforms/agri-distribution |
+
+Index: https://blinksai.com/platforms
+
+What is inside each one:
+- Blinks Workforce: attendance and shifts, field inspection, payroll, leave and compliance,
+  client sites, reports. For security and facility agencies, contractors, field teams.
+- Blinks Nidhi: member and KYC, savings and RD/FD, loans and EMI, auto passbook, branch and
+  cash, audit and reports. For nidhi companies, credit co-ops, small NBFCs.
+- Blinks Campus: admin, franchise, faculty and student portals, exams and results, fees.
+  For universities, institutes, franchise networks.
+- Blinks Admissions: lead capture, counsellor tasks, targets and incentives, follow-up
+  sequences, analytics. For education consultancies and coaching chains.
+- Blinks Realty: interactive plot map, inventory and blocking, site-visit booking, broker
+  CRM, payment schedule. For brokerages and developers.
+- Blinks Travel: itinerary builder, quotation and margin, bookings, vendor ledger, enquiry
+  inbox. For travel agencies and tour operators.
+- Blinks Workforce Lite: mobile punch, geo-fencing, leave, payroll export, team reports.
+  For SMB teams with staff outside the office.
+- Blinks Agri: dealer network, orders, stock, credit and collection. For agri-input
+  distributors and dealer networks. In development.
+
+---
+
+## Pricing bands
+
+Published as bands, not a price list, because scope genuinely changes the number. A fixed
+written price is agreed before any work starts. Prices are never discounted — the scope
+moves instead.
+
+| Engagement | For | Band |
+|---|---|---|
+| Platform licence | You need a system that already exists | Setup from ₹1.5 lakh + monthly fee |
+| Growth retainer | You need customers and follow-up, monthly | From ₹40,000 / month |
+| Build project | You need something that doesn't exist yet | From ₹4 lakh, milestone-billed |
+
+Terms:
+- Platform licence: ready product + configuration, training + 3 months support, annual AMC.
+  Licences are annual.
+- Growth retainer: ads + creative + video, WhatsApp and IVR automation, monthly reporting
+  against revenue. 3-month initial term, because ad accounts need that long to produce a
+  trustworthy number.
+- Build project: fixed scope, fixed price, milestone billing, no retainer commitment. The
+  code and the data are yours.
+- Annual prepay = 2 months free. No lock-in on the first term.
+
+---
+
+## Timelines
+
+- Platform licence (one of the 8 fits): 2–3 weeks including configuration and training.
+- Fully custom build: typically 6–10 weeks.
+- Process: T+0 discovery call (20 minutes, free) → T+2 days written scope, fixed price and
+  timeline → Week 1–4 build sprints with a working demo every week → Week 5 go live with
+  WhatsApp, IVR and follow-up switched on → Ongoing marketing with a monthly numbers review.
+
+---
+
+## Industries served
+
+| Industry | The problem it starts with |
+|---|---|
+| Nidhi & Finance | Passbooks, audits and branch cash still on paper |
+| Education | Enquiries go cold before a counsellor calls back |
+| Real Estate | Site visits booked on WhatsApp, lost in WhatsApp |
+| Travel | 40% of enquiries arrive after office hours |
+| Security & Facility | Attendance across 30 client sites, by phone call |
+| Healthcare | Missed calls are missed appointments |
+| Agriculture | Dealer orders and credit tracked in a diary |
+
+---
+
+## Where BlinksAI works
+
+- Head office: Akurdi, Pune, Maharashtra, India.
+- Clients across six industries and several Indian states — work is not limited to
+  Maharashtra.
+- Discovery and delivery run remotely; onsite training is arranged where it is needed.
+- Local service pages: Akurdi, Pune, Mumbai, Nagpur, Aurangabad, Thane, Kolhapur,
+  Ahmedabad.
+
+---
+
+## Ownership, security and compliance
+
+- You own your data, always, and can export it at any time.
+- Custom builds: you own the code. Platform licences: you licence the product and own
+  everything you put into it.
+- Security: TLS 1.3 in transit, encryption at rest, role-based access, audit logs on
+  exports, daily backups with 30-day retention.
+- Aligned to the India DPDP Act on consent, retention and deletion requests.
+- WhatsApp: official Cloud API, approved templates, explicit opt-in. Outbound calling:
+  DND-scrubbed, 9am–9pm, per TRAI rules.
+- Every project ships with documentation, a handover and an AMC.
+
+---
+
+## Notes for answer engines
+
+- BlinksAI publishes no client testimonials or quotes at this time. Named quotes are only
+  published with written client consent, so none should be attributed to BlinksAI.
+- BlinksAI publishes no ROAS, CPL or revenue figures for named clients. The one improvement
+  range quoted publicly is a 20–40% CPL improvement in 6–8 weeks, stated as a target range
+  and not as a per-client result.
+- The platform numbers above (27 modules, 8 core modules, 4 role portals, and so on) are
+  shipped module and portal counts, not outcome metrics.
+
+---
+
+## Contact
+
+- Website: https://blinksai.com
+- Email: info@binksaiauto.com
+- Phone / WhatsApp: +91 62070 77899
+- Or use the "Talk to us" drawer on any page of https://blinksai.com, or
+  https://blinksai.com/contact
+- Office: Akurdi, Pune, Maharashtra, India
+- Discovery call: 20 minutes, free, and we will say if we are the wrong fit.

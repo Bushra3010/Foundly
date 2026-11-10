@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vision &amp; Mission | SWAMITRA Foundation</title>
+<meta name="description" content="Our vision describes the country we are working towards. Our mission describes the six things we do to get there — each one measurable, each one delivered through institutions.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<meta property="og:title" content="Vision &amp;amp; Mission | SWAMITRA Foundation">
+<meta property="og:description" content="Vision, mission, values, approach, leadership, governance and transparency at SWAMITRA Foundation.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="about" data-title="Vision &amp; Mission">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><a href="about.html">About</a><span class="sep">/</span><span>Vision &amp; Mission</span>
+      </nav>
+      <h1>Building a Constitutionally Aware, Legally Empowered and Civically Responsible India.</h1>
+      <p class="lead">Our vision describes the country we are working towards. Our mission describes the six things we do to get there — each one measurable, each one delivered through institutions.</p>
+    </div>
+  </section>
+
+
+  <section class="section" id="vision">
+    <div class="wrap">
+
+      <div class="grid g-2 grid--rail reveal">
+        <article class="card" style="border-top:3px solid var(--maroon-700)">
+          <span class="tag tag--maroon">Vision</span>
+          <h3>A Constitutionally Aware, Legally Empowered and Civically Responsible India.</h3>
+          <p>An India where the Constitution is understood as a working guide to everyday rights, duties and choices — not as a distant document quoted on ceremonial occasions.</p>
+        </article>
+        <article class="card" style="border-top:3px solid var(--gold-500)">
+          <span class="tag">Mission</span>
+          <h3>Strengthening legal awareness, institutional safety, civic participation and constitutional values through education, research and partnerships.</h3>
+          <p>The mission is delivered through six commitments. Each has its own research base, framework, curriculum and resource library, and each is designed to be run by the institution itself once training is complete.</p>
+        </article>
+      </div>
+
+      <h3 class="mt-8 reveal">Our six mission commitments</h3>
+      <div class="grid g-3 mt-6 grid--rail reveal">
+        <article class="card">
+          <span class="tag tag--grey">01</span>
+          <h4>Advance Legal Education</h4>
+          <p>Make structured legal learning available at every stage of education — school modules, university electives, professional courses and community sessions — so that legal competence stops being confined to the legal profession.</p>
+        </article>
+        <article class="card">
+          <span class="tag tag--grey">02</span>
+          <h4>Promote Constitutional Literacy</h4>
+          <p>Teach the Constitution as a working document: its philosophy, its institutions, and the rights and duties it places in the hands of every citizen and every institution that serves them.</p>
+        </article>
+        <article class="card">
+          <span class="tag tag--grey">03</span>
+          <h4>Build Safe Schools</h4>
+          <p>Give every school one coherent, auditable standard covering physical safety, child protection, digital conduct and emotional wellbeing — together with the staff training and review cycle that keep it alive.</p>
+        </article>
+        <article class="card">
+          <span class="tag tag--grey">04</span>
+          <h4>Build Safe Workplaces</h4>
+          <p>Help organisations move from a policy on paper to a working system: correctly constituted committees, trained members, genuine employee awareness and records that stand up to scrutiny.</p>
+        </article>
+        <article class="card">
+          <span class="tag tag--grey">05</span>
+          <h4>Strengthen Child Protection</h4>
+          <p>Equip every adult around a child to recognise risk, receive a disclosure without causing further harm, and report through the correct pathway without delay or improvisation.</p>
+        </article>
+        <article class="card">
+          <span class="tag tag--grey">06</span>
+          <h4>Produce Research and Policy Frameworks</h4>
+          <p>Generate the national evidence base — surveys, working papers, standards and policy briefs — that allows institutions and policymakers to act on facts rather than impressions.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+  function fmt(d) {
+    return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  /* Impact statistics */
+  set("stats-grid", D.stats.map(function (s) {
+    return '<div class="stat"><b data-count="' + s.n + '" data-suffix="' + s.suffix + '">0</b><span>' + s.label + "</span></div>";
+  }).join(""));
+
+  /* Registered office from org data */
+  var addr = document.getElementById("tx-address");
+  if (addr && D.org && D.org.address) addr.textContent = D.org.address;
+
+  /* Annual and impact reports */
+  var reports = [
+    ["Annual Report", "2025–26", "Governance, activities, programme reach and audited financial statements."],
+    ["Impact Report", "2025–26", "Outcomes measured against baseline across schools, workplaces and communities."],
+    ["Statement of Accounts", "2025–26", "Audited income, expenditure and utilisation of funds by category."],
+    ["Compliance &amp; Safeguarding Summary", "2025–26", "Statutory committee activity, training coverage and policy review record."]
+  ];
+  set("report-rows", reports.map(function (r) {
+    return '<div class="res-item"><span class="res-item__ext">PDF</span>' +
+      '<span class="res-item__body"><b>' + r[0] + " " + r[1] + "</b><small>" + r[2] +
+      " · Scheduled for publication at the close of the reporting cycle</small></span>" +
+      '<span style="color:var(--muted-2)">' + I("clock") + "</span></div>";
+  }).join(""));
+
+  /* Publications from the Research Centre */
+  set("publication-rows", D.publications.slice(0, 3).map(function (p) {
+    return '<a class="res-item" href="featured-publications.html">' +
+      '<span class="res-item__ext">PDF</span>' +
+      '<span class="res-item__body"><b>' + p.title + "</b><small>" + p.type + " · " + p.theme +
+      " · " + p.pages + " pages · " + fmt(p.date) + "</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+
+  /* Policies from the legal library */
+  var policySlugs = ["privacy-policy", "child-protection-policy", "posh-policy",
+    "code-of-ethics", "conflict-of-interest-policy", "whistleblower-policy"];
+  set("policy-grid", policySlugs.map(function (slug) {
+    var p = D.legal[slug];
+    if (!p) return "";
+    return '<a class="res-item" href="legal.html?doc=' + slug + '">' +
+      '<span class="res-item__ext">' + I("shield") + "</span>" +
+      '<span class="res-item__body"><b>' + p.title + "</b><small>Last updated " + p.updated +
+      " · " + p.sections.length + " sections</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

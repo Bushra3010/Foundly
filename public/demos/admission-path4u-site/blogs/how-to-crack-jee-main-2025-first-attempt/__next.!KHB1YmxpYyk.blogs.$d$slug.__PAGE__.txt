@@ -1,0 +1,50 @@
+1:"$Sreact.fragment"
+2:I[22016,["/demos/admission-path4u-site/_next/static/chunks/e0751626ce770e76.js","/demos/admission-path4u-site/_next/static/chunks/195c216f52dae3f8.js","/demos/admission-path4u-site/_next/static/chunks/0ef9723b2622eab1.js","/demos/admission-path4u-site/_next/static/chunks/f6af8b686f33d5bd.js","/demos/admission-path4u-site/_next/static/chunks/34aafa0c2c291bf5.js","/demos/admission-path4u-site/_next/static/chunks/e8ed4b672f34feac.js"],""]
+3:I[5500,["/demos/admission-path4u-site/_next/static/chunks/e0751626ce770e76.js","/demos/admission-path4u-site/_next/static/chunks/195c216f52dae3f8.js","/demos/admission-path4u-site/_next/static/chunks/0ef9723b2622eab1.js","/demos/admission-path4u-site/_next/static/chunks/f6af8b686f33d5bd.js","/demos/admission-path4u-site/_next/static/chunks/34aafa0c2c291bf5.js","/demos/admission-path4u-site/_next/static/chunks/e8ed4b672f34feac.js"],"Image"]
+7:I[97367,["/demos/admission-path4u-site/_next/static/chunks/ff1a16fafef87110.js","/demos/admission-path4u-site/_next/static/chunks/e00c37c01a230add.js"],"OutletBoundary"]
+8:"$Sreact.suspense"
+4:T642,JEE Main is one of the most competitive engineering entrance exams in India, with over 10 lakh students appearing each year for a limited number of seats. Cracking it in the first attempt requires smart planning, consistent effort, and the right strategy.
+
+## Understanding the Exam Pattern
+
+JEE Main consists of three subjects: Physics, Chemistry, and Mathematics. The paper has 90 questions (30 per subject) with both MCQ and numerical answer type questions. Total marks: 300.
+
+## Subject-wise Strategy
+
+### Physics
+- Focus on Mechanics, Electrostatics, Optics, and Modern Physics — these form ~60% of questions
+- Practice numerical problems daily
+- Solve previous year papers topic-wise
+
+### Chemistry
+- Organic Chemistry reactions are the most important — memorize named reactions
+- Physical Chemistry requires strong Mathematics fundamentals
+- NCERT is gold for Inorganic Chemistry
+
+### Mathematics
+- Calculus, Coordinate Geometry, and Algebra are high-weightage topics
+- Practice at least 50 problems daily
+- Focus on accuracy over speed initially
+
+## Preparation Timeline
+
+**6 Months Before Exam:**
+- Complete NCERT thoroughly
+- Start solving JEE Main previous year papers
+
+**3 Months Before:**
+- Full mock tests every week
+- Identify and strengthen weak areas
+
+**1 Month Before:**
+- Daily revision of formulas and reactions
+- Maintain error log and review mistakes
+
+## Important Tips
+1. Solve at least 5 full mock tests before the exam
+2. Manage time: aim for 50-55 minutes per subject
+3. Attempt questions you are 100% sure about first
+4. Leave questions where you might get negative marks0:{"buildId":"9O4QmEeGD0EA2zXbxSfyH","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"container mx-auto py-8 px-6 max-w-4xl","children":[["$","$L2",null,{"href":"/blogs","className":"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:hover:bg-accent/50 h-9 px-4 py-2 has-[>svg]:px-3 mb-6 pl-0 hover:bg-transparent hover:text-primary flex items-center gap-2","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," Back to Blogs"],"data-slot":"button","data-variant":"ghost","data-size":"default","ref":null}],["$","article",null,{"className":"space-y-8","children":[["$","div",null,{"className":"space-y-4","children":[["$","h1",null,{"className":"text-3xl md:text-5xl font-bold leading-tight","children":"How to Crack JEE Main 2025 in First Attempt: Complete Strategy"}],["$","div",null,{"className":"flex items-center gap-6 text-sm text-gray-600","children":[["$","div",null,{"className":"flex items-center gap-2","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-user h-4 w-4","aria-hidden":"true","children":[["$","path","975kel",{"d":"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"}],["$","circle","17ys0d",{"cx":"12","cy":"7","r":"4"}],"$undefined"]}],["$","span",null,{"className":"font-medium","children":"JEE Expert"}]]}],["$","div",null,{"className":"flex items-center gap-2","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-calendar h-4 w-4","aria-hidden":"true","children":[["$","path","1cmpym",{"d":"M8 2v4"}],["$","path","4m81vk",{"d":"M16 2v4"}],["$","rect","1hopcy",{"width":"18","height":"18","x":"3","y":"4","rx":"2"}],["$","path","8toen8",{"d":"M3 10h18"}],"$undefined"]}],["$","span",null,{"children":"November 7, 2026"}]]}]]}]]}],["$","div",null,{"className":"relative w-full aspect-video rounded-xl overflow-hidden shadow-lg","children":["$","$L3",null,{"src":"https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80","alt":"How to Crack JEE Main 2025 in First Attempt: Complete Strategy","fill":true,"className":"object-cover","priority":true}]}],["$","div",null,{"className":"prose prose-lg max-w-none prose-img:rounded-xl","children":[["$","div",null,{"className":"bg-gray-50 p-6 rounded-lg font-medium text-gray-700 italic border-l-4 border-[#27465B]","children":"Complete study strategy to crack JEE Main 2025 in your first attempt — subject-wise tips, time management, and mock test strategy from exam experts."}],["$","div",null,{"className":"whitespace-pre-line text-gray-800 leading-relaxed mt-8","children":"$4"}]]}]]}],"$L5"]}],null,"$L6"]}],"loading":null,"isPartial":false}
+5:["$","div",null,{"className":"mt-16 pt-8 border-t","children":[["$","h3",null,{"className":"text-2xl font-bold mb-6","children":"More from Admission Path4u"}],["$","div",null,{"className":"grid grid-cols-1 md:grid-cols-2 gap-6","children":[["$","div",null,{"className":"bg-[#27465B] text-white p-6 rounded-xl","children":[["$","h4",null,{"className":"font-bold text-xl mb-2","children":"Find Top Colleges"}],["$","p",null,{"className":"mb-4 text-white/80","children":"Explore the best colleges for your career path."}],["$","$L2",null,{"href":"/colleges","children":"Explore Colleges","data-slot":"button","data-variant":"secondary","data-size":"default","className":"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 h-9 px-4 py-2 has-[>svg]:px-3 w-full","ref":null}]]}],["$","div",null,{"className":"bg-[#BDA25F] p-6 rounded-xl","children":[["$","h4",null,{"className":"font-bold text-xl mb-2 text-black","children":"Upcoming Exams"}],["$","p",null,{"className":"mb-4 text-black/80","children":"Stay updated with latest exam dates and notifications."}],["$","$L2",null,{"href":"/exams","children":"Check Exams","data-slot":"button","data-variant":"default","data-size":"default","className":"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[>svg]:px-3 w-full bg-black text-white hover:bg-black/80","ref":null}]]}]]}]]}]
+6:["$","$L7",null,{"children":["$","$8",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]
+9:null

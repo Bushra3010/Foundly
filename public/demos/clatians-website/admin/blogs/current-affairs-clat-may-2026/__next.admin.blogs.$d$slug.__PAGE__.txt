@@ -1,0 +1,65 @@
+1:"$Sreact.fragment"
+2:I[11645,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website/_next/static/chunks/0de.u2b-yxxd3.js","/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js"],"default"]
+4:I[97367,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+3:T739,Stay updated with the most important current affairs for CLAT 2026. This monthly capsule covers all key events relevant for law entrance exams.
+
+## National Affairs
+
+**Supreme Court Judgments:**
+- Key judgments on Article 21 (Right to Life) and privacy law
+- Important constitutional bench decisions
+
+**Parliament & Legislature:**
+- Bills passed in recent Parliament sessions
+- Constitutional amendments and their implications
+
+**Legal Developments:**
+- New laws affecting criminal procedure
+- Changes in contract and commercial law
+
+## International Affairs
+
+**India's Foreign Relations:**
+- Bilateral agreements signed
+- India's position in international organizations (UN, WTO, ICJ)
+- Key diplomatic developments
+
+**International Law Developments:**
+- ICJ rulings relevant for Indian law students
+- International treaties ratified by India
+
+## Legal GK Focus Areas for CLAT 2026
+
+**Important Supreme Court Judgments (Must Know):**
+1. Kesavananda Bharati Case — Basic Structure Doctrine
+2. Maneka Gandhi Case — Article 21 expanded
+3. Vishaka Guidelines — Sexual harassment at workplace
+4. Shreya Singhal Case — Section 66A struck down
+
+**Important Legal Appointments:**
+- Chief Justice of India appointments
+- Law Commission of India reports
+- NHRC, SEBI, and other regulatory body heads
+
+## Science & Technology
+
+- Space missions (ISRO updates)
+- AI regulation developments in India
+- Cybersecurity laws
+
+## Sports GK
+
+- Major sporting events and champions
+- Indian sports awards
+
+## CLATians Daily GK Programme
+
+At CLATians, we provide daily GK capsules to all enrolled students. Our GK program covers:
+- Daily newspaper analysis (The Hindu + Indian Express)
+- Weekly legal news summary
+- Monthly GK magazine
+- Emergency updates on breaking legal news
+
+Join CLATians today to never miss an important current affairs update for CLAT 2026!0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"current-affairs-clat-may-2026","title":"Current Affairs for CLAT – May 2026 Complete Capsule","excerpt":"All important current affairs events of May 2026 relevant for CLAT, AILET, and other law entrance exams.","content":"$3","category":"Current Affairs","categoryColor":"#f97316","author":"CLATians Faculty","authorAvatar":"CF","date":"20 May, 2026","readTime":"8 min read","tags":["Current Affairs","CLAT 2026","GK","Legal GK","Monthly Capsule"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
+6:null

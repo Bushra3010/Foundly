@@ -1,0 +1,3 @@
+1:"$Sreact.fragment"
+0:{"rsc":["$","$1","c",{"children":[[["$","script","script-0",{"src":"/demos/meera-prakash-admission-crm/_next/static/chunks/3zdr7dt2g4fzd.js","async":true}],["$","script","script-1",{"src":"/demos/meera-prakash-admission-crm/_next/static/chunks/1e2ai_wi0mlzp.js","async":true}]],"$L2"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"npVny0-93iuB6WRJ14TCW"}
+2:E{"digest":"NEXT_REDIRECT;replace;/student/login;307;"}

@@ -1,0 +1,4 @@
+:HL["/demos/meera-prakash-admission-crm/_next/static/chunks/0ckv5j_fni3xm.css","style"]
+:HL["/demos/meera-prakash-admission-crm/_next/static/chunks/3f339mmiyuj43.css","style"]
+:HL["/demos/meera-prakash-admission-crm/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":0,"slots":{"children":{"name":"(crm)","param":null,"prefetchHints":16,"slots":{"children":{"name":"student","param":null,"prefetchHints":0,"slots":{"children":{"name":"(portal)","param":null,"prefetchHints":0,"slots":{"children":{"name":"dispatch","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}}}},"staleTime":300,"buildId":"npVny0-93iuB6WRJ14TCW"}

@@ -1,0 +1,52 @@
+1:"$Sreact.fragment"
+2:I[11645,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js"],"default"]
+4:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+3:T875,Legal Reasoning is the heart of CLAT. With 35 questions and the highest weightage, your performance here largely determines your rank. Here is the CLATians Method that has helped thousands score 30+ in this section.
+
+## Understanding CLAT Legal Reasoning
+
+CLAT Legal Reasoning is NOT a test of law knowledge. It is a test of your ability to:
+1. Read a legal principle stated in the question
+2. Apply it to a given factual scenario
+3. Arrive at the correct legal conclusion
+
+You do NOT need to memorize Indian law to score in Legal Reasoning. The principle is always given to you.
+
+## The 4-Step CLATians Method
+
+### Step 1: Read the Principle Carefully
+Read the legal principle stated in the question slowly and completely. Underline key conditions and exceptions.
+
+### Step 2: Identify the Key Elements
+What must be proven for the principle to apply? List the essential elements.
+
+### Step 3: Apply to the Facts
+Read the factual scenario and check: Do the facts satisfy all elements of the principle?
+
+### Step 4: Eliminate Wrong Answers
+Use the principle strictly as stated — do not bring in outside legal knowledge or personal opinions.
+
+## Common Mistake: Importing Outside Knowledge
+
+The biggest mistake students make is using their own legal knowledge instead of the stated principle.
+
+**Example**: If the question says "Principle: X is true in all cases", and you know from real law that X has exceptions — ignore that! Apply the principle as stated.
+
+## Practice Strategy
+
+**Weeks 1-4**: Understand the method, practice 10 questions daily
+**Weeks 5-8**: Increase to 20 questions daily, focus on accuracy
+**Weeks 9-12**: Full section practice in 30 minutes, aim for 30+ correct
+
+## Common Question Types
+
+1. **Direct application**: Apply stated principle to given facts
+2. **Exception-based**: Principle has exceptions, determine if exception applies
+3. **Multiple principles**: Two principles given, determine which applies
+4. **Policy-based**: What decision would a court likely make
+
+Target: 30+ correct out of 35 in Legal Reasoning to secure a top rank.
+
+Join CLATians Legal Reasoning sessions with Adv. Ravi Kumar for detailed practice and guidance.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"legal-reasoning-tips-clat","title":"How to Score 30+ in Legal Reasoning: The CLATians Method","excerpt":"Master the most important CLAT section with Adv. Ravi Kumar's proven methodology.","content":"$3","category":"Legal","categoryColor":"#6366f1","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"April 15, 2026","readTime":"10 min read","tags":["Legal Reasoning","CLAT Preparation","Scoring Tips","Study Strategy"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
+6:null

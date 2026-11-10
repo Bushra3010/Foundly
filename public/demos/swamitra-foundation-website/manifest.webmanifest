@@ -1,0 +1,16 @@
+{
+  "name": "SWAMITRA Foundation",
+  "short_name": "SWAMITRA",
+  "description": "Legal education, constitutional literacy, safe schools, safe workplaces and child protection across India.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#620405",
+  "icons": [
+    { "src": "assets/img/favicon.png", "sizes": "64x64", "type": "image/png" },
+    { "src": "assets/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/img/mark.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

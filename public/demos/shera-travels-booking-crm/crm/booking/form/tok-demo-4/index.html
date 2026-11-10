@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/demos/shera-travels-booking-crm/crm/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Shera Travels Itinerary Maker — Create professional Kashmir tour packages with ease." />
+    <title>Shera Travels – Itinerary Maker</title>
+    <script src="/demos/shera-travels-booking-crm/demo/shera-demo.js"></script>
+    <script type="module" crossorigin src="/demos/shera-travels-booking-crm/crm/assets/index-C7-5CdlR.js"></script>
+    <link rel="modulepreload" crossorigin href="/demos/shera-travels-booking-crm/crm/assets/chunk-B3K2TuZy.js">
+    <link rel="modulepreload" crossorigin href="/demos/shera-travels-booking-crm/crm/assets/typeof-DmQ5kzpc.js">
+    <link rel="stylesheet" crossorigin href="/demos/shera-travels-booking-crm/crm/assets/index-nSsCYUTs.css">
+  <style>
+/* ── SHERA CRM LIVE OVERRIDES ─────────────────────────── */
+:root {
+  --bg: #f4f6fb; --surface: #fff; --surface-2: #f9fafc;
+  --border: #e8ecf2; --border-light: #f0f2f7;
+  --primary: #3b6ff5; --primary-light: #eef2fe;
+  --text-1: #0f172a; --text-2: #475569; --text-3: #94a3b8;
+  --radius: 12px; --radius-lg: 16px; --radius-sm: 8px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.06); --shadow: 0 4px 16px rgba(0,0,0,.07);
+  --transition: all .2s cubic-bezier(.4,0,.2,1); --sidebar-w: 240px;
+}
+body { font-family: 'Inter',-apple-system,sans-serif !important; background: var(--bg) !important; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: hidden !important; max-width: 100vw !important; }
+
+/* ── SIDEBAR NAV ── */
+.sidebar-nav { width: var(--sidebar-w) !important; background: #fff !important; border-right: 1px solid var(--border) !important; padding: 24px 16px !important; backdrop-filter: none !important; }
+.nav-item { padding: 10px 12px !important; border-radius: 8px !important; font-size: 13.5px !important; font-weight: 500 !important; color: var(--text-2) !important; }
+.nav-item:hover { background: #f3f4f6 !important; color: var(--text-1) !important; }
+.nav-item.active { background: var(--primary-light) !important; color: var(--primary) !important; font-weight: 600 !important; box-shadow: none !important; }
+.main-viewport { margin-left: var(--sidebar-w) !important; padding: 28px 32px !important; background: var(--bg) !important; }
+.glass-card { background: #fff !important; border: 1px solid var(--border) !important; border-radius: var(--radius-lg) !important; box-shadow: var(--shadow-sm) !important; backdrop-filter: none !important; }
+
+/* ── STATS ── */
+.stats-grid { display: grid !important; grid-template-columns: repeat(4,1fr) !important; gap: 16px !important; margin-bottom: 20px !important; }
+.stat-chip, .stat-card { background: #fff !important; border: 1px solid var(--border) !important; border-radius: var(--radius-lg) !important; box-shadow: var(--shadow-sm) !important; padding: 20px !important; display: flex !important; align-items: flex-start !important; gap: 14px !important; backdrop-filter: none !important; }
+.stat-chip:hover, .stat-card:hover { box-shadow: var(--shadow) !important; transform: translateY(-1px) !important; }
+.stat-count, .stat-value { font-size: 28px !important; font-weight: 800 !important; color: var(--text-1) !important; letter-spacing: -0.8px !important; }
+.stat-label { font-size: 11.5px !important; font-weight: 600 !important; color: var(--text-3) !important; text-transform: uppercase !important; letter-spacing: .06em !important; }
+.stat-icon-wrap, .stat-icon { width: 42px !important; height: 42px !important; border-radius: 11px !important; background: var(--primary-light) !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 20px !important; flex-shrink: 0 !important; }
+
+/* ══════════════════════════════════════════════════════════
+   DASHBOARD SECTIONS — Itinerary RIGHT sidebar, QA LEFT
+══════════════════════════════════════════════════════════ */
+.dashboard-sections {
+  display: grid !important;
+  grid-template-columns: 1fr 360px !important;
+  gap: 20px !important;
+  align-items: start !important;
+}
+
+/* ALL ITINERARIES → right sidebar (2nd column) */
+.dashboard-sections > .dashboard-section:first-child {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  position: sticky !important;
+  top: 20px !important;
+  max-height: calc(100vh - 200px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+/* QUICK ACTIONS → left main area (1st column) */
+.dashboard-sections > .dashboard-section:last-child {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+
+/* Section labels */
+.dashboard-section .section-head {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .08em !important;
+  color: var(--text-3) !important;
+  padding: 12px 14px 10px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid var(--border) !important;
+  background: #f8f9fb !important;
+  flex-shrink: 0 !important;
+}
+
+/* Itinerary inner glass card = scrollable container */
+.dashboard-sections > .dashboard-section:first-child .glass-card {
+  overflow-y: auto !important;
+  flex: 1 !important;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;
+  border: none !important;
+  box-shadow: none !important;
+  max-height: calc(100vh - 270px) !important;
+}
+
+/* Wrap whole first section in card style */
+.dashboard-sections > .dashboard-section:first-child {
+  background: #fff !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* ── EXCEL TABLE STYLES ── */
+.dashboard-sections > .dashboard-section:first-child table { width: 100% !important; border-collapse: collapse !important; }
+.dashboard-sections > .dashboard-section:first-child th {
+  font-size: 10px !important; font-weight: 700 !important; text-transform: uppercase !important;
+  letter-spacing: .07em !important; color: var(--text-3) !important;
+  padding: 7px 10px !important; background: #f8f9fb !important;
+  border-bottom: 1.5px solid var(--border) !important; white-space: nowrap !important;
+  position: sticky !important; top: 0 !important; z-index: 2 !important;
+}
+.dashboard-sections > .dashboard-section:first-child td {
+  padding: 8px 10px !important; font-size: 12px !important; color: var(--text-2) !important;
+  border-bottom: 1px solid var(--border-light) !important; vertical-align: middle !important;
+}
+.dashboard-sections > .dashboard-section:first-child tr:nth-child(even) td { background: #fafbfd !important; }
+.dashboard-sections > .dashboard-section:first-child tr:hover td { background: #eef2ff !important; cursor: pointer !important; }
+
+/* ── COMPACT THUMBNAIL + NAME ── */
+.pkg-mini-img { width: 28px !important; height: 28px !important; border-radius: 6px !important; object-fit: cover !important; border: 1px solid var(--border) !important; flex-shrink: 0 !important; }
+.pkg-name-cell { display: flex !important; align-items: center !important; gap: 7px !important; }
+.pkg-info { display: flex !important; flex-direction: column !important; gap: 1px !important; overflow: hidden !important; min-width: 0 !important; }
+.pkg-info strong, .pkg-info b { font-size: 11.5px !important; font-weight: 600 !important; color: var(--text-1) !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; max-width: 130px !important; display: block !important; }
+.pkg-info span { font-size: 10px !important; color: var(--text-3) !important; }
+
+/* ── HIDE DUPLICATE (📋 2nd btn) & STYLE ACTION BTNS ── */
+.table-actions { display: flex !important; align-items: center !important; gap: 3px !important; }
+.table-actions .btn:nth-child(2) { display: none !important; }
+.table-actions .btn {
+  width: 26px !important; height: 26px !important; min-width: 26px !important;
+  display: inline-flex !important; align-items: center !important; justify-content: center !important;
+  border-radius: 6px !important; border: 1.5px solid var(--border) !important;
+  background: #fff !important; font-size: 12px !important; padding: 0 !important;
+  cursor: pointer !important; transition: var(--transition) !important;
+}
+.table-actions .btn:hover { background: var(--primary-light) !important; border-color: var(--primary) !important; }
+.table-actions .btn:last-child { border-color: #fecaca !important; background: #fff5f5 !important; }
+.table-actions .btn:last-child:hover { background: #fee2e2 !important; border-color: #ef4444 !important; }
+
+/* ── QUICK ACTIONS (shortcuts-vertical) ── */
+.shortcuts-vertical { display: flex !important; flex-direction: column !important; }
+.shortcut-item, .link-box {
+  display: flex !important; align-items: center !important; gap: 14px !important;
+  padding: 16px 20px !important; border-bottom: 1px solid var(--border-light) !important;
+  cursor: pointer !important; transition: var(--transition) !important;
+  text-decoration: none !important; color: inherit !important;
+}
+.shortcut-item:last-child, .link-box:last-child { border-bottom: none !important; }
+.shortcut-item:hover, .link-box:hover { background: var(--surface-2) !important; }
+
+/* ── ITINERARY FULL-PAGE OVERLAY ── */
+.itin-overlay {
+  position: fixed !important; inset: 0 !important; z-index: 9999 !important;
+  background: #f4f6fb !important; display: flex !important; flex-direction: column !important;
+  overflow: hidden !important;
+}
+.itin-overlay-top {
+  display: flex !important; align-items: center !important; justify-content: space-between !important;
+  padding: 20px 32px !important; background: #fff !important;
+  border-bottom: 1px solid #e8ecf2 !important; flex-shrink: 0 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04) !important;
+}
+.itin-overlay-top h2 { font-size: 20px !important; font-weight: 800 !important; color: #0f172a !important; letter-spacing: -0.5px !important; margin: 0 !important; }
+.itin-overlay-top p { font-size: 13px !important; color: #94a3b8 !important; margin: 2px 0 0 !important; }
+.itin-close-btn {
+  width: 36px !important; height: 36px !important; border-radius: 50% !important;
+  border: 1.5px solid #e8ecf2 !important; background: #fff !important;
+  cursor: pointer !important; font-size: 18px !important; color: #475569 !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  transition: all .15s !important;
+}
+.itin-close-btn:hover { background: #fee2e2 !important; border-color: #ef4444 !important; color: #ef4444 !important; }
+.itin-overlay-body { flex: 1 !important; overflow-y: auto !important; padding: 28px 32px !important; }
+.itin-cards-grid {
+  display: grid !important; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)) !important;
+  gap: 18px !important;
+}
+.itin-card {
+  background: #fff !important; border: 1px solid #e8ecf2 !important;
+  border-radius: 16px !important; overflow: hidden !important;
+  cursor: pointer !important; transition: all .2s !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05) !important;
+  display: flex !important; flex-direction: column !important;
+}
+.itin-card:hover { transform: translateY(-3px) !important; box-shadow: 0 8px 24px rgba(59,111,245,.12) !important; border-color: #bfcfff !important; }
+.itin-card-img { width: 100% !important; height: 160px !important; object-fit: cover !important; background: #eef2ff !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 48px !important; flex-shrink: 0 !important; }
+.itin-card-img img { width: 100% !important; height: 100% !important; object-fit: cover !important; display: block !important; }
+.itin-card-body { padding: 16px !important; flex: 1 !important; }
+.itin-card-title { font-size: 14.5px !important; font-weight: 700 !important; color: #0f172a !important; margin: 0 0 8px !important; letter-spacing: -0.2px !important; line-height: 1.3 !important; }
+.itin-card-meta { display: flex !important; gap: 12px !important; flex-wrap: wrap !important; margin-bottom: 12px !important; }
+.itin-card-tag { background: #eef2fe !important; color: #3b6ff5 !important; border-radius: 6px !important; padding: 3px 9px !important; font-size: 11.5px !important; font-weight: 600 !important; }
+.itin-card-loc { color: #94a3b8 !important; font-size: 12px !important; display: flex !important; align-items: center !important; gap: 4px !important; }
+.itin-card-footer { padding: 12px 16px !important; border-top: 1px solid #f0f2f7 !important; display: flex !important; align-items: center !important; justify-content: space-between !important; background: #fafbfd !important; }
+.itin-card-footer span { font-size: 12px !important; color: #94a3b8 !important; }
+.itin-open-btn { background: #3b6ff5 !important; color: #fff !important; border: none !important; border-radius: 8px !important; padding: 7px 14px !important; font-size: 12.5px !important; font-weight: 600 !important; cursor: pointer !important; transition: all .15s !important; }
+.itin-open-btn:hover { background: #2554d4 !important; }
+.itin-empty { text-align: center !important; padding: 60px 20px !important; color: #94a3b8 !important; }
+.itin-spinner { width: 36px !important; height: 36px !important; border: 3px solid #e8ecf2 !important; border-top-color: #3b6ff5 !important; border-radius: 50% !important; animation: spin .7s linear infinite !important; margin: 60px auto !important; }
+
+/* ── ITINERARY TABS ── */
+.itin-tabs { display: flex !important; flex-direction: column !important; overflow-y: auto !important; flex: 1 !important; }
+.itin-tab {
+  display: flex !important; align-items: center !important; gap: 10px !important;
+  padding: 11px 14px !important; border-bottom: 1px solid #f0f2f7 !important;
+  cursor: pointer !important; transition: background .15s !important;
+  background: #fff !important;
+}
+.itin-tab:hover { background: #eef2ff !important; }
+.itin-tab:hover .itin-tab-arr { color: #3b6ff5 !important; transform: translateX(2px) !important; }
+.itin-tab-icon { font-size: 20px !important; flex-shrink: 0 !important; }
+.itin-tab-info { display: flex !important; flex-direction: column !important; gap: 2px !important; flex: 1 !important; min-width: 0 !important; overflow: hidden !important; }
+.itin-tab-name { font-size: 12.5px !important; font-weight: 600 !important; color: #0f172a !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; display: block !important; }
+.itin-tab-meta { font-size: 10.5px !important; color: #94a3b8 !important; display: block !important; }
+.itin-tab-arr { font-size: 13px !important; color: #cbd5e1 !important; flex-shrink: 0 !important; transition: all .15s !important; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .dashboard-sections { grid-template-columns: 1fr !important; }
+  .dashboard-sections > .dashboard-section:first-child { grid-column: 1 !important; grid-row: 2 !important; position: static !important; max-height: 400px !important; }
+  .dashboard-sections > .dashboard-section:last-child { grid-column: 1 !important; grid-row: 1 !important; }
+  .stats-grid { grid-template-columns: repeat(2,1fr) !important; }
+}
+
+/* ══════════════════════════════════════════════════
+   MOBILE CRM — Full App Redesign (≤768px)
+   ══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── 1. HIDE SIDEBAR, HAMBURGER ── */
+  .sidebar-nav      { display: none !important; }
+  .mobile-menu-btn  { display: none !important; }
+
+  /* ── 2. LAYOUT — kill overflow, reset widths ── */
+  .layout-wrapper {
+    overflow-x: hidden !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    flex-direction: column !important;
+  }
+  .main-viewport {
+    margin-left: 0 !important;
+    padding: 0 0 72px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    overflow-x: hidden !important;
+    background: #f0f2f8 !important;
+  }
+
+  /* ── 3. STICKY HEADER ── */
+  .main-header {
+    position: sticky !important; top: 0 !important; z-index: 500 !important;
+    background: #fff !important;
+    border-bottom: 1px solid #e8ecf2 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07) !important;
+    padding: 0 14px !important;
+    height: 56px !important; min-height: 56px !important;
+    display: flex !important; align-items: center !important;
+    justify-content: space-between !important; gap: 10px !important;
+  }
+  .header-left {
+    display: flex !important; align-items: center !important;
+    gap: 8px !important; flex: 1 !important; min-width: 0 !important;
+  }
+  .header-left h2 {
+    font-size: 16px !important; font-weight: 700 !important;
+    color: #0f172a !important; margin: 0 !important;
+    white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
+  }
+  .header-right {
+    display: flex !important; align-items: center !important;
+    gap: 8px !important; flex-shrink: 0 !important;
+  }
+  /* Hide extra header buttons — keep only avatar */
+  .header-right > *:not(:last-child) { display: none !important; }
+  .user-profile > div:first-child { display: none !important; }
+
+  /* ── 4. PAGE INNER PADDING ── */
+  .main-viewport > div,
+  .page-container { padding: 14px 12px !important; }
+
+  /* ── 5. SECTION HEADINGS ── */
+  h1.text-gradient { font-size: 22px !important; margin-bottom: 2px !important; }
+  .text-muted { font-size: 12px !important; margin-bottom: 12px !important; }
+
+  /* ── 6. FULL-WIDTH PRIMARY BUTTON ── */
+  .btn-primary { width: 100% !important; text-align: center !important; justify-content: center !important; font-size: 14px !important; padding: 13px !important; border-radius: 12px !important; }
+
+  /* ── 7. STAT CARDS — vertical stacking, no truncation ── */
+  /* Override base .stat-card padding: 20px that fights layout */
+  .stat-card { padding: 14px 13px !important; }
+  .stats-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important; margin-bottom: 14px !important;
+  }
+  .glass-card.stat-card {
+    display: flex !important; flex-direction: column !important;
+    align-items: flex-start !important; justify-content: space-between !important;
+    padding: 14px 13px !important; border-radius: 16px !important;
+    min-height: 96px !important; overflow: hidden !important;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.07) !important;
+    gap: 8px !important;
+  }
+  .stat-icon-wrap {
+    width: 32px !important; height: 32px !important; font-size: 16px !important;
+    border-radius: 8px !important; display: flex !important;
+    align-items: center !important; justify-content: center !important; flex-shrink: 0 !important;
+  }
+  .stat-content { width: 100% !important; min-width: 0 !important; }
+  .stat-label {
+    font-size: 9.5px !important; font-weight: 700 !important; text-transform: uppercase !important;
+    letter-spacing: .5px !important; color: #94a3b8 !important;
+    white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
+    display: block !important; margin-bottom: 2px !important;
+  }
+  .stat-value, .glass-card.stat-card h2 {
+    font-size: 22px !important; font-weight: 800 !important; color: #0f172a !important;
+    line-height: 1.15 !important; margin: 0 !important; padding: 0 !important;
+    white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
+  }
+
+  /* ── 8. GLASS CARDS — fix compiled-CSS width:calc(100%+8px) overflow ── */
+  .glass-card {
+    width: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.07) !important;
+  }
+  .glass-card:not(.stat-card) { padding: 14px !important; }
+
+  /* ── 9. DASHBOARD GRID — single column ── */
+  .dashboard-sections { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .dashboard-sections > .dashboard-section:first-child {
+    grid-column: 1 !important; grid-row: 2 !important;
+    position: static !important; max-height: 360px !important; overflow-y: auto !important;
+  }
+  .dashboard-sections > .dashboard-section:last-child {
+    grid-column: 1 !important; grid-row: 1 !important;
+  }
+
+  /* ── 10. QUICK ACTIONS ── */
+  .quick-action-item, [class*="action-item"] { padding: 14px 12px !important; }
+
+  /* ── 11. ITIN LIST ROWS ── */
+  .itin-tab { padding: 12px 10px !important; }
+  .itin-tab-name { font-size: 13px !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; max-width: 200px !important; }
+  .itin-tabs { max-height: 360px !important; overflow-y: auto !important; }
+
+  /* ── 12. LEADS STATS CHIPS ── */
+  .stats-row { grid-template-columns: repeat(4,1fr) !important; gap: 6px !important; margin-bottom: 14px !important; }
+  .stat-chip { padding: 10px 4px !important; border-radius: 10px !important; text-align: center !important; }
+  .stat-chip .stat-count { font-size: 17px !important; font-weight: 800 !important; display: block !important; }
+  .stat-chip .stat-label  { font-size: 8.5px !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; display: block !important; }
+
+  /* ── 13. BOOKING STATS ── */
+  .booking-stats { gap: 8px !important; margin-bottom: 14px !important; }
+  .booking-stat {
+    display: flex !important; flex-direction: column !important;
+    align-items: flex-start !important; gap: 2px !important;
+    padding: 12px 10px !important; border-radius: 12px !important;
+  }
+  .booking-stat .stat-icon-wrap { display: none !important; }
+  .booking-stat .stat-label {
+    font-size: 8.5px !important; font-weight: 700 !important; text-transform: uppercase !important;
+    letter-spacing: .4px !important; color: #94a3b8 !important;
+    white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; width: 100% !important;
+  }
+  .booking-stat .stat-value {
+    font-size: 16px !important; font-weight: 800 !important;
+    white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; width: 100% !important;
+  }
+
+  /* ── 14. TABLES — horizontal scroll ── */
+  .table-wrap, .leads-list-wrap, .bookings-list-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  table { min-width: 460px !important; font-size: 12.5px !important; }
+  th, td { padding: 10px 10px !important; }
+
+  /* ── 15. SEARCH BAR ── */
+  input[type="text"], input[type="search"] { font-size: 14px !important; padding: 11px 14px !important; }
+
+  /* ── 16. FILTER CHIPS ── */
+  .filter-chips, .status-filters { flex-wrap: wrap !important; gap: 6px !important; margin-bottom: 14px !important; }
+  .filter-chip, .status-chip { font-size: 12px !important; padding: 6px 12px !important; border-radius: 20px !important; white-space: nowrap !important; }
+
+  /* ── 17. LEAD / BOOKING ROWS ── */
+  .lead-row, .booking-row { padding: 12px 10px !important; }
+  .lead-name, .booking-name { font-size: 13px !important; font-weight: 600 !important; }
+  .lead-meta, .booking-meta { font-size: 11.5px !important; }
+
+  /* ── 18. ITINERARY OVERLAY ── */
+  .itin-overlay-top { padding: 14px 16px !important; }
+  .itin-overlay-top h2 { font-size: 17px !important; }
+  .itin-overlay-body { padding: 12px !important; }
+  .itin-cards-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .itin-card { border-radius: 14px !important; }
+  .itin-card-body { padding: 12px !important; }
+  .itin-card-title { font-size: 14px !important; }
+
+  /* ── 19. BOTTOM NAV ── */
+  .mob-bottom-nav {
+    position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important;
+    height: 62px !important; background: #fff !important;
+    border-top: 1.5px solid #e8ecf2 !important;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.10) !important;
+    display: flex !important; align-items: stretch !important;
+    z-index: 9990 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  }
+  .mob-nav-item {
+    flex: 1 !important; display: flex !important; flex-direction: column !important;
+    align-items: center !important; justify-content: center !important; gap: 3px !important;
+    cursor: pointer !important; text-decoration: none !important;
+    color: #b0bac9 !important; font-weight: 600 !important;
+    border: none !important; background: none !important; padding: 0 !important;
+    transition: color .15s !important; -webkit-tap-highlight-color: transparent !important;
+  }
+  .mob-nav-icon { font-size: 21px !important; line-height: 1 !important; display: block !important; }
+  .mob-nav-item span:last-child { font-size: 9px !important; letter-spacing: .2px !important; }
+  .mob-nav-item.active { color: #3b6ff5 !important; }
+  .mob-nav-item.active .mob-nav-icon { transform: scale(1.08) !important; }
+}
+  </style>
+  <body>
+    <div id="root"></div>
+  <script>
+  (function() {
+    var timer;
+
+    /* ── ITINERARY OVERLAY ── */
+    var SUPA_URL = 'https://puufrlhhdjsqnbseayvh.supabase.co';
+    var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1dWZybGhoZGpzcW5ic2VheXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNzIxNzMsImV4cCI6MjA5MTg0ODE3M30.yByTKkvnlWV5MNAT8Coo2PUKhBOeQWxgtIFdSsd3hbg';
+
+    function openItinOverlay() {
+      if (document.querySelector('.itin-overlay')) return;
+
+      // Build overlay shell
+      var ov = document.createElement('div');
+      ov.className = 'itin-overlay';
+      ov.innerHTML =
+        '<div class="itin-overlay-top">' +
+          '<div><h2>🗓️ All Itineraries</h2><p>Click any package to open the editor</p></div>' +
+          '<button class="itin-close-btn" id="itinCloseBtn">✕</button>' +
+        '</div>' +
+        '<div class="itin-overlay-body">' +
+          '<div class="itin-spinner"></div>' +
+        '</div>';
+      document.body.appendChild(ov);
+
+      document.getElementById('itinCloseBtn').addEventListener('click', function() {
+        ov.remove();
+        // Remove active from itin nav item
+        var ni = document.querySelector('.itin-nav-item');
+        if (ni) ni.classList.remove('active');
+      });
+
+      // Fetch packages from Supabase
+      fetch(SUPA_URL + '/rest/v1/packages?select=id,title,days,nights,start_location,hero_photo_url,created_at&order=created_at.desc', {
+        headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(pkgs) {
+        var body = ov.querySelector('.itin-overlay-body');
+        if (!pkgs || !pkgs.length) {
+          body.innerHTML = '<div class="itin-empty"><div style="font-size:48px">📭</div><p>No itineraries found</p></div>';
+          return;
+        }
+        var grid = document.createElement('div');
+        grid.className = 'itin-cards-grid';
+        pkgs.forEach(function(pkg) {
+          var dur = (pkg.nights || 0) + 'N / ' + (pkg.days || 0) + 'D';
+          var loc = pkg.start_location || 'Kashmir';
+          var img = pkg.hero_photo_url
+            ? '<img src="' + pkg.hero_photo_url + '" onerror="this.parentNode.innerHTML=\'🗺️\'" />'
+            : '🗺️';
+          var card = document.createElement('div');
+          card.className = 'itin-card';
+          card.innerHTML =
+            '<div class="itin-card-img">' + img + '</div>' +
+            '<div class="itin-card-body">' +
+              '<div class="itin-card-title">' + (pkg.title || 'Untitled Package') + '</div>' +
+              '<div class="itin-card-meta">' +
+                '<span class="itin-card-tag">📅 ' + dur + '</span>' +
+                '<span class="itin-card-loc">📍 ' + loc + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="itin-card-footer">' +
+              '<span>Tap to edit</span>' +
+              '<button class="itin-open-btn">Open →</button>' +
+            '</div>';
+          card.addEventListener('click', function() {
+            ov.remove();
+            window.location.href = '/demos/shera-travels-booking-crm/crm/editor/' + pkg.id;
+          });
+          grid.appendChild(card);
+        });
+        body.innerHTML = '';
+        body.appendChild(grid);
+      })
+      .catch(function() {
+        ov.querySelector('.itin-overlay-body').innerHTML = '<div class="itin-empty">Failed to load. Please try again.</div>';
+      });
+    }
+
+    /* ── ADD "Itinerary" NAV ITEM above Leads ── */
+    function addItinNavItem() {
+      var nav = document.querySelector('.nav-links');
+      if (!nav) return;
+      if (nav.querySelector('.itin-nav-item')) return;
+
+      var leadsItem = null;
+      nav.querySelectorAll('.nav-item').forEach(function(item) {
+        if (item.innerText.trim().toLowerCase().includes('lead')) leadsItem = item;
+      });
+
+      var a = document.createElement('a');
+      a.className = 'nav-item itin-nav-item';
+      a.href = 'javascript:void(0)';
+      a.innerHTML = '<span class="nav-icon">🗓️</span><span class="nav-label">Itinerary</span>';
+
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        nav.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+        a.classList.add('active');
+        openItinOverlay();
+      });
+
+      if (leadsItem) {
+        nav.insertBefore(a, leadsItem);
+      } else {
+        nav.insertBefore(a, nav.firstChild);
+      }
+    }
+
+    function buildTabs() {
+      var section = document.querySelector('.dashboard-sections > .dashboard-section:first-child');
+      if (!section) return;
+      var card = section.querySelector('.glass-card');
+      if (!card) return;
+      var table = card.querySelector('table');
+      if (!table) return;
+      var rows = Array.prototype.slice.call(table.querySelectorAll('tbody tr'));
+      if (!rows.length) return;
+
+      // Already built with same count — skip
+      var existing = card.querySelector('.itin-tabs');
+      if (existing && existing.children.length === rows.length) return;
+      if (existing) existing.remove();
+
+      // Hide the raw table
+      table.style.cssText = 'display:none!important';
+
+      var list = document.createElement('div');
+      list.className = 'itin-tabs';
+
+      rows.forEach(function(row) {
+        var cells = row.cells;
+        if (!cells || cells.length < 4) return;
+
+        var iconEl = cells[0].querySelector('.pkg-mini-img');
+        var icon   = iconEl ? iconEl.textContent.trim() : '🗺️';
+        var nameEl = cells[0].querySelector('span');
+        var name   = nameEl ? nameEl.textContent.trim() : cells[0].textContent.trim();
+        var dur    = cells[1].textContent.trim();
+        var loc    = cells[2].textContent.trim().split(',')[0];
+        var editBtn = cells[3].querySelector('.btn');   // first visible btn = ✏️
+
+        var tab = document.createElement('div');
+        tab.className = 'itin-tab';
+        tab.innerHTML =
+          '<span class="itin-tab-icon">' + icon + '</span>' +
+          '<span class="itin-tab-info">' +
+            '<span class="itin-tab-name">' + name + '</span>' +
+            '<span class="itin-tab-meta">' + dur + ' &nbsp;·&nbsp; ' + loc + '</span>' +
+          '</span>' +
+          '<span class="itin-tab-arr">›</span>';
+
+        tab.addEventListener('click', function() {
+          if (editBtn) editBtn.click();
+        });
+
+        list.appendChild(tab);
+      });
+
+      card.appendChild(list);
+    }
+
+    /* ── BOTTOM NAV (mobile) ── */
+    var MOB_ROUTES = [
+      { label: 'Overview',  icon: '📊', href: '/demos/shera-travels-booking-crm/crm' },
+      { label: 'Itinerary', icon: '🗓️', href: null },   // null = opens overlay
+      { label: 'Leads',     icon: '👥', href: '/demos/shera-travels-booking-crm/crm/leads' },
+      { label: 'Bookings',  icon: '📅', href: '/demos/shera-travels-booking-crm/crm/bookings' },
+      { label: 'Settings',  icon: '⚙️', href: '/demos/shera-travels-booking-crm/crm/admin' }
+    ];
+
+    function buildBottomNav() {
+      if (window.innerWidth > 768) return;
+      if (document.querySelector('.mob-bottom-nav')) {
+        updateBottomNavActive(); return;
+      }
+      var nav = document.createElement('nav');
+      nav.className = 'mob-bottom-nav';
+      MOB_ROUTES.forEach(function(route) {
+        var btn = document.createElement('a');
+        btn.className = 'mob-nav-item';
+        btn.href = route.href || 'javascript:void(0)';
+        btn.innerHTML = '<span class="mob-nav-icon">' + route.icon + '</span><span>' + route.label + '</span>';
+        if (route.href === null) {
+          btn.addEventListener('click', function(e) { e.preventDefault(); openItinOverlay(); });
+        } else {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.history.pushState({}, '', route.href);
+            window.dispatchEvent(new PopStateEvent('popstate'));
+          });
+        }
+        nav.appendChild(btn);
+      });
+      document.body.appendChild(nav);
+      updateBottomNavActive();
+    }
+
+    function updateBottomNavActive() {
+      var nav = document.querySelector('.mob-bottom-nav');
+      if (!nav) return;
+      var path = window.location.pathname;
+      Array.from(nav.querySelectorAll('.mob-nav-item')).forEach(function(btn, i) {
+        var route = MOB_ROUTES[i];
+        var active = route.href && (
+          route.href === '/demos/shera-travels-booking-crm/crm' ? path === '/demos/shera-travels-booking-crm/crm' || path === '/demos/shera-travels-booking-crm/crm/'
+                                : path.startsWith(route.href)
+        );
+        btn.classList.toggle('active', !!active);
+      });
+    }
+
+    window.addEventListener('popstate', function() { setTimeout(updateBottomNavActive, 100); });
+
+    // Debounced rebuild on any DOM change
+    var obs = new MutationObserver(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        addItinNavItem();
+        buildTabs();
+        buildBottomNav();
+      }, 120);
+    });
+
+    function init() {
+      obs.observe(document.getElementById('root') || document.body, {
+        childList: true, subtree: true
+      });
+      // Initial attempts as React hydrates
+      [200, 600, 1200, 2500].forEach(function(ms) {
+        setTimeout(function() {
+          addItinNavItem();
+          buildTabs();
+          buildBottomNav();
+        }, ms);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
+  </body>
+</html>

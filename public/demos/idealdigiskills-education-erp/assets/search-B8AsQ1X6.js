@@ -1,0 +1,1 @@
+var e=e=>e.toLowerCase().split(/\s+/).filter(Boolean);function t(t,n){let r=e(n);if(!r.length)return!0;let i=String(t??``).toLowerCase().replace(/\s+/g,` `);return r.every(e=>i.includes(e))}export{t};

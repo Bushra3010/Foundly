@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Careers | SWAMITRA Foundation</title>
+<meta name="description" content="Small team, long horizon, unglamorous work that matters.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="get-involved" data-title="Careers">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><a href="get-involved.html">Get Involved</a><span class="sep">/</span><span>Careers</span>
+      </nav>
+      <h1>Working at SWAMITRA</h1>
+      <p class="lead">Small team, long horizon, unglamorous work that matters.</p>
+    </div>
+  </section>
+
+
+  <section class="section" id="careers">
+    <div class="wrap">
+
+      <div class="grid g-2 grid--rail reveal">
+        <article class="card card--flat">
+          <h3>Current openings</h3>
+          <p>There are no vacancies published at this moment. Openings are advertised on this page as they arise, with the role, location, term and the essential requirements stated in full — we do not run standing adverts for roles that do not exist.</p>
+          <p>Speculative applications are welcome and are genuinely read. Send your CV with a short note naming the function you are interested in — programme delivery, research, curriculum, communications, operations or finance — and what you would want to work on. We keep applications on file for twelve months and contact people when a matching role opens.</p>
+          <a class="link-more card__foot" href="contact.html">Send a speculative application</a>
+        </article>
+        <article class="card card--flat">
+          <h3>What we look for</h3>
+          <ul class="ticks mt-3">
+            <li>Precision — this is work where a wrong statement of the law causes harm</li>
+            <li>Willingness to be measured, including when the numbers are poor</li>
+            <li>Ability to explain a legal idea to someone who has never studied one</li>
+            <li>Comfort working in more than one Indian language</li>
+            <li>Patience with institutions that move slowly</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="mt-10 reveal">
+        <h3 class="mb-4">Recruitment process</h3>
+        <div class="flow">
+          <div class="flow__step"><b>Application</b><small>CV and a short note on the role. Every application is acknowledged.</small></div>
+          <div class="flow__step"><b>Screening</b><small>Shortlisting against the published requirements, sometimes with a short written task.</small></div>
+          <div class="flow__step"><b>Interview</b><small>One or two conversations covering subject knowledge, judgement and working style.</small></div>
+          <div class="flow__step"><b>Reference check</b><small>Two references, contacted only with your consent, plus screening where the role is child-facing.</small></div>
+          <div class="flow__step"><b>Offer</b><small>A written offer stating role, term, remuneration and reporting line before you are asked to accept.</small></div>
+        </div>
+      </div>
+
+      <div class="card card--outline mt-10 reveal">
+        <h3>Equal opportunity statement</h3>
+        <p class="mt-3">SWAMITRA Foundation selects and promotes people on the basis of merit and the requirements of the role, and on nothing else. We do not discriminate on grounds of religion, race, caste, sex, gender identity, sexual orientation, place of birth, language, descent, marital status, pregnancy, age, disability or economic background, whether in recruitment, remuneration, training, promotion or termination.</p>
+        <p class="mt-3">We ask about a candidate's requirements rather than assuming them, and we make reasonable adjustments to the application process, the interview and the workplace so that a disabled candidate is assessed on the work and not on the arrangements. Our selection panels record the reason for every shortlisting decision, so that reasoning can be reviewed.</p>
+        <p class="mt-3">We hold ourselves to the same standards we ask of the institutions we train. Anyone who believes a recruitment decision at the Foundation was made on a prohibited ground may raise it under our <a href="legal.html?doc=whistleblower-policy">Whistleblower Policy</a>, and it will be examined.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+  /* Ways to get involved */
+  var ways = [
+    ["users", "Volunteer", "Facilitate sessions, translate material, support camps or assist research. Trained before placement, credited for the work.", "#volunteer"],
+    ["handshake", "Partner", "Bring a framework into your school, university, department or company with a written memorandum and named deliverables.", "#partner"],
+    ["heart", "Donate", "Fund classroom material, school audits, community camps or master trainer development.", "#donate"],
+    ["building", "CSR", "Corporate social responsibility engagements with baseline measurement and audit-ready reporting.", "#csr"],
+    ["school", "Internship", "Four to twelve weeks of supervised work on live research, curriculum or programme delivery.", "#internship"],
+    ["award", "Careers", "Roles are published as they arise. Speculative applications are read and kept on file.", "#careers"],
+    ["globe", "Membership", "Join the network of individuals and institutions implementing this work across the country.", "#membership"]
+  ];
+  set("ways-grid", ways.map(function (w) {
+    return '<a class="card focus-card" href="' + w[3] + '">' +
+      '<span class="card__icon">' + I(w[0]) + "</span>" +
+      "<h3>" + w[1] + "</h3><p>" + w[2] + "</p>" +
+      '<span class="card__foot link-more">Read more</span></a>';
+  }).join(""));
+
+  /* CSR focus areas — drawn from the Foundation's focus areas */
+  set("csr-grid", D.focus.map(function (f) {
+    return '<article class="card focus-card"><span class="card__icon">' + I(f.icon) + "</span>" +
+      "<h3>" + f.title + "</h3><p>" + f.text + "</p></article>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

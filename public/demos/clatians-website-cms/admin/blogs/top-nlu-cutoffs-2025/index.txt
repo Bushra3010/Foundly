@@ -1,0 +1,84 @@
+1:"$Sreact.fragment"
+3:I[92825,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"ClientSegmentRoot"]
+4:I[88760,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js"],"default"]
+5:I[39756,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+6:I[37457,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+9:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+a:"$Sreact.suspense"
+d:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"ViewportBoundary"]
+f:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"MetadataBoundary"]
+11:I[68027,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default",1]
+:HL["/demos/clatians-website-cms/_next/static/chunks/0m-tw5g9h5755.css","style"]
+:HL["/demos/clatians-website-cms/_next/static/media/fba5a26ea33df6a3-s.p.0eehd8tgys7nv.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"P":null,"c":["","admin","blogs","top-nlu-cutoffs-2025",""],"q":"","i":false,"f":[[["",{"children":["admin",{"children":["blogs",{"children":[["slug","top-nlu-cutoffs-2025","d",null],{"children":["__PAGE__",{}]}]}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/demos/clatians-website-cms/_next/static/chunks/0m-tw5g9h5755.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","async":true,"nonce":"$undefined"}]],"$L2"]}],{"children":[["$","$1","c",{"children":[[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","async":true,"nonce":"$undefined"}]],["$","$L3",null,{"Component":"$4","slots":{"children":["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]},"serverProvidedParams":{"params":{},"promises":["$@7"]}}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L8",[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true,"nonce":"$undefined"}]],["$","$L9",null,{"children":["$","$a",null,{"name":"Next.MetadataOutlet","children":"$@b"}]}]]}],{},null,false,null]},null,false,"$@c"]},null,false,"$@c"]},null,false,null]},null,false,null],["$","$1","h",{"children":[null,["$","$Ld",null,{"children":"$Le"}],["$","div",null,{"hidden":true,"children":["$","$Lf",null,{"children":["$","$a",null,{"name":"Next.Metadata","children":"$L10"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$11",[["$","link","0",{"rel":"stylesheet","href":"/demos/clatians-website-cms/_next/static/chunks/0m-tw5g9h5755.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"qUGiI2hLtG2nds025c7Wg"}
+12:[]
+c:"$W12"
+7:"$0:f:0:1:1:children:0:props:children:1:props:serverProvidedParams:params"
+13:I[78527,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"SiteSettingsProvider"]
+2:["$","html",null,{"lang":"en","className":"plus_jakarta_sans_6a83704a-module__ugZDJG__variable","children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"(function(){try{var P=\"demo:clatians-website-cms:\",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;\nS.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};\nS.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};\nS.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};\nif(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error(\"Service workers are disabled in Foundly demos\"))}}}catch(e){}})();"}}]}],["$","body",null,{"className":"plus_jakarta_sans_6a83704a-module__ugZDJG__className","style":{"overflowX":"clip","maxWidth":"100%"},"children":[["$","$L13",null,{"settings":{"logoSrc":"/demos/clatians-website-cms/logo.png","logoAlt":"CLATians","phone":"8507700177","whatsapp":"918507700177","desktopNav":[{"label":"Home","href":"/"},{"label":"Courses","href":"/courses","children":[{"label":"🏫 Offline Course","href":"/courses?cat=offline"},{"label":"💻 Online Course","href":"/courses?cat=online"},{"label":"🎯 Mentorship","href":"/courses?cat=mentorship"},{"label":"📝 Mock Tests","href":"/courses?cat=mock"}]},{"label":"Exams","href":"/exams/clat","children":[{"label":"🏛️ CLAT","href":"/exams/clat"},{"label":"⚖️ AILET","href":"/exams/ailet"},{"label":"📍 MH-CET Law","href":"/exams/mh-cet-law"},{"label":"🎓 CUET","href":"/exams/cuet"},{"label":"🎖️ AIL-LET","href":"/exams/ail-let"},{"label":"🌐 LSAT India","href":"/exams/lsat"}]},{"label":"Admission","href":"/admission"},{"label":"The CLATians Journal","href":"/blogs"},{"label":"About","href":"/about"},{"label":"Contact","href":"/contact"}],"mobileMenu":[{"label":"Courses","href":"/courses","icon":"📚"},{"label":"Exams","href":"/exams/clat","icon":"🏛️"},{"label":"Admission","href":"/admission","icon":"🎓"},{"label":"The CLATians Journal","href":"/blogs","icon":"✍️"},{"label":"About","href":"/about","icon":"👥"},{"label":"Contact","href":"/contact","icon":"📞"}],"mobileBottomNav":[{"label":"Home","href":"/","icon":"home","color":"#06b6d4"},{"label":"Courses","href":"/courses","icon":"courses","color":"#8b5cf6"},{"label":"Exams","href":"/exams/clat","icon":"exams","color":"#f59e0b"},{"label":"Admission","href":"/admission","icon":"admission","color":"#f97316"},{"label":"More","href":"/about","icon":"more","color":"#ec4899"}],"desktopCtas":[{"label":"College Predictor","href":"/college-predictor"},{"label":"Admission 2026","href":"/admission"}],"mobilePredictorLabel":"🔮 Predictor","mobilePredictorHref":"/college-predictor","footerDescription":"Your trusted institute for CLAT, AILET, and all major law entrance exams. Expert guidance by NLU alumni and advocates.","footerMobileDescription":"India's #1 CLAT coaching — 1.25L+ students, 5000+ NLU selections since 2012.","footerCopyright":"© 2026 CLATians – All rights reserved.","footerCoursesTitle":"Courses","footerExamsTitle":"Exams","footerQuickLinksTitle":"Quick Links","footerCourses":[{"label":"Offline Course","href":"/courses?cat=offline"},{"label":"Online Course","href":"/courses?cat=online"},{"label":"CLAT Navigator™","href":"/courses/clat-mentorship-program/clat-navigator"},{"label":"Mock Tests","href":"/courses?cat=mock"}],"footerExams":[{"label":"CLAT","href":"/exams/clat"},{"label":"AILET","href":"/exams/ailet"},{"label":"MH-CET Law","href":"/exams/mh-cet-law"},{"label":"CUET","href":"/exams/cuet"},{"label":"AIL-LET","href":"/exams/ail-let"},{"label":"LSAT","href":"/exams/lsat"}],"footerQuickLinks":[{"label":"About Us","href":"/about"},{"label":"Faculty","href":"/faculty"},{"label":"Admission","href":"/admission"},{"label":"The CLATians Journal","href":"/blogs"},{"label":"College Predictor","href":"/college-predictor"}],"socials":[{"label":"Facebook","href":"#","icon":"f","color":"#1877f2","bg":"rgba(24,119,242,0.15)"},{"label":"YouTube","href":"#","icon":"▶","color":"#ff0000","bg":"rgba(255,0,0,0.12)"},{"label":"Instagram","href":"#","icon":"📷","color":"#e1306c","bg":"rgba(225,48,108,0.12)"},{"label":"LinkedIn","href":"#","icon":"in","color":"#0a66c2","bg":"rgba(10,102,194,0.15)"}],"pageBanners":[{"key":"about","enabled":false,"eyebrow":"About CLATians","title":"Learn, Practice, Achieve","subtitle":"Add a custom about page announcement or intro from admin.","ctaLabel":"Explore Courses","ctaHref":"/courses"},{"key":"admission","enabled":false,"eyebrow":"Admission Open","title":"Start your CLAT journey","subtitle":"Add a custom admission message from admin.","ctaLabel":"Call Now","ctaHref":"tel:8507700177"},{"key":"contact","enabled":false,"eyebrow":"Contact CLATians","title":"Speak to our counsellors","subtitle":"Add contact page instructions or offer text from admin.","ctaLabel":"WhatsApp Us","ctaHref":"https://wa.me/918507700177"},{"key":"college-predictor","enabled":false,"eyebrow":"College Predictor","title":"Check your NLU chances","subtitle":"Add predictor page copy from admin.","ctaLabel":"Try Now","ctaHref":"/college-predictor"},{"key":"blogs","enabled":false,"eyebrow":"CLATians Journal","title":"Latest preparation insights","subtitle":"Add blog page intro or announcement from admin.","ctaLabel":"View Courses","ctaHref":"/courses"},{"key":"faculty","enabled":false,"eyebrow":"Faculty","title":"Meet our mentors","subtitle":"Add faculty page intro or announcement from admin.","ctaLabel":"Get Counselling","ctaHref":"/admission"}]},"children":"$L14"}],"$L15"]}]]}]
+16:I[52155,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
+14:["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]
+15:["$","$L16",null,{}]
+17:I[11645,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js"],"default"]
+18:T647,The CLAT 2025 results have been declared and the cutoffs have been finalized. Here is a comprehensive analysis of the closing ranks for all 23 National Law Universities.
+
+## Top 5 NLUs and Their CLAT 2025 Cutoffs
+
+### 1. NLSIU Bangalore (Rank 1)
+The top-ranked NLU in India had the most competitive cutoffs:
+- General: ~50
+- OBC: ~120
+- SC: ~250
+- ST: ~300
+
+### 2. NLU Delhi (AILET)
+NLU Delhi takes admissions through AILET, not CLAT. AILET cutoffs:
+- General: ~45
+- OBC: ~100
+
+### 3. NALSAR Hyderabad (Rank 2)
+- General: ~200
+- OBC: ~400
+- SC: ~800
+- ST: ~600
+
+### 4. WBNUJS Kolkata (Rank 3)
+- General: ~350
+- OBC: ~600
+- SC: ~1000
+- ST: ~800
+
+### 5. NLU Jodhpur (Rank 4)
+- General: ~500
+- OBC: ~900
+- SC: ~1500
+- ST: ~1200
+
+## How to Use This Data
+
+These cutoffs are based on previous year data and should be used as a reference point. Your actual chance of admission depends on:
+1. Your CLAT rank
+2. Your category
+3. Your state of domicile (for state NLUs)
+4. Number of applicants that year
+
+Use CLATians' AI College Predictor for a personalized prediction based on your expected rank.
+
+## Preparation Strategy Based on Target NLU
+
+If you are targeting **Top 5 NLUs**: Aim for rank under 500 (General)
+If you are targeting **Tier 2 NLUs**: Aim for rank 500-1500 (General)
+If you are targeting **All NLUs**: A rank under 5000 ensures some NLU admission
+
+## Contact CLATians for Counselling
+
+Our counselling team can help you:
+- Select the right NLU based on your preferences
+- Understand category-specific advantages
+- Plan your preparation to hit target ranks
+
+Call us at 8507700177 for free counselling.8:["$","$L17",null,{"blog":{"slug":"top-nlu-cutoffs-2025","title":"CLAT 2025 Cutoff Ranks for All 23 NLUs: Category-Wise Analysis","excerpt":"Complete analysis of CLAT 2025 closing ranks for all 23 NLUs — General, SC, ST, OBC, and PWD categories.","content":"$18","category":"Law Preparation","categoryColor":"#f77420","author":"CLATians Team","authorAvatar":"CT","date":"May 5, 2026","readTime":"6 min read","tags":["NLU Cutoffs","CLAT 2025","Admission","College Selection"]},"isNew":false}]
+e:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+19:I[27201,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"IconMark"]
+b:null
+10:[["$","title","0",{"children":"CLATians — Best CLAT Coaching in Patna | Bihar · Live demo by Foundly"}],["$","meta","1",{"name":"description","content":"India's leading CLAT coaching institute. Expert faculty, real mock tests, 15,000+ students mentored. Join CLATians for CLAT 2026 preparation."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","link","3",{"rel":"icon","href":"/demos/clatians-website-cms/favicon.ico?favicon.07jdwhooua.5g.ico","sizes":"64x64","type":"image/x-icon"}],["$","link","4",{"rel":"icon","href":"/demos/clatians-website-cms/icon.png?icon.0y6~nnrothwy-.png","sizes":"512x512","type":"image/png"}],["$","link","5",{"rel":"apple-touch-icon","href":"/demos/clatians-website-cms/apple-icon.png?apple-icon.11-u--y3duiwd.png","sizes":"180x180","type":"image/png"}],["$","$L19","6",{}]]

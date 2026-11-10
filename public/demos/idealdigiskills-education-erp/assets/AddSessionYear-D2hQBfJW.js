@@ -1,0 +1,1 @@
+import{Mt as e}from"./ui-0OHbd8q3.js";import{SessionYearsScreen as t}from"./AllSessionYears-CTjRlbJQ.js";var n=e(),r=()=>(0,n.jsx)(t,{openOnLoad:!0});export{r as default};

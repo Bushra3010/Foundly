@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Donate | SWAMITRA Foundation</title>
+<meta name="description" content="Support legal education, safe schools, and responsible citizenship across India. Your donation creates real change.">
+<meta name="theme-color" content="#1a2e4a">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  /* ===== Donate Page Hero ===== */
+  .hero--donate {
+    background:
+      radial-gradient(900px 420px at 80% -20%, rgba(217,174,69,.22), transparent 62%),
+      linear-gradient(150deg, #4A090C 0%, #620405 48%, #330608 100%);
+    background-color: var(--maroon-800);
+    color: #fff;
+    padding: 3rem 0 2.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero--donate .wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .hero--donate h1 {
+    font-family: var(--ff-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.25;
+    margin: 0.2rem 0 0.5rem;
+    color: #fff;
+  }
+  .hero--donate h1 span {
+    color: var(--gold-500);
+  }
+  .hero--donate .lead {
+    color: rgba(255,255,255,0.82);
+    font-size: 0.95rem;
+    max-width: 550px;
+    line-height: 1.5;
+    margin: 0 0 1.2rem;
+  }
+  .hero-trust {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .hero-trust__item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .hero-trust__item svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Stats Section ===== */
+  .stats-section {
+    background: #fff;
+    padding: 2rem 0;
+    border-bottom: 1px solid #e5ddd4;
+  }
+  .stats-row {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    text-align: center;
+  }
+  .stat-item__icon {
+    color: var(--maroon-700);
+    margin-bottom: 0.35rem;
+  }
+  .stat-item__icon svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+    margin: 0 auto;
+  }
+  .stat-item__number {
+    font-family: var(--ff-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--maroon-700);
+    line-height: 1;
+  }
+  .stat-item__label {
+    font-size: 0.82rem;
+    color: #5a4a3a;
+    margin-top: 0.25rem;
+    line-height: 1.3;
+  }
+
+  /* ===== Donation Form Section ===== */
+  .donate-form-section {
+    background: var(--cream);
+    padding: 2.5rem 0;
+  }
+  .donate-form-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .donate-left {}
+  .donate-right {}
+
+  .form-section-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #3a2a1a;
+    margin-bottom: 0.65rem;
+  }
+  .form-section-label span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--maroon-700);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-right: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  .donation-types {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .donation-type-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: 2px solid #d5ccc0;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #3a2a1a;
+    font-family: var(--ff-body);
+  }
+  .donation-type-btn:hover {
+    border-color: var(--maroon-700);
+  }
+  .donation-type-btn.is-active {
+    background: var(--maroon-700);
+    color: #fff;
+    border-color: var(--maroon-700);
+  }
+  .donation-type-btn .sub {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    display: block;
+    margin-top: 0.15rem;
+  }
+
+  .amount-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .amount-btn {
+    padding: 0.75rem 0.5rem;
+    border: 2px solid #d5ccc0;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #3a2a1a;
+    font-family: var(--ff-body);
+  }
+  .amount-btn:hover {
+    border-color: var(--maroon-700);
+  }
+  .amount-btn.is-active {
+    background: var(--maroon-700);
+    color: #fff;
+    border-color: var(--maroon-700);
+  }
+  .amount-other {
+    display: flex;
+    align-items: center;
+  }
+  .amount-other input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 2px solid #d5ccc0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: var(--ff-body);
+    color: #3a2a1a;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .amount-other input:focus {
+    border-color: var(--maroon-700);
+  }
+  .amount-other input::placeholder {
+    color: #a89880;
+  }
+
+  .form-fields {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .form-fields input {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    border: 2px solid #d5ccc0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: var(--ff-body);
+    color: #3a2a1a;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .form-fields input:focus {
+    border-color: var(--maroon-700);
+  }
+  .form-fields input::placeholder {
+    color: #a89880;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #3a2a1a;
+    margin: 0.3rem 0;
+    cursor: pointer;
+  }
+  .form-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--maroon-700);
+    cursor: pointer;
+  }
+
+  .donate-submit {
+    display: block;
+    width: 100%;
+    padding: 0.95rem;
+    background: var(--maroon-700);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: background 0.2s;
+    font-family: var(--ff-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .donate-submit:hover {
+    background: var(--maroon-600);
+  }
+  .donate-submit svg {
+    width: 18px;
+    height: 18px;
+  }
+  .donate-submit-note {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #8a7a6a;
+    margin-top: 0.5rem;
+  }
+
+  /* ===== Impact Section ===== */
+  .impact-section {
+    background: #fff;
+    padding: 2.5rem 0;
+  }
+  .impact-section h2 {
+    text-align: center;
+    font-family: var(--ff-display);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+  }
+  .impact-section h2::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--gold-500);
+    margin: 0.6rem auto 0;
+  }
+  .impact-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+  }
+  .impact-card {
+    text-align: center;
+    padding: 1rem 0.5rem;
+  }
+  .impact-card__icon {
+    color: var(--maroon-700);
+    margin-bottom: 0.5rem;
+  }
+  .impact-card__icon svg {
+    width: 36px;
+    height: 36px;
+    display: block;
+    margin: 0 auto;
+  }
+  .impact-card__title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.3;
+  }
+
+  /* ===== Info Banner ===== */
+  .donate-info-banner {
+    background: var(--gold-50, #fdf8ec);
+    border: 1px solid var(--gold-300);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+  .donate-info-banner svg {
+    width: 22px;
+    height: 22px;
+    color: var(--gold-700);
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .donate-info-banner p {
+    font-size: 0.88rem;
+    color: #6a5a3a;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 860px) {
+    .donate-form-wrap {
+      grid-template-columns: 1fr;
+    }
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+    .stats-row {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+    .stats-row .stat-item:nth-child(4),
+    .stats-row .stat-item:nth-child(5) {
+      grid-column: span 1;
+    }
+    .impact-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .stats-row .stat-item:nth-child(5) {
+      grid-column: span 2;
+    }
+    .impact-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .amount-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .donation-types {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body data-page="get-involved" data-title="Donate">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--donate">
+    <div class="wrap">
+      <h1>Your Donation.<br>Their <span>Better Tomorrow.</span></h1>
+      <p class="lead">Your contribution helps us promote legal education, constitutional literacy, safe institutions and responsible citizenship across India.</p>
+      <div class="hero-trust">
+        <div class="hero-trust__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          100% Transparent
+        </div>
+        <div class="hero-trust__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Impactful Programs
+        </div>
+        <div class="hero-trust__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Secure &amp; Trusted
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Stats ===== -->
+  <section class="stats-section">
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-item__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-7 10 7-10 7L2 10z"/><path d="M6 12v5c0 2 3 4 6 4s6-2 6-4v-5"/></svg>
+        </div>
+        <div class="stat-item__number">10,00,000+</div>
+        <div class="stat-item__label">Students Reached</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M8 10v11M12 10v11M16 10v11M20 10v11"/></svg>
+        </div>
+        <div class="stat-item__number">5,000+</div>
+        <div class="stat-item__label">Institutions Partnered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="stat-item__number">2,50,000+</div>
+        <div class="stat-item__label">Professionals Trained</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="stat-item__number">1,000+</div>
+        <div class="stat-item__label">Workplaces Made Safer</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="stat-item__number">28</div>
+        <div class="stat-item__label">States Impacted</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Donation Form ===== -->
+  <section class="donate-form-section">
+    <div class="donate-form-wrap">
+
+      <!-- Left Column -->
+      <div class="donate-left">
+        <div class="form-section-label"><span>1</span> Choose Donation Type</div>
+        <div class="donation-types">
+          <button class="donation-type-btn is-active" data-type="one-time">
+            One-Time
+          </button>
+          <button class="donation-type-btn" data-type="monthly">
+            Monthly <span class="sub">(Auto Pay)</span>
+          </button>
+        </div>
+
+        <div class="form-section-label"><span>2</span> Choose Amount</div>
+        <div class="amount-grid">
+          <button class="amount-btn" data-amount="500">&#8377;500</button>
+          <button class="amount-btn is-active" data-amount="1000">&#8377;1,000</button>
+          <button class="amount-btn" data-amount="2500">&#8377;2,500</button>
+          <button class="amount-btn" data-amount="5000">&#8377;5,000</button>
+          <button class="amount-btn" data-amount="10000">&#8377;10,000</button>
+          <div class="amount-other">
+            <input type="text" placeholder="Other Amount" id="other-amount">
+          </div>
+        </div>
+
+        <div class="donate-info-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V7H4a2 2 0 0 1 0-4h16v4"/><rect x="2" y="12" width="20" height="7" rx="2"/><circle cx="18" cy="16" r="1.5"/></svg>
+          <p>Every contribution, big or small, helps us build a legally aware and responsible India.</p>
+        </div>
+      </div>
+
+      <!-- Right Column: Donor Details -->
+      <div class="donate-right">
+        <div class="form-section-label"><span>3</span> Donor Details</div>
+        <div class="form-fields">
+          <div class="form-row">
+            <input type="text" placeholder="Full Name" aria-label="Full Name">
+            <input type="email" placeholder="Email Address" aria-label="Email Address">
+          </div>
+          <input type="tel" placeholder="Mobile Number" aria-label="Mobile Number">
+          <label class="form-check">
+            <input type="checkbox" checked>
+            Do you want the donation receipt?
+          </label>
+        </div>
+
+        <button class="donate-submit" onclick="alert('Online donations are not open yet — the payment gateway is still being set up. Please write to info@swamitrafoundation.org and we will share the account details.')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Continue to Donate
+        </button>
+        <p class="donate-submit-note">Online donations open once the Foundation's payment gateway is live. Until then, write to <a href="mailto:info@swamitrafoundation.org">info@swamitrafoundation.org</a> and we will share the account details.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Impact Section ===== -->
+  <section class="impact-section">
+    <h2>Where Your Donation Makes an Impact</h2>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="impact-card__title">Legal Education Awareness</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M3 10h18M5 6l7-3 7 3"/><rect x="5" y="10" width="4" height="11"/><rect x="15" y="10" width="4" height="11"/></svg>
+        </div>
+        <div class="impact-card__title">Safe Schools Initiative</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01"/></svg>
+        </div>
+        <div class="impact-card__title">Safe Workplaces Standards</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="impact-card__title">Training &amp; Capacity Building</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div class="impact-card__title">Constitutional Literacy</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg>
+        </div>
+        <div class="impact-card__title">POCSO &amp; Child Protection</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  // Toggle donation type buttons
+  document.querySelectorAll('.donation-type-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.donation-type-btn').forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+    });
+  });
+
+  // Toggle amount buttons
+  document.querySelectorAll('.amount-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.amount-btn').forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      document.getElementById('other-amount').value = '';
+    });
+  });
+
+  // Other amount input clears button selection
+  document.getElementById('other-amount').addEventListener('input', function () {
+    if (this.value.trim()) {
+      document.querySelectorAll('.amount-btn').forEach(function (b) { b.classList.remove('is-active'); });
+    }
+  });
+
+})();
+</script>
+</body>
+</html>

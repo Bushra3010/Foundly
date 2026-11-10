@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[61360,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website/_next/static/chunks/0de.u2b-yxxd3.js","/demos/clatians-website/_next/static/chunks/0mm6.d-7-ye3u.js"],"default"]
+3:I[97367,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"exam":{"slug":"","code":"","name":"","fullName":"","tagline":"","icon":"🏛️","color":"#08BD80","bg":"#E6FAF4","seats":"","colleges":"","duration":"2 Hours","questions":0,"marks":0,"negativeMark":"0.25","conductedBy":"","mode":"Computer Based Test (CBT)","overview":"","eligibility":[""],"examPattern":[],"syllabus":[],"importantDates":[],"preparationTips":[""],"faqs":[],"applicationFee":[],"nluList":[],"latestUpdates":[],"applicationProcess":[""]},"isNew":true}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0mm6.d-7-ye3u.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
+5:null

@@ -1,0 +1,154 @@
+{
+  "products": [
+    {
+      "slug": "nitrogrow",
+      "name": "NitroGROW",
+      "category": "Bio Fertilizers",
+      "tagline": "Nitrogen-fixing bio-fertilizer for stronger, greener, high-yield crops.",
+      "hero": "assets/media/hero-billboard-farmer.jpeg",
+      "video": "assets/media/soil-product-video.mp4",
+      "thumbnail": "assets/media/product-nitrogrow-front.jpeg",
+      "photos": [
+        "assets/media/product-nitrogrow-front.jpeg",
+        "assets/media/product-nitrogrow-bottle.jpeg",
+        "assets/media/product-nitrogrow-tilt.jpeg",
+        "assets/media/product-nitrogrow-farmer.jpeg"
+      ],
+      "description": "NitroGROW is a scientifically developed nitrogen-fixing bio-fertilizer that boosts natural nitrogen availability in the soil. It strengthens root development, improves leaf colour and vigour, and helps farmers reduce dependency on chemical urea while improving long-term soil health.",
+      "pack": "500 ml / 1 L",
+      "best": "Cereals, vegetables, and all field crops",
+      "benefits": [
+        "Fixes atmospheric nitrogen naturally in the root zone",
+        "Improves plant vigour, leaf colour, and crop yield",
+        "Reduces dependency on chemical nitrogen fertilizers",
+        "Safe, eco-friendly, and suitable for all crops"
+      ],
+      "usage": [
+        "Mix as per label dosage with water or soil application",
+        "Apply during early crop stages for best results",
+        "Use under SOIL technical or field team guidance",
+        "Store in a cool, dry, shaded place away from sunlight"
+      ],
+      "crops": ["Wheat", "Rice", "Maize", "Vegetables", "Pulses"]
+    },
+    {
+      "slug": "p-soul",
+      "name": "P-SOUL",
+      "category": "Bio Fertilizers",
+      "tagline": "Phosphate-mobilising bio-fertilizer for powerful root growth.",
+      "hero": "assets/media/farmer-p-soul-field.jpeg",
+      "video": "",
+      "thumbnail": "assets/media/product-p-soul-bottle.jpeg",
+      "photos": [
+        "assets/media/product-p-soul-bottle.jpeg",
+        "assets/media/product-p-soul-pair.jpeg",
+        "assets/media/farmer-p-soul-field.jpeg"
+      ],
+      "description": "P-SOUL is a phosphate-solubilising bio-fertilizer that unlocks fixed phosphorus in the soil and makes it available to plants. It promotes strong root systems, better flowering and fruiting, and improves overall nutrient uptake for healthier, more productive crops.",
+      "pack": "500 ml / 1 L",
+      "best": "Root, flowering, and fruiting crops",
+      "benefits": [
+        "Solubilises fixed phosphorus for easy plant uptake",
+        "Encourages strong, healthy root development",
+        "Improves flowering, fruiting, and grain filling",
+        "Enhances the efficiency of applied fertilizers"
+      ],
+      "usage": [
+        "Apply as per recommended dosage on the label",
+        "Best used during root and flowering stages",
+        "Can be combined with SOIL bio-inputs on expert advice",
+        "Store in a cool, dry, shaded place"
+      ],
+      "crops": ["Vegetables", "Fruits", "Pulses", "Oilseeds", "Plantation crops"]
+    },
+    {
+      "slug": "trichoshield",
+      "name": "TrichoShield",
+      "category": "Bio Protection",
+      "tagline": "Trichoderma-based bio-fungicide that protects crops from soil-borne disease.",
+      "hero": "assets/media/farmer-trichoshield-quote.jpeg",
+      "video": "",
+      "thumbnail": "assets/media/product-trichoshield-blue.jpeg",
+      "photos": [
+        "assets/media/product-trichoshield-blue.jpeg",
+        "assets/media/product-trichoshield-wood.jpeg",
+        "assets/media/farmer-trichoshield-quote.jpeg"
+      ],
+      "description": "TrichoShield is a Trichoderma-based bio-fungicide that protects crops against harmful soil-borne fungal diseases such as root rot, wilt, and damping-off. It colonises the root zone, suppresses pathogens naturally, and supports healthy, disease-free plant growth without chemical residue.",
+      "pack": "500 g / 1 kg",
+      "best": "Disease-prone vegetable and horticulture crops",
+      "benefits": [
+        "Protects against root rot, wilt, and damping-off",
+        "Colonises roots and suppresses harmful fungi naturally",
+        "Improves plant health and survival rate",
+        "Residue-free and safe for beneficial soil organisms"
+      ],
+      "usage": [
+        "Apply through soil treatment, seed treatment, or drenching",
+        "Use as per crop-wise dosage on the label",
+        "Avoid mixing with chemical fungicides",
+        "Store in a cool, dry, shaded place"
+      ],
+      "crops": ["Tomato", "Chilli", "Vegetables", "Fruits", "Nursery crops"]
+    },
+    {
+      "slug": "verticillium",
+      "name": "Verticillium Bio-Insecticide",
+      "category": "Bio Protection",
+      "tagline": "Biological insect control that keeps crops protected the natural way.",
+      "hero": "assets/media/product-verticillium-field.jpeg",
+      "video": "",
+      "thumbnail": "assets/media/product-verticillium-field.jpeg",
+      "photos": [
+        "assets/media/product-verticillium-field.jpeg",
+        "assets/media/plant-nutrients.jpeg"
+      ],
+      "description": "This Verticillium-based bio-insecticide offers effective biological control of sucking pests such as whitefly, aphids, and mealybugs. It works naturally to reduce pest pressure, protects beneficial insects, and helps farmers cut down on harmful chemical pesticide use.",
+      "pack": "500 ml / 1 L",
+      "best": "Crops affected by sucking pests",
+      "benefits": [
+        "Controls whitefly, aphids, mealybugs, and thrips",
+        "Works biologically without harming beneficial insects",
+        "Reduces chemical pesticide dependency",
+        "Supports safe and sustainable crop protection"
+      ],
+      "usage": [
+        "Spray as per label dosage during early pest stages",
+        "Apply in evening hours for best effectiveness",
+        "Repeat as recommended by SOIL field team",
+        "Store away from direct sunlight and heat"
+      ],
+      "crops": ["Cotton", "Vegetables", "Fruits", "Pulses", "Ornamentals"]
+    },
+    {
+      "slug": "growmix",
+      "name": "GrowMix",
+      "category": "Soil Health",
+      "tagline": "Balanced soil enrichment mix for fertile, living, productive soil.",
+      "hero": "assets/media/farmer-growmix-field.jpeg",
+      "video": "",
+      "thumbnail": "assets/media/farmer-growmix-field.jpeg",
+      "photos": [
+        "assets/media/farmer-growmix-field.jpeg",
+        "assets/media/soil-root-microbes.jpeg",
+        "assets/media/hand-soil-closeup.jpeg"
+      ],
+      "description": "GrowMix is a balanced soil enrichment blend that restores organic matter and beneficial microbial life to tired soils. It improves soil structure, water-holding capacity, and nutrient availability, giving crops a strong, fertile foundation for healthy growth.",
+      "pack": "As per product label",
+      "best": "Soil conditioning and fertility building",
+      "benefits": [
+        "Restores organic matter and microbial activity",
+        "Improves soil structure and water retention",
+        "Enhances nutrient availability to plant roots",
+        "Builds long-term soil fertility naturally"
+      ],
+      "usage": [
+        "Apply during land preparation or basal dose",
+        "Mix well into the root-zone soil",
+        "Use with SOIL crop nutrition guidance",
+        "Store in a cool, dry, shaded place"
+      ],
+      "crops": ["All field crops", "Vegetables", "Fruits", "Horticulture"]
+    }
+  ]
+}

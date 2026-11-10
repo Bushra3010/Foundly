@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Our Projects: Radhe Homes</title>
+<meta name="description" content="Explore ongoing, completed and upcoming residential and commercial projects by Radhe Homes in Ahmedabad. Filter by status, category and location.">
+<link rel="icon" href="img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Radhe Homes">
+<meta property="og:title" content="Our Projects: Radhe Homes">
+<meta property="og:description" content="Explore ongoing, completed and upcoming residential and commercial projects by Radhe Homes in Ahmedabad. Filter by status, category and location.">
+<meta property="og:url" content="https://alok16012.github.io/Radhe-Radhe/projects.html">
+<meta property="og:image" content="https://alok16012.github.io/Radhe-Radhe/img/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alok16012.github.io/Radhe-Radhe/img/og-cover.jpg">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@300,400,500,600&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=sentient@400,401,500,501&display=swap">
+<link rel="stylesheet" href="css/style.css?v=3.2.0">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="phero">
+  <div class="phero__media"><img src="img/ext-2.jpg" alt="Radhe Homes development elevation"></div>
+  <div class="wrap phero__in">
+    <nav class="crumb label" aria-label="Breadcrumb">
+      <a href="index.html">Home</a> <span>/</span> <span style="color:var(--paper)">Projects</span>
+    </nav>
+    <p class="eyebrow" style="margin:0 0 16px">Portfolio</p>
+    <h1 class="display">
+      <span class="rvl"><span>Every project we have <span class="it">built,</span></span></span>
+      <span class="rvl" style="--rvl-d:.1s"><span>are building, and will build.</span></span>
+    </h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+
+    <div class="shead">
+      <div class="shead__l">
+        <h2 class="h3" style="margin:14px 0 0">Find the right development</h2>
+      </div>
+      <div class="field" style="min-width:min(320px,100%)">
+        <label for="psearch">Search projects</label>
+        <input id="psearch" type="search" placeholder="Name, location or configuration" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="tabs" id="fStatus" style="margin-bottom:12px">
+      <button class="tab is-active" data-f="all">All</button>
+      <button class="tab" data-f="ongoing">Ongoing</button>
+      <button class="tab" data-f="completed">Completed</button>
+      <button class="tab" data-f="upcoming">Upcoming</button>
+    </div>
+    <div class="tabs" id="fCat">
+      <button class="tab is-active" data-c="all">All Types</button>
+      <button class="tab" data-c="residential">Residential</button>
+      <button class="tab" data-c="commercial">Commercial</button>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin:28px 0 22px">
+      <p class="label" id="pCount" style="margin:0">Showing all projects</p>
+      <button class="link-u" id="pReset" type="button">Reset filters</button>
+    </div>
+
+    <div class="pgrid" id="pGrid"></div>
+
+    <div class="panel" id="pEmpty" style="display:none;text-align:center">
+      <h3 class="h3" style="margin:0 0 12px">No projects match that search.</h3>
+      <p class="body-sm" style="margin:0 auto 24px">Try a different keyword, or reset the filters to see the full portfolio.</p>
+      <button class="btn btn--ghost" type="button" id="pEmptyReset">Reset filters</button>
+    </div>
+
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="panel rv" style="text-align:center;padding-block:clamp(40px,6vw,72px)">
+      <h2 class="h2" style="margin:18px auto 22px;max-width:18ch">Tell us what you need: <span class="it">we&rsquo;ll shortlist for you.</span></h2>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn--solid" href="site-visit.html">Book a Site Visit</a>
+        <a class="btn btn--ghost" href="contact.html">Talk to the team</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="js/data.js?v=3.2.0"></script>
+<script src="js/ui.js?v=3.2.0"></script>
+<script src="js/projects.js?v=3.2.0"></script>
+</body>
+</html>

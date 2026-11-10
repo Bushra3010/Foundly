@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="hi" data-base="" data-assets="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>पृष्ठ नहीं मिला | SWAMITRA Foundation</title>
+<meta name="description" content="आप जिस पृष्ठ की तलाश कर रहे हैं, वह नहीं मिल सका।">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="home" data-title="पृष्ठ नहीं मिला" data-subpage>
+<a class="skip-link" href="#main">मुख्य सामग्री पर जाएँ</a>
+<div id="site-header"></div>
+
+<main id="main">
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="ब्रेडक्रम्ब">
+        <a href="index.html">होम</a><span class="sep">/</span><span>पृष्ठ नहीं मिला</span>
+      </nav>
+      <h1>हम वह पृष्ठ नहीं खोज सके</h1>
+      <p class="lead">हो सकता है कि यह लिंक पुराना हो गया हो, या साइट के पुनर्गठन के दौरान पृष्ठ स्थानांतरित हो गया हो। नीचे दिए गए सभी विकल्प फिर से शुरू करने के लिए अच्छे स्थान हैं।</p>
+      <div class="btn-row">
+        <a class="btn btn--gold" href="index.html">होमपेज पर जाएँ</a>
+        <a class="btn btn--light" href="contact.html">टूटे हुए लिंक के बारे में बताएँ</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">लोकप्रिय गंतव्य</span><h2>आप कहाँ जाना चाहेंगे?</h2></div>
+      <div class="grid g-3" id="quick-links"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="../assets/js/ui.hi.js"></script>
+<script src="../assets/js/data.hi.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+(function () {
+  var I = window.swIcon;
+  var links = [
+    ["programs", "कार्यक्रम", "शिक्षा, सुरक्षा और शोध के क्षेत्र में दस राष्ट्रीय कार्यक्रम।", "programs.html"],
+    ["training", "प्रशिक्षण एवं प्रमाणन", "संस्थानों और व्यक्तियों के लिए नौ प्रमाणित प्रशिक्षण कार्यक्रम।", "training.html"],
+    ["resources", "संसाधन केंद्र", "निःशुल्क टूलकिट, टेम्पलेट, एसओपी और रिपोर्ट।", "resources.html"],
+    ["chart", "अनुसंधान केंद्र", "प्रकाशन, फ्रेमवर्क, मानक और नीति संक्षेपिकाएँ।", "research.html"],
+    ["users", "सहभागी बनें", "स्वयंसेवा करें, साझेदार बनें, इंटर्नशिप करें या नेटवर्क से जुड़ें।", "get-involved.html"],
+    ["mail", "संपर्क", "पूछताछ, साझेदारी और संस्थागत सहयोग।", "contact.html"]
+  ];
+  document.getElementById("quick-links").innerHTML = links.map(function (l) {
+    return '<a class="card" href="' + l[3] + '"><span class="card__icon">' + I(l[0]) + "</span>" +
+      "<h3>" + l[1] + "</h3><p>" + l[2] + "</p></a>";
+  }).join("");
+})();
+</script>
+</body>
+</html>

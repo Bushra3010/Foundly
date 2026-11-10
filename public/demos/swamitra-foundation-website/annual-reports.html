@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Annual Reports | SWAMITRA Foundation</title>
+<meta name="description" content="Everything the Foundation publishes about itself is collected here: annual and impact reporting, and the research output that our programmes are built on.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<meta property="og:title" content="Annual Reports | SWAMITRA Foundation">
+<meta property="og:description" content="Vision, mission, values, approach, leadership, governance and transparency at SWAMITRA Foundation.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="about" data-title="Annual Reports">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><a href="about.html">About</a><span class="sep">/</span><span>Annual Reports</span>
+      </nav>
+      <h1>Reports, impact and publications</h1>
+      <p class="lead">Everything the Foundation publishes about itself is collected here: annual and impact reporting, and the research output that our programmes are built on.</p>
+    </div>
+  </section>
+
+
+  <section class="section section--cream" id="reports">
+    <div class="wrap">
+
+      <h3 class="reveal">Annual and impact reports</h3>
+      <div class="grid g-2 mt-6 grid--rail reveal" id="report-rows"></div>
+
+      <h3 class="mt-8 reveal">Selected publications</h3>
+      <div class="grid g-2 mt-6 grid--rail reveal" id="publication-rows"></div>
+      <div class="btn-row mt-8">
+        <a class="btn btn--outline" href="research.html">Visit the Research Centre</a>
+        <a class="btn btn--ghost" href="resources.html">Browse all resources</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+  function fmt(d) {
+    return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  /* Impact statistics */
+  set("stats-grid", D.stats.map(function (s) {
+    return '<div class="stat"><b data-count="' + s.n + '" data-suffix="' + s.suffix + '">0</b><span>' + s.label + "</span></div>";
+  }).join(""));
+
+  /* Registered office from org data */
+  var addr = document.getElementById("tx-address");
+  if (addr && D.org && D.org.address) addr.textContent = D.org.address;
+
+  /* Annual and impact reports */
+  var reports = [
+    ["Annual Report", "2025–26", "Governance, activities, programme reach and audited financial statements."],
+    ["Impact Report", "2025–26", "Outcomes measured against baseline across schools, workplaces and communities."],
+    ["Statement of Accounts", "2025–26", "Audited income, expenditure and utilisation of funds by category."],
+    ["Compliance &amp; Safeguarding Summary", "2025–26", "Statutory committee activity, training coverage and policy review record."]
+  ];
+  set("report-rows", reports.map(function (r) {
+    return '<div class="res-item"><span class="res-item__ext">PDF</span>' +
+      '<span class="res-item__body"><b>' + r[0] + " " + r[1] + "</b><small>" + r[2] +
+      " · Scheduled for publication at the close of the reporting cycle</small></span>" +
+      '<span style="color:var(--muted-2)">' + I("clock") + "</span></div>";
+  }).join(""));
+
+  /* Publications from the Research Centre */
+  set("publication-rows", D.publications.slice(0, 3).map(function (p) {
+    return '<a class="res-item" href="featured-publications.html">' +
+      '<span class="res-item__ext">PDF</span>' +
+      '<span class="res-item__body"><b>' + p.title + "</b><small>" + p.type + " · " + p.theme +
+      " · " + p.pages + " pages · " + fmt(p.date) + "</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+
+  /* Policies from the legal library */
+  var policySlugs = ["privacy-policy", "child-protection-policy", "posh-policy",
+    "code-of-ethics", "conflict-of-interest-policy", "whistleblower-policy"];
+  set("policy-grid", policySlugs.map(function (slug) {
+    var p = D.legal[slug];
+    if (!p) return "";
+    return '<a class="res-item" href="legal.html?doc=' + slug + '">' +
+      '<span class="res-item__ext">' + I("shield") + "</span>" +
+      '<span class="res-item__body"><b>' + p.title + "</b><small>Last updated " + p.updated +
+      " · " + p.sections.length + " sections</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

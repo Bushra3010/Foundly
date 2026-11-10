@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Panel: Radhe Homes</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@300,400,500,600&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=sentient@400,401,500,501&display=swap">
+<link rel="stylesheet" href="css/style.css?v=3.2.0">
+</head>
+<body>
+<div class="adm">
+  <aside class="adm__side">
+    <a class="brand" href="index.html" style="padding:0 14px 22px;border-radius:0">
+      <span class="brand__mark" style="font-size:16px">Radhe Homes</span>
+      <span class="brand__sub">Admin Panel</span>
+    </a>
+    <a href="#" class="is-active" data-view="dash">Dashboard</a>
+    <a href="#" data-view="projects">Projects</a>
+    <a href="#" data-view="leads">Leads</a>
+    <a href="#" data-view="news">Updates</a>
+    <div style="flex:1"></div>
+    <a href="index.html" style="color:var(--muted-2)">View website</a>
+    <button class="btn btn--ghost btn--sm" type="button" id="logout" style="margin-top:10px">Sign out</button>
+  </aside>
+
+  <main class="adm__main">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:32px">
+      <div>
+        <p class="eyebrow" style="margin:0 0 10px" id="vLabel">Dashboard</p>
+        <h1 class="h2" style="margin:0" id="vTitle">Overview</h1>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap" id="vActions"></div>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<div class="modal" id="modal"><div class="modal__box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js?v=3.2.0"></script>
+<script src="js/ui.js?v=3.2.0"></script>
+<script src="js/admin.js?v=3.2.0"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="hi" data-base="" data-assets="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>नीतियाँ एवं विधिक दस्तावेज़ | SWAMITRA Foundation</title>
+<meta name="description" content="SWAMITRA Foundation की गोपनीयता नीति, उपयोग की शर्तें, कुकी नीति, अस्वीकरण, सुलभता वक्तव्य, कॉपीराइट, दान, बाल संरक्षण, POSH, आचार संहिता, हितों का टकराव और व्हिसलब्लोअर नीतियाँ।">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="about" data-title="नीतियाँ एवं विधिक दस्तावेज़" data-subpage>
+<a class="skip-link" href="#main">मुख्य सामग्री पर जाएँ</a>
+<div id="site-header"></div>
+
+<main id="main">
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="ब्रेडक्रम्ब" id="crumb">
+        <a href="index.html">होम</a><span class="sep">/</span><span>नीतियाँ एवं विधिक दस्तावेज़</span>
+      </nav>
+      <h1 id="doc-title">नीतियाँ एवं विधिक दस्तावेज़</h1>
+      <p class="lead" id="doc-lead">वे नीतियाँ जो यह निर्धारित करती हैं कि SWAMITRA Foundation किस प्रकार कार्य करता है, वह किन बातों के लिए प्रतिबद्ध है, और उसे किस प्रकार जवाबदेह ठहराया जा सकता है।</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="split split--sidebar">
+        <aside class="toc" id="doc-nav">
+          <h5>सभी नीतियाँ</h5>
+          <ul id="doc-list"></ul>
+        </aside>
+        <div id="doc-body"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>इनमें से किसी नीति के बारे में कोई प्रश्न है?</h2>
+        <p>हमें लिखें। नीति संबंधी प्रश्न, सुलभता पर प्रतिक्रिया और शिकायतें — सभी को प्राथमिकता वाले पत्राचार के रूप में लिया जाता है।</p>
+        <div class="btn-row">
+          <a class="btn btn--gold btn--lg" href="contact.html">फाउंडेशन से संपर्क करें</a>
+          <a class="btn btn--light btn--lg" href="governance.html">हमारा प्रशासन देखें</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="../assets/js/ui.hi.js"></script>
+<script src="../assets/js/data.hi.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, L = D.legal;
+  var slugs = Object.keys(L);
+
+  function param(k) {
+    var m = new RegExp("[?&]" + k + "=([^&#]*)").exec(location.search);
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+  var slug = param("doc");
+  var doc = L[slug];
+
+  /* Side navigation — always the full policy list */
+  document.getElementById("doc-list").innerHTML = slugs.map(function (s) {
+    var on = s === slug;
+    return '<li><a href="legal.html?doc=' + s + '"' +
+      (on ? ' style="color:var(--maroon-700);font-weight:600"' : "") + ">" + L[s].title + "</a></li>";
+  }).join("");
+
+  var body = document.getElementById("doc-body");
+
+  if (!doc) {
+    /* Index view — all policies as cards, grouped */
+    document.getElementById("doc-body").innerHTML =
+      '<div class="sec-head"><span class="eyebrow">नीतियाँ एवं विधिक दस्तावेज़</span>' +
+      "<h2>हमारी हर प्रतिबद्धता, लिखित रूप में</h2>" +
+      "<p>ये दस्तावेज़ संक्षेप में नहीं, बल्कि पूर्ण रूप में प्रकाशित किए जाते हैं। इनकी समीक्षा कम से कम प्रतिवर्ष की जाती है, और जब भी कानून या हमारी कार्यपद्धति में परिवर्तन होता है, तब भी की जाती है।</p></div>" +
+      '<div class="grid g-2">' + slugs.map(function (s) {
+        var d = L[s];
+        return '<a class="card" href="legal.html?doc=' + s + '">' +
+          '<span class="tag tag--grey">अद्यतन ' + d.updated + "</span>" +
+          "<h3>" + d.title + "</h3><p>" + d.intro + "</p>" +
+          '<span class="card__foot link-more">पूरा पढ़ें</span></a>';
+      }).join("") + "</div>" +
+      '<div class="alert alert--info mt-8"><span>जिन नीतियों पर सांविधिक विवरण की प्रतीक्षा अंकित है, उन्हें फाउंडेशन के पंजीकरण संबंधी विवरण अंतिम रूप से प्रकाशन योग्य होते ही पुनः प्रकाशित किया जाएगा।</span></div>';
+    return;
+  }
+
+  /* Single policy view */
+  document.getElementById("doc-title").textContent = doc.title;
+  document.getElementById("doc-lead").textContent = doc.intro;
+  document.title = doc.title + " | SWAMITRA Foundation";
+  document.getElementById("crumb").innerHTML =
+    '<a href="index.html">होम</a><span class="sep">/</span>' +
+    '<a href="legal.html">नीतियाँ</a><span class="sep">/</span><span>' + esc(doc.title) + "</span>";
+
+  document.addEventListener("sw:ready", function () {
+    var t = document.querySelector(".app-bar__title");
+    if (t) t.textContent = doc.title;
+  });
+
+  body.innerHTML =
+    '<p class="tag tag--grey" style="margin-bottom:var(--s-5)">अंतिम बार अद्यतन: ' + doc.updated + "</p>" +
+    '<div class="prose">' +
+      "<p>" + doc.intro + "</p>" +
+      doc.sections.map(function (s, i) {
+        return "<h2 id=\"s" + (i + 1) + "\">" + (i + 1) + ". " + s[0] + "</h2><p>" + s[1] + "</p>";
+      }).join("") +
+      "<hr class=\"divider\">" +
+      "<h3>संपर्क</h3>" +
+      "<p>इस नीति के संबंध में प्रश्न <a href=\"mailto:" + D.org.email + "\">" + D.org.email + "</a> पर " +
+      "या <a href=\"contact.html\">संपर्क फ़ॉर्म</a> के माध्यम से भेजे जा सकते हैं। हम नीति संबंधी पत्राचार की प्राप्ति पाँच कार्य दिवसों के भीतर स्वीकार करने का प्रयास करते हैं।</p>" +
+      "<p style=\"color:var(--muted-2);font-size:var(--fs-sm)\">यह नीति पारदर्शिता के उद्देश्य से प्रकाशित की गई है और यह विधिक परामर्श नहीं है। " +
+      "जहाँ कोई सांविधिक दायित्व लागू होता है, वहाँ यहाँ कही गई किसी भी बात पर कानून ही मान्य होगा।</p>" +
+    "</div>";
+})();
+</script>
+</body>
+</html>

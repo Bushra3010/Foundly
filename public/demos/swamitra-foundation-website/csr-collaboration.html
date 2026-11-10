@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CSR Collaboration | SWAMITRA Foundation</title>
+<meta name="description" content="CSR partnerships fund defined work in a defined place, with reporting a board can actually rely on.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="get-involved" data-title="CSR Collaboration">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><a href="get-involved.html">Get Involved</a><span class="sep">/</span><span>CSR Collaboration</span>
+      </nav>
+      <h1>Corporate social responsibility with a measurable outcome</h1>
+      <p class="lead">CSR partnerships fund defined work in a defined place, with reporting a board can actually rely on.</p>
+    </div>
+  </section>
+
+
+  <section class="section" id="csr">
+    <div class="wrap">
+
+      <div class="grid g-3 grid--rail reveal" id="csr-grid"></div>
+
+      <div class="mt-10 reveal">
+        <h3 class="mb-4">Proposal process</h3>
+        <div class="flow">
+          <div class="flow__step"><b>Enquiry</b><small>You tell us your CSR focus, budget window and preferred geography.</small></div>
+          <div class="flow__step"><b>Scoping</b><small>We assess need in that geography and propose what can realistically be achieved.</small></div>
+          <div class="flow__step"><b>Proposal</b><small>A written proposal with deliverables, timeline, budget and measurement design.</small></div>
+          <div class="flow__step"><b>Agreement</b><small>A signed memorandum covering scope, reporting, branding and audit rights.</small></div>
+          <div class="flow__step"><b>Delivery</b><small>Implementation against the agreed plan, with a named point of contact on both sides.</small></div>
+          <div class="flow__step"><b>Reporting</b><small>Quarterly progress notes and a closing impact report with baseline and end-line data.</small></div>
+        </div>
+      </div>
+
+      <div class="split mt-10 reveal" style="align-items:start">
+        <div>
+          <h3>Impact reporting</h3>
+          <p class="mt-4">Every CSR engagement is measured against a baseline taken before delivery starts. We report participation, completion and assessed learning change — not just the number of people in a room. Where an indicator did not move, the report says so and explains what we think went wrong.</p>
+          <p class="mt-4">Reports are written to be usable in your own statutory CSR disclosures, with the methodology stated so an auditor can follow it. Underlying data is retained and can be inspected on request.</p>
+          <p class="mt-4">We do not accept engagements where the reporting requirement is a photograph and a headcount. If that is the deliverable, we are the wrong partner and will say so at the scoping stage.</p>
+        </div>
+        <div class="card card--flat">
+          <h3>Before you send a proposal</h3>
+          <ul class="ticks mt-4">
+            <li>Tell us the geography — district level is more useful than state level</li>
+            <li>Tell us the budget window, even approximately, so we can scope honestly</li>
+            <li>Tell us your board's reporting cycle, so measurement fits it</li>
+            <li>Tell us whether employee volunteering is part of the intent</li>
+          </ul>
+          <a class="btn btn--outline card__foot" href="#partner">Send a CSR enquiry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+  /* Ways to get involved */
+  var ways = [
+    ["users", "Volunteer", "Facilitate sessions, translate material, support camps or assist research. Trained before placement, credited for the work.", "#volunteer"],
+    ["handshake", "Partner", "Bring a framework into your school, university, department or company with a written memorandum and named deliverables.", "#partner"],
+    ["heart", "Donate", "Fund classroom material, school audits, community camps or master trainer development.", "#donate"],
+    ["building", "CSR", "Corporate social responsibility engagements with baseline measurement and audit-ready reporting.", "#csr"],
+    ["school", "Internship", "Four to twelve weeks of supervised work on live research, curriculum or programme delivery.", "#internship"],
+    ["award", "Careers", "Roles are published as they arise. Speculative applications are read and kept on file.", "#careers"],
+    ["globe", "Membership", "Join the network of individuals and institutions implementing this work across the country.", "#membership"]
+  ];
+  set("ways-grid", ways.map(function (w) {
+    return '<a class="card focus-card" href="' + w[3] + '">' +
+      '<span class="card__icon">' + I(w[0]) + "</span>" +
+      "<h3>" + w[1] + "</h3><p>" + w[2] + "</p>" +
+      '<span class="card__foot link-more">Read more</span></a>';
+  }).join(""));
+
+  /* CSR focus areas — drawn from the Foundation's focus areas */
+  set("csr-grid", D.focus.map(function (f) {
+    return '<article class="card focus-card"><span class="card__icon">' + I(f.icon) + "</span>" +
+      "<h3>" + f.title + "</h3><p>" + f.text + "</p></article>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

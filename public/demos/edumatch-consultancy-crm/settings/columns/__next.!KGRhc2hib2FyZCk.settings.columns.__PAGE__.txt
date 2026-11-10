@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[47257,["/demos/edumatch-consultancy-crm/_next/static/chunks/ff1a16fafef87110.js","/demos/edumatch-consultancy-crm/_next/static/chunks/a2dfb6fc5208ab9b.js"],"ClientPageRoot"]
+3:I[68076,["/demos/edumatch-consultancy-crm/_next/static/chunks/beac4d988104cfce.js","/demos/edumatch-consultancy-crm/_next/static/chunks/6915693ba7b373d2.js","/demos/edumatch-consultancy-crm/_next/static/chunks/3f2b66debe9a835a.js","/demos/edumatch-consultancy-crm/_next/static/chunks/fcbee0aad81eca48.js","/demos/edumatch-consultancy-crm/_next/static/chunks/bcec30813899f472.js","/demos/edumatch-consultancy-crm/_next/static/chunks/09681f9ee4859d7b.js","/demos/edumatch-consultancy-crm/_next/static/chunks/10590e3d183da63b.js","/demos/edumatch-consultancy-crm/_next/static/chunks/092a1be15eb6627c.js","/demos/edumatch-consultancy-crm/_next/static/chunks/661d1bef5eeef286.js"],"default"]
+6:I[97367,["/demos/edumatch-consultancy-crm/_next/static/chunks/ff1a16fafef87110.js","/demos/edumatch-consultancy-crm/_next/static/chunks/a2dfb6fc5208ab9b.js"],"OutletBoundary"]
+7:"$Sreact.suspense"
+0:{"buildId":"amp9r95k2KdJCI1U67FoM","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/demos/edumatch-consultancy-crm/_next/static/chunks/661d1bef5eeef286.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+4:{}
+5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
+8:null

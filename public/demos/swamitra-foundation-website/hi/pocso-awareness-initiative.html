@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="hi" data-base="" data-assets="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>POCSO जागरूकता पहल | स्वामित्र फाउंडेशन</title>
+<meta name="description" content="SWAMITRA Foundation के किसी राष्ट्रीय कार्यक्रम की विस्तृत जानकारी — पृष्ठभूमि, उद्देश्य, लक्षित समूह, प्रमुख घटक, गतिविधियाँ, अपेक्षित परिणाम, संसाधन, सहयोगी और अक्सर पूछे जाने वाले प्रश्न।">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<meta property="og:title" content="POCSO जागरूकता पहल">
+<meta property="og:description" content="SWAMITRA Foundation का एक राष्ट्रीय कार्यक्रम — उद्देश्य, घटक, गतिविधियाँ, परिणाम और संसाधन।">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-slug="pocso" data-page="programs" data-title="POCSO जागरूकता पहल" data-subpage>
+<a class="skip-link" href="#main">मुख्य सामग्री पर जाएँ</a>
+<div id="site-header"></div>
+
+<main id="main">
+  <div id="programme-root"></div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="../assets/js/ui.hi.js"></script>
+<script src="../assets/js/data.hi.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+  var root = document.getElementById("programme-root");
+  if (!root) return;
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  var slug = "";
+  try { slug = new URLSearchParams(location.search).get("p") || ""; } catch (e) { slug = ""; }
+  if (!slug) slug = document.body.getAttribute("data-slug") || "";
+
+  var prog = null;
+  for (var i = 0; i < D.programs.length; i++) {
+    if (D.programs[i].slug === slug) { prog = D.programs[i]; break; }
+  }
+
+  /* ---------- Shared builders ---------- */
+  function progCard(p) {
+    return '<a class="card card--program" href=' + '"' + window.swProgramUrl(p.slug) + '">' +
+      '<span class="tag">' + esc(p.tag) + "</span>" +
+      "<h3>" + esc(p.title) + "</h3><p>" + esc(p.summary) + "</p>" +
+      '<span class="card__foot link-more">कार्यक्रम देखें</span></a>';
+  }
+
+  function ctaBand() {
+    return '<section class="section section--tight">' +
+      '<div class="wrap"><div class="cta-band reveal">' +
+        '<span class="eyebrow" style="color:var(--gold-500)">शुरुआत करें</span>' +
+        "<h2>कार्यक्रम से जुड़ें</h2>" +
+        "<p>अपनी संस्था के बारे में हमें बताइए और हम आपको फ्रेमवर्क, एक प्रस्तावित समय-सारणी तथा क्रियान्वयन में लगने वाले प्रयास का ईमानदार अनुमान भेजेंगे।</p>" +
+        '<div class="btn-row">' +
+          '<a class="btn btn--gold btn--lg" href="contact.html">कार्यक्रम से जुड़ें</a>' +
+          '<a class="btn btn--light btn--lg" href="contact.html#team">हमारी टीम से संपर्क करें</a>' +
+        "</div>" +
+      "</div></div></section>";
+  }
+
+  /* ---------- Fallback: no slug, or unknown slug ---------- */
+  function renderFallback() {
+    var msg = slug
+      ? "उस लिंक से मेल खाता कोई कार्यक्रम हमें नहीं मिला। संभव है कि उसका नाम बदल दिया गया हो या पता अधूरा हो। सभी दस राष्ट्रीय कार्यक्रम नीचे सूचीबद्ध हैं।"
+      : "पते में किसी कार्यक्रम का उल्लेख नहीं है। नीचे दिए दस राष्ट्रीय कार्यक्रमों में से कोई एक चुनें, या कार्यक्रमों का पूरा विवरण देखें।";
+
+    root.innerHTML =
+      '<section class="hero hero--page">' +
+        '<div class="wrap">' +
+          '<nav class="breadcrumb" aria-label="ब्रेडक्रम्ब">' +
+            '<a href="index.html">होम</a><span class="sep">/</span>' +
+            '<a href="programs.html">कार्यक्रम</a><span class="sep">/</span><span>कार्यक्रम नहीं मिला</span>' +
+          "</nav>" +
+          "<h1>एक कार्यक्रम चुनें</h1>" +
+          '<p class="lead">' + msg + "</p>" +
+          '<div class="btn-row">' +
+            '<a class="btn btn--gold btn--lg" href="programs.html">सभी कार्यक्रम</a>' +
+            '<a class="btn btn--light btn--lg" href="contact.html">हमारी टीम से संपर्क करें</a>' +
+          "</div>" +
+        "</div>" +
+      "</section>" +
+      '<section class="section">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">सभी कार्यक्रम</span>' +
+          "<h2>दस राष्ट्रीय कार्यक्रम</h2>" +
+          "<p>हर कार्यक्रम पृष्ठ एक ही बारह-भागीय संरचना का पालन करता है — पृष्ठभूमि, उद्देश्य, लक्षित समूह, घटक, गतिविधियाँ, परिणाम, संसाधन, सहयोगी और अक्सर पूछे जाने वाले प्रश्न।</p></div>" +
+          '<div class="grid g-3 grid--rail reveal">' + D.programs.map(progCard).join("") + "</div>" +
+        "</div>" +
+      "</section>" +
+      ctaBand();
+
+    document.title = "कार्यक्रम नहीं मिला | SWAMITRA Foundation";
+    setAppBar("कार्यक्रम");
+  }
+
+  function setAppBar(text) {
+    function put() {
+      var el = document.querySelector(".app-bar__title");
+      if (el) el.textContent = text;
+    }
+    put();
+    document.addEventListener("sw:ready", put);
+  }
+
+  /* ---------- Full programme render ---------- */
+  function renderProgramme(p) {
+    var COMPONENT_ICONS = ["book", "school", "chart", "award", "sparkle", "globe",
+                           "shield", "file", "handshake", "scale", "building", "calendar"];
+
+    var html = "";
+
+    /* 1. Hero banner */
+    html +=
+      '<section class="hero hero--page">' +
+        '<div class="wrap">' +
+          '<nav class="breadcrumb" aria-label="ब्रेडक्रम्ब">' +
+            '<a href="index.html">होम</a><span class="sep">/</span>' +
+            '<a href="programs.html">कार्यक्रम</a><span class="sep">/</span><span>' + esc(p.title) + "</span>" +
+          "</nav>" +
+          '<span class="hero-badge"><b>' + esc(p.short) + "</b> " + esc(p.tag) + " कार्यक्रम</span>" +
+          "<h1>" + esc(p.title) + "</h1>" +
+          '<p class="lead">' + esc(p.summary) + "</p>" +
+          '<div class="btn-row">' +
+            '<a class="btn btn--gold btn--lg" href="contact.html">रुचि दर्ज करें</a>' +
+            '<a class="btn btn--light btn--lg" href="resource-library.html">विवरणिका डाउनलोड करें</a>' +
+          "</div>" +
+        "</div>" +
+      "</section>";
+
+    /* 2. Programme overview */
+    html +=
+      '<section class="section" id="overview">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">कार्यक्रम का परिचय</span>' +
+            "<h2>पृष्ठभूमि</h2><p>" + esc(p.background) + "</p></div>" +
+          '<div class="grid g-2 grid--rail reveal">' +
+            '<article class="card" style="border-top:3px solid var(--maroon-700)">' +
+              '<span class="tag tag--maroon">आवश्यकता आकलन</span>' +
+              "<h3>यह कार्यक्रम किस कमी को दूर करता है</h3><p>" + esc(p.need) + "</p></article>" +
+            '<article class="card" style="border-top:3px solid var(--gold-500)">' +
+              '<span class="tag">राष्ट्रीय प्रासंगिकता</span>' +
+              "<h3>यह राष्ट्रीय स्तर पर क्यों महत्वपूर्ण है</h3><p>" + esc(p.relevance) + "</p></article>" +
+          "</div>" +
+        "</div>" +
+      "</section>";
+
+    /* 3. Why this programme */
+    html +=
+      '<section class="section section--cream" id="why">' +
+        '<div class="wrap split reveal">' +
+          '<div class="sec-head" style="margin-bottom:0">' +
+            '<span class="eyebrow">यह कार्यक्रम क्यों</span>' +
+            "<h2>" + esc(p.short) + " की आवश्यकता</h2>" +
+            "<p>" + esc(p.need) + "</p>" +
+            '<p class="mt-4" style="color:var(--muted)">' + esc(p.relevance) + "</p>" +
+          "</div>" +
+          '<div class="grid" style="gap:var(--s-6)">' +
+            '<div class="pillar"><b>प्रमाण पर आधारित</b><span>कार्यक्रम की रूपरेखा राय से नहीं, शोध से शुरू होती है, और प्रमाण सिफारिश के साथ ही प्रकाशित किए जाते हैं।</span></div>' +
+            '<div class="pillar"><b>संस्थाओं के माध्यम से क्रियान्वयन</b><span>हम उसी विद्यालय, परिसर, कार्यस्थल या विभाग के भीतर काम करते हैं जिसके पास पहले से जिम्मेदारी है, ताकि बदलाव को टिकने की जगह मिले।</span></div>' +
+            '<div class="pillar"><b>लेखा-परीक्षा के लिए तैयार</b><span>हर घटक एक अभिलेख तैयार करता है — कोई नीति, कोई रजिस्टर, कोई प्रमाणपत्र — जिसे बाहरी समीक्षक वास्तव में जाँच सके।</span></div>' +
+            '<div class="pillar"><b>हमारे बिना भी चलता रहे</b><span>मास्टर प्रशिक्षक और संस्था की अपनी क्षमता रूपरेखा का हिस्सा हैं, वित्तपोषण समाप्त होने के बाद सोची गई बात नहीं।</span></div>' +
+          "</div>" +
+        "</div>" +
+      "</section>";
+
+    /* 4. Objectives */
+    html +=
+      '<section class="section" id="objectives">' +
+        '<div class="wrap split split--reverse reveal">' +
+          '<ul class="ticks">' + p.objectives.map(function (o) { return "<li>" + esc(o) + "</li>"; }).join("") + "</ul>" +
+          '<div class="sec-head" style="margin-bottom:0">' +
+            '<span class="eyebrow">उद्देश्य</span>' +
+            "<h2>यह कार्यक्रम क्या हासिल करना चाहता है</h2>" +
+            "<p>ये प्रमुख उद्देश्य हैं। इनका दीर्घकालिक ध्येय हर SWAMITRA कार्यक्रम में एक ही है — एक संवैधानिक रूप से जागरूक, विधिक रूप से सशक्त और नागरिक दायित्व निभाने वाला भारत — और हर उद्देश्य इस तरह लिखा गया है कि उसकी प्रगति मापी जा सके।</p>" +
+            '<a class="link-more mt-6" href="objectives.html">फाउंडेशन का उद्देश्य-खंड देखें</a>' +
+          "</div>" +
+        "</div>" +
+      "</section>";
+
+    /* 5. Target audience */
+    html +=
+      '<section class="section section--cream" id="audience">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">लक्षित समूह</span>' +
+            "<h2>यह कार्यक्रम किनके लिए है</h2>" +
+            "<p>सामग्री, सत्र का स्वरूप और मूल्यांकन हर समूह के अनुसार ढाले जाते हैं। यदि आपकी भूमिका सूची में नहीं है तो हमें लिखिए — अधिकांश पूछताछ किसी न किसी समूह में ही आती है, बस पदनाम अलग होता है।</p></div>" +
+          '<div class="grid g-4 grid--rail reveal">' +
+            p.audience.map(function (a) {
+              return '<article class="card card--flat"><span class="card__icon">' + I("users") + "</span><h3>" + esc(a) + "</h3></article>";
+            }).join("") +
+          "</div>" +
+        "</div>" +
+      "</section>";
+
+    /* 6. Key components */
+    html +=
+      '<section class="section" id="components">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">प्रमुख घटक</span>' +
+            "<h2>यह कार्यक्रम किन हिस्सों से बना है</h2>" +
+            "<p>घटकों को एक पूर्ण चक्र के रूप में एक साथ अपनाया जा सकता है, या अलग-अलग भी, जहाँ संस्था के पास व्यवस्था का कुछ हिस्सा पहले से मौजूद हो।</p></div>" +
+          '<div class="grid g-3 grid--rail reveal">' +
+            p.components.map(function (c, idx) {
+              return '<article class="card"><span class="card__icon">' + I(COMPONENT_ICONS[idx % COMPONENT_ICONS.length]) + "</span>" +
+                "<h3>" + esc(c) + "</h3></article>";
+            }).join("") +
+          "</div>" +
+        "</div>" +
+      "</section>";
+
+    /* 7. Activities */
+    html +=
+      '<section class="section section--cream" id="activities">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">गतिविधियाँ</span>' +
+            "<h2>ज़मीन पर वास्तव में क्या होता है</h2>" +
+            "<p>क्रियान्वयन संस्था के अपने कैलेंडर के अनुसार तय होता है — विद्यालयों और महाविद्यालयों के लिए शैक्षणिक सत्र, कार्यस्थलों के लिए तिमाहियाँ।</p></div>" +
+          '<ol class="numbered reveal">' +
+            p.activities.map(function (a) { return "<li><span>" + esc(a) + "</span></li>"; }).join("") +
+          "</ol>" +
+        "</div>" +
+      "</section>";
+
+    /* 8. Expected outcomes */
+    html +=
+      '<section class="section section--ink" id="outcomes">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">अपेक्षित परिणाम</span>' +
+            "<h2>यह कार्यक्रम लागू होने पर क्या बदलता है</h2>" +
+            "<p>ये परिणाम कार्यक्रम के समीक्षा चक्र का आधार हैं और वार्षिक प्रतिवेदन में इन्हीं के सापेक्ष रिपोर्ट दी जाती है।</p></div>" +
+          '<ul class="ticks reveal">' +
+            p.outcomes.map(function (o) { return "<li>" + esc(o) + "</li>"; }).join("") +
+          "</ul>" +
+        "</div>" +
+      "</section>";
+
+    /* 9. Resources & downloads */
+    html +=
+      '<section class="section" id="resources">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">संसाधन एवं डाउनलोड</span>' +
+            "<h2>निःशुल्क दिशानिर्देश, टूलकिट, प्रारूप और रिपोर्ट</h2>" +
+            "<p>इस कार्यक्रम के अंतर्गत प्रकाशित सब कुछ निःशुल्क डाउनलोड, अनुकूलन और उपयोग के लिए उपलब्ध है, स्रोत का उल्लेख करते हुए। दस्तावेज़ संसाधन केंद्र की लाइब्रेरी में खुलते हैं।</p></div>" +
+          '<div class="grid g-2 grid--rail reveal">' +
+            p.resources.map(function (r) {
+              return '<a class="res-item" href="resource-library.html">' +
+                '<span class="res-item__ext">PDF</span>' +
+                '<span class="res-item__body"><b>' + esc(r) + "</b><small>" + esc(p.short) + " · कार्यक्रम संसाधन</small></span>" +
+                '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+            }).join("") +
+          "</div>" +
+          '<div class="mt-8"><a class="btn btn--outline" href="resource-library.html">पूरी संसाधन लाइब्रेरी देखें</a></div>' +
+        "</div>" +
+      "</section>";
+
+    /* 10. Partners */
+    var PARTNERS = ["सरकार", "विद्यालय", "विश्वविद्यालय", "कॉर्पोरेट", "CSR", "नागरिक समाज"];
+    html +=
+      '<section class="section section--cream" id="partners">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">सहयोगी</span>' +
+            "<h2>यह कार्यक्रम हम किनके साथ मिलकर चलाते हैं</h2>" +
+            "<p>क्रियान्वयन उन्हीं संस्थाओं की साझेदारी में किया जाता है जिनके पास पहले से यह दायित्व है, ताकि हमारी भागीदारी समाप्त होने के बाद भी काम चलता रहे।</p></div>" +
+          '<div class="grid g-3 grid--rail reveal">' +
+            PARTNERS.map(function (x) { return '<div class="partner-logo" style="min-width:0;width:100%">' + x + "</div>"; }).join("") +
+          "</div>" +
+          '<p class="mt-6" style="color:var(--muted);font-size:var(--fs-sm)">सहयोगी संस्थाओं के नाम तभी प्रकाशित किए जाते हैं जब संबंधित सहयोग समझौता औपचारिक रूप से पूर्ण हो जाता है।</p>' +
+          '<div class="btn-row mt-6"><a class="btn btn--primary" href="partnership-opportunities.html">SWAMITRA के साथ साझेदारी करें</a></div>' +
+        "</div>" +
+      "</section>";
+
+    /* 11. FAQs */
+    html +=
+      '<section class="section" id="faqs">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">अक्सर पूछे जाने वाले प्रश्न</span>' +
+            "<h2>पात्रता, पंजीकरण और सहभागिता</h2>" +
+            "<p>यदि आपका प्रश्न यहाँ शामिल नहीं है तो संपर्क पृष्ठ के माध्यम से आप सीधे कार्यक्रम टीम तक पहुँच सकते हैं।</p></div>" +
+          '<div class="acc reveal">' +
+            p.faqs.map(function (f) {
+              return '<div class="acc__item">' +
+                '<button class="acc__btn" type="button" aria-expanded="false">' + esc(f[0]) + '<span class="acc__ico"></span></button>' +
+                '<div class="acc__panel"><div>' + esc(f[1]) + "</div></div></div>";
+            }).join("") +
+            '<div class="acc__item">' +
+              '<button class="acc__btn" type="button" aria-expanded="false">इस कार्यक्रम के लिए पंजीकरण कैसे करें?<span class="acc__ico"></span></button>' +
+              '<div class="acc__panel"><div>संपर्क पृष्ठ के माध्यम से पूछताछ भेजें जिसमें ' + esc(p.title) +
+                ", अपनी संस्था का प्रकार और प्रतिभागियों की अनुमानित संख्या का उल्लेख हो। हमारी टीम एक संक्षिप्त आधारभूत प्रश्नावली, प्रस्तावित समय-सारणी और अपनाए जाने वाले दस्तावेज़ों के साथ उत्तर देती है।</div></div></div>" +
+            '<div class="acc__item">' +
+              '<button class="acc__btn" type="button" aria-expanded="false">कौन सा प्रमाणन जारी किया जाता है?<span class="acc__ico"></span></button>' +
+              '<div class="acc__panel"><div>जागरूकता सत्रों के लिए सहभागिता प्रमाणपत्र दिया जाता है। मूल्यांकन आधारित पाठ्यक्रमों में डिजिटल सत्यापन सहित प्रमाणपत्र मिलता है, और पूर्ण क्रियान्वयन चक्र पूरा करने वाली संस्थाओं को संस्थागत मान्यता प्रदान की जाती है।</div></div></div>' +
+          "</div>" +
+        "</div>" +
+      "</section>";
+
+    /* Other programmes rail */
+    var others = D.programs.filter(function (x) { return x.slug !== p.slug; });
+    html +=
+      '<section class="section section--cream" id="other-programmes">' +
+        '<div class="wrap">' +
+          '<div class="sec-head reveal"><span class="eyebrow">अन्य कार्यक्रम</span>' +
+            "<h2>कार्यक्रम प्रणाली के शेष हिस्से देखें</h2>" +
+            "<p>अधिकांश संस्थाएँ एक कार्यक्रम से शुरुआत करती हैं और क्षमता बढ़ने के साथ अन्य कार्यक्रम अपनाती हैं।</p></div>" +
+          '<div class="rail reveal">' + others.map(progCard).join("") + "</div>" +
+          '<div class="mt-8"><a class="btn btn--outline" href="programs.html">सभी कार्यक्रम देखें</a></div>' +
+        "</div>" +
+      "</section>";
+
+    /* 12. Call to action */
+    html += ctaBand();
+
+    root.innerHTML = html;
+
+    document.title = p.title + " | SWAMITRA Foundation";
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", p.summary);
+    setAppBar(p.short || p.title);
+
+    if (window.swAccordions) window.swAccordions(root);
+  }
+
+  if (prog) renderProgramme(prog);
+  else renderFallback();
+})();
+</script>
+</body>
+</html>

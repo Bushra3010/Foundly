@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Membership | SWAMITRA Foundation</title>
+<meta name="description" content="Membership connects individuals and institutions working on the same problems in different places.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="get-involved" data-title="Membership">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><a href="get-involved.html">Get Involved</a><span class="sep">/</span><span>Membership</span>
+      </nav>
+      <h1>Join the network</h1>
+      <p class="lead">Membership connects individuals and institutions working on the same problems in different places.</p>
+    </div>
+  </section>
+
+
+  <section class="section section--cream" id="membership">
+    <div class="wrap">
+
+      <div class="grid g-2 grid--rail reveal">
+        <article class="card">
+          <span class="tag tag--maroon">Individual</span>
+          <h3>Individual Membership</h3>
+          <p>For teachers, lawyers, HR professionals, researchers, students and citizens who want to stay close to this work and use it in their own setting.</p>
+          <ul class="ticks mt-3">
+            <li>Early access to frameworks, toolkits and research before public release</li>
+            <li>Discounted registration on paid certification programmes</li>
+            <li>Invitations to conclaves, roundtables and member-only briefings</li>
+            <li>The members' newsletter with method notes, not just announcements</li>
+            <li>The right to propose research questions and comment on draft standards</li>
+            <li>Listing in the member directory, if you choose to be listed</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="tag tag--maroon">Institutional</span>
+          <h3>Institutional Membership</h3>
+          <p>For schools, colleges, universities, companies, NGOs and public bodies implementing our frameworks across a whole institution.</p>
+          <ul class="ticks mt-3">
+            <li>Institution-wide access to frameworks, templates and audit tools</li>
+            <li>Priority scheduling for training cohorts and safety audits</li>
+            <li>Recognition as a Participating Institution in the national network</li>
+            <li>An annual implementation review with written recommendations</li>
+            <li>Nomination rights to the master trainer programme</li>
+            <li>A named relationship contact at the Foundation</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="split mt-8 reveal" style="align-items:start">
+        <div>
+          <h3>What membership costs</h3>
+          <p class="mt-4">Membership categories and any associated fee will be published here once the Foundation's membership structure is formally approved by its governing body. Until then, registration below records your interest and we will write to you when the structure is live, with the terms in full and no obligation to proceed.</p>
+          <p class="mt-4">Members are expected to uphold the Code of Ethics and to use Foundation material with attribution. Membership does not confer any authority to speak on behalf of the Foundation, to certify third parties, or to describe a commercial service as SWAMITRA-approved.</p>
+        </div>
+        <form class="form" novalidate>
+          <h3>Membership registration</h3>
+          <div class="field">
+            <label for="m-name">Name / Organisation <span class="req">*</span></label>
+            <input class="input" id="m-name" name="name" type="text" required>
+          </div>
+          <div class="field">
+            <label for="m-type">Membership type</label>
+            <select class="select" id="m-type" name="membership_type">
+              <option value="">Select a membership type</option>
+              <option>Individual Membership</option>
+              <option>Institutional Membership</option>
+              <option>Student Membership</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="m-email">Email <span class="req">*</span></label>
+              <input class="input" id="m-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="m-phone">Phone</label>
+              <input class="input" id="m-phone" name="phone" type="tel" autocomplete="tel">
+            </div>
+          </div>
+          <div class="field">
+            <label for="m-city">City</label>
+            <input class="input" id="m-city" name="city" type="text" autocomplete="address-level2">
+          </div>
+          <div class="field">
+            <label for="m-reason">Reason for joining</label>
+            <textarea class="textarea" id="m-reason" name="reason" placeholder="What would you want from membership, and what would you bring to the network?"></textarea>
+          </div>
+          <button class="btn btn--primary" type="submit">Register Interest</button>
+          <p class="form-note">Registering interest creates no obligation and no charge. Details are handled in line with our <a href="legal.html?doc=privacy-policy">Privacy Policy</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+  /* Ways to get involved */
+  var ways = [
+    ["users", "Volunteer", "Facilitate sessions, translate material, support camps or assist research. Trained before placement, credited for the work.", "#volunteer"],
+    ["handshake", "Partner", "Bring a framework into your school, university, department or company with a written memorandum and named deliverables.", "#partner"],
+    ["heart", "Donate", "Fund classroom material, school audits, community camps or master trainer development.", "#donate"],
+    ["building", "CSR", "Corporate social responsibility engagements with baseline measurement and audit-ready reporting.", "#csr"],
+    ["school", "Internship", "Four to twelve weeks of supervised work on live research, curriculum or programme delivery.", "#internship"],
+    ["award", "Careers", "Roles are published as they arise. Speculative applications are read and kept on file.", "#careers"],
+    ["globe", "Membership", "Join the network of individuals and institutions implementing this work across the country.", "#membership"]
+  ];
+  set("ways-grid", ways.map(function (w) {
+    return '<a class="card focus-card" href="' + w[3] + '">' +
+      '<span class="card__icon">' + I(w[0]) + "</span>" +
+      "<h3>" + w[1] + "</h3><p>" + w[2] + "</p>" +
+      '<span class="card__foot link-more">Read more</span></a>';
+  }).join(""));
+
+  /* CSR focus areas — drawn from the Foundation's focus areas */
+  set("csr-grid", D.focus.map(function (f) {
+    return '<article class="card focus-card"><span class="card__icon">' + I(f.icon) + "</span>" +
+      "<h3>" + f.title + "</h3><p>" + f.text + "</p></article>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

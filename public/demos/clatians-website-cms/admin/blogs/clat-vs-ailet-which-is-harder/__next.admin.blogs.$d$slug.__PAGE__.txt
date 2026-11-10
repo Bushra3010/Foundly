@@ -1,0 +1,49 @@
+1:"$Sreact.fragment"
+2:I[11645,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js"],"default"]
+4:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+3:T675,Every law aspirant faces the CLAT vs AILET dilemma. Both lead to prestigious destinations — CLAT to 23 NLUs and AILET exclusively to NLU Delhi. Here is a complete comparison.
+
+## Basic Differences at a Glance
+
+**CLAT 2026:**
+- Conducted by: Consortium of NLUs
+- Duration: 2 Hours
+- Questions: 120
+- Marks: 120
+- Colleges: 23 NLUs
+- Negative marking: 0.25
+
+**AILET 2026:**
+- Conducted by: NLU Delhi
+- Duration: 90 Minutes
+- Questions: 100
+- Marks: 100
+- Colleges: Only NLU Delhi
+- Negative marking: 0.25
+
+## Which is Harder?
+
+Honestly, AILET is significantly harder than CLAT for most students. Here is why:
+
+### Competition Level
+AILET has only 110 seats (General category: ~65 seats). CLAT has 2700+ seats. The competition ratio is almost 300:1 for AILET vs 150:1 for CLAT.
+
+### Exam Pattern
+AILET has a more diverse pattern including Elementary Mathematics (not in CLAT). The English and GK sections in AILET tend to be more factual and less passage-based than CLAT.
+
+### Cutoffs
+AILET cutoff: typically 65–70/100 for General category.
+CLAT cutoff for NLSIU: typically 95–105/120.
+
+## Should You Attempt Both?
+
+Yes! Most CLATians coaching students prepare for both. The syllabi overlap significantly. Additional preparation needed for AILET:
+- Elementary Mathematics (basic level — 10 questions)
+- Slightly higher GK depth
+- More rote-based GK vs passage-based GK
+
+## CLATians Strategy for Both Exams
+
+At CLATians, we have a combined preparation program covering both CLAT and AILET. Students who join our Offline Batch typically attempt both exams and secure admissions in either NLU Delhi or NALSAR/NLSIU. Call us at 8507700177 to know more.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"clat-vs-ailet-which-is-harder","title":"CLAT vs AILET 2026: Which is Harder? Complete Comparison","excerpt":"Detailed comparison of CLAT and AILET — difficulty level, pattern, cutoffs, and which exam you should prioritize.","content":"$3","category":"Law Preparation","categoryColor":"#f77420","author":"A.K. Singh","authorAvatar":"AK","date":"8 May, 2026","readTime":"6 min read","tags":["CLAT vs AILET","AILET 2026","Exam Comparison","Strategy"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
+6:null

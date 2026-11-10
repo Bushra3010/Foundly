@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="hi" data-base="" data-assets="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>स्वामित्र फाउंडेशन के बारे में | दृष्टि, मिशन, अभिशासन एवं नेतृत्व</title>
+<meta name="description" content="स्वामित्र फाउंडेशन, इसकी दृष्टि, मिशन, अभिशासन, नेतृत्व, मूल्यों तथा विधिक शिक्षा, सुरक्षित संस्थानों और नागरिक उत्तरदायित्व के प्रति इसकी प्रतिबद्धता के बारे में जानें।">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<meta property="og:title" content="विधिक ज्ञान को सर्वसुलभ बनाने के लिए बना एक राष्ट्रीय संस्थान | स्वामित्र फाउंडेशन">
+<meta property="og:description" content="स्वामित्र फाउंडेशन की दृष्टि, मिशन, मूल्य, कार्यप्रणाली, नेतृत्व, अभिशासन और पारदर्शिता।">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="about" data-title="स्वामित्र के बारे में">
+<a class="skip-link" href="#main">मुख्य सामग्री पर जाएँ</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="ब्रेडक्रम्ब">
+        <a href="index.html">होम</a><span class="sep">/</span><span>हमारे बारे में</span>
+      </nav>
+      <h1>विधिक ज्ञान को सर्वसुलभ बनाने के लिए बना एक राष्ट्रीय संस्थान</h1>
+    </div>
+  </section>
+
+
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow" id="a-eyebrow">स्वामित्र के बारे में</span>
+        <h2 id="a-heading">विधिक ज्ञान को सर्वसुलभ बनाने के लिए बना एक राष्ट्रीय संस्थान</h2>
+      </div>
+      <div class="split reveal">
+        <div class="about-text">
+          <p id="a-short"></p>
+          <div class="about-full" id="a-full"></div>
+        </div>
+        <div class="about-gallery" id="a-gallery"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="../assets/js/ui.hi.js"></script>
+<script src="../assets/js/data.hi.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+  function fmt(d) {
+    return new Date(d).toLocaleDateString("hi-IN", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  /* Impact statistics */
+  set("stats-grid", D.stats.map(function (s) {
+    return '<div class="stat"><b data-count="' + s.n + '" data-suffix="' + s.suffix + '">0</b><span>' + s.label + "</span></div>";
+  }).join(""));
+
+  /* Registered office from org data */
+  var addr = document.getElementById("tx-address");
+  if (addr && D.org && D.org.address) addr.textContent = D.org.address;
+
+  /* Annual and impact reports */
+  var reports = [
+    ["वार्षिक रिपोर्ट", "2025–26", "अभिशासन, गतिविधियाँ, कार्यक्रमों की पहुँच और अंकेक्षित वित्तीय विवरण।"],
+    ["प्रभाव रिपोर्ट", "2025–26", "विद्यालयों, कार्यस्थलों और समुदायों में आधार-रेखा के सापेक्ष मापे गए परिणाम।"],
+    ["लेखा विवरण", "2025–26", "अंकेक्षित आय, व्यय तथा श्रेणीवार निधि उपयोग।"],
+    ["अनुपालन एवं संरक्षण सारांश", "2025–26", "सांविधिक समिति की गतिविधि, प्रशिक्षण कवरेज और नीति समीक्षा अभिलेख।"]
+  ];
+  set("report-rows", reports.map(function (r) {
+    return '<div class="res-item"><span class="res-item__ext">PDF</span>' +
+      '<span class="res-item__body"><b>' + r[0] + " " + r[1] + "</b><small>" + r[2] +
+      " · रिपोर्टिंग चक्र की समाप्ति पर प्रकाशन हेतु निर्धारित</small></span>" +
+      '<span style="color:var(--muted-2)">' + I("clock") + "</span></div>";
+  }).join(""));
+
+  /* Publications from the Research Centre */
+  set("publication-rows", D.publications.slice(0, 3).map(function (p) {
+    return '<a class="res-item" href="featured-publications.html">' +
+      '<span class="res-item__ext">PDF</span>' +
+      '<span class="res-item__body"><b>' + p.title + "</b><small>" + p.type + " · " + p.theme +
+      " · " + p.pages + " पृष्ठ · " + fmt(p.date) + "</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+
+  /* Policies from the legal library */
+  var policySlugs = ["privacy-policy", "child-protection-policy", "posh-policy",
+    "code-of-ethics", "conflict-of-interest-policy", "whistleblower-policy"];
+  set("policy-grid", policySlugs.map(function (slug) {
+    var p = D.legal[slug];
+    if (!p) return "";
+    return '<a class="res-item" href="legal.html?doc=' + slug + '">' +
+      '<span class="res-item__ext">' + I("shield") + "</span>" +
+      '<span class="res-item__body"><b>' + p.title + "</b><small>अंतिम अद्यतन " + p.updated +
+      " · " + p.sections.length + " अनुभाग</small></span>" +
+      '<span style="color:var(--maroon-700)">' + I("file") + "</span></a>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

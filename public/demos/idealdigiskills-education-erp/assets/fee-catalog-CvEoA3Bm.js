@@ -1,0 +1,1 @@
+var e=`erp-fee-types`,t=`erp-fee-groups`,n=(e,t)=>{let n=e.split(/\s+/).filter(Boolean).map(e=>e[0]?.toUpperCase()??``).join(``).slice(0,3)||`FEE`,r=1,i=`${n}${String(r).padStart(3,`0`)}`;for(;t.some(e=>e.code.toUpperCase()===i);)r+=1,i=`${n}${String(r).padStart(3,`0`)}`;return i};export{e as n,n as r,t};

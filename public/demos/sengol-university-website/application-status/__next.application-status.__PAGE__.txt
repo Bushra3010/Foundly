@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[96199,["/demos/sengol-university-website/_next/static/chunks/05sq34cm8q4r5.js","/demos/sengol-university-website/_next/static/chunks/14mrh2-p_w84d.js","/demos/sengol-university-website/_next/static/chunks/1dus8fufficgq.js"],"default"]
+3:I[19854,["/demos/sengol-university-website/_next/static/chunks/05sq34cm8q4r5.js","/demos/sengol-university-website/_next/static/chunks/14mrh2-p_w84d.js","/demos/sengol-university-website/_next/static/chunks/1dus8fufficgq.js"],"default"]
+4:I[97367,["/demos/sengol-university-website/_next/static/chunks/05sq34cm8q4r5.js","/demos/sengol-university-website/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"flex min-h-screen items-center justify-center bg-brand-light py-12 px-4","children":["$","div",null,{"className":"w-full max-w-[1100px]","children":["$","$L2",null,{"children":["$","div",null,{"className":"rounded-2xl bg-white p-7 shadow-[0_10px_30px_rgba(49,37,24,0.08)] ring-1 ring-brand-cream sm:p-10","children":["$","$L3",null,{"kind":"center","eyebrow":"🏢 Center Status Check","title":"Find Your Center Application"}]}]}]}]}],[["$","script","script-0",{"src":"/demos/sengol-university-website/_next/static/chunks/1dus8fufficgq.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"0EQzaR8h54cxBPJ1Kvyai"}
+6:null

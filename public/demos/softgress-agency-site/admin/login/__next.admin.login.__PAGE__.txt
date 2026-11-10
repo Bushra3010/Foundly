@@ -1,0 +1,31 @@
+2:"$Sreact.fragment"
+3:"/demos/softgress-agency-site/_next/static/chunks/3j5he4_gi7dcv.js"
+4:"/demos/softgress-agency-site/_next/static/chunks/00o_kavli18le.js"
+5:I[5215,["$3","$4"],"default"]
+6:I[46747,["$3","$4"],"default"]
+d:"/demos/softgress-agency-site/_next/static/chunks/04y_4kgx6fhv2.js"
+e:I[15925,["$3","$4","$d"],"Image"]
+f:I[70262,["$3","$4","$d"],"LoginForm"]
+10:I[70914,["$3","$4"],"OutletBoundary"]
+11:"$Sreact.suspense"
+14:"ViewportBoundary"
+15:I[70914,["$3","$4"],"$14"]
+16:"MetadataBoundary"
+17:I[70914,["$3","$4"],"$16"]
+18:I[57719,["$3","$4"],"IconMark"]
+8:X
+8:C
+9:X
+c:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$2","c",{"children":[["$","main",null,{"className":"flex-1 grid place-items-center bg-paper px-4 py-16","children":["$","div",null,{"className":"w-full max-w-sm rounded-2xl bg-white border border-ink/10 p-8 shadow-sm","children":[["$","$Le",null,{"src":"/brand/softgress-badge.png","alt":"Softgress","width":72,"height":72,"priority":true,"className":"h-[72px] w-[72px]"}],["$","p",null,{"className":"mt-4 font-extrabold tracking-[0.18em] text-sm text-ink","children":"SOFTGRESS · CRM"}],["$","h1",null,{"className":"mt-2 text-2xl font-bold text-ink","children":"Sign in"}],["$","div",null,{"className":"mt-6","children":["$","$Lf",null,{"configured":true}]}]]}]}],[["$","script","script-0",{"src":"/demos/softgress-agency-site/_next/static/chunks/04y_4kgx6fhv2.js","async":true}]],["$","$L10",null,{"children":["$","$11",null,{"name":"Next.MetadataOutlet","children":"$@12"}]}]]}],"p":"$@13","v":null,"s":"$9"}}]]
+a:[["children",{"s":"login","h":96,"d":{"r":["$","$2","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@b","v":"$8","s":"$9"},"c":"$Qc"}]]
+1:[["children",{"s":"admin","h":64,"d":{"r":["$","$2","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@7","v":"$8","s":"$9"},"c":"$Qa"}]]
+0:{"t":{"t":{"s":"","h":16,"c":"$Q1"},"h":{"r":["$","$2","h",{"children":[null,["$","$L15",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#04060F"}]]}],["$","$L17",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$11",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Admin sign in · Softgress · Live demo by Foundly"}],["$","meta","1",{"name":"description","content":"Software development and digital marketing company in Pimpri-Chinchwad, Pune: websites, apps, SEO, Google & Meta ads, branding and AI automation across India."}],["$","meta","2",{"name":"application-name","content":"Softgress"}],["$","link","3",{"rel":"author","href":"https://softgress.com"}],["$","meta","4",{"name":"author","content":"Softgress"}],["$","meta","5",{"name":"creator","content":"Softgress"}],["$","meta","6",{"name":"publisher","content":"Softgress"}],["$","meta","7",{"name":"robots","content":"noindex, nofollow"}],["$","meta","8",{"name":"category","content":"Software development and digital marketing"}],["$","meta","9",{"name":"geo.region","content":"IN-MH"}],["$","meta","10",{"name":"geo.placename","content":"Pimpri-Chinchwad, Pune"}],["$","meta","11",{"property":"og:title","content":"Software & Digital Marketing Company in Pune | Softgress"}],["$","meta","12",{"property":"og:description","content":"Software development and digital marketing company in Pimpri-Chinchwad, Pune: websites, apps, SEO, Google & Meta ads, branding and AI automation across India."}],["$","meta","13",{"property":"og:site_name","content":"Softgress"}],["$","meta","14",{"property":"og:locale","content":"en_IN"}],["$","meta","15",{"property":"og:type","content":"website"}],["$","meta","16",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","17",{"name":"twitter:title","content":"Software & Digital Marketing Company in Pune | Softgress"}],["$","meta","18",{"name":"twitter:description","content":"Software development and digital marketing company in Pimpri-Chinchwad, Pune: websites, apps, SEO, Google & Meta ads, branding and AI automation across India."}],["$","link","19",{"rel":"icon","href":"/demos/softgress-agency-site/favicon.ico?favicon.3aob9c4wjj5iq.ico","sizes":"48x48","type":"image/x-icon"}],["$","link","20",{"rel":"icon","href":"/demos/softgress-agency-site/icon.png?icon.1ry167c_cj9az.png","sizes":"512x512","type":"image/png"}],["$","link","21",{"rel":"apple-touch-icon","href":"/demos/softgress-agency-site/apple-icon.png?apple-icon.23hhrgrnspfbg.png","sizes":"180x180","type":"image/png"}],["$","$L18","22",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@19","v":null,"s":"$9"}},"a":"$@1a","u":"$@1b","b":"EHV7vItY-z5wqQqGYRU1j"}
+12:null
+1b:true
+9:300
+9:C
+1a:0
+b:"$undefined"
+7:"$undefined"
+19:"$undefined"
+13:"$undefined"

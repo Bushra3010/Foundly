@@ -15,9 +15,12 @@ describe("portfolio", () => {
   it("seeds the scanned projects with neutral client labels, publishing only those with a working demo", async () => {
     const db = await makeDb();
     const all = await adminListProjects(db);
-    expect(all.length).toBe(30);
+    // 30 from the first scan plus 57 projects from the second GitHub account (migration 0023).
+    expect(all.length).toBe(87);
     expect(all.every((p) => !p.showClient)).toBe(true);
-    expect(all.filter((p) => p.published).every((p) => p.demoStatus === "live" && p.demoUrl?.startsWith("/demos/"))).toBe(true);
+    // A live demo always has an address: a static copy under /demos or the project's own deployed site.
+    expect(all.filter((p) => p.demoStatus === "live").every((p) => !!p.demoUrl)).toBe(true);
+    expect(all.filter((p) => p.demoUrl?.startsWith("/demos/")).every((p) => p.demoStatus === "live")).toBe(true);
     const pub = await listPublishedProjects(db);
     expect(pub.map((p) => p.slug)).toContain("pushpak-ac-service");
     // No real client name leaks while the client hasn't agreed to be named.

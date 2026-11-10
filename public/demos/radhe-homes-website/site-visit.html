@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book a Site Visit: Radhe Homes</title>
+<meta name="description" content="Book a site visit at any Radhe Homes project in Ahmedabad. Pick a project, date and time: we confirm within one working day.">
+<link rel="icon" href="img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Radhe Homes">
+<meta property="og:title" content="Book a Site Visit: Radhe Homes">
+<meta property="og:description" content="Book a site visit at any Radhe Homes project in Ahmedabad. Pick a project, date and time: we confirm within one working day.">
+<meta property="og:url" content="https://alok16012.github.io/Radhe-Radhe/site-visit.html">
+<meta property="og:image" content="https://alok16012.github.io/Radhe-Radhe/img/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alok16012.github.io/Radhe-Radhe/img/og-cover.jpg">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@300,400,500,600&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=sentient@400,401,500,501&display=swap">
+<link rel="stylesheet" href="css/style.css?v=3.2.0">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="phero" style="min-height:clamp(340px,44vh,460px)">
+  <div class="phero__media"><img src="img/ext-4.jpg" alt="A Radhe Homes site under construction"></div>
+  <div class="wrap phero__in">
+    <nav class="crumb label" aria-label="Breadcrumb">
+      <a href="index.html">Home</a> <span>/</span> <span style="color:var(--paper)">Book a Site Visit</span>
+    </nav>
+    <p class="eyebrow" style="margin:0 0 16px">Site Visit</p>
+    <h1 class="display">
+      <span class="rvl"><span>Judge the building, <span class="it">not the brochure.</span></span></span>
+    </h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="f2" style="gap:clamp(28px,5vw,80px);align-items:start">
+
+      <div>
+        <h2 class="h2" style="margin:16px 0 26px">Three steps, one working day.</h2>
+        <div class="fgrid rv" style="grid-template-columns:1fr">
+          <div><span class="num">(01)</span><h3 class="h4" style="margin:0 0 10px">You pick a project and a slot</h3><p class="body-sm" style="margin:0">Site visits run every day between 10:00 AM and 6:00 PM, including Sundays.</p></div>
+          <div><span class="num">(02)</span><h3 class="h4" style="margin:0 0 10px">We confirm by phone</h3><p class="body-sm" style="margin:0">A project manager calls to confirm the slot and tells you exactly which gate to come to.</p></div>
+          <div><span class="num">(03)</span><h3 class="h4" style="margin:0 0 10px">You walk the site with an engineer</h3><p class="body-sm" style="margin:0">Not a sales agent. You see the sample flat, the actual carpet area and the current construction stage.</p></div>
+        </div>
+
+        <div class="panel rv" style="margin-top:26px">
+          <p class="label" style="margin:0 0 12px">Prefer to just call?</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn--brass btn--sm" id="waBtn" href="#" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn btn--ghost btn--sm" id="callBtn" href="#">Call the office</a>
+          </div>
+          <p class="formnote" style="margin-top:16px" id="hoursNote"></p>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="h3" style="margin:14px 0 26px">Book a Site Visit</h2>
+
+        <form class="form" id="svForm" novalidate>
+          <div class="field">
+            <label for="sv-name">Full Name</label>
+            <input id="sv-name" name="name" type="text" autocomplete="name" placeholder="Your name">
+            <span class="err"></span>
+          </div>
+          <div class="f2">
+            <div class="field">
+              <label for="sv-phone">Mobile Number</label>
+              <input id="sv-phone" name="phone" type="tel" autocomplete="tel" placeholder="10-digit mobile">
+              <span class="err"></span>
+            </div>
+            <div class="field">
+              <label for="sv-email">Email</label>
+              <input id="sv-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+              <span class="err"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="sv-project">Select Project</label>
+            <select id="sv-project" name="project"><option value="">Choose a project</option></select>
+            <span class="err"></span>
+          </div>
+          <div class="f2">
+            <div class="field">
+              <label for="sv-date">Preferred Date</label>
+              <input id="sv-date" name="date" type="date">
+              <span class="err"></span>
+            </div>
+            <div class="field">
+              <label for="sv-time">Preferred Time</label>
+              <select id="sv-time" name="time">
+                <option value="">Choose a time</option>
+                <option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+                <option>01:00 PM</option><option>02:00 PM</option><option>03:00 PM</option>
+                <option>04:00 PM</option><option>05:00 PM</option><option>06:00 PM</option>
+              </select>
+              <span class="err"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="sv-msg">Message</label>
+            <textarea id="sv-msg" name="message" placeholder="Anything we should keep ready for your visit?"></textarea>
+            <span class="err"></span>
+          </div>
+          <button class="btn btn--solid btn--block" type="submit">Book a Site Visit</button>
+          <p class="formnote">We confirm every request by phone within one working day. No spam, no reselling of your details.</p>
+        </form>
+
+        <div class="ok" id="svOk">
+          <h3 class="h4" style="margin:0 0 12px">Your site visit request is in.</h3>
+          <p class="body-sm" style="margin:0 0 18px">Your reference number is <b class="tnum" data-ref style="color:var(--brass)"></b>. We will call to confirm the slot within one working day.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn--ghost btn--sm" href="projects.html">Browse projects</a>
+            <a class="btn btn--ghost btn--sm" href="index.html">Back to home</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="js/data.js?v=3.2.0"></script>
+<script src="js/ui.js?v=3.2.0"></script>
+<script src="js/visit.js?v=3.2.0"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Get Involved | Volunteer, Donate, Partner &amp; Join SWAMITRA Foundation</title>
+<meta name="description" content="Each route below has its own eligibility, commitment and process. Read the one that fits before you apply — it saves everyone time.">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SWAMITRA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="get-involved" data-title="Get Involved">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><span>Get Involved</span>
+      </nav>
+      <h1>Seven ways to work with the Foundation</h1>
+      <p class="lead">Each route below has its own eligibility, commitment and process. Read the one that fits before you apply — it saves everyone time.</p>
+    </div>
+  </section>
+
+
+  <section class="section" id="ways">
+    <div class="wrap">
+      <div class="grid g-3 grid--rail reveal" id="ways-grid"></div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var D = window.SWAMITRA, I = window.swIcon;
+  function set(id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+  /* Ways to get involved */
+  var ways = [
+    ["users", "Volunteer", "Facilitate sessions, translate material, support camps or assist research. Trained before placement, credited for the work.", "#volunteer"],
+    ["handshake", "Partner", "Bring a framework into your school, university, department or company with a written memorandum and named deliverables.", "#partner"],
+    ["heart", "Donate", "Fund classroom material, school audits, community camps or master trainer development.", "#donate"],
+    ["building", "CSR", "Corporate social responsibility engagements with baseline measurement and audit-ready reporting.", "#csr"],
+    ["school", "Internship", "Four to twelve weeks of supervised work on live research, curriculum or programme delivery.", "#internship"],
+    ["award", "Careers", "Roles are published as they arise. Speculative applications are read and kept on file.", "#careers"],
+    ["globe", "Membership", "Join the network of individuals and institutions implementing this work across the country.", "#membership"]
+  ];
+  set("ways-grid", ways.map(function (w) {
+    return '<a class="card focus-card" href="' + w[3] + '">' +
+      '<span class="card__icon">' + I(w[0]) + "</span>" +
+      "<h3>" + w[1] + "</h3><p>" + w[2] + "</p>" +
+      '<span class="card__foot link-more">Read more</span></a>';
+  }).join(""));
+
+  /* CSR focus areas — drawn from the Foundation's focus areas */
+  set("csr-grid", D.focus.map(function (f) {
+    return '<article class="card focus-card"><span class="card__icon">' + I(f.icon) + "</span>" +
+      "<h3>" + f.title + "</h3><p>" + f.text + "</p></article>";
+  }).join(""));
+})();
+</script>
+</body>
+</html>

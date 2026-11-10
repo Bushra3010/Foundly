@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found | SWAMITRA Foundation</title>
+<meta name="description" content="The page you are looking for could not be found.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#620405">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="home" data-title="Page not found" data-subpage>
+<a class="skip-link" href="#main">Skip to main content</a>
+<div id="site-header"></div>
+
+<main id="main">
+  <section class="hero hero--page">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span class="sep">/</span><span>Page not found</span>
+      </nav>
+      <h1>We could not find that page</h1>
+      <p class="lead">The link may be out of date, or the page may have moved as the site was reorganised. Everything below is a good place to start again.</p>
+      <div class="btn-row">
+        <a class="btn btn--gold" href="index.html">Go to the homepage</a>
+        <a class="btn btn--light" href="contact.html">Tell us about the broken link</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Popular destinations</span><h2>Where would you like to go?</h2></div>
+      <div class="grid g-3 grid--rail" id="quick-links"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<!-- Content published from the admin panel; replaces the bundled copy above.
+     Proxied to Supabase Storage by netlify.toml. -->
+<script src="/live/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  var I = window.swIcon;
+  var links = [
+    ["programs", "Programs", "Ten national programmes across education, safety and research.", "programs.html"],
+    ["training", "Training & Certification", "Nine certified training programmes for institutions and individuals.", "training.html"],
+    ["resources", "Resource Centre", "Free toolkits, templates, SOPs and reports.", "resources.html"],
+    ["chart", "Research Centre", "Publications, frameworks, standards and policy briefs.", "research.html"],
+    ["users", "Get Involved", "Volunteer, partner, intern or join the network.", "get-involved.html"],
+    ["mail", "Contact", "Enquiries, partnerships and institutional support.", "contact.html"]
+  ];
+  document.getElementById("quick-links").innerHTML = links.map(function (l) {
+    return '<a class="card" href="' + l[3] + '"><span class="card__icon">' + I(l[0]) + "</span>" +
+      "<h3>" + l[1] + "</h3><p>" + l[2] + "</p></a>";
+  }).join("");
+})();
+</script>
+</body>
+</html>
