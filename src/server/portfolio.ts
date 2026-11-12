@@ -88,6 +88,30 @@ export async function listPublishedProjects(db: Db): Promise<PublicProject[]> {
   return rows.map((r) => toPublic(r, media.get(r.id) ?? []));
 }
 
+/** Portfolio projects shown at the bottom of each /software/<product> page, in display order. */
+export const SOFTWARE_SHOWCASE: Record<string, readonly string[]> = {
+  erp: [
+    "careeroptics-erp", "growus-workforce-erp", "idealdigiskills-education-erp", "keka-hr-clone", "nidhi-banking-software",
+    "soil-distribution-management", "airawat-showroom", "pushpak-ac-service", "sengol-university-portal", "manas-library",
+    "clatians-lms", "falcon-plus-employee-management", "gym-membership-system", "slotnova-visa-appointments",
+  ],
+  crm: [
+    "hirenova-lead-engine", "newvisa-crm", "hotel-sales-command-center", "maheshwari-plot-sales-crm", "dcw-crm",
+    "edumatch-consultancy-crm", "admission-path4u-crm", "meera-prakash-admission-crm", "hello-doctor-neet-counselling",
+    "dayare-haram-tours-crm", "visa-recruitment-manager", "shera-travels-crm", "aqoss-hotel-saas",
+  ],
+  app: ["ridewallah", "driveway-ride-booking", "dinadena-labour", "textile-pickup", "swanidhi-admissions", "nearlane", "weddingmall-mobile-app"],
+};
+
+/** Published projects for a custom-software page, in the order listed above. Missing or hidden ones are skipped. */
+export async function listShowcaseProjects(db: Db, product: string): Promise<PublicProject[]> {
+  const slugs = SOFTWARE_SHOWCASE[product] ?? [];
+  if (slugs.length === 0) return [];
+  const rows = await db.select().from(portfolioProjects).where(and(isPublic, inArray(portfolioProjects.slug, [...slugs])));
+  const media = await mediaFor(db, rows.map((r) => r.id));
+  return rows.sort((a, b) => slugs.indexOf(a.slug) - slugs.indexOf(b.slug)).map((r) => toPublic(r, media.get(r.id) ?? []));
+}
+
 export async function getPublishedProject(db: Db, slug: string): Promise<PublicProject | null> {
   const [row] = await db.select().from(portfolioProjects).where(and(eq(portfolioProjects.slug, slug), isPublic)).limit(1);
   if (!row) return null;

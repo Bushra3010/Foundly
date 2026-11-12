@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 import { eq } from "drizzle-orm";
 import { auditEvents, portfolioProjects } from "@/db/schema";
-import { addMedia, adminListProjects, createProject, deleteProject, getMedia, getPublishedProject, HIDDEN_PROJECT_SLUGS, listPublishedProjects, makeCover, updateProject } from "@/server/portfolio";
+import { addMedia, adminListProjects, createProject, deleteProject, getMedia, getPublishedProject, HIDDEN_PROJECT_SLUGS, listPublishedProjects, listShowcaseProjects, makeCover, SOFTWARE_SHOWCASE, updateProject } from "@/server/portfolio";
 import { makeDb, signUp } from "./helpers";
 
 const admin = async (db: Awaited<ReturnType<typeof makeDb>>) => {
@@ -40,6 +40,15 @@ describe("portfolio", () => {
       expect(await getPublishedProject(db, slug)).toBeNull();
     }
     expect(slugs).toContain("xealedu-admissions-site");
+  });
+
+  it("shows every listed ERP, CRM and app project on its software page", async () => {
+    const db = await makeDb();
+    for (const [product, slugs] of Object.entries(SOFTWARE_SHOWCASE)) {
+      const shown = (await listShowcaseProjects(db, product)).map((p) => p.slug);
+      expect(shown).toEqual(slugs);
+    }
+    expect(await listShowcaseProjects(db, "unknown")).toEqual([]);
   });
 
   it("shows the client label until the client agrees, and the demo only when live", async () => {
