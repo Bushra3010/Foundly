@@ -29,10 +29,10 @@ export function LandingHeader() {
             </details>
             <Link href="/automation">AI Automation</Link>
             <Link href="/work">Our Work</Link>
-            <Link href="/pricing">Pricing</Link><Link href="/guides">Guides</Link><Link href="/directory">Directory</Link>
+            <Link href="/pricing">Pricing</Link>
           </nav>
           <div className="landing-auth"><Link href="/login" className="landing-login">Log in</Link><Link href="/signup" className="landing-button small">Start free <Icon name="arrow" size={16} /></Link></div>
-          <details className="landing-mobile-menu"><summary>Menu <Icon name="down" size={15} /></summary><nav aria-label="Mobile navigation"><Link href="/#product">Product</Link><Link href="/#features">Features</Link><Link href="/#how-it-works">How it works</Link><Link href="/services">Services</Link><div className="landing-mobile-software" role="group" aria-label="Custom software"><SoftwareNavLinks /></div><Link href="/automation">AI Automation</Link><Link href="/work">Our Work</Link><Link href="/pricing">Pricing</Link><Link href="/guides">Guides</Link><Link href="/tools/ai-crawler-checker">Free AI crawler check</Link><Link href="/directory">Directory</Link><Link href="/login">Log in</Link></nav></details>
+          <details className="landing-mobile-menu"><summary>Menu <Icon name="down" size={15} /></summary><nav aria-label="Mobile navigation"><Link href="/#product">Product</Link><Link href="/#features">Features</Link><Link href="/#how-it-works">How it works</Link><Link href="/services">Services</Link><div className="landing-mobile-software" role="group" aria-label="Custom software"><SoftwareNavLinks /></div><Link href="/automation">AI Automation</Link><Link href="/work">Our Work</Link><Link href="/pricing">Pricing</Link><Link href="/tools/ai-crawler-checker">Free AI crawler check</Link><Link href="/login">Log in</Link></nav></details>
         </header></div>
         <MenuCloser />
     </>
