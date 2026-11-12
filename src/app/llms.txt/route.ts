@@ -7,6 +7,7 @@ import { SERVICE_CITIES } from "@/lib/locations";
 import { COMPANY } from "@/lib/site-schema";
 import { SOFTWARE_SEO, AUTOMATION_SEO } from "@/lib/software-seo";
 import { NEEDS } from "@/lib/work-copy";
+import { SOFTWARE_CITIES } from "@/lib/software-cities";
 import { listPublishedProjects } from "@/server/portfolio";
 
 export const dynamic = "force-dynamic";
@@ -55,6 +56,8 @@ export async function GET() {
     `- [Custom ERP software development](${base}/software/erp): ${SOFTWARE_SEO.erp.description}`,
     `- [Custom CRM software development](${base}/software/crm): ${SOFTWARE_SEO.crm.description}`,
     `- [Android and iOS app development](${base}/software/app): ${SOFTWARE_SEO.app.description}`,
+    `- ERP software by city: ${SOFTWARE_CITIES.map((c) => `[${c.name}](${base}/software/erp/${c.slug})`).join(", ")}`,
+    `- CRM software by city: ${SOFTWARE_CITIES.map((c) => `[${c.name}](${base}/software/crm/${c.slug})`).join(", ")}`,
     `- [AI automation for business](${base}/automation): ${AUTOMATION_SEO.description}`,
     `- [Our work: ${projects.length} projects with live demos](${base}/work): the full portfolio, grouped by what a business needs.`,
     "",

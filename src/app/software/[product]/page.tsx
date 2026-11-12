@@ -5,12 +5,14 @@ import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { SoftwareProductGuide } from "@/components/software-product-guide";
 import { WorkCard } from "@/components/work-card";
+import { ContactBar } from "@/components/contact-bar";
 import { getDb } from "@/db";
 import { getProduct, getSector } from "@/lib/software-catalog";
 import { listShowcaseProjects } from "@/server/portfolio";
 import { jsonLdScript } from "@/lib/profile";
 import { breadcrumbLd, faqLd, graph, siteUrl } from "@/lib/site-schema";
 import { SOFTWARE_SEO } from "@/lib/software-seo";
+import { CITY_PRODUCTS, type CityProduct, SOFTWARE_CITIES } from "@/lib/software-cities";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/software-demo.css";
@@ -72,7 +74,7 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
   );
 
   return (
-    <div className="foundly-landing">
+    <div className="foundly-landing has-contact-bar">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ld) }} />
       <LandingHeader announcement={false} />
       <main id="main" className="landing-main public-software-guide automation-page">
@@ -82,6 +84,8 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
           basePath="/software"
           backHref="/services#custom-development"
           backLabel="View all software services"
+          heading={seo?.h1}
+          eyebrow={seo?.eyebrow}
         />
         {projects.length > 0 && (
           <section className="sw-showcase" aria-labelledby="showcase-title">
@@ -98,6 +102,12 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
             </ul>
           </section>
         )}
+        {CITY_PRODUCTS.includes(product.id as CityProduct) && (
+          <nav className="sw-cities" aria-label={`${product.title} by city`}>
+            <span>{seo?.short ?? product.title} in your city:</span>
+            {SOFTWARE_CITIES.map((c) => <Link key={c.slug} href={`/software/${product.id}/${c.slug}`}>{c.name}</Link>)}
+          </nav>
+        )}
         {seo && (
           <section className="sw-faq" aria-labelledby="sw-faq-title">
             <p className="au-eyebrow"><Icon name="spark" size={14} /> Questions clients ask</p>
@@ -112,6 +122,7 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
         )}
       </main>
       <LandingFooter />
+      <ContactBar what={seo?.short ?? product.title} message={`Hi Foundly, I'd like a quote for ${product.title}.`} />
     </div>
   );
 }

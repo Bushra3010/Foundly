@@ -16,9 +16,12 @@ type Props = {
   basePath: string;
   backHref: string;
   backLabel: string;
+  /** Search-led H1 and eyebrow; the product's own headline is used when omitted. */
+  heading?: string;
+  eyebrow?: string;
 };
 
-export function SoftwareProductGuide({ product, sector, basePath, backHref, backLabel }: Props) {
+export function SoftwareProductGuide({ product, sector, basePath, backHref, backLabel, heading, eyebrow }: Props) {
   const guide = product.sectors[sector.id];
   const demo = getDemo(product.id, sector.id);
 
@@ -26,8 +29,8 @@ export function SoftwareProductGuide({ product, sector, basePath, backHref, back
     <>
       <section className="au-hero">
         <div className="au-hero-copy">
-          <p className="au-eyebrow"><Icon name={product.icon} size={14} /> {product.title}</p>
-          <h1>{product.headline}</h1>
+          <p className="au-eyebrow"><Icon name={product.icon} size={14} /> {eyebrow ?? product.title}</p>
+          <h1>{heading ?? product.headline}</h1>
           <p className="au-lede">{product.lede}</p>
           <div className="au-hero-actions">
             <a className={buttonClass()} href={whatsappLink(`Hi Foundly, I’d like to discuss ${product.title} for ${sector.label.toLowerCase()}.`)}>Discuss your project <Icon name="arrow" size={16} /></a>

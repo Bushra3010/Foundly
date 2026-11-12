@@ -4,6 +4,11 @@
  */
 
 type SoftwareSeo = {
+  /** Visible H1: the search phrase plus the promise. */
+  h1: string;
+  eyebrow: string;
+  /** Short noun used in city pages, e.g. "ERP software". */
+  short: string;
   title: string;
   description: string;
   serviceName: string;
@@ -17,6 +22,9 @@ const BASED = "Foundly is based in Pune and builds software for businesses acros
 
 export const SOFTWARE_SEO: Record<string, SoftwareSeo> = {
   erp: {
+    h1: "Custom ERP software that runs your whole business",
+    eyebrow: "ERP software development company in India",
+    short: "ERP software",
     title: "Custom ERP Software Development Company in India",
     description: "Custom ERP software for Indian businesses: stock, sales, purchase, HR, payroll and GST billing in one system. From ₹3,00,000. Try live demos of ERPs we built.",
     serviceName: "Custom ERP software development",
@@ -31,6 +39,9 @@ export const SOFTWARE_SEO: Record<string, SoftwareSeo> = {
     ],
   },
   crm: {
+    h1: "Custom CRM software so you never lose a lead again",
+    eyebrow: "CRM software development company in India",
+    short: "CRM software",
     title: "Custom CRM Software Development Company in India",
     description: "Custom CRM software that captures every lead from ads, WhatsApp and your website and tracks each follow-up. From ₹99,999. Try live demos of CRMs we built.",
     serviceName: "Custom CRM software development",
@@ -45,6 +56,9 @@ export const SOFTWARE_SEO: Record<string, SoftwareSeo> = {
     ],
   },
   app: {
+    h1: "Android & iOS apps that put your business in customers' pockets",
+    eyebrow: "Mobile app development company in India",
+    short: "mobile app",
     title: "Android & iOS App Development Company in India",
     description: "Custom Android and iOS apps for bookings, orders, deliveries and field teams. Android from ₹60,000, iOS from ₹1,00,000. Try live demos of apps we built.",
     serviceName: "Mobile app development",

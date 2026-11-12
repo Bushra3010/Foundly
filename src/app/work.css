@@ -160,3 +160,26 @@
 .sw-faq summary::-webkit-details-marker { display: none; }
 .sw-faq details[open] summary svg { transform: rotate(180deg); }
 .sw-faq details p { margin: 0 0 16px; color: #50544a; line-height: 1.6; }
+
+/* Contact bar fixed to the bottom of the software pages */
+.contact-bar { position: fixed; left: 50%; bottom: 16px; z-index: 40; transform: translateX(-50%); width: min(960px, calc(100% - 24px)); display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; padding: 10px 10px 10px 18px; border-radius: 18px; background: #20221e; color: #f6f6f1; box-shadow: 0 14px 40px rgba(32, 34, 30, .28); }
+.contact-bar p { margin: 0; font-size: 14px; }
+.contact-bar p b { color: #d6fc74; }
+.contact-bar p span { color: #c9cbc0; }
+.contact-bar div { display: flex; gap: 8px; }
+.contact-bar a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.contact-bar-wa { background: #d6fc74; color: #20221e; }
+.contact-bar-call { border: 1px solid rgba(255, 255, 255, .25); color: #fff; }
+.has-contact-bar { padding-bottom: 96px; }
+@media (max-width: 640px) {
+  .contact-bar { bottom: 10px; padding: 10px; }
+  .contact-bar p span { display: none; }
+  .contact-bar div { width: 100%; }
+  .contact-bar a { flex: 1; justify-content: center; }
+  .has-contact-bar { padding-bottom: 130px; }
+}
+
+.sw-cities { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 40px 0 0; }
+.sw-cities span { font-size: 14px; font-weight: 700; color: #6f7268; margin-right: 4px; }
+.sw-cities a { padding: 8px 14px; border: 1px solid #e6e7df; border-radius: 99px; background: #fff; color: #20221e; font-size: 14px; font-weight: 600; text-decoration: none; }
+.sw-cities a:hover { border-color: #a4cd48; }

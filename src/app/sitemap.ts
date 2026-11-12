@@ -7,6 +7,7 @@ import { INDUSTRIES } from "@/lib/industries";
 import { SERVICE_CITIES } from "@/lib/locations";
 import { PRODUCTS } from "@/lib/software-catalog";
 import { listPublishedProjects } from "@/server/portfolio";
+import { CITY_PRODUCTS, SOFTWARE_CITIES } from "@/lib/software-cities";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/ai-visibility-audit`, changeFrequency: "monthly" },
     { url: `${base}/services`, changeFrequency: "monthly" },
     ...PRODUCTS.map(({ id }) => ({ url: `${base}/software/${id}`, changeFrequency: "monthly" as const })),
+    ...CITY_PRODUCTS.flatMap((id) => SOFTWARE_CITIES.map((c) => ({ url: `${base}/software/${id}/${c.slug}`, changeFrequency: "monthly" as const }))),
     { url: `${base}/automation`, changeFrequency: "monthly" },
     { url: `${base}/work`, changeFrequency: "weekly" },
     ...projects.map((p) => ({ url: `${base}/work/${p.slug}`, changeFrequency: "monthly" as const })),
