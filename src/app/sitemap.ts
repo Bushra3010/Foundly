@@ -6,6 +6,7 @@ import { GUIDES } from "@/lib/guides";
 import { INDUSTRIES } from "@/lib/industries";
 import { SERVICE_CITIES } from "@/lib/locations";
 import { PRODUCTS } from "@/lib/software-catalog";
+import { listPublishedProjects } from "@/server/portfolio";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ const SITEMAP_EXCLUDED_PROFILES = new Set(["alok-mumbai", "kindbridge-pune", "bl
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = await getDb();
   const base = process.env.APP_URL ?? "http://localhost:3000";
+  const projects = await listPublishedProjects(db);
   const profiles = (await listPublishedProfiles(db)).filter((p) => !SITEMAP_EXCLUDED_PROFILES.has(p.slug));
   const cities = new Set<string>();
   const cityCategories = new Set<string>();
@@ -37,6 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...PRODUCTS.map(({ id }) => ({ url: `${base}/software/${id}`, changeFrequency: "monthly" as const })),
     { url: `${base}/automation`, changeFrequency: "monthly" },
     { url: `${base}/work`, changeFrequency: "weekly" },
+    ...projects.map((p) => ({ url: `${base}/work/${p.slug}`, changeFrequency: "monthly" as const })),
     { url: `${base}/services/chatgpt-ads`, changeFrequency: "monthly" },
     { url: `${base}/services/local-seo`, changeFrequency: "monthly" },
     ...SERVICE_CITIES.map((c) => ({ url: `${base}/services/${c.slug}`, changeFrequency: "monthly" as const })),

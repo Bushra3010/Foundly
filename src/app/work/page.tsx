@@ -7,7 +7,8 @@ import { buttonClass } from "@/components/ui";
 import { getDb } from "@/db";
 import { listPublishedProjects } from "@/server/portfolio";
 import { FEATURED_SLUGS, NEEDS } from "@/lib/work-copy";
-import { whatsappLink } from "@/lib/site-schema";
+import { breadcrumbLd, graph, siteUrl, whatsappLink } from "@/lib/site-schema";
+import { jsonLdScript } from "@/lib/profile";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/automation.css";
@@ -20,8 +21,9 @@ type WorkSearch = Promise<{ need?: string; category?: string }>;
 export async function generateMetadata({ searchParams }: { searchParams: WorkSearch }): Promise<Metadata> {
   const { need, category } = await searchParams;
   return {
-    title: "Our work: software we've built",
-    description: "ERP, CRM, e-commerce, mobile apps, AI assistants and SaaS products Foundly has built for businesses, with live demos you can try.",
+    title: "Software Portfolio: ERP, CRM & App Live Demos",
+    description: "75+ real ERP, CRM, mobile app, e-commerce, website and AI projects built by Foundly for businesses in India. Open any project and try its live demo.",
+    openGraph: { title: "Software we've built for real businesses · Foundly", description: "75+ real projects with live demos you can try.", url: "/work", images: "/opengraph-image" },
     alternates: { canonical: "/work" },
     ...((need || category) && { robots: { index: false, follow: true } }),
   };
@@ -37,8 +39,26 @@ export default async function WorkPage({ searchParams }: { searchParams: WorkSea
   const live = all.filter((p) => p.demoStatus === "live").length;
   const industries = new Set(all.map((p) => p.industry).filter(Boolean)).size;
 
+  const ld = graph(
+    {
+      "@type": "CollectionPage",
+      "@id": `${siteUrl("/work")}#page`,
+      name: "Software we've built for real businesses",
+      url: siteUrl("/work"),
+      about: ["ERP software", "CRM software", "Mobile apps", "E-commerce", "Websites", "AI automation"],
+      publisher: { "@id": siteUrl("/#organization") },
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: all.length,
+        itemListElement: all.map((p, i) => ({ "@type": "ListItem", position: i + 1, name: p.name, url: siteUrl(`/work/${p.slug}`) })),
+      },
+    },
+    breadcrumbLd([{ name: "Home", path: "/" }, { name: "Our work", path: "/work" }]),
+  );
+
   return (
     <div className="foundly-landing">
+      {!active && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ld) }} />}
       <LandingHeader announcement={false} />
       <main id="main" className="landing-main public-software-guide automation-page work-page">
         <section className="wk-hero">

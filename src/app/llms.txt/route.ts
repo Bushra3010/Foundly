@@ -5,13 +5,18 @@ import { GUIDES } from "@/lib/guides";
 import { INDUSTRIES } from "@/lib/industries";
 import { SERVICE_CITIES } from "@/lib/locations";
 import { COMPANY } from "@/lib/site-schema";
+import { SOFTWARE_SEO, AUTOMATION_SEO } from "@/lib/software-seo";
+import { NEEDS } from "@/lib/work-copy";
+import { listPublishedProjects } from "@/server/portfolio";
 
 export const dynamic = "force-dynamic";
 
 /** Platform-level llms.txt: what Foundly is and every listed business, grouped by city and category. */
 export async function GET() {
   const base = process.env.APP_URL ?? "http://localhost:3000";
-  const rows = await listPublishedProfiles(await getDb());
+  const db = await getDb();
+  const rows = await listPublishedProfiles(db);
+  const projects = await listPublishedProjects(db);
   const groups = new Map<string, typeof rows>();
   for (const r of rows) {
     // Grouped like the directory pages, so "MUMBAI" and "Mumbai" share one section.
@@ -43,6 +48,20 @@ export async function GET() {
     `- [Business directory](${base}/directory): local businesses by city and category.`,
     `- [AI Crawler Checker](${base}/tools/ai-crawler-checker): free tool that checks whether GPTBot, OAI-SearchBot, Google-Extended, PerplexityBot, ClaudeBot and other AI crawlers can read a website.`,
     "",
+    "## Custom software development",
+    "",
+    "Foundly also designs and builds custom software for businesses in India and worldwide: ERP, CRM, mobile apps, e-commerce stores, websites and AI automation. Every project below has a public case study, and most have a live demo with sample data.",
+    "",
+    `- [Custom ERP software development](${base}/software/erp): ${SOFTWARE_SEO.erp.description}`,
+    `- [Custom CRM software development](${base}/software/crm): ${SOFTWARE_SEO.crm.description}`,
+    `- [Android and iOS app development](${base}/software/app): ${SOFTWARE_SEO.app.description}`,
+    `- [AI automation for business](${base}/automation): ${AUTOMATION_SEO.description}`,
+    `- [Our work: ${projects.length} projects with live demos](${base}/work): the full portfolio, grouped by what a business needs.`,
+    "",
+    ...NEEDS.flatMap((n) => {
+      const list = projects.filter((p) => p.need === n.id);
+      return list.length === 0 ? [] : [`### ${n.label}`, "", ...list.map((p) => `- [${p.name}](${base}/work/${p.slug}): ${p.tagline} Built for: ${p.client}.`), ""];
+    }),
     "## Guides",
     "",
     ...GUIDES.map((g) => `- [${g.title}](${base}/guides/${g.slug}): ${g.description}`),

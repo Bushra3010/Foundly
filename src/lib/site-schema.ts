@@ -61,7 +61,7 @@ export function organizationLd() {
     numberOfEmployees: { "@type": "QuantitativeValue", value: 2 },
     sameAs: SAME_AS,
     areaServed: [{ "@type": "Country", name: "India" }, "Worldwide"],
-    knowsAbout: ["Generative engine optimization", "Answer engine optimization", "AI search visibility", "Local SEO", "ChatGPT", "Gemini", "Perplexity", "Claude"],
+    knowsAbout: ["Generative engine optimization", "Answer engine optimization", "AI search visibility", "Local SEO", "ChatGPT", "Gemini", "Perplexity", "Claude", "Custom ERP software development", "CRM software development", "Mobile app development", "E-commerce development", "Website development", "AI automation"],
   };
 }
 

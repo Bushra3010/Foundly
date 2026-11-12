@@ -8,6 +8,9 @@ import { WorkCard } from "@/components/work-card";
 import { getDb } from "@/db";
 import { getProduct, getSector } from "@/lib/software-catalog";
 import { listShowcaseProjects } from "@/server/portfolio";
+import { jsonLdScript } from "@/lib/profile";
+import { breadcrumbLd, faqLd, graph, siteUrl } from "@/lib/site-schema";
+import { SOFTWARE_SEO } from "@/lib/software-seo";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/software-demo.css";
@@ -22,10 +25,14 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const product = getProduct((await params).product);
   if (!product) notFound();
+  const seo = SOFTWARE_SEO[product.id];
+  const title = seo?.title ?? `${product.title} development`;
+  const description = seo?.description ?? product.summary;
   return {
-    title: `${product.title} development`,
-    description: `${product.summary} Explore features and workflows for manufacturing, hospitals and universities.`,
+    title,
+    description,
     alternates: { canonical: `/software/${product.id}` },
+    openGraph: { title, description, url: `/software/${product.id}`, images: "/opengraph-image" },
   };
 }
 
@@ -42,9 +49,31 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
   const { sector: sectorParam } = await searchParams;
   const sector = getSector(typeof sectorParam === "string" ? sectorParam : undefined);
   const projects = await listShowcaseProjects(await getDb(), product.id);
+  const seo = SOFTWARE_SEO[product.id];
+  const pageUrl = siteUrl(`/software/${product.id}`);
+  const ld = graph(
+    ...(seo ? [{
+      "@type": "Service",
+      "@id": `${pageUrl}#service`,
+      name: seo.serviceName,
+      serviceType: seo.serviceType,
+      description: seo.description,
+      url: pageUrl,
+      provider: { "@id": siteUrl("/#organization") },
+      areaServed: [{ "@type": "Country", name: "India" }, "Worldwide"],
+      offers: { "@type": "Offer", url: pageUrl, priceCurrency: "INR", price: seo.priceFrom, priceSpecification: { "@type": "PriceSpecification", minPrice: seo.priceFrom, priceCurrency: "INR", valueAddedTaxIncluded: false } },
+    }, faqLd(seo.faq)] : []),
+    ...(projects.length > 0 ? [{
+      "@type": "ItemList",
+      name: SHOWCASE_TITLE[product.id] ?? "Projects we've built",
+      itemListElement: projects.map((p, i) => ({ "@type": "ListItem", position: i + 1, name: p.name, url: siteUrl(`/work/${p.slug}`) })),
+    }] : []),
+    breadcrumbLd([{ name: "Home", path: "/" }, { name: "Services", path: "/services" }, { name: product.title, path: `/software/${product.id}` }]),
+  );
 
   return (
     <div className="foundly-landing">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ld) }} />
       <LandingHeader announcement={false} />
       <main id="main" className="landing-main public-software-guide automation-page">
         <SoftwareProductGuide
@@ -67,6 +96,18 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
             <ul className="wk-grid">
               {projects.map((p, i) => <li key={p.slug} style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}><WorkCard project={p} /></li>)}
             </ul>
+          </section>
+        )}
+        {seo && (
+          <section className="sw-faq" aria-labelledby="sw-faq-title">
+            <p className="au-eyebrow"><Icon name="spark" size={14} /> Questions clients ask</p>
+            <h2 id="sw-faq-title">{product.title}: common questions</h2>
+            {seo.faq.map((f, i) => (
+              <details key={f.q} name="sw-faq" open={i === 0}>
+                <summary>{f.q}<Icon name="down" size={16} /></summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
           </section>
         )}
       </main>

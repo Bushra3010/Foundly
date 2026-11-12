@@ -9,6 +9,8 @@ import { getDb } from "@/db";
 import { DEMO_STATUS_TEXT, getPublishedProject } from "@/server/portfolio";
 import { whatsappLink } from "@/lib/site-schema";
 import { needLabel } from "@/lib/work-copy";
+import { jsonLdScript } from "@/lib/profile";
+import { breadcrumbLd, graph, siteUrl } from "@/lib/site-schema";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/automation.css";
@@ -21,7 +23,13 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = await getPublishedProject(await getDb(), (await params).slug);
   if (!p) return { title: "Project not found", robots: { index: false } };
-  return { title: `${p.name} · Our work`, description: p.summary.slice(0, 160), alternates: { canonical: `/work/${p.slug}` } };
+  const title = `${p.name}: case study & live demo`;
+  return {
+    title,
+    description: p.tagline.length > 155 ? `${p.tagline.slice(0, 152)}…` : p.tagline,
+    alternates: { canonical: `/work/${p.slug}` },
+    openGraph: { title, description: p.tagline, url: `/work/${p.slug}`, images: p.media[0]?.url ?? "/opengraph-image" },
+  };
 }
 
 export default async function WorkProjectPage({ params }: Props) {
@@ -30,8 +38,28 @@ export default async function WorkProjectPage({ params }: Props) {
   const steps = p.description?.replace(/^Main workflow:\s*/i, "").split("→").map((s) => s.trim()).filter(Boolean) ?? [];
   const isFlow = !!p.description && /^Main workflow:/i.test(p.description) && steps.length > 1;
 
+  const ld = graph(
+    {
+      "@type": "CreativeWork",
+      "@id": `${siteUrl(`/work/${p.slug}`)}#work`,
+      name: p.name,
+      headline: `${p.name}: ${needLabel(p.need)}`,
+      abstract: p.tagline,
+      description: p.summary,
+      url: siteUrl(`/work/${p.slug}`),
+      genre: needLabel(p.need),
+      about: p.industry ?? undefined,
+      audience: { "@type": "BusinessAudience", name: p.client },
+      creator: { "@id": siteUrl("/#organization") },
+      image: p.media.slice(0, 3).map((m) => siteUrl(m.url)),
+      ...(p.features.length > 0 && { keywords: p.features.map((f) => f.split(": ")[0]).join(", ") }),
+    },
+    breadcrumbLd([{ name: "Home", path: "/" }, { name: "Our work", path: "/work" }, { name: p.name, path: `/work/${p.slug}` }]),
+  );
+
   return (
     <div className="foundly-landing">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ld) }} />
       <LandingHeader announcement={false} />
       <main id="main" className="landing-main public-software-guide automation-page work-page">
         <Link href="/work" className="wk-back"><Icon name="chevron" size={14} className="wk-flip" /> All projects</Link>

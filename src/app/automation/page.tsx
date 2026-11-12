@@ -7,15 +7,33 @@ import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { SoftwareDemo } from "@/components/software-demo";
 import { buttonClass, Card, LinkButton } from "@/components/ui";
 import { AUTOMATION_TOOLS, DEPARTMENTS, getDepartment } from "@/lib/automation-catalog";
-import { whatsappLink } from "@/lib/site-schema";
+import { breadcrumbLd, graph, siteUrl, whatsappLink } from "@/lib/site-schema";
+import { jsonLdScript } from "@/lib/profile";
+import { AUTOMATION_SEO } from "@/lib/software-seo";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/software-demo.css";
 import "@/app/automation.css";
 
+const AUTOMATION_LD = graph(
+  {
+    "@type": "Service",
+    "@id": `${siteUrl("/automation")}#service`,
+    name: "AI automation for business",
+    serviceType: ["AI automation", "Business process automation", "WhatsApp AI assistant", "AI agents", "Document AI"],
+    description: AUTOMATION_SEO.description,
+    url: siteUrl("/automation"),
+    provider: { "@id": siteUrl("/#organization") },
+    areaServed: [{ "@type": "Country", name: "India" }, "Worldwide"],
+    hasOfferCatalog: { "@type": "OfferCatalog", name: "AI automation by department", itemListElement: DEPARTMENTS.map((d) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: d.title } })) },
+  },
+  breadcrumbLd([{ name: "Home", path: "/" }, { name: "AI automation", path: "/automation" }]),
+);
+
 export const metadata: Metadata = {
-  title: "Automate your company with AI",
-  description: "AI automation for marketing, sales, operations, inspection, finance, customer support, HR and manufacturing. See interactive demos of each workflow.",
+  title: AUTOMATION_SEO.title,
+  description: AUTOMATION_SEO.description,
+  openGraph: { title: AUTOMATION_SEO.title, description: AUTOMATION_SEO.description, url: "/automation", images: "/opengraph-image" },
   alternates: { canonical: "/automation" },
 };
 
@@ -27,6 +45,7 @@ export default async function AutomationPage({ searchParams }: PageProps) {
 
   return (
     <div className="foundly-landing">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(AUTOMATION_LD) }} />
       <LandingHeader />
       <main id="main" className="landing-main public-software-guide automation-page">
         <section className="au-hero">

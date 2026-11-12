@@ -150,3 +150,13 @@
 .hw-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #5f6b47; }
 .hw-label i { width: 7px; height: 7px; border-radius: 50%; background: #a4cd48; }
 .hw-desc { font-size: 14px; line-height: 1.5; color: #6f7268; }
+
+/* Questions-and-answers block on the software pages (also marked up as FAQPage) */
+.sw-faq { margin: 56px 0 24px; max-width: 860px; }
+.sw-faq h2 { margin: 6px 0 14px; font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: -0.02em; }
+.sw-faq details { border-top: 1px solid #e6e7df; }
+.sw-faq details:last-child { border-bottom: 1px solid #e6e7df; }
+.sw-faq summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; cursor: pointer; list-style: none; font-weight: 700; color: #20221e; }
+.sw-faq summary::-webkit-details-marker { display: none; }
+.sw-faq details[open] summary svg { transform: rotate(180deg); }
+.sw-faq details p { margin: 0 0 16px; color: #50544a; line-height: 1.6; }
