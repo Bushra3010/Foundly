@@ -4,6 +4,7 @@ import { auditEvents, portfolioMedia, portfolioProjects } from "@/db/schema";
 import type { Db } from "@/db";
 import type { AdminCtx } from "@/server/admin";
 import { AppError } from "@/server/context";
+import { DISPLAY_NAMES, type NeedId, TAGLINES } from "@/lib/work-copy";
 
 export const PORTFOLIO_CATEGORIES = ["Websites", "ERP / CRM", "Mobile apps", "SaaS", "E-commerce", "AI applications", "Management systems", "Custom software"] as const;
 export const DEMO_STATUS_TEXT = { none: "Case study", coming_soon: "Demo coming soon", live: "Live demo", maintenance: "Demo under maintenance" } as const;
@@ -18,6 +19,10 @@ type Row = typeof portfolioProjects.$inferSelect;
 export type PublicProject = {
   slug: string;
   name: string;
+  /** One plain-language line: what it does and for whom. */
+  tagline: string;
+  /** The plain-language group a client would look under. */
+  need: NeedId;
   client: string;
   category: string;
   industry: string | null;
@@ -36,7 +41,9 @@ function toPublic(p: Row, media: { id: string; caption: string | null; url: stri
   const live = p.demoStatus === "live" && !!p.demoUrl;
   return {
     slug: p.slug,
-    name: p.name,
+    name: DISPLAY_NAMES[p.slug] ?? p.name,
+    tagline: TAGLINES[p.slug] ?? firstSentence(p.summary),
+    need: needFor(p),
     client: p.showClient && p.clientName ? p.clientName : p.clientLabel,
     category: p.category,
     industry: p.industry,
@@ -51,6 +58,23 @@ function toPublic(p: Row, media: { id: string; caption: string | null; url: stri
     embeddable: live && p.embeddable,
     media,
   };
+}
+
+function firstSentence(text: string) {
+  const m = text.match(/^.{20,}?[.!?](\s|$)/);
+  return (m ? m[0] : text).trim();
+}
+
+function needFor(p: Pick<Row, "slug" | "name" | "category">): NeedId {
+  if (SOFTWARE_SHOWCASE.erp.includes(p.slug)) return "erp";
+  if (SOFTWARE_SHOWCASE.crm.includes(p.slug)) return "crm";
+  if (SOFTWARE_SHOWCASE.app.includes(p.slug) || p.category === "Mobile apps") return "apps";
+  if (p.category === "E-commerce") return "stores";
+  if (p.category === "Websites") return "websites";
+  if (p.category === "AI applications") return "ai";
+  if (p.category === "ERP / CRM") return /crm/i.test(p.name) ? "crm" : "erp";
+  if (p.category === "Management systems") return "erp";
+  return "platforms";
 }
 
 /** Static screenshots are served from /public; uploaded ones from the media route. */

@@ -15,10 +15,10 @@ function SoftwareNavLinks() {
 }
 
 /** Top of every public marketing page. */
-export function LandingHeader() {
+export function LandingHeader({ announcement = true }: { announcement?: boolean } = {}) {
   return (
     <>
-        <div className="landing-announcement"><span className="announcement-dot" /> Customers now ask AI who to call. <Link href="/#product">See if it names you <span aria-hidden="true">↗</span></Link></div>
+        {announcement && <div className="landing-announcement"><span className="announcement-dot" /> Customers now ask AI who to call. <Link href="/#product">See if it names you <span aria-hidden="true">↗</span></Link></div>}
         <div className="landing-header-bar"><header className="landing-header">
           <Link href="/" aria-label="Foundly home"><Brand /></Link>
           <nav className="landing-desktop-nav" aria-label="Main">

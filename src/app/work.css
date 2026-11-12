@@ -116,3 +116,37 @@
 .sw-showcase-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 20px; }
 .sw-showcase-head h2 { margin: 6px 0 6px; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.15; letter-spacing: -0.02em; }
 .sw-showcase-head p:not(.au-eyebrow) { margin: 0; max-width: 60ch; color: var(--muted, #6b705f); }
+
+/* Plain-language guidance on /work */
+.wk-how { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 18px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--wk-muted); }
+.wk-how li { display: flex; align-items: center; gap: 8px; }
+.wk-how span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--wk-lime); color: var(--wk-ink); font-weight: 800; font-size: 12px; flex: none; }
+.wk-how b { color: var(--wk-ink); }
+.wk-filters-label { align-self: center; font-size: 13px; font-weight: 700; color: var(--wk-muted); margin-right: 4px; }
+.wk-featured { margin-bottom: 36px; }
+.wk-featured h2, .wk-all-title { margin: 0 0 14px; font-size: 22px; letter-spacing: -0.01em; }
+
+/* "Try it" guide and phone-friendly demo button on project pages */
+.wk-try-steps { display: grid; gap: 8px; margin: 0 0 16px; padding: 14px 16px; list-style: none; background: var(--wk-soft); border: 1px solid var(--wk-line); border-radius: 14px; font-size: 14px; }
+.wk-try-steps li { display: flex; align-items: flex-start; gap: 10px; }
+.wk-try-steps p { margin: 0; }
+.wk-try-steps li > span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--wk-ink); color: #fff; font-weight: 800; font-size: 12px; flex: none; }
+@media (max-width: 640px) {
+  .wk-demo .wk-browser, .wk-desktop-only { display: none; }
+}
+
+/* "Software we've built" on the homepage */
+.hw-proof { margin-top: 40px; }
+.hw-proof-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; margin-bottom: 18px; }
+.hw-proof-head h3 { margin: 0 0 6px; font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: -0.02em; }
+.hw-proof-head p { margin: 0; color: #6f7268; }
+.hw-proof-head p b { color: #20221e; }
+.hw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.hw-grid a { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 10px 10px 16px; border: 1px solid #e6e7df; border-radius: 18px; background: #fff; color: #20221e; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+.hw-grid a:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(32, 34, 30, .08); }
+.hw-grid img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 12px; background: #f6f6f1; margin-bottom: 6px; }
+.hw-grid b, .hw-label, .hw-desc { padding: 0 6px; }
+.hw-grid b { font-size: 17px; }
+.hw-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #5f6b47; }
+.hw-label i { width: 7px; height: 7px; border-radius: 50%; background: #a4cd48; }
+.hw-desc { font-size: 14px; line-height: 1.5; color: #6f7268; }

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { HOME_FEATURED, TAGLINES } from "@/lib/work-copy";
+import "@/app/work.css";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { DevelopmentServices } from "@/components/development-services";
@@ -163,6 +165,28 @@ export default function Home() {
             <p>Foundly builds ERP systems, mobile apps and CRMs tailored to your needs.</p>
           </div>
           <DevelopmentServices />
+          <div className="hw-proof" aria-labelledby="home-work-title">
+            <div className="hw-proof-head">
+              <div>
+                <h3 id="home-work-title">Software we&apos;ve built</h3>
+                <p><b>75+ projects</b> for businesses in <b>40+ industries</b>, and you can try every one with a live demo.</p>
+              </div>
+              <Link href="/work" className="landing-button">See all our work <Icon name="arrow" size={18} /></Link>
+            </div>
+            <ul className="hw-grid">
+              {HOME_FEATURED.map((p) => (
+                <li key={p.slug}>
+                  <Link href={`/work/${p.slug}`}>
+                    {/* eslint-disable-next-line @next/next/no-img-element -- static screenshot from /public */}
+                    <img src={p.img} alt={`${p.name} screenshot`} loading="lazy" />
+                    <span className="hw-label"><i /> Live demo · {p.label}</span>
+                    <b>{p.name}</b>
+                    <span className="hw-desc">{TAGLINES[p.slug]}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
 
         <LandingPricing />

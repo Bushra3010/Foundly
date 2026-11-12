@@ -8,6 +8,7 @@ import { categoryIcon, WorkCover } from "@/components/work-card";
 import { getDb } from "@/db";
 import { DEMO_STATUS_TEXT, getPublishedProject } from "@/server/portfolio";
 import { whatsappLink } from "@/lib/site-schema";
+import { needLabel } from "@/lib/work-copy";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
 import "@/app/automation.css";
@@ -31,15 +32,15 @@ export default async function WorkProjectPage({ params }: Props) {
 
   return (
     <div className="foundly-landing">
-      <LandingHeader />
+      <LandingHeader announcement={false} />
       <main id="main" className="landing-main public-software-guide automation-page work-page">
         <Link href="/work" className="wk-back"><Icon name="chevron" size={14} className="wk-flip" /> All projects</Link>
         <section className="wk-detail-hero">
           <div>
-            <p className="au-eyebrow"><Icon name={categoryIcon(p.category)} size={14} /> {p.category}{p.industry ? ` · ${p.industry}` : ""}</p>
+            <p className="au-eyebrow"><Icon name={categoryIcon(p.category)} size={14} /> {needLabel(p.need)}{p.industry ? ` · ${p.industry}` : ""}</p>
             <h1>{p.name}</h1>
             <p className="wk-client">Built for {p.client}</p>
-            <p className="au-lede">{p.summary}</p>
+            <p className="au-lede">{p.tagline}</p>
             <div className="au-hero-actions">
               {p.demoUrl ? (
                 <a className={buttonClass()} href={p.demoUrl} target="_blank" rel="noopener">Try live demo <Icon name="arrow" size={16} /></a>
@@ -57,10 +58,15 @@ export default async function WorkProjectPage({ params }: Props) {
             <div className="wk-demo-head">
               <div>
                 <h2 id="demo-title">Try the live demo</h2>
-                <p>A separate copy of the software with sample data. Nothing you do reaches the client&apos;s real system, and the data resets regularly.</p>
+                <p>A working copy of the software with sample data. Click anything you like: nothing you do reaches the client&apos;s real system.</p>
               </div>
-              <a className={buttonClass("secondary")} href={p.demoUrl} target="_blank" rel="noopener">Open in a new tab <Icon name="arrow" size={16} /></a>
+              <a className={buttonClass("secondary")} href={p.demoUrl} target="_blank" rel="noopener">Open full screen <Icon name="arrow" size={16} /></a>
             </div>
+            <ol className="wk-try-steps">
+              <li><span>1</span><p>Press <b>Open full screen</b>{p.embeddable ? <span className="wk-desktop-only"> or use the window below</span> : null}.</p></li>
+              <li><span>2</span><p>{p.demoLogins.length > 0 ? <>Log in as <b>{p.demoLogins[0].role}</b> with the details shown here.</> : <>Browse the pages as a customer would.</>}</p></li>
+              <li><span>3</span><p>{p.demoLogins.length > 1 ? <>Then log in as <b>{p.demoLogins[1].role}</b> to see the other side of the same work.</> : <>Fill a form or add an item, and see it appear straight away.</>}</p></li>
+            </ol>
             <div className={`wk-demo-body${p.embeddable ? "" : " no-embed"}`}>
               {p.embeddable && (
                 <div className="wk-browser">
@@ -100,6 +106,11 @@ export default async function WorkProjectPage({ params }: Props) {
           </section>
         )}
 
+        <section className="wk-section" aria-labelledby="what-title">
+          <h2 id="what-title">What it does</h2>
+          <p className="text-sm leading-relaxed">{p.summary}</p>
+        </section>
+
         <div className="wk-columns">
           {p.features.length > 0 && (
             <section className="wk-section" aria-labelledby="features-title">
@@ -113,12 +124,6 @@ export default async function WorkProjectPage({ params }: Props) {
             </section>
           )}
           <div className="space-y-4">
-            {p.techStack.length > 0 && (
-              <section className="wk-section" aria-labelledby="tech-title">
-                <h2 id="tech-title">Technology</h2>
-                <ul className="wk-tech">{p.techStack.map((t) => <li key={t}>{t}</li>)}</ul>
-              </section>
-            )}
             {p.description && (
               <section className="wk-section" aria-labelledby="flow-title">
                 <h2 id="flow-title">{isFlow ? "How it works" : "About the project"}</h2>

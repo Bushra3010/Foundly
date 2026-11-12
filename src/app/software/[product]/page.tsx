@@ -45,7 +45,7 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
 
   return (
     <div className="foundly-landing">
-      <LandingHeader />
+      <LandingHeader announcement={false} />
       <main id="main" className="landing-main public-software-guide automation-page">
         <SoftwareProductGuide
           product={product}

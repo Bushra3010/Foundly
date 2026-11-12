@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/icon";
+import { needLabel } from "@/lib/work-copy";
 import { DEMO_STATUS_TEXT, type PublicProject } from "@/server/portfolio";
 
 const CATEGORY_ICON: Record<string, string> = {
@@ -41,11 +42,10 @@ export function WorkCard({ project: p }: { project: PublicProject }) {
         <span className={`wk-status wk-status-${p.demoStatus}`}>{p.demoStatus === "live" && <i />}{DEMO_STATUS_TEXT[p.demoStatus]}</span>
       </Link>
       <div className="wk-card-body">
-        <p className="wk-card-meta"><Icon name={categoryIcon(p.category)} size={13} /> {p.category}{p.industry ? ` · ${p.industry}` : ""}</p>
+        <p className="wk-card-meta"><Icon name={categoryIcon(p.category)} size={13} /> {needLabel(p.need)}{p.industry ? ` · ${p.industry}` : ""}</p>
         <h2><Link href={`/work/${p.slug}`}>{p.name}</Link></h2>
         <p className="wk-client">For {p.client}</p>
-        <p className="wk-summary">{p.summary}</p>
-        {p.techStack.length > 0 && <ul className="wk-tech">{p.techStack.slice(0, 4).map((t) => <li key={t}>{t}</li>)}</ul>}
+        <p className="wk-summary">{p.tagline}</p>
         <div className="wk-actions">
           <Link href={`/work/${p.slug}`} className="wk-link">View details <Icon name="arrow" size={14} /></Link>
           {p.demoUrl && <a href={p.demoUrl} target="_blank" rel="noopener" className="wk-try">Try live demo <Icon name="arrow" size={14} /></a>}

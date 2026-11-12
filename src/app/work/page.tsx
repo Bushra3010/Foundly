@@ -5,7 +5,8 @@ import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { WorkCard } from "@/components/work-card";
 import { buttonClass } from "@/components/ui";
 import { getDb } from "@/db";
-import { listPublishedProjects, PORTFOLIO_CATEGORIES } from "@/server/portfolio";
+import { listPublishedProjects } from "@/server/portfolio";
+import { FEATURED_SLUGS, NEEDS } from "@/lib/work-copy";
 import { whatsappLink } from "@/lib/site-schema";
 import "@/app/landing.css";
 import "@/app/landing-v2.css";
@@ -14,39 +15,46 @@ import "@/app/work.css";
 
 export const dynamic = "force-dynamic";
 
-const slug = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+type WorkSearch = Promise<{ need?: string; category?: string }>;
 
-export async function generateMetadata({ searchParams }: { searchParams: Promise<{ category?: string }> }): Promise<Metadata> {
-  const { category } = await searchParams;
+export async function generateMetadata({ searchParams }: { searchParams: WorkSearch }): Promise<Metadata> {
+  const { need, category } = await searchParams;
   return {
     title: "Our work: software we've built",
     description: "ERP, CRM, e-commerce, mobile apps, AI assistants and SaaS products Foundly has built for businesses, with live demos you can try.",
     alternates: { canonical: "/work" },
-    ...(category && { robots: { index: false, follow: true } }),
+    ...((need || category) && { robots: { index: false, follow: true } }),
   };
 }
 
-export default async function WorkPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
-  const { category } = await searchParams;
+export default async function WorkPage({ searchParams }: { searchParams: WorkSearch }) {
+  const { need } = await searchParams;
   const all = await listPublishedProjects(await getDb());
-  const used = PORTFOLIO_CATEGORIES.filter((c) => all.some((p) => p.category === c));
-  const active = used.find((c) => slug(c) === category);
-  const shown = active ? all.filter((p) => p.category === active) : all;
+  const used = NEEDS.filter((n) => all.some((p) => p.need === n.id));
+  const active = used.find((n) => n.id === need);
+  const featured = FEATURED_SLUGS.map((s) => all.find((p) => p.slug === s)).filter((p) => p !== undefined);
+  const rest = active ? all.filter((p) => p.need === active.id) : all.filter((p) => !featured.includes(p));
   const live = all.filter((p) => p.demoStatus === "live").length;
+  const industries = new Set(all.map((p) => p.industry).filter(Boolean)).size;
 
   return (
     <div className="foundly-landing">
-      <LandingHeader />
+      <LandingHeader announcement={false} />
       <main id="main" className="landing-main public-software-guide automation-page work-page">
         <section className="wk-hero">
           <p className="au-eyebrow"><Icon name="workspaces" size={14} /> Our work</p>
           <h1>Software we&apos;ve built for real businesses</h1>
           <p className="au-lede">From online stores and CRMs to AI WhatsApp assistants and mobile apps. Open any project to see what it does — and where there&apos;s a live demo, try it yourself with sample data.</p>
           <dl className="wk-stats">
-            <div><dt>Projects</dt><dd>{all.length}</dd></div>
-            <div><dt>Categories</dt><dd>{used.length}</dd></div>
-            <div><dt>Live demos</dt><dd>{live}</dd></div>
+            <div><dt>Projects delivered</dt><dd>{all.length}</dd></div>
+            <div><dt>Industries</dt><dd>{industries}</dd></div>
+            <div><dt>Live demos you can try</dt><dd>{live}</dd></div>
           </dl>
+          <ol className="wk-how">
+            <li><span>1</span>Pick what you need below</li>
+            <li><span>2</span>Open a project to see what it does</li>
+            <li><span>3</span>Press <b>Try live demo</b> and click around. It&apos;s sample data, nothing breaks</li>
+          </ol>
         </section>
 
         {all.length === 0 ? (
@@ -57,16 +65,26 @@ export default async function WorkPage({ searchParams }: { searchParams: Promise
           </section>
         ) : (
           <>
-            <nav aria-label="Filter by category" className="wk-filters">
-              <Link href="/work" scroll={false} aria-current={!active ? "page" : undefined}>All <span>{all.length}</span></Link>
-              {used.map((c) => (
-                <Link key={c} href={`/work?category=${slug(c)}`} scroll={false} aria-current={active === c ? "page" : undefined}>
-                  {c} <span>{all.filter((p) => p.category === c).length}</span>
+            <nav aria-label="What do you need?" className="wk-filters">
+              <span className="wk-filters-label">What do you need?</span>
+              <Link href="/work" scroll={false} aria-current={!active ? "page" : undefined}>Everything <span>{all.length}</span></Link>
+              {used.map((n) => (
+                <Link key={n.id} href={`/work?need=${n.id}`} scroll={false} aria-current={active?.id === n.id ? "page" : undefined}>
+                  {n.label} <span>{all.filter((p) => p.need === n.id).length}</span>
                 </Link>
               ))}
             </nav>
+            {!active && featured.length > 0 && (
+              <section aria-labelledby="featured-title" className="wk-featured">
+                <h2 id="featured-title">Start here: our best work</h2>
+                <ul className="wk-grid">
+                  {featured.map((p, i) => <li key={p.slug} style={{ animationDelay: `${i * 60}ms` }}><WorkCard project={p} /></li>)}
+                </ul>
+              </section>
+            )}
+            {!active && <h2 className="wk-all-title">All projects</h2>}
             <ul className="wk-grid">
-              {shown.map((p, i) => <li key={p.slug} style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}><WorkCard project={p} /></li>)}
+              {rest.map((p, i) => <li key={p.slug} style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}><WorkCard project={p} /></li>)}
             </ul>
           </>
         )}
