@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { listPublishedProjects } from "@/server/portfolio";
 import { HOME_FEATURED, TAGLINES } from "@/lib/work-copy";
 import "@/app/work.css";
-import "@/app/software-demo.css";
-import { SoftwareShowcase } from "@/components/software-showcase";
-import { getDemo } from "@/lib/software-demo";
+import { HomeHeroVisual, type HeroService } from "@/components/home-hero-visual";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { DevelopmentServices } from "@/components/development-services";
@@ -87,13 +85,12 @@ const WORK = {
   live: PROJECTS.filter((p) => p.demoStatus === "live").length,
 };
 const countNeed = (...needs: string[]) => PROJECTS.filter((p) => needs.includes(p.need)).length;
-const HERO_DEMO = getDemo("erp", "manufacturing");
-const HERO_SERVICES = [
-  { label: "ERP software", href: "/software/erp", icon: "business", count: countNeed("erp") },
-  { label: "CRM software", href: "/software/crm", icon: "leads", count: countNeed("crm") },
-  { label: "Mobile apps", href: "/software/app", icon: "website", count: countNeed("apps") },
-  { label: "AI automation", href: "/automation", icon: "spark", count: countNeed("ai") },
-  { label: "Websites & stores", href: "/work?need=websites", icon: "presence", count: countNeed("websites", "stores") },
+const HERO_SERVICES: HeroService[] = [
+  { key: "erp", label: "ERP software", href: "/software/erp", icon: "business", count: countNeed("erp") },
+  { key: "crm", label: "CRM software", href: "/software/crm", icon: "leads", count: countNeed("crm") },
+  { key: "app", label: "Mobile apps", href: "/software/app", icon: "website", count: countNeed("apps") },
+  { key: "ai", label: "AI automation", href: "/automation", icon: "spark", count: countNeed("ai") },
+  { key: "web", label: "Websites & stores", href: "/work?need=websites", icon: "presence", count: countNeed("websites", "stores") },
 ];
 
 export default function Home() {
@@ -121,7 +118,7 @@ export default function Home() {
                 <Icon name="arrow" size={16} />
               </Link>
             </div>
-            {HERO_DEMO && <SoftwareShowcase variant="desktop" demo={{ ...HERO_DEMO, workspace: "Your business · built by Foundly" }} features={HERO_SERVICES.map((s) => s.label)} />}
+            <HomeHeroVisual services={HERO_SERVICES} projects={WORK.total} demos={WORK.live} />
           </section>
 
           <ul className="sw-hero-services" aria-label="What we build">
