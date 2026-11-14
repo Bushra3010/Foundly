@@ -123,16 +123,11 @@ export default function Home() {
             </ul>
           </section>
 
-          <div className="sw-hero-showcase" aria-label="Featured projects">
-            {HOME_FEATURED.slice(0, 3).map((p, i) => (
-              <Link key={p.slug} href={`/work/${p.slug}`} className={`sw-shot sw-shot-${i}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element -- static screenshot from /public */}
-                <img src={p.img} alt={`${p.name} screenshot`} loading={i === 0 ? "eager" : "lazy"} />
-                <span className="sw-shot-tag"><i /> Live demo · {p.label}</span>
-                <span className="sw-shot-name">{p.name}</span>
-              </Link>
-            ))}
-          </div>
+          <Link href="/work" className="sw-hero-demos">
+            <span className="sw-hero-dot" aria-hidden="true" />
+            <span><b>Try {WORK.live} live demos</b> of software we&apos;ve built</span>
+            <Icon name="arrow" size={17} />
+          </Link>
           <dl className="sw-hero-stats">
             <div><dt>Projects delivered</dt><dd>{WORK.total}</dd></div>
             <div><dt>Industries</dt><dd>{WORK.industries}</dd></div>
