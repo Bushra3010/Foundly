@@ -17,7 +17,7 @@ export async function GET() {
   const base = process.env.APP_URL ?? "http://localhost:3000";
   const db = await getDb();
   const rows = await listPublishedProfiles(db);
-  const projects = await listPublishedProjects(db);
+  const projects = listPublishedProjects();
   const groups = new Map<string, typeof rows>();
   for (const r of rows) {
     // Grouped like the directory pages, so "MUMBAI" and "Mumbai" share one section.

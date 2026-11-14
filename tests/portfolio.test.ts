@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 import { eq } from "drizzle-orm";
 import { auditEvents, portfolioProjects } from "@/db/schema";
-import { addMedia, adminListProjects, createProject, deleteProject, getMedia, getPublishedProject, HIDDEN_PROJECT_SLUGS, listPublishedProjects, listShowcaseProjects, makeCover, SOFTWARE_SHOWCASE, updateProject } from "@/server/portfolio";
+import { addMedia, adminListProjects, createProject, deleteProject, getMedia, getPublishedProject, getPublishedProjectFromDb, HIDDEN_PROJECT_SLUGS, listPublishedProjects, listPublishedProjectsFromDb, listShowcaseProjects, listShowcaseProjectsFromDb, makeCover, SOFTWARE_SHOWCASE, updateProject } from "@/server/portfolio";
 import { makeDb, signUp } from "./helpers";
 
 const admin = async (db: Awaited<ReturnType<typeof makeDb>>) => {
@@ -21,7 +21,7 @@ describe("portfolio", () => {
     // A live demo always has an address: a static copy under /demos or the project's own deployed site.
     expect(all.filter((p) => p.demoStatus === "live").every((p) => !!p.demoUrl)).toBe(true);
     expect(all.filter((p) => p.demoUrl?.startsWith("/demos/")).every((p) => p.demoStatus === "live")).toBe(true);
-    const pub = await listPublishedProjects(db);
+    const pub = await listPublishedProjectsFromDb(db);
     expect(pub.map((p) => p.slug)).toContain("pushpak-ac-service");
     // No real client name leaks while the client hasn't agreed to be named.
     for (const p of pub) {
@@ -32,12 +32,25 @@ describe("portfolio", () => {
     expect(pushpak.media[0]?.url).toBe("/work-shots/pushpak-1.webp");
   });
 
+  it("serves the public portfolio from the data file, matching the database it was exported from", async () => {
+    const db = await makeDb();
+    const fromDb = (await listPublishedProjectsFromDb(db)).map((p) => ({ ...p, media: p.media.filter((m) => m.url.startsWith("/work-shots/")).map((m) => ({ ...m, id: m.url })) }));
+    // If this fails, run scripts/export-portfolio.ts and commit src/data/portfolio.json.
+    expect(listPublishedProjects()).toEqual(fromDb);
+    expect(getPublishedProject("pushpak-ac-service")?.name).toBe("AC service platform");
+    expect(getPublishedProject("careeroptics-web")).toBeNull();
+    expect(listShowcaseProjects("erp").map((p) => p.slug)).toEqual(SOFTWARE_SHOWCASE.erp);
+    const all = await adminListProjects(db);
+    const json = JSON.stringify(listPublishedProjects());
+    for (const r of all) if (r.clientName && !r.showClient) expect(json).not.toContain(r.clientName);
+  });
+
   it("keeps hidden projects off the public pages", async () => {
     const db = await makeDb();
-    const slugs = (await listPublishedProjects(db)).map((p) => p.slug);
+    const slugs = (await listPublishedProjectsFromDb(db)).map((p) => p.slug);
     for (const slug of HIDDEN_PROJECT_SLUGS) {
       expect(slugs).not.toContain(slug);
-      expect(await getPublishedProject(db, slug)).toBeNull();
+      expect(await getPublishedProjectFromDb(db, slug)).toBeNull();
     }
     expect(slugs).toContain("xealedu-admissions-site");
   });
@@ -45,10 +58,10 @@ describe("portfolio", () => {
   it("shows every listed ERP, CRM and app project on its software page", async () => {
     const db = await makeDb();
     for (const [product, slugs] of Object.entries(SOFTWARE_SHOWCASE)) {
-      const shown = (await listShowcaseProjects(db, product)).map((p) => p.slug);
+      const shown = (await listShowcaseProjectsFromDb(db, product)).map((p) => p.slug);
       expect(shown).toEqual(slugs);
     }
-    expect(await listShowcaseProjects(db, "unknown")).toEqual([]);
+    expect(await listShowcaseProjectsFromDb(db, "unknown")).toEqual([]);
   });
 
   it("shows the client label until the client agrees, and the demo only when live", async () => {
@@ -58,14 +71,14 @@ describe("portfolio", () => {
     const [p] = await db.select().from(portfolioProjects).where(eq(portfolioProjects.id, id));
     await updateProject(db, a, p.id, { published: true, demoUrl: "https://pushpak.demo.example", demoLogins: [{ role: "Admin", login: "admin@demo", secret: "demo" }] });
 
-    let pub = await getPublishedProject(db, "label-test");
+    let pub = await getPublishedProjectFromDb(db, "label-test");
     expect(pub?.client).toBe("AC service company · New Delhi");
     expect(JSON.stringify(pub)).not.toContain("Real Client Pvt Ltd");
     expect(pub?.demoUrl).toBeNull(); // status is still "coming soon"
     expect(pub?.demoLogins).toEqual([]);
 
     await updateProject(db, a, p.id, { showClient: true, demoStatus: "live" });
-    pub = await getPublishedProject(db, "label-test");
+    pub = await getPublishedProjectFromDb(db, "label-test");
     expect(pub?.client).toBe("Real Client Pvt Ltd");
     expect(pub?.demoUrl).toBe("https://pushpak.demo.example");
     expect(pub?.demoLogins).toHaveLength(1);
@@ -83,10 +96,10 @@ describe("portfolio", () => {
     await expect(addMedia(db, a, id, { type: "image/svg+xml", bytes: Buffer.from("<svg/>") }, "")).rejects.toThrow(/PNG, JPEG or WebP/);
 
     await updateProject(db, a, id, { published: true });
-    const pub = await getPublishedProject(db, "test-app");
+    const pub = await getPublishedProjectFromDb(db, "test-app");
     expect(pub?.media.map((m) => m.caption)).toEqual(["first", "second"]);
     await makeCover(db, a, pub!.media[1].id);
-    expect((await getPublishedProject(db, "test-app"))?.media.map((m) => m.caption)).toEqual(["second", "first"]);
+    expect((await getPublishedProjectFromDb(db, "test-app"))?.media.map((m) => m.caption)).toEqual(["second", "first"]);
 
     await updateProject(db, a, id, { published: false });
     const mediaId = pub!.media[0].id;

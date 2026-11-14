@@ -5,7 +5,6 @@ import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { buttonClass } from "@/components/ui";
 import { categoryIcon, WorkCover } from "@/components/work-card";
-import { getDb } from "@/db";
 import { DEMO_STATUS_TEXT, getPublishedProject } from "@/server/portfolio";
 import { whatsappLink } from "@/lib/site-schema";
 import { needLabel } from "@/lib/work-copy";
@@ -21,7 +20,7 @@ export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const p = await getPublishedProject(await getDb(), (await params).slug);
+  const p = getPublishedProject((await params).slug);
   if (!p) return { title: "Project not found", robots: { index: false } };
   const title = `${p.name}: case study & live demo`;
   return {
@@ -33,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function WorkProjectPage({ params }: Props) {
-  const p = await getPublishedProject(await getDb(), (await params).slug);
+  const p = getPublishedProject((await params).slug);
   if (!p) notFound();
   const steps = p.description?.replace(/^Main workflow:\s*/i, "").split("→").map((s) => s.trim()).filter(Boolean) ?? [];
   const isFlow = !!p.description && /^Main workflow:/i.test(p.description) && steps.length > 1;

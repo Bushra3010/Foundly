@@ -4,7 +4,6 @@ import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { WorkCard } from "@/components/work-card";
 import { buttonClass } from "@/components/ui";
-import { getDb } from "@/db";
 import { listPublishedProjects } from "@/server/portfolio";
 import { FEATURED_SLUGS, NEEDS } from "@/lib/work-copy";
 import { breadcrumbLd, graph, siteUrl, whatsappLink } from "@/lib/site-schema";
@@ -31,7 +30,7 @@ export async function generateMetadata({ searchParams }: { searchParams: WorkSea
 
 export default async function WorkPage({ searchParams }: { searchParams: WorkSearch }) {
   const { need } = await searchParams;
-  const all = await listPublishedProjects(await getDb());
+  const all = listPublishedProjects();
   const used = NEEDS.filter((n) => all.some((p) => p.need === n.id));
   const active = used.find((n) => n.id === need);
   const featured = FEATURED_SLUGS.map((s) => all.find((p) => p.slug === s)).filter((p) => p !== undefined);

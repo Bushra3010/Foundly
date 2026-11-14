@@ -6,7 +6,6 @@ import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { SoftwareProductGuide } from "@/components/software-product-guide";
 import { WorkCard } from "@/components/work-card";
 import { ContactBar } from "@/components/contact-bar";
-import { getDb } from "@/db";
 import { getProduct, getSector } from "@/lib/software-catalog";
 import { listShowcaseProjects } from "@/server/portfolio";
 import { jsonLdScript } from "@/lib/profile";
@@ -50,7 +49,7 @@ export default async function PublicSoftwareProductPage({ params, searchParams }
 
   const { sector: sectorParam } = await searchParams;
   const sector = getSector(typeof sectorParam === "string" ? sectorParam : undefined);
-  const projects = await listShowcaseProjects(await getDb(), product.id);
+  const projects = listShowcaseProjects(product.id);
   const seo = SOFTWARE_SEO[product.id];
   const pageUrl = siteUrl(`/software/${product.id}`);
   const ld = graph(

@@ -17,7 +17,7 @@ const SITEMAP_EXCLUDED_PROFILES = new Set(["alok-mumbai", "kindbridge-pune", "bl
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = await getDb();
   const base = process.env.APP_URL ?? "http://localhost:3000";
-  const projects = await listPublishedProjects(db);
+  const projects = listPublishedProjects();
   const profiles = (await listPublishedProfiles(db)).filter((p) => !SITEMAP_EXCLUDED_PROFILES.has(p.slug));
   const cities = new Set<string>();
   const cityCategories = new Set<string>();

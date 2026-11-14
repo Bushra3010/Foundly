@@ -6,7 +6,6 @@ import { Icon } from "@/components/icon";
 import { LandingFooter, LandingHeader } from "@/components/landing-chrome";
 import { buttonClass } from "@/components/ui";
 import { WorkCard } from "@/components/work-card";
-import { getDb } from "@/db";
 import { jsonLdScript } from "@/lib/profile";
 import { breadcrumbLd, COMPANY, faqLd, graph, siteUrl, whatsappLink } from "@/lib/site-schema";
 import { getProduct } from "@/lib/software-catalog";
@@ -47,7 +46,7 @@ export default async function SoftwareCityPage({ params }: PageProps) {
   const { product, city, seo, id } = r;
   const name = label(id);
   const copy = city[id];
-  const projects = await listShowcaseProjects(await getDb(), id);
+  const projects = listShowcaseProjects(id);
   const local = projects.filter((p) => city.match.test(p.client));
   const others = projects.filter((p) => !local.includes(p));
   const path = `/software/${id}/${city.slug}`;

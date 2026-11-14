@@ -4,6 +4,7 @@ import { auditEvents, portfolioMedia, portfolioProjects } from "@/db/schema";
 import type { Db } from "@/db";
 import type { AdminCtx } from "@/server/admin";
 import { AppError } from "@/server/context";
+import portfolioData from "@/data/portfolio.json";
 import { DISPLAY_NAMES, type NeedId, TAGLINES } from "@/lib/work-copy";
 
 export const PORTFOLIO_CATEGORIES = ["Websites", "ERP / CRM", "Mobile apps", "SaaS", "E-commerce", "AI applications", "Management systems", "Custom software"] as const;
@@ -106,7 +107,8 @@ export const HIDDEN_PROJECT_SLUGS: readonly string[] = [
 
 const isPublic = and(eq(portfolioProjects.published, true), notInArray(portfolioProjects.slug, [...HIDDEN_PROJECT_SLUGS]));
 
-export async function listPublishedProjects(db: Db): Promise<PublicProject[]> {
+/** From the database. Only used to export the portfolio file and in tests; the public site reads src/data/portfolio.json. */
+export async function listPublishedProjectsFromDb(db: Db): Promise<PublicProject[]> {
   const rows = await db.select().from(portfolioProjects).where(isPublic).orderBy(asc(portfolioProjects.sortOrder), asc(portfolioProjects.name));
   const media = await mediaFor(db, rows.map((r) => r.id));
   return rows.map((r) => toPublic(r, media.get(r.id) ?? []));
@@ -128,7 +130,7 @@ export const SOFTWARE_SHOWCASE: Record<string, readonly string[]> = {
 };
 
 /** Published projects for a custom-software page, in the order listed above. Missing or hidden ones are skipped. */
-export async function listShowcaseProjects(db: Db, product: string): Promise<PublicProject[]> {
+export async function listShowcaseProjectsFromDb(db: Db, product: string): Promise<PublicProject[]> {
   const slugs = SOFTWARE_SHOWCASE[product] ?? [];
   if (slugs.length === 0) return [];
   const rows = await db.select().from(portfolioProjects).where(and(isPublic, inArray(portfolioProjects.slug, [...slugs])));
@@ -136,11 +138,31 @@ export async function listShowcaseProjects(db: Db, product: string): Promise<Pub
   return rows.sort((a, b) => slugs.indexOf(a.slug) - slugs.indexOf(b.slug)).map((r) => toPublic(r, media.get(r.id) ?? []));
 }
 
-export async function getPublishedProject(db: Db, slug: string): Promise<PublicProject | null> {
+export async function getPublishedProjectFromDb(db: Db, slug: string): Promise<PublicProject | null> {
   const [row] = await db.select().from(portfolioProjects).where(and(eq(portfolioProjects.slug, slug), isPublic)).limit(1);
   if (!row) return null;
   const media = await mediaFor(db, [row.id]);
   return toPublic(row, media.get(row.id) ?? []);
+}
+
+/*
+ * Public reads. The live site has no portfolio database: Our Work comes from src/data/portfolio.json,
+ * exported from the local database with scripts/export-portfolio.ts and shipped with each deploy.
+ */
+const PORTFOLIO = (portfolioData as PublicProject[]).filter((p) => !HIDDEN_PROJECT_SLUGS.includes(p.slug));
+
+export function listPublishedProjects(): PublicProject[] {
+  return PORTFOLIO;
+}
+
+export function getPublishedProject(slug: string): PublicProject | null {
+  return PORTFOLIO.find((p) => p.slug === slug) ?? null;
+}
+
+/** Projects for a custom-software page, in the order listed in SOFTWARE_SHOWCASE. Missing or hidden ones are skipped. */
+export function listShowcaseProjects(product: string): PublicProject[] {
+  const slugs = SOFTWARE_SHOWCASE[product] ?? [];
+  return slugs.map((s) => PORTFOLIO.find((p) => p.slug === s)).filter((p): p is PublicProject => p !== undefined);
 }
 
 /** Screenshot bytes. Unpublished projects' screenshots are only served to admins. */
