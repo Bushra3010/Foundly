@@ -83,6 +83,11 @@ export const TAGLINES: Record<string, string> = {
   "structure-square-website": "An architecture firm website with portfolio, services and a quote request form.",
   "gym-membership-system": "Members join online, check in with a QR card, and the gym tracks plans and payments.",
   "careeroptics-web": "A college discovery website with course listings and an enquiry CRM.",
+  "srs-rice-mill-erp": "Tracks every truck of paddy from the weighbridge through quality checks, milling and stock to dispatch.",
+  "everlane-dating-app": "A dating app for people who want a real relationship: discover, match, chat and join small hangouts.",
+  "backseat-car-media-app": "A media player for car passengers: play your own playlists, switch to car mode and cast to the car screen.",
+  "outpost-z-squad-game": "A browser game: lead a squad past zombie hordes, grow it through maths gates and beat the boss.",
+  "circle-social-app": "An Android social app for sharing photo posts, stories and messages with friends.",
 };
 
 /** Clearer names where two projects would otherwise share the same title. */

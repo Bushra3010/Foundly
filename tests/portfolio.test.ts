@@ -16,7 +16,7 @@ describe("portfolio", () => {
     const db = await makeDb();
     const all = await adminListProjects(db);
     // 30 from the first scan plus 57 projects from the second GitHub account (migration 0023).
-    expect(all.length).toBe(87);
+    expect(all.length).toBe(92);
     expect(all.every((p) => !p.showClient)).toBe(true);
     // A live demo always has an address: a static copy under /demos or the project's own deployed site.
     expect(all.filter((p) => p.demoStatus === "live").every((p) => !!p.demoUrl)).toBe(true);

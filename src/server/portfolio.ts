@@ -115,7 +115,7 @@ export async function listPublishedProjects(db: Db): Promise<PublicProject[]> {
 /** Portfolio projects shown at the bottom of each /software/<product> page, in display order. */
 export const SOFTWARE_SHOWCASE: Record<string, readonly string[]> = {
   erp: [
-    "careeroptics-erp", "growus-workforce-erp", "idealdigiskills-education-erp", "keka-hr-clone", "nidhi-banking-software",
+    "careeroptics-erp", "srs-rice-mill-erp", "growus-workforce-erp", "idealdigiskills-education-erp", "keka-hr-clone", "nidhi-banking-software",
     "soil-distribution-management", "airawat-showroom", "pushpak-ac-service", "sengol-university-portal", "manas-library",
     "clatians-lms", "falcon-plus-employee-management", "gym-membership-system", "slotnova-visa-appointments",
   ],
@@ -124,7 +124,7 @@ export const SOFTWARE_SHOWCASE: Record<string, readonly string[]> = {
     "edumatch-consultancy-crm", "admission-path4u-crm", "meera-prakash-admission-crm", "hello-doctor-neet-counselling",
     "dayare-haram-tours-crm", "visa-recruitment-manager", "shera-travels-crm", "aqoss-hotel-saas",
   ],
-  app: ["ridewallah", "driveway-ride-booking", "dinadena-labour", "textile-pickup", "swanidhi-admissions", "nearlane", "weddingmall-mobile-app"],
+  app: ["ridewallah", "everlane-dating-app", "driveway-ride-booking", "backseat-car-media-app", "circle-social-app", "dinadena-labour", "textile-pickup", "swanidhi-admissions", "nearlane", "weddingmall-mobile-app"],
 };
 
 /** Published projects for a custom-software page, in the order listed above. Missing or hidden ones are skipped. */

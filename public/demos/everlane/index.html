@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/demos/everlane/">
+  <script>(function(){try{var P="demo:everlane:",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;
+S.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};
+S.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};
+S.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};
+if(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error("Service workers are disabled in Foundly demos"))}}}catch(e){}})();</script>
+  <meta name="robots" content="noindex, nofollow">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Everlane — a thoughtful place to meet your person. Mobile UI preview.">
+
+  <!--
+    iOS Safari auto-zooms the page when a focused text field's font is under
+    16px, and on a Flutter page it then stays zoomed in. Flutter edits text
+    through hidden <input>/<textarea> elements whose font it sets inline
+    (often 14px), so: force those to 16px (they're transparent, so this
+    changes nothing visible) and keep the page from scaling at all.
+  -->
+  <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <style>
+    /*
+      Keep the page exactly the width of the screen. If anything makes iOS
+      Safari think the page is wider, it zooms out and the app shows up
+      narrower than the screen with bars down both sides.
+
+      The viewport deliberately leaves out viewport-fit=cover: Flutter web
+      doesn't read iOS safe-area insets, so with it the tab bar ends up under
+      the home indicator. Without it, iOS keeps the page inside the safe area.
+    */
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+      -webkit-text-size-adjust: 100%;
+      background: #07060B;
+    }
+    /* Foundly demo: the app lives in a phone-sized frame, centred on wide screens. */
+    body { display: flex; align-items: center; justify-content: center;
+           background: radial-gradient(circle at 20% 10%, #2a1d52 0%, #07060B 55%); }
+    #frame { position: relative; width: 100%; height: 100%; overflow: hidden; background: #07060B; }
+    #app-host { position: absolute; inset: 0; }
+    @media (min-width: 600px) and (min-height: 700px) {
+      #frame { width: 430px; height: min(932px, calc(100% - 48px)); border-radius: 36px;
+               box-shadow: 0 0 0 10px #16131f, 0 0 0 11px #2c2640, 0 30px 80px rgba(0,0,0,.6); }
+    }
+    .fdemo { position: fixed; z-index: 2147483000; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 8px;
+             padding: 6px 6px 6px 12px; border-radius: 999px; background: rgba(20,17,30,.92); color: #f4f0ff;
+             border: 1px solid rgba(167,139,250,.45); font: 600 12px/1.2 system-ui, -apple-system, Segoe UI, sans-serif;
+             box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+    .fdemo .dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; }
+    .fdemo button { border: 0; border-radius: 999px; padding: 6px 10px; cursor: pointer; font: inherit;
+                    background: linear-gradient(90deg, #8B5CF6, #EC4899); color: #fff; }
+    /* Phones: a slim demo bar above the app, so it never covers app controls. */
+    @media (max-width: 599px), (max-height: 699px) {
+      #frame { position: absolute; top: 28px; left: 0; right: 0; bottom: 0; width: auto; height: auto; }
+      .fdemo { left: 0; right: 0; top: 0; bottom: auto; height: 28px; box-sizing: border-box; justify-content: center;
+               border-radius: 0; border: 0; border-bottom: 1px solid rgba(167,139,250,.35); padding: 0 6px; font-size: 11px; box-shadow: none; }
+      .fdemo button { padding: 3px 10px; font-size: 11px; }
+    }
+    .fdemo-toast { position: fixed; z-index: 2147483001; left: 50%; bottom: 64px; transform: translateX(-50%);
+                   max-width: 340px; padding: 10px 14px; border-radius: 12px; background: #1d1830; color: #fff;
+                   border: 1px solid rgba(167,139,250,.45); font: 13px/1.4 system-ui, sans-serif; text-align: center;
+                   box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+    /* Boot screen: shown the instant the page opens, while the engine and
+       app code download, then faded out on Flutter's first frame. */
+    #boot {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 30% 20%, #241a45 0%, #07060B 60%);
+      transition: opacity .35s ease;
+    }
+    #boot.gone { opacity: 0; pointer-events: none; }
+    #boot img {
+      width: 104px; height: 104px; border-radius: 24px;
+      animation: boot-pulse 1.6s ease-in-out infinite;
+    }
+    #boot .bar {
+      margin-top: 28px; width: 120px; height: 3px; border-radius: 3px;
+      background: rgba(255,255,255,.12); overflow: hidden;
+    }
+    #boot .bar::after {
+      content: ""; display: block; width: 40%; height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, #8B5CF6, #EC4899);
+      animation: boot-slide 1.1s ease-in-out infinite;
+    }
+    @keyframes boot-pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(236,72,153,0)); }
+      50% { transform: scale(1.06); filter: drop-shadow(0 0 22px rgba(168,85,247,.55)); }
+    }
+    @keyframes boot-slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+    @media (prefers-reduced-motion: reduce) { #boot img, #boot .bar::after { animation: none; } }
+    flt-text-editing-host input,
+    flt-text-editing-host textarea,
+    input.flt-text-editing,
+    textarea.flt-text-editing {
+      font-size: 16px !important;
+    }
+  </style>
+  <script>
+    // Flutter replaces the viewport tag above with its own
+    // (maximum-scale=5.0) at start-up; put ours back whenever it does.
+    (function () {
+      var wanted = 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no';
+      function pin() {
+        document.querySelectorAll('meta[name="viewport"]').forEach(function (m) {
+          if (m.content !== wanted) m.content = wanted;
+        });
+      }
+      new MutationObserver(pin).observe(document.head, {
+        childList: true, subtree: true, attributes: true, attributeFilter: ['content']
+      });
+    })();
+  </script>
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Everlane">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Everlane · Meet your kind of person</title>
+</head>
+<body>
+  <!--
+    You can customize the "flutter_bootstrap.js" script.
+    This is useful to provide a custom configuration to the Flutter loader
+    or to give the user feedback during the initialization process.
+
+    For more details:
+    * https://docs.flutter.dev/platform-integration/web/initialization
+  -->
+  <div id="frame">
+    <div id="app-host"></div>
+    <div id="boot" aria-label="Loading Everlane">
+      <img src="icons/Icon-192.png" alt="">
+      <div class="bar"></div>
+    </div>
+  </div>
+  <div class="fdemo" role="region" aria-label="Demo mode">
+    <span class="dot" aria-hidden="true"></span><span>Live demo · sample data</span>
+    <button type="button" id="fdemo-reset" title="Clear this demo's data and reload">Reset</button>
+  </div>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var boot = document.getElementById('boot');
+      boot.classList.add('gone');
+      setTimeout(function () { boot.remove(); }, 400);
+    });
+    // Foundly demo mode: reset, and block real-world side effects.
+    (function () {
+      var P = 'demo:everlane:';
+      function toast(msg) {
+        var t = document.createElement('div');
+        t.className = 'fdemo-toast'; t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(function () { t.remove(); }, 3200);
+      }
+      function wipe(store) {
+        try {
+          var rawKey = Storage.prototype.__rawKey || Storage.prototype.key;
+          var rawRemove = Storage.prototype.__rawRemove || Storage.prototype.removeItem;
+          for (var i = store.length - 1; i >= 0; i--) {
+            var n = rawKey.call(store, i);
+            if (n && n.indexOf(P) === 0) rawRemove.call(store, n);
+          }
+        } catch (e) {}
+      }
+      document.getElementById('fdemo-reset').addEventListener('click', function () {
+        wipe(window.localStorage); wipe(window.sessionStorage);
+        var done = function () { location.reload(); };
+        try {
+          if (indexedDB && indexedDB.databases) {
+            indexedDB.databases().then(function (dbs) {
+              dbs.forEach(function (d) { if (d.name && /^(demo:everlane|everlane)/.test(d.name)) indexedDB.deleteDatabase(d.name); });
+            }).then(done, done);
+            return;
+          }
+        } catch (e) {}
+        done();
+      });
+      function external(url) {
+        try {
+          var u = new URL(url, location.href);
+          return !(u.origin === location.origin && (u.protocol === 'http:' || u.protocol === 'https:'));
+        } catch (e) { return true; }
+      }
+      var label = function (url) {
+        if (/^upi:/i.test(url)) return 'UPI payments are simulated in this demo — no money is moved.';
+        if (/wa\.me|whatsapp/i.test(url)) return 'WhatsApp sharing is turned off in this demo.';
+        if (/^(tel|sms|mailto):/i.test(url)) return 'Calls, SMS and email are turned off in this demo.';
+        return 'External links are turned off in this demo.';
+      };
+      var open = window.open;
+      window.open = function (url) {
+        if (url && external(String(url))) { toast(label(String(url))); return null; }
+        return open.apply(window, arguments);
+      };
+      document.addEventListener('click', function (e) {
+        var a = e.target && e.target.closest && e.target.closest('a[href]');
+        if (a && external(a.href)) { e.preventDefault(); e.stopPropagation(); toast(label(a.href)); }
+      }, true);
+    })();
+  </script>
+  <script src="flutter_bootstrap.js?v=everlane-demo-1" async></script>
+</body>
+</html>
