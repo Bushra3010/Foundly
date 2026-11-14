@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { listPublishedProjects } from "@/server/portfolio";
 import { HOME_FEATURED, TAGLINES } from "@/lib/work-copy";
 import "@/app/work.css";
+import "@/app/software-demo.css";
+import { SoftwareShowcase } from "@/components/software-showcase";
+import { getDemo } from "@/lib/software-demo";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { DevelopmentServices } from "@/components/development-services";
@@ -84,6 +87,7 @@ const WORK = {
   live: PROJECTS.filter((p) => p.demoStatus === "live").length,
 };
 const countNeed = (...needs: string[]) => PROJECTS.filter((p) => needs.includes(p.need)).length;
+const HERO_DEMO = getDemo("erp", "manufacturing");
 const HERO_SERVICES = [
   { label: "ERP software", href: "/software/erp", icon: "business", count: countNeed("erp") },
   { label: "CRM software", href: "/software/crm", icon: "leads", count: countNeed("crm") },
@@ -100,34 +104,37 @@ export default function Home() {
 
       <main id="main" className="landing-main">
         <div className="lv-first">
-          <section className="lv-hero sw-hero" aria-labelledby="hero-title">
-            <p className="landing-eyebrow"><span /> CUSTOM SOFTWARE · AI AUTOMATION · AI SEARCH</p>
-            <h1 id="hero-title">We build the software<br />your business <span className="hero-found">runs on<svg viewBox="0 0 330 18" aria-hidden="true"><path d="M4 13 Q150 -2 326 7" /></svg></span>.</h1>
-            <p className="lv-hero-sub">
-              Custom ERP, CRM, mobile apps and AI automation for growing businesses in India. {WORK.total} projects delivered across {WORK.industries} industries, and you can try almost every one with a live demo.
-            </p>
-            <div className="hero-buttons lv-center">
-              <Link href="/work" className="landing-button">See our work <Icon name="arrow" size={18} /></Link>
-              <a href={whatsappLink("Hi Foundly, I'd like to discuss custom software for my business.")} className="landing-button secondary">Discuss your project</a>
+          <section className="sw-hero" aria-labelledby="hero-title">
+            <div className="sw-hero-copy">
+              <p className="landing-eyebrow"><span /> CUSTOM SOFTWARE · AI AUTOMATION · AI SEARCH</p>
+              <h1 id="hero-title">We build the software your business <span className="hero-found">runs on<svg viewBox="0 0 330 18" aria-hidden="true"><path d="M4 13 Q150 -2 326 7" /></svg></span>.</h1>
+              <p className="lv-hero-sub">
+                Custom ERP, CRM, mobile apps and AI automation for growing businesses in India. {WORK.total} projects delivered across {WORK.industries} industries, and you can try almost every one with a live demo.
+              </p>
+              <div className="hero-buttons">
+                <Link href="/work" className="landing-button">See our work <Icon name="arrow" size={18} /></Link>
+                <a href={whatsappLink("Hi Foundly, I'd like to discuss custom software for my business.")} className="landing-button secondary">Discuss your project</a>
+              </div>
+              <Link href="/work" className="sw-hero-demos">
+                <span className="sw-hero-dot" aria-hidden="true" />
+                <span><b>Try {WORK.live} live demos</b> of software we&apos;ve built</span>
+                <Icon name="arrow" size={16} />
+              </Link>
             </div>
-            <ul className="sw-hero-services" aria-label="What we build">
-              {HERO_SERVICES.map((s) => (
-                <li key={s.href}>
-                  <Link href={s.href}>
-                    <span className="sw-hero-ic"><Icon name={s.icon} size={17} /></span>
-                    <b>{s.label}</b>
-                    <small>{s.count} projects</small>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {HERO_DEMO && <SoftwareShowcase variant="desktop" demo={{ ...HERO_DEMO, workspace: "Your business · built by Foundly" }} features={HERO_SERVICES.map((s) => s.label)} />}
           </section>
 
-          <Link href="/work" className="sw-hero-demos">
-            <span className="sw-hero-dot" aria-hidden="true" />
-            <span><b>Try {WORK.live} live demos</b> of software we&apos;ve built</span>
-            <Icon name="arrow" size={17} />
-          </Link>
+          <ul className="sw-hero-services" aria-label="What we build">
+            {HERO_SERVICES.map((s) => (
+              <li key={s.href}>
+                <Link href={s.href}>
+                  <span className="sw-hero-ic"><Icon name={s.icon} size={17} /></span>
+                  <b>{s.label}</b>
+                  <small>{s.count} projects</small>
+                </Link>
+              </li>
+            ))}
+          </ul>
           <dl className="sw-hero-stats">
             <div><dt>Projects delivered</dt><dd>{WORK.total}</dd></div>
             <div><dt>Industries</dt><dd>{WORK.industries}</dd></div>
