@@ -2,7 +2,7 @@
 2:I[11645,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js"],"default"]
 4:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-3:T822,India has 23 National Law Universities (NLUs) that accept CLAT scores. Choosing the right NLU is just as important as cracking CLAT. Here is the definitive ranking guide for 2026.
+3:T830,India has 23 National Law Universities (NLUs) that accept CLAT scores. Choosing the right NLU is just as important as cracking CLAT. Here is the definitive ranking guide for 2026.
 
 ## Tier 1 NLUs (AIR 1–200)
 
@@ -38,7 +38,7 @@ When deciding which NLU to target, consider:
 - Placement record and alumni network
 - Fee structure and scholarship availability
 
-## CLATians Pro Tip
+## LexPrep Academy Pro Tip
 
-At CLATians, we run specialized College Predictor sessions where A.K. Sir personally helps students identify their target NLUs based on their mock test performance. Join us today!0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"top-nlu-colleges-india-ranking-2026","title":"Top 10 NLU Colleges in India: Complete Ranking & Cutoffs 2026","excerpt":"Complete guide to all 23 NLUs — rankings, cutoffs, placements, and which one is right for you.","content":"$3","category":"Law Preparation","categoryColor":"#f77420","author":"A.K. Singh","authorAvatar":"AK","date":"15 May, 2026","readTime":"10 min read","tags":["NLU Rankings","CLAT Cutoffs","NLU Guide","Law College"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
+At LexPrep Academy, we run specialized College Predictor sessions where S.K. Sir personally helps students identify their target NLUs based on their mock test performance. Join us today!0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"top-nlu-colleges-india-ranking-2026","title":"Top 10 NLU Colleges in India: Complete Ranking & Cutoffs 2026","excerpt":"Complete guide to all 23 NLUs — rankings, cutoffs, placements, and which one is right for you.","content":"$3","category":"Law Preparation","categoryColor":"#f77420","author":"S.K. Mishra","authorAvatar":"SM","date":"15 May, 2026","readTime":"10 min read","tags":["NLU Rankings","CLAT Cutoffs","NLU Guide","Law College"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
 6:null

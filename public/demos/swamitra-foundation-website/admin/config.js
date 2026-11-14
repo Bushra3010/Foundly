@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SWAMITRA admin — Supabase connection
+   CRF admin — Supabase connection
    Dashboard → Project Settings → API. Copy the two values below.
 
    The anon key is designed to be public: it identifies the project, it does

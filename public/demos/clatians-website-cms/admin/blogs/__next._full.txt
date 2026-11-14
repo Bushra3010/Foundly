@@ -15,12 +15,12 @@ f:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/
 c:"$W12"
 7:"$0:f:0:1:1:children:0:props:children:1:props:serverProvidedParams:params"
 13:I[78527,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"SiteSettingsProvider"]
-2:["$","html",null,{"lang":"en","className":"plus_jakarta_sans_6a83704a-module__ugZDJG__variable","children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"(function(){try{var P=\"demo:clatians-website-cms:\",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;\nS.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};\nS.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};\nS.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};\nif(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error(\"Service workers are disabled in Foundly demos\"))}}}catch(e){}})();"}}]}],["$","body",null,{"className":"plus_jakarta_sans_6a83704a-module__ugZDJG__className","style":{"overflowX":"clip","maxWidth":"100%"},"children":[["$","$L13",null,{"settings":{"logoSrc":"/demos/clatians-website-cms/logo.png","logoAlt":"CLATians","phone":"8507700177","whatsapp":"918507700177","desktopNav":[{"label":"Home","href":"/"},{"label":"Courses","href":"/courses","children":[{"label":"🏫 Offline Course","href":"/courses?cat=offline"},{"label":"💻 Online Course","href":"/courses?cat=online"},{"label":"🎯 Mentorship","href":"/courses?cat=mentorship"},{"label":"📝 Mock Tests","href":"/courses?cat=mock"}]},{"label":"Exams","href":"/exams/clat","children":[{"label":"🏛️ CLAT","href":"/exams/clat"},{"label":"⚖️ AILET","href":"/exams/ailet"},{"label":"📍 MH-CET Law","href":"/exams/mh-cet-law"},{"label":"🎓 CUET","href":"/exams/cuet"},{"label":"🎖️ AIL-LET","href":"/exams/ail-let"},{"label":"🌐 LSAT India","href":"/exams/lsat"}]},{"label":"Admission","href":"/admission"},{"label":"The CLATians Journal","href":"/blogs"},{"label":"About","href":"/about"},{"label":"Contact","href":"/contact"}],"mobileMenu":[{"label":"Courses","href":"/courses","icon":"📚"},{"label":"Exams","href":"/exams/clat","icon":"🏛️"},{"label":"Admission","href":"/admission","icon":"🎓"},{"label":"The CLATians Journal","href":"/blogs","icon":"✍️"},{"label":"About","href":"/about","icon":"👥"},{"label":"Contact","href":"/contact","icon":"📞"}],"mobileBottomNav":[{"label":"Home","href":"/","icon":"home","color":"#06b6d4"},{"label":"Courses","href":"/courses","icon":"courses","color":"#8b5cf6"},{"label":"Exams","href":"/exams/clat","icon":"exams","color":"#f59e0b"},{"label":"Admission","href":"/admission","icon":"admission","color":"#f97316"},{"label":"More","href":"/about","icon":"more","color":"#ec4899"}],"desktopCtas":[{"label":"College Predictor","href":"/college-predictor"},{"label":"Admission 2026","href":"/admission"}],"mobilePredictorLabel":"🔮 Predictor","mobilePredictorHref":"/college-predictor","footerDescription":"Your trusted institute for CLAT, AILET, and all major law entrance exams. Expert guidance by NLU alumni and advocates.","footerMobileDescription":"India's #1 CLAT coaching — 1.25L+ students, 5000+ NLU selections since 2012.","footerCopyright":"© 2026 CLATians – All rights reserved.","footerCoursesTitle":"Courses","footerExamsTitle":"Exams","footerQuickLinksTitle":"Quick Links","footerCourses":[{"label":"Offline Course","href":"/courses?cat=offline"},{"label":"Online Course","href":"/courses?cat=online"},{"label":"CLAT Navigator™","href":"/courses/clat-mentorship-program/clat-navigator"},{"label":"Mock Tests","href":"/courses?cat=mock"}],"footerExams":[{"label":"CLAT","href":"/exams/clat"},{"label":"AILET","href":"/exams/ailet"},{"label":"MH-CET Law","href":"/exams/mh-cet-law"},{"label":"CUET","href":"/exams/cuet"},{"label":"AIL-LET","href":"/exams/ail-let"},{"label":"LSAT","href":"/exams/lsat"}],"footerQuickLinks":[{"label":"About Us","href":"/about"},{"label":"Faculty","href":"/faculty"},{"label":"Admission","href":"/admission"},{"label":"The CLATians Journal","href":"/blogs"},{"label":"College Predictor","href":"/college-predictor"}],"socials":[{"label":"Facebook","href":"#","icon":"f","color":"#1877f2","bg":"rgba(24,119,242,0.15)"},{"label":"YouTube","href":"#","icon":"▶","color":"#ff0000","bg":"rgba(255,0,0,0.12)"},{"label":"Instagram","href":"#","icon":"📷","color":"#e1306c","bg":"rgba(225,48,108,0.12)"},{"label":"LinkedIn","href":"#","icon":"in","color":"#0a66c2","bg":"rgba(10,102,194,0.15)"}],"pageBanners":[{"key":"about","enabled":false,"eyebrow":"About CLATians","title":"Learn, Practice, Achieve","subtitle":"Add a custom about page announcement or intro from admin.","ctaLabel":"Explore Courses","ctaHref":"/courses"},{"key":"admission","enabled":false,"eyebrow":"Admission Open","title":"Start your CLAT journey","subtitle":"Add a custom admission message from admin.","ctaLabel":"Call Now","ctaHref":"tel:8507700177"},{"key":"contact","enabled":false,"eyebrow":"Contact CLATians","title":"Speak to our counsellors","subtitle":"Add contact page instructions or offer text from admin.","ctaLabel":"WhatsApp Us","ctaHref":"https://wa.me/918507700177"},{"key":"college-predictor","enabled":false,"eyebrow":"College Predictor","title":"Check your NLU chances","subtitle":"Add predictor page copy from admin.","ctaLabel":"Try Now","ctaHref":"/college-predictor"},{"key":"blogs","enabled":false,"eyebrow":"CLATians Journal","title":"Latest preparation insights","subtitle":"Add blog page intro or announcement from admin.","ctaLabel":"View Courses","ctaHref":"/courses"},{"key":"faculty","enabled":false,"eyebrow":"Faculty","title":"Meet our mentors","subtitle":"Add faculty page intro or announcement from admin.","ctaLabel":"Get Counselling","ctaHref":"/admission"}]},"children":"$L14"}],"$L15"]}]]}]
+2:["$","html",null,{"lang":"en","className":"plus_jakarta_sans_6a83704a-module__ugZDJG__variable","children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"(function(){try{var P=\"demo:clatians-website-cms:\",S=Storage.prototype;if(S.__fdemo)return;S.__fdemo=1;var g=S.getItem,s=S.setItem,r=S.removeItem,k=S.key;S.__rawKey=k;S.__rawRemove=r;\nS.getItem=function(x){return g.call(this,P+x)};S.setItem=function(x,v){return s.call(this,P+x,v)};S.removeItem=function(x){return r.call(this,P+x)};\nS.clear=function(){for(var i=this.length-1;i>=0;i--){var n=k.call(this,i);if(n&&n.indexOf(P)===0)r.call(this,n)}};\nS.key=function(i){var a=[];for(var j=0;j<this.length;j++){var n=k.call(this,j);if(n&&n.indexOf(P)===0)a.push(n.slice(P.length))}return i<a.length?a[i]:null};\nif(navigator.serviceWorker&&navigator.serviceWorker.register){navigator.serviceWorker.register=function(){return Promise.reject(new Error(\"Service workers are disabled in Foundly demos\"))}}}catch(e){}})();"}}]}],["$","body",null,{"className":"plus_jakarta_sans_6a83704a-module__ugZDJG__className","style":{"overflowX":"clip","maxWidth":"100%"},"children":[["$","$L13",null,{"settings":{"logoSrc":"/demos/clatians-website-cms/logo.png","logoAlt":"LexPrep Academy","phone":"9876543210","whatsapp":"919876543210","desktopNav":[{"label":"Home","href":"/"},{"label":"Courses","href":"/courses","children":[{"label":"🏫 Offline Course","href":"/courses?cat=offline"},{"label":"💻 Online Course","href":"/courses?cat=online"},{"label":"🎯 Mentorship","href":"/courses?cat=mentorship"},{"label":"📝 Mock Tests","href":"/courses?cat=mock"}]},{"label":"Exams","href":"/exams/clat","children":[{"label":"🏛️ CLAT","href":"/exams/clat"},{"label":"⚖️ AILET","href":"/exams/ailet"},{"label":"📍 MH-CET Law","href":"/exams/mh-cet-law"},{"label":"🎓 CUET","href":"/exams/cuet"},{"label":"🎖️ AIL-LET","href":"/exams/ail-let"},{"label":"🌐 LSAT India","href":"/exams/lsat"}]},{"label":"Admission","href":"/admission"},{"label":"The LexPrep Journal","href":"/blogs"},{"label":"About","href":"/about"},{"label":"Contact","href":"/contact"}],"mobileMenu":[{"label":"Courses","href":"/courses","icon":"📚"},{"label":"Exams","href":"/exams/clat","icon":"🏛️"},{"label":"Admission","href":"/admission","icon":"🎓"},{"label":"The LexPrep Journal","href":"/blogs","icon":"✍️"},{"label":"About","href":"/about","icon":"👥"},{"label":"Contact","href":"/contact","icon":"📞"}],"mobileBottomNav":[{"label":"Home","href":"/","icon":"home","color":"#06b6d4"},{"label":"Courses","href":"/courses","icon":"courses","color":"#8b5cf6"},{"label":"Exams","href":"/exams/clat","icon":"exams","color":"#f59e0b"},{"label":"Admission","href":"/admission","icon":"admission","color":"#f97316"},{"label":"More","href":"/about","icon":"more","color":"#ec4899"}],"desktopCtas":[{"label":"College Predictor","href":"/college-predictor"},{"label":"Admission 2026","href":"/admission"}],"mobilePredictorLabel":"🔮 Predictor","mobilePredictorHref":"/college-predictor","footerDescription":"Your trusted institute for CLAT, AILET, and all major law entrance exams. Expert guidance by NLU alumni and advocates.","footerMobileDescription":"India's #1 CLAT coaching — 1.25L+ students, 5000+ NLU selections since 2012.","footerCopyright":"© 2026 LexPrep Academy – All rights reserved.","footerCoursesTitle":"Courses","footerExamsTitle":"Exams","footerQuickLinksTitle":"Quick Links","footerCourses":[{"label":"Offline Course","href":"/courses?cat=offline"},{"label":"Online Course","href":"/courses?cat=online"},{"label":"CLAT Navigator™","href":"/courses/clat-mentorship-program/clat-navigator"},{"label":"Mock Tests","href":"/courses?cat=mock"}],"footerExams":[{"label":"CLAT","href":"/exams/clat"},{"label":"AILET","href":"/exams/ailet"},{"label":"MH-CET Law","href":"/exams/mh-cet-law"},{"label":"CUET","href":"/exams/cuet"},{"label":"AIL-LET","href":"/exams/ail-let"},{"label":"LSAT","href":"/exams/lsat"}],"footerQuickLinks":[{"label":"About Us","href":"/about"},{"label":"Faculty","href":"/faculty"},{"label":"Admission","href":"/admission"},{"label":"The LexPrep Journal","href":"/blogs"},{"label":"College Predictor","href":"/college-predictor"}],"socials":[{"label":"Facebook","href":"#","icon":"f","color":"#1877f2","bg":"rgba(24,119,242,0.15)"},{"label":"YouTube","href":"#","icon":"▶","color":"#ff0000","bg":"rgba(255,0,0,0.12)"},{"label":"Instagram","href":"#","icon":"📷","color":"#e1306c","bg":"rgba(225,48,108,0.12)"},{"label":"LinkedIn","href":"#","icon":"in","color":"#0a66c2","bg":"rgba(10,102,194,0.15)"}],"pageBanners":[{"key":"about","enabled":false,"eyebrow":"About LexPrep Academy","title":"Learn, Practice, Achieve","subtitle":"Add a custom about page announcement or intro from admin.","ctaLabel":"Explore Courses","ctaHref":"/courses"},{"key":"admission","enabled":false,"eyebrow":"Admission Open","title":"Start your CLAT journey","subtitle":"Add a custom admission message from admin.","ctaLabel":"Call Now","ctaHref":"tel:9876543210"},{"key":"contact","enabled":false,"eyebrow":"Contact LexPrep Academy","title":"Speak to our counsellors","subtitle":"Add contact page instructions or offer text from admin.","ctaLabel":"WhatsApp Us","ctaHref":"https://wa.me/919876543210"},{"key":"college-predictor","enabled":false,"eyebrow":"College Predictor","title":"Check your NLU chances","subtitle":"Add predictor page copy from admin.","ctaLabel":"Try Now","ctaHref":"/college-predictor"},{"key":"blogs","enabled":false,"eyebrow":"LexPrep Academy Journal","title":"Latest preparation insights","subtitle":"Add blog page intro or announcement from admin.","ctaLabel":"View Courses","ctaHref":"/courses"},{"key":"faculty","enabled":false,"eyebrow":"Faculty","title":"Meet our mentors","subtitle":"Add faculty page intro or announcement from admin.","ctaLabel":"Get Counselling","ctaHref":"/admission"}]},"children":"$L14"}],"$L15"]}]]}]
 16:I[52155,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
 17:I[64908,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/15arwr-3tjnol.js"],"default"]
 14:["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]
 15:["$","$L16",null,{}]
-18:Tb70,CLAT 2026 is one of the most anticipated law entrance exams in India. Whether you are just starting your preparation or looking to fine-tune your strategy, this comprehensive guide will walk you through everything you need to know.
+18:Tb93,CLAT 2026 is one of the most anticipated law entrance exams in India. Whether you are just starting your preparation or looking to fine-tune your strategy, this comprehensive guide will walk you through everything you need to know.
 
 ## Understanding the CLAT Exam Pattern
 
@@ -70,7 +70,7 @@ Practice reading 500+ word passages quickly and accurately. Focus on:
 - Vocabulary in context
 - Author's tone and purpose
 
-## Top Tips from CLATians Toppers
+## Top Tips from LexPrep Academy Toppers
 
 1. **Start early**: Begin preparation at least 12 months before the exam
 2. **Mock tests are non-negotiable**: Take at least 50 full-length mock tests
@@ -80,13 +80,13 @@ Practice reading 500+ word passages quickly and accurately. Focus on:
 
 ## Recommended Resources
 
-- CLATians Study Material (all 5 sections)
-- CLATians Mock Test Series (150+ tests)
+- LexPrep Academy Study Material (all 5 sections)
+- LexPrep Academy Mock Test Series (150+ tests)
 - The Hindu / Indian Express (daily)
-- CLATians Monthly GK Magazine
+- LexPrep Academy Monthly GK Magazine
 - Previous Year CLAT Papers (2010-2025)
 
-Start your CLAT 2026 journey today with CLATians and join 5000+ successful students who have cracked their dream NLU.19:T647,The CLAT 2025 results have been declared and the cutoffs have been finalized. Here is a comprehensive analysis of the closing ranks for all 23 National Law Universities.
+Start your CLAT 2026 journey today with LexPrep Academy and join 5000+ successful students who have cracked their dream NLU.19:T655,The CLAT 2025 results have been declared and the cutoffs have been finalized. Here is a comprehensive analysis of the closing ranks for all 23 National Law Universities.
 
 ## Top 5 NLUs and Their CLAT 2025 Cutoffs
 
@@ -128,7 +128,7 @@ These cutoffs are based on previous year data and should be used as a reference 
 3. Your state of domicile (for state NLUs)
 4. Number of applicants that year
 
-Use CLATians' AI College Predictor for a personalized prediction based on your expected rank.
+Use LexPrep Academy' AI College Predictor for a personalized prediction based on your expected rank.
 
 ## Preparation Strategy Based on Target NLU
 
@@ -136,14 +136,14 @@ If you are targeting **Top 5 NLUs**: Aim for rank under 500 (General)
 If you are targeting **Tier 2 NLUs**: Aim for rank 500-1500 (General)
 If you are targeting **All NLUs**: A rank under 5000 ensures some NLU admission
 
-## Contact CLATians for Counselling
+## Contact LexPrep Academy for Counselling
 
 Our counselling team can help you:
 - Select the right NLU based on your preferences
 - Understand category-specific advantages
 - Plan your preparation to hit target ranks
 
-Call us at 8507700177 for free counselling.1a:T7f5,AILET and CLAT are two of the most important law entrance exams in India. While they test similar subjects, there are crucial differences that every aspirant must understand.
+Call us at 9876543210 for free counselling.1a:T7fc,AILET and CLAT are two of the most important law entrance exams in India. While they test similar subjects, there are crucial differences that every aspirant must understand.
 
 ## Overview Comparison
 
@@ -176,7 +176,7 @@ AILET gives you 90 seconds per question on average (90 min / 100 questions), whi
 
 **If you are preparing for CLAT first**: Your CLAT preparation covers 70% of AILET syllabus. You need additional AILET-specific preparation.
 
-**CLATians AILET Strategy**: Our AILET-specialized batch runs alongside the CLAT batch with additional sessions on AILET-specific legal aptitude topics.
+**LexPrep Academy AILET Strategy**: Our AILET-specialized batch runs alongside the CLAT batch with additional sessions on AILET-specific legal aptitude topics.
 
 ## Preparation Tips for Both
 
@@ -184,7 +184,7 @@ AILET gives you 90 seconds per question on average (90 min / 100 questions), whi
 2. **CLAT-specific (15%)**: CLAT pattern practice, Computer-based test practice
 3. **AILET-specific (15%)**: Deep legal aptitude, offline test-taking practice, NLU Delhi specific GK
 
-Appear in both exams for maximum chances. Most serious law aspirants do!1b:T8a0,Current Affairs and GK is the section that separates top rankers from average performers in CLAT. With 35 questions carrying 35 marks, it is the single largest section in CLAT 2026. Here is the complete strategy from CLATians' GK specialist, Dr. Neha Verma.
+Appear in both exams for maximum chances. Most serious law aspirants do!1b:T8d1,Current Affairs and GK is the section that separates top rankers from average performers in CLAT. With 35 questions carrying 35 marks, it is the single largest section in CLAT 2026. Here is the complete strategy from LexPrep Academy' GK specialist, Dr. Neha Verma.
 
 ## What CLAT Really Tests in Current Affairs
 
@@ -217,13 +217,13 @@ Spend only 20% of time on:
 - Note 3-5 important facts per article
 
 **Evening (10 minutes)**:
-- Review CLATians Daily News Digest
+- Review LexPrep Academy Daily News Digest
 - Revise notes from morning reading
 
 ## Weekly and Monthly Practice
 
-- **Weekly**: Attempt CLATians Current Affairs Quiz (20 questions)
-- **Monthly**: Read CLATians Monthly GK Magazine cover to cover
+- **Weekly**: Attempt LexPrep Academy Current Affairs Quiz (20 questions)
+- **Monthly**: Read LexPrep Academy Monthly GK Magazine cover to cover
 - **Every 3 months**: Full revision of all notes
 
 ## What to Skip (Important!)
@@ -237,12 +237,12 @@ Strictly avoid spending time on:
 
 ## Resources
 
-1. CLATians Daily News Digest (free on website)
-2. CLATians Monthly GK Magazine
+1. LexPrep Academy Daily News Digest (free on website)
+2. LexPrep Academy Monthly GK Magazine
 3. The Hindu epaper (recommended)
-4. CLATians Current Affairs Tests on portal
+4. LexPrep Academy Current Affairs Tests on portal
 
-Remember: 35 marks in current affairs can change your rank by hundreds. Never neglect this section!1c:T875,Legal Reasoning is the heart of CLAT. With 35 questions and the highest weightage, your performance here largely determines your rank. Here is the CLATians Method that has helped thousands score 30+ in this section.
+Remember: 35 marks in current affairs can change your rank by hundreds. Never neglect this section!1c:T88a,Legal Reasoning is the heart of CLAT. With 35 questions and the highest weightage, your performance here largely determines your rank. Here is the LexPrep Academy Method that has helped thousands score 30+ in this section.
 
 ## Understanding CLAT Legal Reasoning
 
@@ -253,7 +253,7 @@ CLAT Legal Reasoning is NOT a test of law knowledge. It is a test of your abilit
 
 You do NOT need to memorize Indian law to score in Legal Reasoning. The principle is always given to you.
 
-## The 4-Step CLATians Method
+## The 4-Step LexPrep Academy Method
 
 ### Step 1: Read the Principle Carefully
 Read the legal principle stated in the question slowly and completely. Underline key conditions and exceptions.
@@ -288,7 +288,7 @@ The biggest mistake students make is using their own legal knowledge instead of 
 
 Target: 30+ correct out of 35 in Legal Reasoning to secure a top rank.
 
-Join CLATians Legal Reasoning sessions with Adv. Ravi Kumar for detailed practice and guidance.1d:T801,You have been preparing for months, taking mock tests, sacrificing weekends. But what actually happens after you crack CLAT and get into an NLU? Here is an honest look at life at a National Law University.
+Join LexPrep Academy Legal Reasoning sessions with Adv. Ravi Kumar for detailed practice and guidance.1d:T808,You have been preparing for months, taking mock tests, sacrificing weekends. But what actually happens after you crack CLAT and get into an NLU? Here is an honest look at life at a National Law University.
 
 ## The First Year: Adjustment Phase
 
@@ -325,7 +325,7 @@ An NLU degree opens multiple pathways:
 
 Absolutely. An NLU education is transformative — academically, professionally, and personally. The preparation may be intense, but the opportunity is life-changing.
 
-Start your preparation with CLATians today. Your NLU journey begins here.1e:T822,India has 23 National Law Universities (NLUs) that accept CLAT scores. Choosing the right NLU is just as important as cracking CLAT. Here is the definitive ranking guide for 2026.
+Start your preparation with LexPrep Academy today. Your NLU journey begins here.1e:T830,India has 23 National Law Universities (NLUs) that accept CLAT scores. Choosing the right NLU is just as important as cracking CLAT. Here is the definitive ranking guide for 2026.
 
 ## Tier 1 NLUs (AIR 1–200)
 
@@ -361,9 +361,9 @@ When deciding which NLU to target, consider:
 - Placement record and alumni network
 - Fee structure and scholarship availability
 
-## CLATians Pro Tip
+## LexPrep Academy Pro Tip
 
-At CLATians, we run specialized College Predictor sessions where A.K. Sir personally helps students identify their target NLUs based on their mock test performance. Join us today!1f:T9bb,Legal Reasoning is the most important section of CLAT — carrying 37 marks and determining whether you crack a top NLU or not. Here are 10 proven strategies.
+At LexPrep Academy, we run specialized College Predictor sessions where S.K. Sir personally helps students identify their target NLUs based on their mock test performance. Join us today!1f:T9ca,Legal Reasoning is the most important section of CLAT — carrying 37 marks and determining whether you crack a top NLU or not. Here are 10 proven strategies.
 
 ## Why Legal Reasoning Matters Most
 
@@ -413,9 +413,9 @@ From September onwards, attempt at least 20 legal reasoning passages daily from 
 
 Every wrong answer goes into an error log with: question, why you got it wrong, correct reasoning. Review weekly.
 
-## Tip 10: Join CLATians Legal Reasoning Classes
+## Tip 10: Join LexPrep Academy Legal Reasoning Classes
 
-A.K. Singh's specialized Legal Reasoning sessions at CLATians systematically cover all areas — Torts, Contracts, Constitutional Law, Criminal Law — with 500+ practice passages. Students consistently score 30+/37 after completing the course.20:T675,Every law aspirant faces the CLAT vs AILET dilemma. Both lead to prestigious destinations — CLAT to 23 NLUs and AILET exclusively to NLU Delhi. Here is a complete comparison.
+S.K. Mishra's specialized Legal Reasoning sessions at LexPrep Academy systematically cover all areas — Torts, Contracts, Constitutional Law, Criminal Law — with 500+ practice passages. Students consistently score 30+/37 after completing the course.20:T68a,Every law aspirant faces the CLAT vs AILET dilemma. Both lead to prestigious destinations — CLAT to 23 NLUs and AILET exclusively to NLU Delhi. Here is a complete comparison.
 
 ## Basic Differences at a Glance
 
@@ -451,14 +451,14 @@ CLAT cutoff for NLSIU: typically 95–105/120.
 
 ## Should You Attempt Both?
 
-Yes! Most CLATians coaching students prepare for both. The syllabi overlap significantly. Additional preparation needed for AILET:
+Yes! Most LexPrep Academy coaching students prepare for both. The syllabi overlap significantly. Additional preparation needed for AILET:
 - Elementary Mathematics (basic level — 10 questions)
 - Slightly higher GK depth
 - More rote-based GK vs passage-based GK
 
-## CLATians Strategy for Both Exams
+## LexPrep Academy Strategy for Both Exams
 
-At CLATians, we have a combined preparation program covering both CLAT and AILET. Students who join our Offline Batch typically attempt both exams and secure admissions in either NLU Delhi or NALSAR/NLSIU. Call us at 8507700177 to know more.21:T739,Stay updated with the most important current affairs for CLAT 2026. This monthly capsule covers all key events relevant for law entrance exams.
+At LexPrep Academy, we have a combined preparation program covering both CLAT and AILET. Students who join our Offline Batch typically attempt both exams and secure admissions in either NLU Delhi or NALSAR/NLSIU. Call us at 9876543210 to know more.21:T74e,Stay updated with the most important current affairs for CLAT 2026. This monthly capsule covers all key events relevant for law entrance exams.
 
 ## National Affairs
 
@@ -509,16 +509,16 @@ At CLATians, we have a combined preparation program covering both CLAT and AILET
 - Major sporting events and champions
 - Indian sports awards
 
-## CLATians Daily GK Programme
+## LexPrep Academy Daily GK Programme
 
-At CLATians, we provide daily GK capsules to all enrolled students. Our GK program covers:
+At LexPrep Academy, we provide daily GK capsules to all enrolled students. Our GK program covers:
 - Daily newspaper analysis (The Hindu + Indian Express)
 - Weekly legal news summary
 - Monthly GK magazine
 - Emergency updates on breaking legal news
 
-Join CLATians today to never miss an important current affairs update for CLAT 2026!8:["$","$L17",null,{"initialBlogs":[{"slug":"clat-2026-complete-guide","title":"CLAT 2026: Complete Preparation Guide for Beginners","excerpt":"Everything you need to know to start your CLAT 2026 journey — from exam pattern to study schedule.","content":"$18","category":"Law Preparation","categoryColor":"#f77420","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"May 10, 2026","readTime":"8 min read","tags":["CLAT 2026","Preparation","Study Plan","Beginner Guide"]},{"slug":"top-nlu-cutoffs-2025","title":"CLAT 2025 Cutoff Ranks for All 23 NLUs: Category-Wise Analysis","excerpt":"Complete analysis of CLAT 2025 closing ranks for all 23 NLUs — General, SC, ST, OBC, and PWD categories.","content":"$19","category":"Law Preparation","categoryColor":"#f77420","author":"CLATians Team","authorAvatar":"CT","date":"May 5, 2026","readTime":"6 min read","tags":["NLU Cutoffs","CLAT 2025","Admission","College Selection"]},{"slug":"ailet-vs-clat-differences","title":"AILET vs CLAT: Key Differences Every Law Aspirant Must Know","excerpt":"Should you prepare separately for AILET or will CLAT preparation be enough? A complete comparison.","content":"$1a","category":"Law Preparation","categoryColor":"#f77420","author":"Adv. Priya Singh","authorAvatar":"PS","date":"April 28, 2026","readTime":"7 min read","tags":["AILET","CLAT","Comparison","NLU Delhi","Exam Strategy"]},{"slug":"current-affairs-strategy-clat","title":"Current Affairs Strategy for CLAT 2026: What to Read and What to Skip","excerpt":"Dr. Neha Verma shares the exact current affairs strategy that has helped 3000+ students ace this section.","content":"$1b","category":"Current Affairs","categoryColor":"#f97316","author":"Dr. Neha Verma","authorAvatar":"NV","date":"April 20, 2026","readTime":"9 min read","tags":["Current Affairs","CLAT Strategy","GK","Preparation Tips"]},{"slug":"legal-reasoning-tips-clat","title":"How to Score 30+ in Legal Reasoning: The CLATians Method","excerpt":"Master the most important CLAT section with Adv. Ravi Kumar's proven methodology.","content":"$1c","category":"Legal","categoryColor":"#6366f1","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"April 15, 2026","readTime":"10 min read","tags":["Legal Reasoning","CLAT Preparation","Scoring Tips","Study Strategy"]},{"slug":"life-at-nlu-what-to-expect","title":"Life at an NLU: What to Expect After Cracking CLAT","excerpt":"A CLATians alumna shares what life at a National Law University really looks like.","content":"$1d","category":"Law Preparation","categoryColor":"#f77420","author":"CLATians Team","authorAvatar":"CT","date":"April 8, 2026","readTime":"8 min read","tags":["NLU Life","After CLAT","Law School","Career"]},{"slug":"top-nlu-colleges-india-ranking-2026","title":"Top 10 NLU Colleges in India: Complete Ranking & Cutoffs 2026","excerpt":"Complete guide to all 23 NLUs — rankings, cutoffs, placements, and which one is right for you.","content":"$1e","category":"Law Preparation","categoryColor":"#f77420","author":"A.K. Singh","authorAvatar":"AK","date":"15 May, 2026","readTime":"10 min read","tags":["NLU Rankings","CLAT Cutoffs","NLU Guide","Law College"]},{"slug":"legal-reasoning-tips-clat-2026","title":"Legal Reasoning for CLAT 2026: 10 Proven Tips to Score 30+/37","excerpt":"Master legal reasoning with these expert strategies from A.K. Singh. Score full marks in the highest-weightage section.","content":"$1f","category":"Legal","categoryColor":"#6366f1","author":"A.K. Singh","authorAvatar":"AK","date":"12 May, 2026","readTime":"7 min read","tags":["Legal Reasoning","CLAT Strategy","CLAT 2026","Study Tips"]},{"slug":"clat-vs-ailet-which-is-harder","title":"CLAT vs AILET 2026: Which is Harder? Complete Comparison","excerpt":"Detailed comparison of CLAT and AILET — difficulty level, pattern, cutoffs, and which exam you should prioritize.","content":"$20","category":"Law Preparation","categoryColor":"#f77420","author":"A.K. Singh","authorAvatar":"AK","date":"8 May, 2026","readTime":"6 min read","tags":["CLAT vs AILET","AILET 2026","Exam Comparison","Strategy"]},{"slug":"current-affairs-clat-may-2026","title":"Current Affairs for CLAT – May 2026 Complete Capsule","excerpt":"All important current affairs events of May 2026 relevant for CLAT, AILET, and other law entrance exams.","content":"$21","category":"Current Affairs","categoryColor":"#f97316","author":"CLATians Faculty","authorAvatar":"CF","date":"20 May, 2026","readTime":"8 min read","tags":["Current Affairs","CLAT 2026","GK","Legal GK","Monthly Capsule"]}],"initialCategories":[{"id":1,"name":"Legal","color":"#6366f1"},{"id":2,"name":"Current Affairs","color":"#f97316"},{"id":3,"name":"Law Preparation","color":"#f77420"}]}]
+Join LexPrep Academy today to never miss an important current affairs update for CLAT 2026!8:["$","$L17",null,{"initialBlogs":[{"slug":"clat-2026-complete-guide","title":"CLAT 2026: Complete Preparation Guide for Beginners","excerpt":"Everything you need to know to start your CLAT 2026 journey — from exam pattern to study schedule.","content":"$18","category":"Law Preparation","categoryColor":"#f77420","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"May 10, 2026","readTime":"8 min read","tags":["CLAT 2026","Preparation","Study Plan","Beginner Guide"]},{"slug":"top-nlu-cutoffs-2025","title":"CLAT 2025 Cutoff Ranks for All 23 NLUs: Category-Wise Analysis","excerpt":"Complete analysis of CLAT 2025 closing ranks for all 23 NLUs — General, SC, ST, OBC, and PWD categories.","content":"$19","category":"Law Preparation","categoryColor":"#f77420","author":"LexPrep Academy Team","authorAvatar":"CT","date":"May 5, 2026","readTime":"6 min read","tags":["NLU Cutoffs","CLAT 2025","Admission","College Selection"]},{"slug":"ailet-vs-clat-differences","title":"AILET vs CLAT: Key Differences Every Law Aspirant Must Know","excerpt":"Should you prepare separately for AILET or will CLAT preparation be enough? A complete comparison.","content":"$1a","category":"Law Preparation","categoryColor":"#f77420","author":"Adv. Priya Singh","authorAvatar":"PS","date":"April 28, 2026","readTime":"7 min read","tags":["AILET","CLAT","Comparison","NLU Delhi","Exam Strategy"]},{"slug":"current-affairs-strategy-clat","title":"Current Affairs Strategy for CLAT 2026: What to Read and What to Skip","excerpt":"Dr. Neha Verma shares the exact current affairs strategy that has helped 3000+ students ace this section.","content":"$1b","category":"Current Affairs","categoryColor":"#f97316","author":"Dr. Neha Verma","authorAvatar":"NV","date":"April 20, 2026","readTime":"9 min read","tags":["Current Affairs","CLAT Strategy","GK","Preparation Tips"]},{"slug":"legal-reasoning-tips-clat","title":"How to Score 30+ in Legal Reasoning: The LexPrep Method","excerpt":"Master the most important CLAT section with Adv. Ravi Kumar's proven methodology.","content":"$1c","category":"Legal","categoryColor":"#6366f1","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"April 15, 2026","readTime":"10 min read","tags":["Legal Reasoning","CLAT Preparation","Scoring Tips","Study Strategy"]},{"slug":"life-at-nlu-what-to-expect","title":"Life at an NLU: What to Expect After Cracking CLAT","excerpt":"A LexPrep Academy alumna shares what life at a National Law University really looks like.","content":"$1d","category":"Law Preparation","categoryColor":"#f77420","author":"LexPrep Academy Team","authorAvatar":"CT","date":"April 8, 2026","readTime":"8 min read","tags":["NLU Life","After CLAT","Law School","Career"]},{"slug":"top-nlu-colleges-india-ranking-2026","title":"Top 10 NLU Colleges in India: Complete Ranking & Cutoffs 2026","excerpt":"Complete guide to all 23 NLUs — rankings, cutoffs, placements, and which one is right for you.","content":"$1e","category":"Law Preparation","categoryColor":"#f77420","author":"S.K. Mishra","authorAvatar":"SM","date":"15 May, 2026","readTime":"10 min read","tags":["NLU Rankings","CLAT Cutoffs","NLU Guide","Law College"]},{"slug":"legal-reasoning-tips-clat-2026","title":"Legal Reasoning for CLAT 2026: 10 Proven Tips to Score 30+/37","excerpt":"Master legal reasoning with these expert strategies from S.K. Mishra. Score full marks in the highest-weightage section.","content":"$1f","category":"Legal","categoryColor":"#6366f1","author":"S.K. Mishra","authorAvatar":"SM","date":"12 May, 2026","readTime":"7 min read","tags":["Legal Reasoning","CLAT Strategy","CLAT 2026","Study Tips"]},{"slug":"clat-vs-ailet-which-is-harder","title":"CLAT vs AILET 2026: Which is Harder? Complete Comparison","excerpt":"Detailed comparison of CLAT and AILET — difficulty level, pattern, cutoffs, and which exam you should prioritize.","content":"$20","category":"Law Preparation","categoryColor":"#f77420","author":"S.K. Mishra","authorAvatar":"SM","date":"8 May, 2026","readTime":"6 min read","tags":["CLAT vs AILET","AILET 2026","Exam Comparison","Strategy"]},{"slug":"current-affairs-clat-may-2026","title":"Current Affairs for CLAT – May 2026 Complete Capsule","excerpt":"All important current affairs events of May 2026 relevant for CLAT, AILET, and other law entrance exams.","content":"$21","category":"Current Affairs","categoryColor":"#f97316","author":"LexPrep Academy Faculty","authorAvatar":"CF","date":"20 May, 2026","readTime":"8 min read","tags":["Current Affairs","CLAT 2026","GK","Legal GK","Monthly Capsule"]}],"initialCategories":[{"id":1,"name":"Legal","color":"#6366f1"},{"id":2,"name":"Current Affairs","color":"#f97316"},{"id":3,"name":"Law Preparation","color":"#f77420"}]}]
 e:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
 22:I[27201,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"IconMark"]
 b:null
-10:[["$","title","0",{"children":"CLATians — Best CLAT Coaching in Patna | Bihar · Live demo by Foundly"}],["$","meta","1",{"name":"description","content":"India's leading CLAT coaching institute. Expert faculty, real mock tests, 15,000+ students mentored. Join CLATians for CLAT 2026 preparation."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","link","3",{"rel":"icon","href":"/demos/clatians-website-cms/favicon.ico?favicon.07jdwhooua.5g.ico","sizes":"64x64","type":"image/x-icon"}],["$","link","4",{"rel":"icon","href":"/demos/clatians-website-cms/icon.png?icon.0y6~nnrothwy-.png","sizes":"512x512","type":"image/png"}],["$","link","5",{"rel":"apple-touch-icon","href":"/demos/clatians-website-cms/apple-icon.png?apple-icon.11-u--y3duiwd.png","sizes":"180x180","type":"image/png"}],["$","$L22","6",{}]]
+10:[["$","title","0",{"children":"LexPrep Academy — Best CLAT Coaching in Patna | Bihar · Live demo by Foundly"}],["$","meta","1",{"name":"description","content":"India's leading CLAT coaching institute. Expert faculty, real mock tests, 15,000+ students mentored. Join LexPrep Academy for CLAT 2026 preparation."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","link","3",{"rel":"icon","href":"/demos/clatians-website-cms/favicon.ico?favicon.07jdwhooua.5g.ico","sizes":"64x64","type":"image/x-icon"}],["$","link","4",{"rel":"icon","href":"/demos/clatians-website-cms/icon.png?icon.0y6~nnrothwy-.png","sizes":"512x512","type":"image/png"}],["$","link","5",{"rel":"apple-touch-icon","href":"/demos/clatians-website-cms/apple-icon.png?apple-icon.11-u--y3duiwd.png","sizes":"180x180","type":"image/png"}],["$","$L22","6",{}]]

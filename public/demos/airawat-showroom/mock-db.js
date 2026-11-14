@@ -1,5 +1,5 @@
 /*
- * Airawat Showroom — in-browser demo backend (Foundly portfolio demo).
+ * Teakwood Showroom — in-browser demo backend (Foundly portfolio demo).
  *
  * Answers the same /api endpoints, with the same response shapes and business rules, as the
  * original Express + Postgres server (src/server.js, inventory.js, catalog.js, public.js, labels.js),
@@ -118,7 +118,7 @@
     for (let i = 0; i < mods.length; i++) { if (!mods[i]) continue; let w = 1; while (mods[i + w]) w++; bars.push({ x: i, w }); i += w - 1; }
     return { bars, modules: mods.length };
   }
-  const PRODUCT_PREFIX = 'AHP', PIECE_PREFIX = 'AHU';
+  const PRODUCT_PREFIX = 'TLP', PIECE_PREFIX = 'TLU';
   function nextCode(prefix) {
     const v = D.code_sequences[prefix] || 1;
     D.code_sequences[prefix] = v + 1;
@@ -682,7 +682,7 @@
     const s = D.settings;
     let wording = DEFAULT_WORDING;
     try { wording = { ...DEFAULT_WORDING, ...JSON.parse(s.availability_wording || '{}') }; } catch { /* keep defaults */ }
-    return { business_name: s.business_name || 'Airawat Handicraft', public_pages_enabled: s.public_pages_enabled !== '0', public_show_prices: s.public_show_prices !== '0',
+    return { business_name: s.business_name || 'Teakwood Living', public_pages_enabled: s.public_pages_enabled !== '0', public_show_prices: s.public_show_prices !== '0',
       public_show_expected_date: s.public_show_expected_date === '1', currency: s.currency || 'INR', showroom_contact: s.showroom_contact || '', wording };
   }
   const publicProductFields = (p) => ({ name: p.name, variant: p.variant_label || null, sku: p.sku, category: p.category || null, material: p.material || null, finish: p.finish || null,
@@ -1467,11 +1467,11 @@
     const byS = (sku) => D.products.find((p) => p.sku === sku) || D.products[0];
     const out = [];
     if (hutchPiece) out.push({ kind: 'Code 128 · piece label', label: `${get('products', hutchPiece.product_id).name}`, code: hutchPiece.piece_code });
-    out.push({ kind: 'Code 128 · product label', label: byS('AH-DIN-6S-WAL').name + ' — Walnut', code: byS('AH-DIN-6S-WAL').internal_code });
-    out.push({ kind: 'EAN-13 · manufacturer barcode', label: byS('AH-IDL-GANESH-M').name, code: byS('AH-IDL-GANESH-M').mfr_barcode });
+    out.push({ kind: 'Code 128 · product label', label: byS('TL-DIN-6S-WAL').name + ' — Walnut', code: byS('TL-DIN-6S-WAL').internal_code });
+    out.push({ kind: 'EAN-13 · manufacturer barcode', label: byS('TL-IDL-GANESH-M').name, code: byS('TL-IDL-GANESH-M').mfr_barcode });
     if (dispPiece) out.push({ kind: 'QR · customer page of a display piece', label: get('products', dispPiece.product_id).name, code: `${baseUrl()}/p.html?t=${dispPiece.public_token}` });
-    out.push({ kind: 'QR · product label', label: byS('AH-TVU-180').name, code: `${baseUrl()}/p.html?t=${byS('AH-TVU-180').public_token}` });
-    out.push({ kind: 'Unknown label', label: 'A code that is not in the system', code: 'AHP-999999' });
+    out.push({ kind: 'QR · product label', label: byS('TL-TVU-180').name, code: `${baseUrl()}/p.html?t=${byS('TL-TVU-180').public_token}` });
+    out.push({ kind: 'Unknown label', label: 'A code that is not in the system', code: 'TLP-999999' });
     return out;
   });
 
@@ -1536,68 +1536,68 @@
   const care = 'Dust with a soft dry cloth. Avoid direct sunlight and moisture. Polish with wax every 6 months.';
   const brassCare = 'Wipe with a dry cloth. Clean occasionally with a brass cleaner.';
   const SEED_PRODUCTS = [
-    { key: 'hutch', sku: 'AH-CAB-HUTCH', name: 'Sheesham Hutch Cabinet', category: 'Cabinets', material: 'Sheesham wood', finish: 'Honey', length_cm: 120, width_cm: 45, height_cm: 180,
+    { key: 'hutch', sku: 'TL-CAB-HUTCH', name: 'Sheesham Hutch Cabinet', category: 'Cabinets', material: 'Sheesham wood', finish: 'Honey', length_cm: 120, width_cm: 45, height_cm: 180,
       description: 'Hand-carved solid Sheesham hutch with glass-panel upper doors and brass fittings. Each cabinet is finished by hand, so grain and tone vary slightly.',
       care, selling_price: 68000, cost_price: 41000, vendor: 'Jodhpur Woodcraft Works', internal_notes: 'Negotiable to 62k for showroom pieces', tracking: 'piece', shape: 'cabinet' },
-    { key: 'dining', sku: 'AH-DIN-6S', name: 'Sheesham 6 Seater Dining Set', category: 'Dining Room', material: 'Sheesham wood', length_cm: 180, width_cm: 90, height_cm: 76,
+    { key: 'dining', sku: 'TL-DIN-6S', name: 'Sheesham 6 Seater Dining Set', category: 'Dining Room', material: 'Sheesham wood', length_cm: 180, width_cm: 90, height_cm: 76,
       description: 'Six-seater dining table with six cushioned chairs. Available in two finishes.', care, selling_price: 89000, cost_price: 54000, vendor: 'Jodhpur Woodcraft Works', shape: 'table' },
-    { key: 'diningHoney', parent: 'dining', sku: 'AH-DIN-6S-HON', variant_label: 'Honey finish', name: 'Sheesham 6 Seater Dining Set', category: 'Dining Room', material: 'Sheesham wood', finish: 'Honey',
+    { key: 'diningHoney', parent: 'dining', sku: 'TL-DIN-6S-HON', variant_label: 'Honey finish', name: 'Sheesham 6 Seater Dining Set', category: 'Dining Room', material: 'Sheesham wood', finish: 'Honey',
       length_cm: 180, width_cm: 90, height_cm: 76, care, selling_price: 89000, cost_price: 54000, vendor: 'Jodhpur Woodcraft Works', shape: 'table', bg: '#f6ead4' },
-    { key: 'diningWalnut', parent: 'dining', sku: 'AH-DIN-6S-WAL', variant_label: 'Walnut finish', name: 'Sheesham 6 Seater Dining Set', category: 'Dining Room', material: 'Sheesham wood', finish: 'Walnut',
+    { key: 'diningWalnut', parent: 'dining', sku: 'TL-DIN-6S-WAL', variant_label: 'Walnut finish', name: 'Sheesham 6 Seater Dining Set', category: 'Dining Room', material: 'Sheesham wood', finish: 'Walnut',
       length_cm: 180, width_cm: 90, height_cm: 76, care, selling_price: 92000, cost_price: 55500, vendor: 'Jodhpur Woodcraft Works', shape: 'table', bg: '#e9dccb' },
-    { key: 'bed', sku: 'AH-BED-POSTER-K', name: 'Teak Poster Bed — King', category: 'Bedroom', material: 'Teak wood', finish: 'Natural teak', length_cm: 213, width_cm: 198, height_cm: 210,
+    { key: 'bed', sku: 'TL-BED-POSTER-K', name: 'Teak Poster Bed — King', category: 'Bedroom', material: 'Teak wood', finish: 'Natural teak', length_cm: 213, width_cm: 198, height_cm: 210,
       description: 'Four-poster king bed in seasoned teak with carved headboard. Made to order in your choice of finish.', care, selling_price: 145000, cost_price: 88000, vendor: 'In-house workshop',
       made_to_order: 1, lead_time_days: 45, shape: 'bed' },
-    { key: 'ganesha', sku: 'AH-IDL-GANESH-M', name: 'Brass Ganesha Idol — Medium', category: 'Temple/Statues', material: 'Brass', finish: 'Antique gold', length_cm: 20, width_cm: 15, height_cm: 30,
+    { key: 'ganesha', sku: 'TL-IDL-GANESH-M', name: 'Brass Ganesha Idol — Medium', category: 'Temple/Statues', material: 'Brass', finish: 'Antique gold', length_cm: 20, width_cm: 15, height_cm: 30,
       description: 'Solid brass Ganesha with antique gold finish.', care: brassCare, selling_price: 7800, cost_price: 4100, vendor: 'Moradabad Metal Arts',
       mfr_barcode: '8901234567890', shape: 'idol', bg: '#f7efdc', short_specs: 'Brass · 30 cm tall' },
-    { key: 'jhula', sku: 'AH-SWG-ANTQ', name: 'Antique Carved Jhula (Swing)', category: 'Showpieces', material: 'Teak wood', finish: 'Aged natural', length_cm: 150, width_cm: 60, height_cm: 200,
+    { key: 'jhula', sku: 'TL-SWG-ANTQ', name: 'Antique Carved Jhula (Swing)', category: 'Showpieces', material: 'Teak wood', finish: 'Aged natural', length_cm: 150, width_cm: 60, height_cm: 200,
       description: 'Restored antique teak jhula with brass chains. One of a kind.', care, selling_price: 210000, cost_price: 120000, vendor: 'Private collection', tracking: 'piece', shape: 'swing' },
-    { key: 'chest', sku: 'AH-CHD-MANGO-4', name: 'Mango Wood Chest of 4 Drawers', category: 'Chest of Drawers', material: 'Mango wood', finish: 'Honey oak', length_cm: 80, width_cm: 45, height_cm: 95,
+    { key: 'chest', sku: 'TL-CHD-MANGO-4', name: 'Mango Wood Chest of 4 Drawers', category: 'Chest of Drawers', material: 'Mango wood', finish: 'Honey oak', length_cm: 80, width_cm: 45, height_cm: 95,
       description: 'Four-drawer chest with ceramic knobs.', care, selling_price: 24500, cost_price: 14000, vendor: 'Saharanpur Craft Co.', shape: 'drawers' },
-    { key: 'chest2', sku: 'AH-CHD-SHEE-5', name: 'Sheesham Chest of 5 Drawers', category: 'Chest of Drawers', material: 'Sheesham wood', finish: 'Honey', length_cm: 85, width_cm: 45, height_cm: 110,
+    { key: 'chest2', sku: 'TL-CHD-SHEE-5', name: 'Sheesham Chest of 5 Drawers', category: 'Chest of Drawers', material: 'Sheesham wood', finish: 'Honey', length_cm: 85, width_cm: 45, height_cm: 110,
       description: 'Five-drawer chest with brass handles.', care, selling_price: 27500, cost_price: 16500, vendor: 'Jodhpur Woodcraft Works', shape: 'drawers', bg: '#f6ead4' },
-    { key: 'sofa', sku: 'AH-SCB-3S', name: 'Sofa Cum Bed — 3 Seater', category: 'Sofa Cum Beds', material: 'Sheesham wood', finish: 'Walnut', length_cm: 195, width_cm: 85, height_cm: 85,
+    { key: 'sofa', sku: 'TL-SCB-3S', name: 'Sofa Cum Bed — 3 Seater', category: 'Sofa Cum Beds', material: 'Sheesham wood', finish: 'Walnut', length_cm: 195, width_cm: 85, height_cm: 85,
       description: 'Pull-out sofa cum bed with upholstered cushions.', care, selling_price: 52000, cost_price: 31000, vendor: 'Pune Upholstery', shape: 'sofa' },
-    { key: 'tv', sku: 'AH-TVU-180', name: 'Carved TV Unit 180', category: 'TV Units', material: 'Sheesham wood', finish: 'Provincial teak', length_cm: 180, width_cm: 45, height_cm: 55,
+    { key: 'tv', sku: 'TL-TVU-180', name: 'Carved TV Unit 180', category: 'TV Units', material: 'Sheesham wood', finish: 'Provincial teak', length_cm: 180, width_cm: 45, height_cm: 55,
       description: 'Low TV unit with two cabinets and an open shelf.', care, selling_price: 38500, cost_price: 22000, vendor: 'Jodhpur Woodcraft Works', shape: 'tv' },
-    { key: 'shelf', sku: 'AH-BKS-5T', name: 'Five Tier Book Shelf', category: 'Book Shelves', material: 'Sheesham wood', finish: 'Natural', length_cm: 90, width_cm: 35, height_cm: 180,
+    { key: 'shelf', sku: 'TL-BKS-5T', name: 'Five Tier Book Shelf', category: 'Book Shelves', material: 'Sheesham wood', finish: 'Natural', length_cm: 90, width_cm: 35, height_cm: 180,
       description: 'Tall open bookshelf with five tiers.', care, selling_price: 21000, cost_price: 12500, vendor: 'Jodhpur Woodcraft Works', shape: 'shelf' },
-    { key: 'desk', sku: 'AH-STD-120', name: 'Study Table with Drawers', category: 'Office & Study', material: 'Sheesham wood', finish: 'Walnut', length_cm: 120, width_cm: 60, height_cm: 76,
+    { key: 'desk', sku: 'TL-STD-120', name: 'Study Table with Drawers', category: 'Office & Study', material: 'Sheesham wood', finish: 'Walnut', length_cm: 120, width_cm: 60, height_cm: 76,
       description: 'Study table with three drawers on one side.', care, selling_price: 26000, cost_price: 15500, vendor: 'Jodhpur Woodcraft Works', shape: 'desk' },
     // more sample catalogue (invented)
-    { key: 'bar', sku: 'AH-CAB-BAR', name: 'Carved Bar Cabinet', category: 'Cabinets', material: 'Sheesham wood', finish: 'Walnut', length_cm: 100, width_cm: 45, height_cm: 150,
+    { key: 'bar', sku: 'TL-CAB-BAR', name: 'Carved Bar Cabinet', category: 'Cabinets', material: 'Sheesham wood', finish: 'Walnut', length_cm: 100, width_cm: 45, height_cm: 150,
       description: 'Bar cabinet with wine rack, stemware holders and a fold-down serving shelf.', care, selling_price: 58000, cost_price: 34000, vendor: 'Jodhpur Woodcraft Works', shape: 'cabinet', bg: '#ece0d1' },
-    { key: 'crockery', sku: 'AH-CAB-CROCK-3D', name: 'Three Door Crockery Unit', category: 'Cabinets', material: 'Mango wood', finish: 'Honey oak', length_cm: 150, width_cm: 40, height_cm: 90,
+    { key: 'crockery', sku: 'TL-CAB-CROCK-3D', name: 'Three Door Crockery Unit', category: 'Cabinets', material: 'Mango wood', finish: 'Honey oak', length_cm: 150, width_cm: 40, height_cm: 90,
       description: 'Sideboard with three glass doors and two drawers for cutlery.', care, selling_price: 46000, cost_price: 27000, vendor: 'Saharanpur Craft Co.', shape: 'cabinet', bg: '#f4ebdc' },
-    { key: 'dining4', sku: 'AH-DIN-4S', name: 'Mango Wood 4 Seater Dining Set', category: 'Dining Room', material: 'Mango wood', finish: 'Natural', length_cm: 120, width_cm: 75, height_cm: 76,
+    { key: 'dining4', sku: 'TL-DIN-4S', name: 'Mango Wood 4 Seater Dining Set', category: 'Dining Room', material: 'Mango wood', finish: 'Natural', length_cm: 120, width_cm: 75, height_cm: 76,
       description: 'Compact four-seater dining set with cane-back chairs.', care, selling_price: 48000, cost_price: 29000, vendor: 'Saharanpur Craft Co.', shape: 'table', bg: '#f1e9dc' },
-    { key: 'bench', sku: 'AH-DIN-BENCH-4', name: 'Dining Bench — 4 ft', category: 'Dining Room', material: 'Sheesham wood', finish: 'Honey', length_cm: 120, width_cm: 35, height_cm: 45,
+    { key: 'bench', sku: 'TL-DIN-BENCH-4', name: 'Dining Bench — 4 ft', category: 'Dining Room', material: 'Sheesham wood', finish: 'Honey', length_cm: 120, width_cm: 35, height_cm: 45,
       description: 'Solid bench that pairs with the 6 seater dining set.', care, selling_price: 14500, cost_price: 8200, vendor: 'Jodhpur Woodcraft Works', shape: 'table', bg: '#f8eedf' },
-    { key: 'coffee', sku: 'AH-CTB-ROUND', name: 'Round Carved Coffee Table', category: 'Living Room', material: 'Sheesham wood', finish: 'Honey', length_cm: 90, width_cm: 90, height_cm: 45,
+    { key: 'coffee', sku: 'TL-CTB-ROUND', name: 'Round Carved Coffee Table', category: 'Living Room', material: 'Sheesham wood', finish: 'Honey', length_cm: 90, width_cm: 90, height_cm: 45,
       description: 'Round coffee table with a hand-carved apron and a lower shelf.', care, selling_price: 18500, cost_price: 10500, vendor: 'Jodhpur Woodcraft Works', shape: 'table', bg: '#f3e6d6' },
-    { key: 'qbed', sku: 'AH-BED-QUEEN-STR', name: 'Sheesham Bed with Storage — Queen', category: 'Bedroom', material: 'Sheesham wood', finish: 'Walnut', length_cm: 210, width_cm: 165, height_cm: 105,
+    { key: 'qbed', sku: 'TL-BED-QUEEN-STR', name: 'Sheesham Bed with Storage — Queen', category: 'Bedroom', material: 'Sheesham wood', finish: 'Walnut', length_cm: 210, width_cm: 165, height_cm: 105,
       description: 'Queen bed with hydraulic storage and a panelled headboard.', care, selling_price: 72000, cost_price: 43000, vendor: 'Jodhpur Woodcraft Works', shape: 'bed', bg: '#efe4d6' },
-    { key: 'buddha', sku: 'AH-IDL-BUDDHA-L', name: 'Brass Buddha Statue — Large', category: 'Temple/Statues', material: 'Brass', finish: 'Antique bronze', length_cm: 35, width_cm: 25, height_cm: 60,
+    { key: 'buddha', sku: 'TL-IDL-BUDDHA-L', name: 'Brass Buddha Statue — Large', category: 'Temple/Statues', material: 'Brass', finish: 'Antique bronze', length_cm: 35, width_cm: 25, height_cm: 60,
       description: 'Hand-cast seated Buddha. Each casting is finished by hand, so the patina differs from piece to piece.', care: brassCare, selling_price: 24500, cost_price: 13800, vendor: 'Moradabad Metal Arts',
       tracking: 'piece', shape: 'idol', bg: '#efe6d3', short_specs: 'Brass · 60 cm tall' },
-    { key: 'nandi', sku: 'AH-IDL-NANDI-S', name: 'Brass Nandi — Small', category: 'Temple/Statues', material: 'Brass', finish: 'Antique gold', length_cm: 18, width_cm: 9, height_cm: 14,
+    { key: 'nandi', sku: 'TL-IDL-NANDI-S', name: 'Brass Nandi — Small', category: 'Temple/Statues', material: 'Brass', finish: 'Antique gold', length_cm: 18, width_cm: 9, height_cm: 14,
       description: 'Seated Nandi in solid brass.', care: brassCare, selling_price: 4200, cost_price: 2100, vendor: 'Moradabad Metal Arts', mfr_barcode: '8901234567906', shape: 'idol', bg: '#f9f1df', short_specs: 'Brass · 14 cm tall' },
-    { key: 'mandir', sku: 'AH-TMP-MANDIR', name: 'Teak Wood Home Mandir', category: 'Temple/Statues', material: 'Teak wood', finish: 'Natural teak', length_cm: 60, width_cm: 40, height_cm: 110,
+    { key: 'mandir', sku: 'TL-TMP-MANDIR', name: 'Teak Wood Home Mandir', category: 'Temple/Statues', material: 'Teak wood', finish: 'Natural teak', length_cm: 60, width_cm: 40, height_cm: 110,
       description: 'Carved home temple with a drawer and bell hooks. Made to order in about a month.', care, selling_price: 39000, cost_price: 23000, vendor: 'In-house workshop', made_to_order: 1, lead_time_days: 30, shape: 'cabinet', bg: '#f5ecdd' },
-    { key: 'jhula2', sku: 'AH-SWG-SHEE', name: 'Sheesham Indoor Jhula', category: 'Showpieces', material: 'Sheesham wood', finish: 'Honey', length_cm: 140, width_cm: 55, height_cm: 190,
+    { key: 'jhula2', sku: 'TL-SWG-SHEE', name: 'Sheesham Indoor Jhula', category: 'Showpieces', material: 'Sheesham wood', finish: 'Honey', length_cm: 140, width_cm: 55, height_cm: 190,
       description: 'Indoor swing with a carved frame and brass-plated chains.', care, selling_price: 64000, cost_price: 38000, vendor: 'Jodhpur Woodcraft Works', shape: 'swing', bg: '#f6ecdc' },
-    { key: 'trunk', sku: 'AH-SHP-TRUNK', name: 'Brass Fitted Storage Trunk', category: 'Showpieces', material: 'Mango wood', finish: 'Distressed blue', length_cm: 90, width_cm: 45, height_cm: 50,
+    { key: 'trunk', sku: 'TL-SHP-TRUNK', name: 'Brass Fitted Storage Trunk', category: 'Showpieces', material: 'Mango wood', finish: 'Distressed blue', length_cm: 90, width_cm: 45, height_cm: 50,
       description: 'Wooden trunk with hammered brass corners — works as a coffee table too.', care, selling_price: 32000, cost_price: 19000, vendor: 'Saharanpur Craft Co.', shape: 'drawers', bg: '#e6ecf0' },
-    { key: 'sofa2', sku: 'AH-SCB-2S', name: 'Sofa Cum Bed — 2 Seater', category: 'Sofa Cum Beds', material: 'Sheesham wood', finish: 'Walnut', length_cm: 145, width_cm: 85, height_cm: 85,
+    { key: 'sofa2', sku: 'TL-SCB-2S', name: 'Sofa Cum Bed — 2 Seater', category: 'Sofa Cum Beds', material: 'Sheesham wood', finish: 'Walnut', length_cm: 145, width_cm: 85, height_cm: 85,
       description: 'Two-seater pull-out sofa cum bed.', care, selling_price: 41000, cost_price: 24500, vendor: 'Pune Upholstery', shape: 'sofa', bg: '#f2e7e3' },
-    { key: 'teaksofa', sku: 'AH-SOF-3S-CARV', name: 'Carved Teak Sofa — 3 Seater', category: 'Sofas', material: 'Teak wood', finish: 'Natural teak', length_cm: 200, width_cm: 85, height_cm: 95,
+    { key: 'teaksofa', sku: 'TL-SOF-3S-CARV', name: 'Carved Teak Sofa — 3 Seater', category: 'Sofas', material: 'Teak wood', finish: 'Natural teak', length_cm: 200, width_cm: 85, height_cm: 95,
       description: 'Heavily carved three-seater in reclaimed teak. Each frame is unique.', care, selling_price: 98000, cost_price: 59000, vendor: 'In-house workshop', tracking: 'piece', shape: 'sofa', bg: '#efe2d4' },
-    { key: 'tv2', sku: 'AH-TVU-150-MNG', name: 'Mango Wood TV Unit 150', category: 'TV Units', material: 'Mango wood', finish: 'Natural', length_cm: 150, width_cm: 40, height_cm: 50,
+    { key: 'tv2', sku: 'TL-TVU-150-MNG', name: 'Mango Wood TV Unit 150', category: 'TV Units', material: 'Mango wood', finish: 'Natural', length_cm: 150, width_cm: 40, height_cm: 50,
       description: 'TV unit with two drawers and slatted doors.', care, selling_price: 29500, cost_price: 17000, vendor: 'Saharanpur Craft Co.', shape: 'tv', bg: '#f4eadb' },
-    { key: 'ladder', sku: 'AH-BKS-LADDER', name: 'Ladder Book Shelf', category: 'Book Shelves', material: 'Mango wood', finish: 'Natural', length_cm: 60, width_cm: 35, height_cm: 170,
+    { key: 'ladder', sku: 'TL-BKS-LADDER', name: 'Ladder Book Shelf', category: 'Book Shelves', material: 'Mango wood', finish: 'Natural', length_cm: 60, width_cm: 35, height_cm: 170,
       description: 'Leaning ladder shelf with four tiers.', care, selling_price: 12500, cost_price: 7000, vendor: 'Saharanpur Craft Co.', shape: 'shelf', bg: '#f3ede2' },
-    { key: 'wdesk', sku: 'AH-STD-WRITING', name: 'Antique Writing Desk', category: 'Office & Study', material: 'Teak wood', finish: 'Aged natural', length_cm: 110, width_cm: 55, height_cm: 78,
+    { key: 'wdesk', sku: 'TL-STD-WRITING', name: 'Antique Writing Desk', category: 'Office & Study', material: 'Teak wood', finish: 'Aged natural', length_cm: 110, width_cm: 55, height_cm: 78,
       description: 'Restored colonial writing desk with leather inlay. One of a kind.', care, selling_price: 86000, cost_price: 52000, vendor: 'Private collection', tracking: 'piece', shape: 'desk', bg: '#efe5d8' },
   ];
 
@@ -1606,10 +1606,10 @@
     D = emptyDb();
     try {
       at(75, 10);
-      Object.assign(D.settings, { business_name: 'Airawat Handicraft', public_pages_enabled: '1', public_show_prices: '1', public_show_expected_date: '0', currency: 'INR', showroom_contact: '+91 98000 00101' });
+      Object.assign(D.settings, { business_name: 'Teakwood Living', public_pages_enabled: '1', public_show_prices: '1', public_show_expected_date: '0', currency: 'INR', showroom_contact: '+91 98000 00101' });
       const U = {};
       for (const [u, n, r] of USERS) U[u] = ins('users', { username: u, name: n, role: r, pass_hash: hashPassword(DEMO_PASSWORD), active: 1 }).id;
-      const L = { show: ins('locations', { code: 'SHR', name: 'Baner Showroom', type: 'showroom' }).id, wh: ins('locations', { code: 'WH1', name: 'Main Warehouse', type: 'warehouse' }).id,
+      const L = { show: ins('locations', { code: 'SHR', name: 'Kothrud Showroom', type: 'showroom' }).id, wh: ins('locations', { code: 'WH1', name: 'Main Warehouse', type: 'warehouse' }).id,
         br: ins('locations', { code: 'BR2', name: 'Aundh Branch', type: 'branch' }).id };
       for (const t of DEFAULT_TEMPLATES) ins('label_templates', { cols: null, rows: null, margin_top_mm: 0, margin_left_mm: 0, gap_x_mm: 0, gap_y_mm: 0, ...t });
 
@@ -1618,7 +1618,7 @@
         const { key, parent, shape, bg, ...data } = sp;
         if (parent) data.parent_id = P[parent];
         P[key] = createProduct(data).id;
-        ins('photos', { product_id: P[key], piece_id: null, url: `seed-img/${sp.sku.toLowerCase()}.svg`, storage_path: null, caption: null, is_public: 1, sort: 0 });
+        ins('photos', { product_id: P[key], piece_id: null, url: `seed-img/${sp.sku.toLowerCase().replace(/^tl-/, 'ah-')}.svg`, storage_path: null, caption: null, is_public: 1, sort: 0 });
       }
       const s = U.store;
       // Hutch cabinet: identical SKU, every cabinet tracked as its own piece.

@@ -2,7 +2,7 @@
 2:I[11645,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website/_next/static/chunks/0de.u2b-yxxd3.js","/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js"],"default"]
 4:I[97367,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-3:T647,The CLAT 2025 results have been declared and the cutoffs have been finalized. Here is a comprehensive analysis of the closing ranks for all 23 National Law Universities.
+3:T655,The CLAT 2025 results have been declared and the cutoffs have been finalized. Here is a comprehensive analysis of the closing ranks for all 23 National Law Universities.
 
 ## Top 5 NLUs and Their CLAT 2025 Cutoffs
 
@@ -44,7 +44,7 @@ These cutoffs are based on previous year data and should be used as a reference 
 3. Your state of domicile (for state NLUs)
 4. Number of applicants that year
 
-Use CLATians' AI College Predictor for a personalized prediction based on your expected rank.
+Use LexPrep Academy' AI College Predictor for a personalized prediction based on your expected rank.
 
 ## Preparation Strategy Based on Target NLU
 
@@ -52,12 +52,12 @@ If you are targeting **Top 5 NLUs**: Aim for rank under 500 (General)
 If you are targeting **Tier 2 NLUs**: Aim for rank 500-1500 (General)
 If you are targeting **All NLUs**: A rank under 5000 ensures some NLU admission
 
-## Contact CLATians for Counselling
+## Contact LexPrep Academy for Counselling
 
 Our counselling team can help you:
 - Select the right NLU based on your preferences
 - Understand category-specific advantages
 - Plan your preparation to hit target ranks
 
-Call us at 8507700177 for free counselling.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"top-nlu-cutoffs-2025","title":"CLAT 2025 Cutoff Ranks for All 23 NLUs: Category-Wise Analysis","excerpt":"Complete analysis of CLAT 2025 closing ranks for all 23 NLUs — General, SC, ST, OBC, and PWD categories.","content":"$3","category":"Law Preparation","categoryColor":"#08BD80","author":"CLATians Team","authorAvatar":"CT","date":"May 5, 2026","readTime":"6 min read","tags":["NLU Cutoffs","CLAT 2025","Admission","College Selection"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
+Call us at 9876543210 for free counselling.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"top-nlu-cutoffs-2025","title":"CLAT 2025 Cutoff Ranks for All 23 NLUs: Category-Wise Analysis","excerpt":"Complete analysis of CLAT 2025 closing ranks for all 23 NLUs — General, SC, ST, OBC, and PWD categories.","content":"$3","category":"Law Preparation","categoryColor":"#08BD80","author":"LexPrep Academy Team","authorAvatar":"CT","date":"May 5, 2026","readTime":"6 min read","tags":["NLU Cutoffs","CLAT 2025","Admission","College Selection"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
 6:null

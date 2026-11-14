@@ -6,7 +6,7 @@
   $("#contactKV").innerHTML = [
     ["Office Address", c.address],
     ["Phone", `<a class="link-u" href="${telLink()}">${esc(c.phone)}</a>`],
-    ["WhatsApp", `<a class="link-u" href="${waLink("Hi Radhe Homes, I have an enquiry.")}" target="_blank" rel="noopener">${esc(c.phone)}</a>`],
+    ["WhatsApp", `<a class="link-u" href="${waLink("Hi Skyline Homes, I have an enquiry.")}" target="_blank" rel="noopener">${esc(c.phone)}</a>`],
     ["Email", `<a class="link-u" href="${mailLink()}">${esc(c.email)}</a>`],
     ["Business Hours", c.hours],
     ["RERA", c.rera]
@@ -28,7 +28,7 @@
   }
 
   $("#cMap").src = `https://www.google.com/maps?q=${encodeURIComponent(c.mapQuery)}&output=embed`;
-  $("#cWa").href = waLink("Hi Radhe Homes, I have an enquiry.");
+  $("#cWa").href = waLink("Hi Skyline Homes, I have an enquiry.");
   $("#cCall").href = telLink();
   $("#cMail").href = mailLink();
   $("#cDir").href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(c.address)}`;

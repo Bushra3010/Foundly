@@ -1,9 +1,9 @@
-// Swanidhi CRM — offline demo. Staff CRM, student portal and associate portal on dummy data
+// Unity CRM — offline demo. Staff CRM, student portal and associate portal on dummy data
 // (data.js), styled with the Zavtoo app theme. Hash routes, one render() per navigation.
 (function () {
   'use strict';
   var app = document.getElementById('app');
-  var SESSION_KEY = 'swanidhi_demo_session';
+  var SESSION_KEY = 'unity_demo_session';
   var DEMO_PASSWORD = 'Demo@12345';
   var DAY = 86400000;
   var db = DB.get();
@@ -244,7 +244,7 @@
       (fus.length ? '<div class="card flush">' + fus.slice(0, 4).map(leadItem).join('') + '</div>' : '<div class="card">' + empty('check', 'No follow-ups due today') + '</div>') +
       sec('Recent fee payments', 'Fees', 'fees') +
       '<div class="card flush">' + db.payments.slice().sort(function (a, b) { return new Date(b.date) - new Date(a.date); }).slice(0, 4).map(function (p) { return paymentItem(p); }).join('') + '</div>';
-    return shell({ title: 'Swanidhi CRM', sub: u.name + ' · ' + ROLE[u.role], body: body, tab: 'dashboard' });
+    return shell({ title: 'Unity CRM', sub: u.name + ' · ' + ROLE[u.role], body: body, tab: 'dashboard' });
   }
 
   function leads() {
@@ -280,7 +280,7 @@
       '<p style="color:var(--ink-soft);font-size:13px;margin:2px 0 10px">+91 ' + esc(l.phone) + ' · ' + esc(l.city) + '</p>' + statusPill(l.status) +
       '<div class="btn-row" style="margin-top:16px">' +
       '<a class="btn sm ghost" style="flex:1" href="tel:+91' + l.phone + '">' + I('phone', 17) + 'Call</a>' +
-      '<a class="btn sm ghost" style="flex:1;color:var(--green)" href="https://wa.me/91' + l.phone + '?text=' + encodeURIComponent('Namaste ' + l.name.split(' ')[0] + ', this is ' + me().name + ' from Swanidhi Group of Institutions regarding your enquiry for ' + l.course + '.') + '">' + I('chat', 17) + 'WhatsApp</a></div></div>' +
+      '<a class="btn sm ghost" style="flex:1;color:var(--green)" href="https://wa.me/91' + l.phone + '?text=' + encodeURIComponent('Namaste ' + l.name.split(' ')[0] + ', this is ' + me().name + ' from Unity Group of Colleges regarding your enquiry for ' + l.course + '.') + '">' + I('chat', 17) + 'WhatsApp</a></div></div>' +
       '<div class="btn-row" style="margin-bottom:14px">' +
       '<button class="btn" data-act="updateLead" data-id="' + l.id + '">' + I('edit', 18, '#fff') + 'Update</button>' +
       (l.status !== 'converted' ? '<button class="btn gold" data-act="convertLead" data-id="' + l.id + '">' + I('cap', 18) + 'Convert</button>' : '') + '</div>' +
@@ -420,7 +420,7 @@
       '<div class="card flush">' +
       '<div class="list-item press" data-act="resetDemo"><div class="avatar t-gold">' + I('refresh', 19) + '</div><div class="main"><b>Reset demo data</b><small>Restore the original dummy leads, students and fees</small></div>' + I('right', 18, '#98a1b5') + '</div>' +
       '<div class="list-item press" data-act="logout"><div class="avatar t-red">' + I('logout', 19) + '</div><div class="main"><b>Log out</b><small>Switch to another demo account</small></div>' + I('right', 18, '#98a1b5') + '</div></div>' +
-      '<p style="text-align:center;color:var(--ink-mute);font-size:11.5px;margin-top:16px">Swanidhi CRM · v1.1 demo</p>';
+      '<p style="text-align:center;color:var(--ink-mute);font-size:11.5px;margin-top:16px">Unity CRM · v1.1 demo</p>';
     return shell({ title: 'More', sub: 'All CRM modules', body: body });
   }
 
@@ -624,7 +624,7 @@
       '<div class="hero"><small>1st-year fee</small><div class="big">' + inr(firstYearFee(st)) + '</div>' +
       '<div class="progress" style="margin:12px 0 8px;background:rgba(255,255,255,.18)"><i style="width:' + Math.min(100, paidFor(st) / firstYearFee(st) * 100) + '%"></i></div>' +
       '<small>Paid ' + inr(paidFor(st)) + ' · Due ' + inr(dueFor(st)) + '</small></div>' +
-      (dueFor(st) ? '<div class="card"><b style="font-weight:700">Pay your fee</b><p style="font-size:12.5px;color:var(--ink-soft);margin:4px 0 12px">Pay at the accounts office or by UPI to <b>swanidhi@upi</b> and share the receipt with your counsellor.</p>' +
+      (dueFor(st) ? '<div class="card"><b style="font-weight:700">Pay your fee</b><p style="font-size:12.5px;color:var(--ink-soft);margin:4px 0 12px">Pay at the accounts office or by UPI to <b>unitycolleges@upi</b> and share the receipt with your counsellor.</p>' +
         '<button class="btn gold" data-act="share" data-text="' + esc('Fee payment for ' + st.name + ' (' + st.enrollment + '): ' + inr(dueFor(st)) + ' due.') + '">' + I('chat', 18) + 'Share payment details</button></div>' : '') +
       sec('Receipts') + (pays.length ? '<div class="card flush">' + pays.map(function (p) { return paymentItem(p, true); }).join('') + '</div>' : '<div class="card">' + empty('rupee', 'No payments yet') + '</div>');
     return shell({ title: 'My Fees', sub: st.course, body: body });
@@ -695,9 +695,9 @@
     var t = loginTab;
     var fields = t === 'student'
       ? '<div class="field"><label>Enrollment number</label><input class="input" name="user" placeholder="e.g. DEMO-STU-001" autocapitalize="characters"></div>'
-      : '<div class="field"><label>Email address</label><input class="input" name="user" type="email" placeholder="name@swanidhi.test"></div>';
+      : '<div class="field"><label>Email address</label><input class="input" name="user" type="email" placeholder="name@unitycolleges.example.com"></div>';
     app.innerHTML =
-      '<div class="login"><div class="login-hero"><img src="/demos/swanidhi/logo.png" alt=""><div><h1>Swanidhi Group<br>of Institutions</h1><p>Admissions · Fees · HRMS CRM</p></div></div>' +
+      '<div class="login"><div class="login-hero"><img src="/demos/swanidhi/logo.png" alt=""><div><h1>Unity Group<br>of Colleges</h1><p>Admissions · Fees · HRMS CRM</p></div></div>' +
       '<div class="login-card fade-in"><h2>Welcome <span>back</span></h2><p class="sub">Sign in to continue to your workspace.</p>' +
       '<div class="tabs">' + [['staff', 'Staff'], ['student', 'Student'], ['associate', 'Associate']].map(function (x) {
         return '<button class="' + (t === x[0] ? 'on' : '') + '" data-act="loginTab" data-v="' + x[0] + '">' + x[1] + '</button>';
@@ -716,14 +716,14 @@
     if (password !== DEMO_PASSWORD) return 'Wrong password. Demo password is ' + DEMO_PASSWORD;
     if (role === 'staff') {
       var s = db.staff.filter(function (x) { return x.email === user; })[0];
-      if (!s) return 'No staff account with that email. Try demo.admin@swanidhi.test';
+      if (!s) return 'No staff account with that email. Try demo.admin@unitycolleges.example.com';
       setSession({ role: 'staff', id: s.id });
     } else if (role === 'student') {
       var st = user === 'demo-stu-001' ? db.students[0] : db.students.filter(function (x) { return x.enrollment.toLowerCase() === user; })[0];
       if (!st) return 'Enrollment number not found. Try DEMO-STU-001';
       setSession({ role: 'student', id: st.id });
     } else {
-      if (user !== 'demo.associate@swanidhi.test') return 'Associate not found. Try demo.associate@swanidhi.test';
+      if (user !== 'demo.associate@unitycolleges.example.com') return 'Associate not found. Try demo.associate@unitycolleges.example.com';
       setSession({ role: 'associate', id: 'a1' });
     }
     return null;
@@ -778,7 +778,7 @@
       '<style>body{font-family:Arial,sans-serif;color:#0f1729;margin:24px}.h{display:flex;gap:14px;align-items:center;border-bottom:3px solid #f5a623;padding-bottom:12px}.h img{width:64px}' +
       '.h b{font-size:20px;color:#04246b}.h small{display:block;color:#5b6478}h2{text-align:center;letter-spacing:.1em;color:#0b5cff;margin:18px 0}table{width:100%;border-collapse:collapse}' +
       'td{padding:9px 6px;border-bottom:1px solid #e6eaf5;font-size:14px}td:first-child{color:#5b6478;width:40%}.amt{font-size:22px;font-weight:bold;color:#04246b}.f{margin-top:40px;display:flex;justify-content:space-between;color:#5b6478;font-size:12px}</style></head><body>' +
-      '<div class="h"><img src="' + location.origin + '/demos/swanidhi/logo.png"><div><b>Swanidhi Group of Institutions</b><small>Medical • Nursing • Paramedical • Law • Management</small></div></div>' +
+      '<div class="h"><img src="' + location.origin + '/demos/swanidhi/logo.png"><div><b>Unity Group of Colleges</b><small>Medical • Nursing • Paramedical • Law • Management</small></div></div>' +
       '<h2>FEE RECEIPT</h2><table><tr><td>Receipt no.</td><td>' + esc(p.receipt) + '</td></tr><tr><td>Date</td><td>' + date(p.date) + '</td></tr>' +
       '<tr><td>Student</td><td>' + esc(st.name) + '</td></tr><tr><td>Enrollment no.</td><td>' + esc(st.enrollment) + '</td></tr><tr><td>Course</td><td>' + esc(st.course) + ' (' + st.session + ')</td></tr>' +
       '<tr><td>Payment mode</td><td>' + PAY_MODE[p.mode] + '</td></tr><tr><td>Amount</td><td class="amt">' + inr(p.amount) + '</td></tr><tr><td>Received by</td><td>' + esc(staff(p.by).name) + '</td></tr></table>' +
@@ -790,7 +790,7 @@
     var row = function (a, b) { return '<tr><td>' + a + '</td><td style="text-align:right">' + b + '</td></tr>'; };
     return '<!doctype html><html><head><meta charset="utf-8"><title>Salary slip ' + esc(s.name) + '</title><style>body{font-family:Arial,sans-serif;margin:24px;color:#0f1729}' +
       '.h{border-bottom:3px solid #f5a623;padding-bottom:10px}.h b{font-size:20px;color:#04246b}table{width:100%;border-collapse:collapse;margin-top:14px}td{padding:8px 6px;border-bottom:1px solid #e6eaf5;font-size:14px}' +
-      '.net td{font-weight:bold;font-size:17px;color:#0b5cff;border-top:2px solid #0b5cff}</style></head><body><div class="h"><b>Swanidhi Group of Institutions</b><div>Salary slip — ' + pr.month + '</div></div>' +
+      '.net td{font-weight:bold;font-size:17px;color:#0b5cff;border-top:2px solid #0b5cff}</style></head><body><div class="h"><b>Unity Group of Colleges</b><div>Salary slip — ' + pr.month + '</div></div>' +
       '<table>' + row('Employee', esc(s.name)) + row('Code', e.code) + row('Designation', esc(e.designation)) + row('Department', e.department) + '</table>' +
       '<table>' + row('Basic', inr(e.basic)) + row('HRA', inr(e.hra)) + row('Allowances', inr(e.allowances)) + row('<b>Gross</b>', '<b>' + inr(pr.gross) + '</b>') +
       row('PF (12%)', '-' + inr(pr.pf)) + row('TDS', '-' + inr(pr.tds)) + row('Leave deduction (' + pr.absent + ' days)', '-' + inr(pr.leave)) +
@@ -828,7 +828,7 @@
     loginTab: function (el) { loginTab = el.dataset.v; login(); },
     demo: function (el) {
       var v = el.dataset.v;
-      doLogin(v, v === 'staff' ? 'demo.admin@swanidhi.test' : v === 'student' ? 'DEMO-STU-001' : 'demo.associate@swanidhi.test', DEMO_PASSWORD);
+      doLogin(v, v === 'staff' ? 'demo.admin@unitycolleges.example.com' : v === 'student' ? 'DEMO-STU-001' : 'demo.associate@unitycolleges.example.com', DEMO_PASSWORD);
       go(homeFor(session())); render();
     },
     logout: function () { setSession(null); loginTab = 'staff'; history.replaceState(null, '', location.pathname); render(); },
@@ -839,7 +839,7 @@
     call: function (el, e) { e.preventDefault(); window.open('tel:+91' + el.dataset.phone); }, // Foundly demo: intercepted by the demo pill
     wa: function (el, e) { e.preventDefault(); window.open('https://wa.me/91' + el.dataset.phone); }, // Foundly demo: intercepted by the demo pill
     share: function (el) {
-      if (navigator.share) navigator.share({ title: 'Swanidhi fee details', text: el.dataset.text });
+      if (navigator.share) navigator.share({ title: 'Unity fee details', text: el.dataset.text });
     },
     leadFilter: function (el) { listState.leadStatus = el.dataset.v; rerenderKeepScroll(); },
     studentFilter: function (el) { listState.studentDept = el.dataset.v; rerenderKeepScroll(); },

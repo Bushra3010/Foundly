@@ -9,7 +9,7 @@
   const p = id ? Store.project(id) : null;
 
   if (!p) {
-    document.title = "Project not found: Radhe Homes";
+    document.title = "Project not found: Skyline Homes";
     root.innerHTML = `
       <section class="section" style="padding-top:180px">
         <div class="wrap" style="text-align:center">
@@ -22,7 +22,7 @@
     return;
   }
 
-  document.title = `${p.name} · ${p.location} | Radhe Homes`;
+  document.title = `${p.name} · ${p.location} | Skyline Homes`;
   const meta = $('meta[name="description"]');
   if (meta) meta.setAttribute("content", `${p.name}, ${p.location}. ${p.tagline}. ${p.config}, ${p.area}. ${statusLabel[p.status]}: possession ${p.possession || "to be announced"}.`);
 

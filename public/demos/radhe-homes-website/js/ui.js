@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Radhe Homes: shared UI
+   Skyline Homes: shared UI
    Header/footer, reveal, forms, lightbox, toast, PDF generation.
    ========================================================================== */
 
@@ -16,7 +16,7 @@ const fmtDate = (iso) => {
 const statusLabel = { ongoing: "Ongoing", completed: "Completed", upcoming: "Upcoming" };
 
 const waLink = (text) =>
-  `https://wa.me/${RR.company.whatsapp}?text=${encodeURIComponent(text || "Hello Radhe Homes, I would like to know more about your projects.")}`;
+  `https://wa.me/${RR.company.whatsapp}?text=${encodeURIComponent(text || "Hello Skyline Homes, I would like to know more about your projects.")}`;
 const telLink = () => `tel:${RR.company.phoneHref}`;
 const mailLink = () => `mailto:${RR.company.email}`;
 
@@ -67,7 +67,7 @@ function renderChrome(active) {
       <a class="brand" href="index.html" aria-label="${esc(c.name)}: home">
         <img class="brand__logo" src="img/logo-mark.png" alt="" width="480" height="292" decoding="async">
         <span class="brand__txt">
-          <span class="brand__mark">Radhe Homes</span>
+          <span class="brand__mark">Skyline Homes</span>
           <span class="brand__sub">${esc(c.tagline)} · Est. ${c.since}</span>
         </span>
       </a>
@@ -98,7 +98,7 @@ function renderChrome(active) {
       <div class="ftr__top">
         <div>
           <img class="ftr__logo" src="img/logo-mark.png" alt="" width="480" height="292" loading="lazy" decoding="async">
-          <span class="brand__mark" style="font-size:22px">Radhe Homes</span>
+          <span class="brand__mark" style="font-size:22px">Skyline Homes</span>
           <p class="body-sm" style="margin:18px 0 22px">Building landmarks across Ahmedabad since ${c.since}. Residential and commercial developments delivered with quality, transparency and long-term value.</p>
           <p class="label" style="line-height:2">RERA ${esc(c.rera)}</p>
         </div>
@@ -133,7 +133,7 @@ function renderChrome(active) {
           </ul>
         </div>
       </div>
-      <div class="ftr__word" aria-hidden="true">RADHE HOMES</div>
+      <div class="ftr__word" aria-hidden="true">SKYLINE HOMES</div>
       <div class="ftr__bot">
         <span>© ${new Date().getFullYear()} ${esc(c.name)}. All Rights Reserved.</span>
         <span style="display:flex;gap:22px">
@@ -461,7 +461,7 @@ const PDF = {
       const bg = `0.039 0.039 0.039 rg 0 0 ${W} ${H} re f`;
       const foot = `BT /F3 7.5 Tf .5 .5 .49 rg ${ML} 40 Td (${this.escape(meta.footer)}) Tj ET` +
                    `BT /F3 7.5 Tf .5 .5 .49 rg ${W - MR - 40} 40 Td (Page ${i + 1} / ${pages.length}) Tj ET`;
-      const brand = `BT /F2 9 Tf .69 .55 .34 rg ${ML} ${H - 42} Td (RADHE HOMES) Tj ET`;
+      const brand = `BT /F2 9 Tf .69 .55 .34 rg ${ML} ${H - 42} Td (SKYLINE HOMES) Tj ET`;
       return [bg, brand, ...ops, foot].join("\n");
     });
 
@@ -493,7 +493,7 @@ const PDF = {
     const xref = out.length;
     out += `xref\n0 ${objs.length}\n0000000000 65535 f \n`;
     for (let i = 1; i < objs.length; i++) out += String(offsets[i]).padStart(10, "0") + " 00000 n \n";
-    out += `trailer\n<< /Size ${objs.length} /Root 1 0 R /Info << /Title (${this.escape(meta.title)}) /Author (Radhe Homes) >> >>\nstartxref\n${xref}\n%%EOF`;
+    out += `trailer\n<< /Size ${objs.length} /Root 1 0 R /Info << /Title (${this.escape(meta.title)}) /Author (Skyline Homes) >> >>\nstartxref\n${xref}\n%%EOF`;
     return out;
   },
 

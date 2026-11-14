@@ -2,7 +2,7 @@
 2:I[11645,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website/_next/static/chunks/0de.u2b-yxxd3.js","/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js"],"default"]
 6:I[97367,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 7:"$Sreact.suspense"
-3:Tb70,CLAT 2026 is one of the most anticipated law entrance exams in India. Whether you are just starting your preparation or looking to fine-tune your strategy, this comprehensive guide will walk you through everything you need to know.
+3:Tb93,CLAT 2026 is one of the most anticipated law entrance exams in India. Whether you are just starting your preparation or looking to fine-tune your strategy, this comprehensive guide will walk you through everything you need to know.
 
 ## Understanding the CLAT Exam Pattern
 
@@ -52,7 +52,7 @@ Practice reading 500+ word passages quickly and accurately. Focus on:
 - Vocabulary in context
 - Author's tone and purpose
 
-## Top Tips from CLATians Toppers
+## Top Tips from LexPrep Academy Toppers
 
 1. **Start early**: Begin preparation at least 12 months before the exam
 2. **Mock tests are non-negotiable**: Take at least 50 full-length mock tests
@@ -62,13 +62,13 @@ Practice reading 500+ word passages quickly and accurately. Focus on:
 
 ## Recommended Resources
 
-- CLATians Study Material (all 5 sections)
-- CLATians Mock Test Series (150+ tests)
+- LexPrep Academy Study Material (all 5 sections)
+- LexPrep Academy Mock Test Series (150+ tests)
 - The Hindu / Indian Express (daily)
-- CLATians Monthly GK Magazine
+- LexPrep Academy Monthly GK Magazine
 - Previous Year CLAT Papers (2010-2025)
 
-Start your CLAT 2026 journey today with CLATians and join 5000+ successful students who have cracked their dream NLU.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"clat-2026-complete-guide","title":"CLAT 2026: Complete Preparation Guide for Beginners","excerpt":"Everything you need to know to start your CLAT 2026 journey — from exam pattern to study schedule.","content":"$3","category":"Law Preparation","categoryColor":"#08BD80","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"May 10, 2026","readTime":"8 min read","tags":["CLAT 2026","Preparation","Study Plan","Beginner Guide"]},"isNew":false}],["$L4"],"$L5"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
+Start your CLAT 2026 journey today with LexPrep Academy and join 5000+ successful students who have cracked their dream NLU.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"clat-2026-complete-guide","title":"CLAT 2026: Complete Preparation Guide for Beginners","excerpt":"Everything you need to know to start your CLAT 2026 journey — from exam pattern to study schedule.","content":"$3","category":"Law Preparation","categoryColor":"#08BD80","author":"Adv. Ravi Kumar","authorAvatar":"RK","date":"May 10, 2026","readTime":"8 min read","tags":["CLAT 2026","Preparation","Study Plan","Beginner Guide"]},"isNew":false}],["$L4"],"$L5"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
 4:["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]
 5:["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]
 8:null

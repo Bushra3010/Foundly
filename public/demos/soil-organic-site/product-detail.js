@@ -16,7 +16,7 @@
   };
 
   const render = (product) => {
-    document.title = `${product.name} | SOIL Product`;
+    document.title = `${product.name} | GreenRoot Product`;
 
     // Hero banner
     const heroBg = document.querySelector("[data-product-hero]");
@@ -67,7 +67,7 @@
   const renderMissing = () => {
     setText("[data-product-name]", "Product not found");
     setText("[data-product-tagline]", "This product may have been moved or removed. Please browse all products.");
-    setText("[data-product-category]", "SOIL Product");
+    setText("[data-product-category]", "GreenRoot Product");
   };
 
   fetch(`${PRODUCTS_URL}?t=${Date.now()}`, { cache: "no-cache" })

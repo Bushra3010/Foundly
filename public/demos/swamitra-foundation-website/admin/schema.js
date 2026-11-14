@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SWAMITRA admin — content model
+   CRF admin — content model
 
    Every editable section of the website is described here once, and the panel
    builds its screens from this. Adding a field to the site means adding a line

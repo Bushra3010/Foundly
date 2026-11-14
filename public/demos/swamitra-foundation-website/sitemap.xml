@@ -1,1010 +1,1010 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.swamitrafoundation.org/index.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/index.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/index.html"/>
+    <loc>https://civicrights.example.com/index.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/index.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/index.html"/>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/index.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/index.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/index.html"/>
+    <loc>https://civicrights.example.com/hi/index.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/index.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/index.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/about.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/about.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/about.html"/>
+    <loc>https://civicrights.example.com/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/about.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/about.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/about.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/about.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/about.html"/>
+    <loc>https://civicrights.example.com/hi/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/about.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/about.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/advisory-council.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/advisory-council.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/advisory-council.html"/>
+    <loc>https://civicrights.example.com/advisory-council.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/advisory-council.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/advisory-council.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/advisory-council.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/advisory-council.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/advisory-council.html"/>
+    <loc>https://civicrights.example.com/hi/advisory-council.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/advisory-council.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/advisory-council.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/annual-reports.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/annual-reports.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/annual-reports.html"/>
+    <loc>https://civicrights.example.com/annual-reports.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/annual-reports.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/annual-reports.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/annual-reports.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/annual-reports.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/annual-reports.html"/>
+    <loc>https://civicrights.example.com/hi/annual-reports.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/annual-reports.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/annual-reports.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/careers.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/careers.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/careers.html"/>
+    <loc>https://civicrights.example.com/careers.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/careers.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/careers.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/careers.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/careers.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/careers.html"/>
+    <loc>https://civicrights.example.com/hi/careers.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/careers.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/careers.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/community-legal-awareness-programme.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/community-legal-awareness-programme.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/community-legal-awareness-programme.html"/>
+    <loc>https://civicrights.example.com/community-legal-awareness-programme.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/community-legal-awareness-programme.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/community-legal-awareness-programme.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/community-legal-awareness-programme.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/community-legal-awareness-programme.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/community-legal-awareness-programme.html"/>
+    <loc>https://civicrights.example.com/hi/community-legal-awareness-programme.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/community-legal-awareness-programme.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/community-legal-awareness-programme.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/constitutional-literacy-programme.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/constitutional-literacy-programme.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/constitutional-literacy-programme.html"/>
+    <loc>https://civicrights.example.com/constitutional-literacy-programme.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/constitutional-literacy-programme.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/constitutional-literacy-programme.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/constitutional-literacy-programme.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/constitutional-literacy-programme.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/constitutional-literacy-programme.html"/>
+    <loc>https://civicrights.example.com/hi/constitutional-literacy-programme.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/constitutional-literacy-programme.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/constitutional-literacy-programme.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/contact.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/contact.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/contact.html"/>
+    <loc>https://civicrights.example.com/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/contact.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/contact.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/contact.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/contact.html"/>
+    <loc>https://civicrights.example.com/hi/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/contact.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/core-values.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/core-values.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/core-values.html"/>
+    <loc>https://civicrights.example.com/core-values.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/core-values.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/core-values.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/core-values.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/core-values.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/core-values.html"/>
+    <loc>https://civicrights.example.com/hi/core-values.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/core-values.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/core-values.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/course.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/course.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/course.html"/>
+    <loc>https://civicrights.example.com/course.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/course.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/course.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/course.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/course.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/course.html"/>
+    <loc>https://civicrights.example.com/hi/course.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/course.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/course.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/csr-collaboration.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/csr-collaboration.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/csr-collaboration.html"/>
+    <loc>https://civicrights.example.com/csr-collaboration.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/csr-collaboration.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/csr-collaboration.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/csr-collaboration.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/csr-collaboration.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/csr-collaboration.html"/>
+    <loc>https://civicrights.example.com/hi/csr-collaboration.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/csr-collaboration.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/csr-collaboration.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/donate.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/donate.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/donate.html"/>
+    <loc>https://civicrights.example.com/donate.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/donate.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/donate.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/donate.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/donate.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/donate.html"/>
+    <loc>https://civicrights.example.com/hi/donate.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/donate.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/donate.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/download-centre.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/download-centre.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/download-centre.html"/>
+    <loc>https://civicrights.example.com/download-centre.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/download-centre.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/download-centre.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/download-centre.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/download-centre.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/download-centre.html"/>
+    <loc>https://civicrights.example.com/hi/download-centre.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/download-centre.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/download-centre.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/events-calendar.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/events-calendar.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/events-calendar.html"/>
+    <loc>https://civicrights.example.com/events-calendar.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/events-calendar.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/events-calendar.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/events-calendar.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/events-calendar.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/events-calendar.html"/>
+    <loc>https://civicrights.example.com/hi/events-calendar.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/events-calendar.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/events-calendar.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/featured-publications.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/featured-publications.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/featured-publications.html"/>
+    <loc>https://civicrights.example.com/featured-publications.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/featured-publications.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/featured-publications.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/featured-publications.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/featured-publications.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/featured-publications.html"/>
+    <loc>https://civicrights.example.com/hi/featured-publications.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/featured-publications.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/featured-publications.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/featured-resources.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/featured-resources.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/featured-resources.html"/>
+    <loc>https://civicrights.example.com/featured-resources.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/featured-resources.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/featured-resources.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/featured-resources.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/featured-resources.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/featured-resources.html"/>
+    <loc>https://civicrights.example.com/hi/featured-resources.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/featured-resources.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/featured-resources.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/get-involved.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/get-involved.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/get-involved.html"/>
+    <loc>https://civicrights.example.com/get-involved.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/get-involved.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/get-involved.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/get-involved.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/get-involved.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/get-involved.html"/>
+    <loc>https://civicrights.example.com/hi/get-involved.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/get-involved.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/get-involved.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/governance.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/governance.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/governance.html"/>
+    <loc>https://civicrights.example.com/governance.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/governance.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/governance.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/governance.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/governance.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/governance.html"/>
+    <loc>https://civicrights.example.com/hi/governance.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/governance.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/governance.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/higher-legal-education-project.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/higher-legal-education-project.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/higher-legal-education-project.html"/>
+    <loc>https://civicrights.example.com/higher-legal-education-project.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/higher-legal-education-project.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/higher-legal-education-project.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/higher-legal-education-project.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/higher-legal-education-project.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/higher-legal-education-project.html"/>
+    <loc>https://civicrights.example.com/hi/higher-legal-education-project.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/higher-legal-education-project.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/higher-legal-education-project.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/internship.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/internship.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/internship.html"/>
+    <loc>https://civicrights.example.com/internship.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/internship.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/internship.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/internship.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/internship.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/internship.html"/>
+    <loc>https://civicrights.example.com/hi/internship.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/internship.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/internship.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/latest-resources.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/latest-resources.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/latest-resources.html"/>
+    <loc>https://civicrights.example.com/latest-resources.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/latest-resources.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/latest-resources.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/latest-resources.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/latest-resources.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/latest-resources.html"/>
+    <loc>https://civicrights.example.com/hi/latest-resources.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/latest-resources.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/latest-resources.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/leadership-development.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/leadership-development.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/leadership-development.html"/>
+    <loc>https://civicrights.example.com/leadership-development.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/leadership-development.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/leadership-development.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/leadership-development.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/leadership-development.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/leadership-development.html"/>
+    <loc>https://civicrights.example.com/hi/leadership-development.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/leadership-development.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/leadership-development.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/leadership.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/leadership.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/leadership.html"/>
+    <loc>https://civicrights.example.com/leadership.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/leadership.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/leadership.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/leadership.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/leadership.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/leadership.html"/>
+    <loc>https://civicrights.example.com/hi/leadership.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/leadership.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/leadership.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/legal-awareness-programme.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/legal-awareness-programme.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/legal-awareness-programme.html"/>
+    <loc>https://civicrights.example.com/legal-awareness-programme.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/legal-awareness-programme.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/legal-awareness-programme.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/legal-awareness-programme.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/legal-awareness-programme.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/legal-awareness-programme.html"/>
+    <loc>https://civicrights.example.com/hi/legal-awareness-programme.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/legal-awareness-programme.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/legal-awareness-programme.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/legal.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/legal.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/legal.html"/>
+    <loc>https://civicrights.example.com/legal.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/legal.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/legal.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/legal.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/legal.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/legal.html"/>
+    <loc>https://civicrights.example.com/hi/legal.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/legal.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/legal.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/media-contact.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/media-contact.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/media-contact.html"/>
+    <loc>https://civicrights.example.com/media-contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/media-contact.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/media-contact.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/media-contact.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/media-contact.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/media-contact.html"/>
+    <loc>https://civicrights.example.com/hi/media-contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/media-contact.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/media-contact.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/media-gallery.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/media-gallery.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/media-gallery.html"/>
+    <loc>https://civicrights.example.com/media-gallery.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/media-gallery.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/media-gallery.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/media-gallery.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/media-gallery.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/media-gallery.html"/>
+    <loc>https://civicrights.example.com/hi/media-gallery.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/media-gallery.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/media-gallery.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/membership.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/membership.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/membership.html"/>
+    <loc>https://civicrights.example.com/membership.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/membership.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/membership.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/membership.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/membership.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/membership.html"/>
+    <loc>https://civicrights.example.com/hi/membership.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/membership.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/membership.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/multimedia-library.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/multimedia-library.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/multimedia-library.html"/>
+    <loc>https://civicrights.example.com/multimedia-library.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/multimedia-library.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/multimedia-library.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/multimedia-library.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/multimedia-library.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/multimedia-library.html"/>
+    <loc>https://civicrights.example.com/hi/multimedia-library.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/multimedia-library.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/multimedia-library.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/national-frameworks-and-standards.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/national-frameworks-and-standards.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/national-frameworks-and-standards.html"/>
+    <loc>https://civicrights.example.com/national-frameworks-and-standards.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/national-frameworks-and-standards.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/national-frameworks-and-standards.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/national-frameworks-and-standards.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/national-frameworks-and-standards.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/national-frameworks-and-standards.html"/>
+    <loc>https://civicrights.example.com/hi/national-frameworks-and-standards.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/national-frameworks-and-standards.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/national-frameworks-and-standards.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/national-legal-education-mission.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/national-legal-education-mission.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/national-legal-education-mission.html"/>
+    <loc>https://civicrights.example.com/national-legal-education-mission.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/national-legal-education-mission.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/national-legal-education-mission.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/national-legal-education-mission.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/national-legal-education-mission.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/national-legal-education-mission.html"/>
+    <loc>https://civicrights.example.com/hi/national-legal-education-mission.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/national-legal-education-mission.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/national-legal-education-mission.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/national-safe-school-framework.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/national-safe-school-framework.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/national-safe-school-framework.html"/>
+    <loc>https://civicrights.example.com/national-safe-school-framework.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/national-safe-school-framework.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/national-safe-school-framework.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/national-safe-school-framework.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/national-safe-school-framework.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/national-safe-school-framework.html"/>
+    <loc>https://civicrights.example.com/hi/national-safe-school-framework.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/national-safe-school-framework.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/national-safe-school-framework.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/national-safe-workplace-standards.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/national-safe-workplace-standards.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/national-safe-workplace-standards.html"/>
+    <loc>https://civicrights.example.com/national-safe-workplace-standards.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/national-safe-workplace-standards.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/national-safe-workplace-standards.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/national-safe-workplace-standards.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/national-safe-workplace-standards.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/national-safe-workplace-standards.html"/>
+    <loc>https://civicrights.example.com/hi/national-safe-workplace-standards.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/national-safe-workplace-standards.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/national-safe-workplace-standards.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/news.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/news.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/news.html"/>
+    <loc>https://civicrights.example.com/news.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/news.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/news.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/news.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/news.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/news.html"/>
+    <loc>https://civicrights.example.com/hi/news.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/news.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/news.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/objectives.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/objectives.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/objectives.html"/>
+    <loc>https://civicrights.example.com/objectives.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/objectives.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/objectives.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/objectives.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/objectives.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/objectives.html"/>
+    <loc>https://civicrights.example.com/hi/objectives.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/objectives.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/objectives.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/ongoing-projects.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/ongoing-projects.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/ongoing-projects.html"/>
+    <loc>https://civicrights.example.com/ongoing-projects.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/ongoing-projects.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/ongoing-projects.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/ongoing-projects.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/ongoing-projects.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/ongoing-projects.html"/>
+    <loc>https://civicrights.example.com/hi/ongoing-projects.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/ongoing-projects.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/ongoing-projects.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/our-approach.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/our-approach.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/our-approach.html"/>
+    <loc>https://civicrights.example.com/our-approach.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/our-approach.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/our-approach.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/our-approach.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/our-approach.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/our-approach.html"/>
+    <loc>https://civicrights.example.com/hi/our-approach.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/our-approach.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/our-approach.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/our-story.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/our-story.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/our-story.html"/>
+    <loc>https://civicrights.example.com/our-story.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/our-story.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/our-story.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/our-story.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/our-story.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/our-story.html"/>
+    <loc>https://civicrights.example.com/hi/our-story.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/our-story.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/our-story.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/partnership-opportunities.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/partnership-opportunities.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/partnership-opportunities.html"/>
+    <loc>https://civicrights.example.com/partnership-opportunities.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/partnership-opportunities.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/partnership-opportunities.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/partnership-opportunities.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/partnership-opportunities.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/partnership-opportunities.html"/>
+    <loc>https://civicrights.example.com/hi/partnership-opportunities.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/partnership-opportunities.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/partnership-opportunities.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/pocso-awareness-initiative.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/pocso-awareness-initiative.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/pocso-awareness-initiative.html"/>
+    <loc>https://civicrights.example.com/pocso-awareness-initiative.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/pocso-awareness-initiative.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/pocso-awareness-initiative.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/pocso-awareness-initiative.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/pocso-awareness-initiative.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/pocso-awareness-initiative.html"/>
+    <loc>https://civicrights.example.com/hi/pocso-awareness-initiative.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/pocso-awareness-initiative.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/pocso-awareness-initiative.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/pocso-training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/pocso-training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/pocso-training.html"/>
+    <loc>https://civicrights.example.com/pocso-training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/pocso-training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/pocso-training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/pocso-training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/pocso-training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/pocso-training.html"/>
+    <loc>https://civicrights.example.com/hi/pocso-training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/pocso-training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/pocso-training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/policies.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/policies.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/policies.html"/>
+    <loc>https://civicrights.example.com/policies.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/policies.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/policies.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/policies.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/policies.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/policies.html"/>
+    <loc>https://civicrights.example.com/hi/policies.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/policies.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/policies.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/posh-capacity-building.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/posh-capacity-building.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/posh-capacity-building.html"/>
+    <loc>https://civicrights.example.com/posh-capacity-building.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/posh-capacity-building.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/posh-capacity-building.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/posh-capacity-building.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/posh-capacity-building.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/posh-capacity-building.html"/>
+    <loc>https://civicrights.example.com/hi/posh-capacity-building.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/posh-capacity-building.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/posh-capacity-building.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/posh-training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/posh-training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/posh-training.html"/>
+    <loc>https://civicrights.example.com/posh-training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/posh-training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/posh-training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/posh-training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/posh-training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/posh-training.html"/>
+    <loc>https://civicrights.example.com/hi/posh-training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/posh-training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/posh-training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/press-kit.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/press-kit.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/press-kit.html"/>
+    <loc>https://civicrights.example.com/press-kit.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/press-kit.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/press-kit.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/press-kit.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/press-kit.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/press-kit.html"/>
+    <loc>https://civicrights.example.com/hi/press-kit.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/press-kit.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/press-kit.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/press-releases.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/press-releases.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/press-releases.html"/>
+    <loc>https://civicrights.example.com/press-releases.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/press-releases.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/press-releases.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/press-releases.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/press-releases.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/press-releases.html"/>
+    <loc>https://civicrights.example.com/hi/press-releases.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/press-releases.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/press-releases.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/program.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/program.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/program.html"/>
+    <loc>https://civicrights.example.com/program.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/program.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/program.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/program.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/program.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/program.html"/>
+    <loc>https://civicrights.example.com/hi/program.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/program.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/program.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/programs.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/programs.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/programs.html"/>
+    <loc>https://civicrights.example.com/programs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/programs.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/programs.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/programs.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/programs.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/programs.html"/>
+    <loc>https://civicrights.example.com/hi/programs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/programs.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/programs.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/request-a-resource.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/request-a-resource.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/request-a-resource.html"/>
+    <loc>https://civicrights.example.com/request-a-resource.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/request-a-resource.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/request-a-resource.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/request-a-resource.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/request-a-resource.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/request-a-resource.html"/>
+    <loc>https://civicrights.example.com/hi/request-a-resource.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/request-a-resource.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/request-a-resource.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/research-and-policy-centre.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-and-policy-centre.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-and-policy-centre.html"/>
+    <loc>https://civicrights.example.com/research-and-policy-centre.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-and-policy-centre.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-and-policy-centre.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/research-and-policy-centre.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-and-policy-centre.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-and-policy-centre.html"/>
+    <loc>https://civicrights.example.com/hi/research-and-policy-centre.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-and-policy-centre.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-and-policy-centre.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/research-collaborations.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-collaborations.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-collaborations.html"/>
+    <loc>https://civicrights.example.com/research-collaborations.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-collaborations.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-collaborations.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/research-collaborations.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-collaborations.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-collaborations.html"/>
+    <loc>https://civicrights.example.com/hi/research-collaborations.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-collaborations.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-collaborations.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/research-faqs.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-faqs.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-faqs.html"/>
+    <loc>https://civicrights.example.com/research-faqs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-faqs.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-faqs.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/research-faqs.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-faqs.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-faqs.html"/>
+    <loc>https://civicrights.example.com/hi/research-faqs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-faqs.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-faqs.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/research-news.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-news.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-news.html"/>
+    <loc>https://civicrights.example.com/research-news.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-news.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-news.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/research-news.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-news.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-news.html"/>
+    <loc>https://civicrights.example.com/hi/research-news.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-news.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-news.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/research-objectives.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-objectives.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-objectives.html"/>
+    <loc>https://civicrights.example.com/research-objectives.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-objectives.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-objectives.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/research-objectives.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-objectives.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-objectives.html"/>
+    <loc>https://civicrights.example.com/hi/research-objectives.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-objectives.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-objectives.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/research-partners.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-partners.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-partners.html"/>
+    <loc>https://civicrights.example.com/research-partners.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-partners.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-partners.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/research-partners.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-partners.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-partners.html"/>
+    <loc>https://civicrights.example.com/hi/research-partners.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-partners.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-partners.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/research-themes.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-themes.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-themes.html"/>
+    <loc>https://civicrights.example.com/research-themes.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-themes.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-themes.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/research-themes.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research-themes.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research-themes.html"/>
+    <loc>https://civicrights.example.com/hi/research-themes.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research-themes.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research-themes.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/research.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research.html"/>
+    <loc>https://civicrights.example.com/research.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/research.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/research.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/research.html"/>
+    <loc>https://civicrights.example.com/hi/research.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/research.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/research.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/resource-faqs.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/resource-faqs.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/resource-faqs.html"/>
+    <loc>https://civicrights.example.com/resource-faqs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/resource-faqs.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/resource-faqs.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/resource-faqs.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/resource-faqs.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/resource-faqs.html"/>
+    <loc>https://civicrights.example.com/hi/resource-faqs.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/resource-faqs.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/resource-faqs.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/resource-library.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/resource-library.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/resource-library.html"/>
+    <loc>https://civicrights.example.com/resource-library.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/resource-library.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/resource-library.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/resource-library.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/resource-library.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/resource-library.html"/>
+    <loc>https://civicrights.example.com/hi/resource-library.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/resource-library.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/resource-library.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/resource-repository.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/resource-repository.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/resource-repository.html"/>
+    <loc>https://civicrights.example.com/resource-repository.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/resource-repository.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/resource-repository.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/resource-repository.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/resource-repository.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/resource-repository.html"/>
+    <loc>https://civicrights.example.com/hi/resource-repository.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/resource-repository.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/resource-repository.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/resources.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/resources.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/resources.html"/>
+    <loc>https://civicrights.example.com/resources.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/resources.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/resources.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/resources.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/resources.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/resources.html"/>
+    <loc>https://civicrights.example.com/hi/resources.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/resources.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/resources.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/school-legal-education-project.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/school-legal-education-project.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/school-legal-education-project.html"/>
+    <loc>https://civicrights.example.com/school-legal-education-project.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/school-legal-education-project.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/school-legal-education-project.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/school-legal-education-project.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/school-legal-education-project.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/school-legal-education-project.html"/>
+    <loc>https://civicrights.example.com/hi/school-legal-education-project.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/school-legal-education-project.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/school-legal-education-project.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/school-safety-training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/school-safety-training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/school-safety-training.html"/>
+    <loc>https://civicrights.example.com/school-safety-training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/school-safety-training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/school-safety-training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/school-safety-training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/school-safety-training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/school-safety-training.html"/>
+    <loc>https://civicrights.example.com/hi/school-safety-training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/school-safety-training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/school-safety-training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/surveys-and-reports.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/surveys-and-reports.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/surveys-and-reports.html"/>
+    <loc>https://civicrights.example.com/surveys-and-reports.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/surveys-and-reports.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/surveys-and-reports.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/surveys-and-reports.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/surveys-and-reports.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/surveys-and-reports.html"/>
+    <loc>https://civicrights.example.com/hi/surveys-and-reports.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/surveys-and-reports.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/surveys-and-reports.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/teacher-capacity-building.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/teacher-capacity-building.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/teacher-capacity-building.html"/>
+    <loc>https://civicrights.example.com/teacher-capacity-building.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/teacher-capacity-building.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/teacher-capacity-building.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/teacher-capacity-building.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/teacher-capacity-building.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/teacher-capacity-building.html"/>
+    <loc>https://civicrights.example.com/hi/teacher-capacity-building.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/teacher-capacity-building.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/teacher-capacity-building.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/teacher-education-and-capacity-building.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/teacher-education-and-capacity-building.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/teacher-education-and-capacity-building.html"/>
+    <loc>https://civicrights.example.com/teacher-education-and-capacity-building.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/teacher-education-and-capacity-building.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/teacher-education-and-capacity-building.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/teacher-education-and-capacity-building.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/teacher-education-and-capacity-building.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/teacher-education-and-capacity-building.html"/>
+    <loc>https://civicrights.example.com/hi/teacher-education-and-capacity-building.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/teacher-education-and-capacity-building.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/teacher-education-and-capacity-building.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/train-the-trainer-tot.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/train-the-trainer-tot.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/train-the-trainer-tot.html"/>
+    <loc>https://civicrights.example.com/train-the-trainer-tot.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/train-the-trainer-tot.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/train-the-trainer-tot.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/train-the-trainer-tot.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/train-the-trainer-tot.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/train-the-trainer-tot.html"/>
+    <loc>https://civicrights.example.com/hi/train-the-trainer-tot.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/train-the-trainer-tot.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/train-the-trainer-tot.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/training.html"/>
+    <loc>https://civicrights.example.com/training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/training.html"/>
+    <loc>https://civicrights.example.com/hi/training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/transparency-and-accountability.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/transparency-and-accountability.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/transparency-and-accountability.html"/>
+    <loc>https://civicrights.example.com/transparency-and-accountability.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/transparency-and-accountability.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/transparency-and-accountability.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/transparency-and-accountability.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/transparency-and-accountability.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/transparency-and-accountability.html"/>
+    <loc>https://civicrights.example.com/hi/transparency-and-accountability.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/transparency-and-accountability.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/transparency-and-accountability.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/vision-and-mission.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/vision-and-mission.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/vision-and-mission.html"/>
+    <loc>https://civicrights.example.com/vision-and-mission.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/vision-and-mission.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/vision-and-mission.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/vision-and-mission.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/vision-and-mission.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/vision-and-mission.html"/>
+    <loc>https://civicrights.example.com/hi/vision-and-mission.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/vision-and-mission.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/vision-and-mission.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/volunteer-programme.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/volunteer-programme.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/volunteer-programme.html"/>
+    <loc>https://civicrights.example.com/volunteer-programme.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/volunteer-programme.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/volunteer-programme.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/volunteer-programme.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/volunteer-programme.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/volunteer-programme.html"/>
+    <loc>https://civicrights.example.com/hi/volunteer-programme.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/volunteer-programme.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/volunteer-programme.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/workplace-safety-training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/workplace-safety-training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/workplace-safety-training.html"/>
+    <loc>https://civicrights.example.com/workplace-safety-training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/workplace-safety-training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/workplace-safety-training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swamitrafoundation.org/hi/workplace-safety-training.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.swamitrafoundation.org/workplace-safety-training.html"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.swamitrafoundation.org/hi/workplace-safety-training.html"/>
+    <loc>https://civicrights.example.com/hi/workplace-safety-training.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://civicrights.example.com/workplace-safety-training.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://civicrights.example.com/hi/workplace-safety-training.html"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

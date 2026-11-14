@@ -26,7 +26,7 @@
       "usage": [
         "Mix as per label dosage with water or soil application",
         "Apply during early crop stages for best results",
-        "Use under SOIL technical or field team guidance",
+        "Use under GreenRoot technical or field team guidance",
         "Store in a cool, dry, shaded place away from sunlight"
       ],
       "crops": ["Wheat", "Rice", "Maize", "Vegetables", "Pulses"]
@@ -56,7 +56,7 @@
       "usage": [
         "Apply as per recommended dosage on the label",
         "Best used during root and flowering stages",
-        "Can be combined with SOIL bio-inputs on expert advice",
+        "Can be combined with GreenRoot bio-inputs on expert advice",
         "Store in a cool, dry, shaded place"
       ],
       "crops": ["Vegetables", "Fruits", "Pulses", "Oilseeds", "Plantation crops"]
@@ -115,7 +115,7 @@
       "usage": [
         "Spray as per label dosage during early pest stages",
         "Apply in evening hours for best effectiveness",
-        "Repeat as recommended by SOIL field team",
+        "Repeat as recommended by GreenRoot field team",
         "Store away from direct sunlight and heat"
       ],
       "crops": ["Cotton", "Vegetables", "Fruits", "Pulses", "Ornamentals"]
@@ -145,7 +145,7 @@
       "usage": [
         "Apply during land preparation or basal dose",
         "Mix well into the root-zone soil",
-        "Use with SOIL crop nutrition guidance",
+        "Use with GreenRoot crop nutrition guidance",
         "Store in a cool, dry, shaded place"
       ],
       "crops": ["All field crops", "Vegetables", "Fruits", "Horticulture"]

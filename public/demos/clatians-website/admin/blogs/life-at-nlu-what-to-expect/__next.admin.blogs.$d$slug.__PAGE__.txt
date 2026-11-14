@@ -2,7 +2,7 @@
 2:I[11645,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website/_next/static/chunks/0de.u2b-yxxd3.js","/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js"],"default"]
 4:I[97367,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-3:T801,You have been preparing for months, taking mock tests, sacrificing weekends. But what actually happens after you crack CLAT and get into an NLU? Here is an honest look at life at a National Law University.
+3:T808,You have been preparing for months, taking mock tests, sacrificing weekends. But what actually happens after you crack CLAT and get into an NLU? Here is an honest look at life at a National Law University.
 
 ## The First Year: Adjustment Phase
 
@@ -39,5 +39,5 @@ An NLU degree opens multiple pathways:
 
 Absolutely. An NLU education is transformative — academically, professionally, and personally. The preparation may be intense, but the opportunity is life-changing.
 
-Start your preparation with CLATians today. Your NLU journey begins here.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"life-at-nlu-what-to-expect","title":"Life at an NLU: What to Expect After Cracking CLAT","excerpt":"A CLATians alumna shares what life at a National Law University really looks like.","content":"$3","category":"Law Preparation","categoryColor":"#08BD80","author":"CLATians Team","authorAvatar":"CT","date":"April 8, 2026","readTime":"8 min read","tags":["NLU Life","After CLAT","Law School","Career"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
+Start your preparation with LexPrep Academy today. Your NLU journey begins here.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"life-at-nlu-what-to-expect","title":"Life at an NLU: What to Expect After Cracking CLAT","excerpt":"A LexPrep Academy alumna shares what life at a National Law University really looks like.","content":"$3","category":"Law Preparation","categoryColor":"#08BD80","author":"LexPrep Academy Team","authorAvatar":"CT","date":"April 8, 2026","readTime":"8 min read","tags":["NLU Life","After CLAT","Law School","Career"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
 6:null

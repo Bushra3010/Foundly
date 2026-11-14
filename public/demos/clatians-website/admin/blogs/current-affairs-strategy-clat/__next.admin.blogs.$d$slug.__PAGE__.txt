@@ -2,7 +2,7 @@
 2:I[11645,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website/_next/static/chunks/0de.u2b-yxxd3.js","/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js"],"default"]
 4:I[97367,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-3:T8a0,Current Affairs and GK is the section that separates top rankers from average performers in CLAT. With 35 questions carrying 35 marks, it is the single largest section in CLAT 2026. Here is the complete strategy from CLATians' GK specialist, Dr. Neha Verma.
+3:T8d1,Current Affairs and GK is the section that separates top rankers from average performers in CLAT. With 35 questions carrying 35 marks, it is the single largest section in CLAT 2026. Here is the complete strategy from LexPrep Academy' GK specialist, Dr. Neha Verma.
 
 ## What CLAT Really Tests in Current Affairs
 
@@ -35,13 +35,13 @@ Spend only 20% of time on:
 - Note 3-5 important facts per article
 
 **Evening (10 minutes)**:
-- Review CLATians Daily News Digest
+- Review LexPrep Academy Daily News Digest
 - Revise notes from morning reading
 
 ## Weekly and Monthly Practice
 
-- **Weekly**: Attempt CLATians Current Affairs Quiz (20 questions)
-- **Monthly**: Read CLATians Monthly GK Magazine cover to cover
+- **Weekly**: Attempt LexPrep Academy Current Affairs Quiz (20 questions)
+- **Monthly**: Read LexPrep Academy Monthly GK Magazine cover to cover
 - **Every 3 months**: Full revision of all notes
 
 ## What to Skip (Important!)
@@ -55,10 +55,10 @@ Strictly avoid spending time on:
 
 ## Resources
 
-1. CLATians Daily News Digest (free on website)
-2. CLATians Monthly GK Magazine
+1. LexPrep Academy Daily News Digest (free on website)
+2. LexPrep Academy Monthly GK Magazine
 3. The Hindu epaper (recommended)
-4. CLATians Current Affairs Tests on portal
+4. LexPrep Academy Current Affairs Tests on portal
 
 Remember: 35 marks in current affairs can change your rank by hundreds. Never neglect this section!0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"current-affairs-strategy-clat","title":"Current Affairs Strategy for CLAT 2026: What to Read and What to Skip","excerpt":"Dr. Neha Verma shares the exact current affairs strategy that has helped 3000+ students ace this section.","content":"$3","category":"Current Affairs","categoryColor":"#f97316","author":"Dr. Neha Verma","authorAvatar":"NV","date":"April 20, 2026","readTime":"9 min read","tags":["Current Affairs","CLAT Strategy","GK","Preparation Tips"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
 6:null

@@ -17,14 +17,14 @@ no spaces, no capitals, no `final-v2`.
 
 | Platform | Built from | File to put in this folder |
 |---|---|---|
-| Blinks Nidhi | Nidhi NBFC Bank | `nidhi-nbfc-software.webp` |
-| Blinks Workforce | Growus Auto | `hrms-field-inspection.webp` |
-| Blinks Campus | Sengoleit | `institute-franchise-erp.webp` |
-| Blinks Admissions | DCW CRM | `education-crm.webp` |
-| Blinks Realty | Mahesewari Group | `real-estate-crm.webp` |
-| Blinks Travel | Shera Travels | `travel-agency-crm.webp` |
-| Blinks Workforce Lite | Falcon EMP | `employee-management.webp` |
-| Blinks Agri | Soil | `agri-distribution.webp` |
+| Growthlab Nidhi | Lotus Nidhi Bank | `nidhi-nbfc-software.webp` |
+| Growthlab Workforce | Northwind Auto | `hrms-field-inspection.webp` |
+| Growthlab Campus | Brightpath University | `institute-franchise-erp.webp` |
+| Growthlab Admissions | Pathway CRM | `education-crm.webp` |
+| Growthlab Realty | Greenfield Group | `real-estate-crm.webp` |
+| Growthlab Travel | Skyway Travels | `travel-agency-crm.webp` |
+| Growthlab Workforce Lite | Swift EMP | `employee-management.webp` |
+| Growthlab Agri | Soil | `agri-distribution.webp` |
 
 Extra screens for the same platform get a number on the end:
 `nidhi-nbfc-software-2.webp`, `nidhi-nbfc-software-3.webp`, and so on.
@@ -75,7 +75,7 @@ inside its `{ ... }` block:
 ```ts
 {
   slug: "nidhi-nbfc-software",
-  name: "Nidhi NBFC Bank",
+  name: "Lotus Nidhi Bank",
   // ...existing lines, leave them alone...
   shot: "/platforms/nidhi-nbfc-software.webp",
   shotAlt: "Member passbook screen showing an auto-generated deposit entry",

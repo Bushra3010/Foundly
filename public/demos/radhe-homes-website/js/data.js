@@ -1,22 +1,22 @@
 /* ==========================================================================
-   Radhe Homes: data layer
+   Skyline Homes: data layer
    Seed content + a localStorage-backed store shared by the site and the
    admin panel. Everything the admin edits is persisted here.
    ========================================================================== */
 
 const RR = {
   company: {
-    name: "Radhe Homes",
+    name: "Skyline Homes",
     tagline: "Real Estate Developer",
     since: 2009,
-    phone: "+91 98250 41100",
-    phoneHref: "+919825041100",
-    whatsapp: "919825041100",
-    email: "connect@radheradhecompany.in",
-    address: "Radhe Radhe House, Level 4, Sarkhej–Gandhinagar Highway, Bodakdev, Ahmedabad, Gujarat 380054",
+    phone: "+91 98765 43210",
+    phoneHref: "+919876543210",
+    whatsapp: "919876543210",
+    email: "hello@skylinehomes.example.com",
+    address: "Skyline House, Level 4, 12 Lakeview Road, Vastrapur, Ahmedabad, Gujarat 380015",
     hours: "Mon – Sat, 10:00 AM – 7:00 PM",
-    rera: "PR/GJ/AHMEDABAD/AUDA/RAA0/RR-2024",
-    mapQuery: "Bodakdev, Ahmedabad, Gujarat"
+    rera: "PR/GJ/AHMEDABAD/AUDA/RAA0/SH-2024",
+    mapQuery: "Vastrapur, Ahmedabad, Gujarat"
   },
 
   /* ---------- Projects ---------- */
@@ -427,7 +427,7 @@ const RR = {
 
   /* ---------- Journey ---------- */
   journey: [
-    { yr: "2009", t: "Foundation", d: "Radhe Homes is established as a land development and contracting firm in Ahmedabad." },
+    { yr: "2009", t: "Foundation", d: "Skyline Homes is established as a land development and contracting firm in Ahmedabad." },
     { yr: "2015", t: "Growth", d: "The company moves into full-scale real estate development with its first residential land parcel." },
     { yr: "2018", t: "Development", d: "Residential and commercial projects run in parallel; the in-house project management team is formed." },
     { yr: "2026", t: "Future", d: "Eight developments across the city, with larger mixed-use and industrial parks now in planning." }
@@ -488,7 +488,7 @@ const RR = {
   ],
 
   /* ---------- Admin default credentials ---------- */
-  adminDefault: { user: "admin", pass: "radhe@2026" }
+  adminDefault: { user: "admin", pass: "skyline@2026" }
 };
 
 /* ==========================================================================

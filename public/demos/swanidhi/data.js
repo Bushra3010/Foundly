@@ -1,7 +1,7 @@
 // Demo data for the offline CRM. Generated once from a fixed seed (so every phone sees the
 // same people), dated relative to today, then kept in localStorage so edits persist.
 (function () {
-  var KEY = 'swanidhi_demo_db_v1';
+  var KEY = 'unity_demo_db_v1';
   var DAY = 86400000;
 
   function rng(seed) {
@@ -31,16 +31,16 @@
     var courses = window.SW_COURSES;
 
     var staff = [
-      { id: 'u1', name: 'Demo Admin', email: 'demo.admin@swanidhi.test', role: 'admin', phone: '9876500001' },
-      { id: 'u2', name: 'Priya Sharma', email: 'priya@swanidhi.test', role: 'lead', phone: '9876500002' },
-      { id: 'u3', name: 'Rahul Verma', email: 'rahul@swanidhi.test', role: 'counselor', phone: '9876500003' },
-      { id: 'u4', name: 'Neha Gupta', email: 'neha@swanidhi.test', role: 'counselor', phone: '9876500004' },
-      { id: 'u5', name: 'Amit Yadav', email: 'amit@swanidhi.test', role: 'counselor', phone: '9876500005' },
-      { id: 'u6', name: 'Sana Khan', email: 'sana@swanidhi.test', role: 'counselor', phone: '9876500006' },
-      { id: 'u7', name: 'Vikas Mishra', email: 'vikas@swanidhi.test', role: 'backend', phone: '9876500007' },
-      { id: 'u8', name: 'Kavita Pandey', email: 'kavita@swanidhi.test', role: 'backend', phone: '9876500008' },
-      { id: 'u9', name: 'Ramesh Kumar', email: 'ramesh@swanidhi.test', role: 'housekeeping', phone: '9876500009' },
-      { id: 'u10', name: 'Sunita Devi', email: 'sunita@swanidhi.test', role: 'housekeeping', phone: '9876500010' },
+      { id: 'u1', name: 'Demo Admin', email: 'demo.admin@unitycolleges.example.com', role: 'admin', phone: '9876500001' },
+      { id: 'u2', name: 'Priya Sharma', email: 'priya@unitycolleges.example.com', role: 'lead', phone: '9876500002' },
+      { id: 'u3', name: 'Rahul Verma', email: 'rahul@unitycolleges.example.com', role: 'counselor', phone: '9876500003' },
+      { id: 'u4', name: 'Neha Gupta', email: 'neha@unitycolleges.example.com', role: 'counselor', phone: '9876500004' },
+      { id: 'u5', name: 'Amit Yadav', email: 'amit@unitycolleges.example.com', role: 'counselor', phone: '9876500005' },
+      { id: 'u6', name: 'Sana Khan', email: 'sana@unitycolleges.example.com', role: 'counselor', phone: '9876500006' },
+      { id: 'u7', name: 'Vikas Mishra', email: 'vikas@unitycolleges.example.com', role: 'backend', phone: '9876500007' },
+      { id: 'u8', name: 'Kavita Pandey', email: 'kavita@unitycolleges.example.com', role: 'backend', phone: '9876500008' },
+      { id: 'u9', name: 'Ramesh Kumar', email: 'ramesh@unitycolleges.example.com', role: 'housekeeping', phone: '9876500009' },
+      { id: 'u10', name: 'Sunita Devi', email: 'sunita@unitycolleges.example.com', role: 'housekeeping', phone: '9876500010' },
     ];
     var counsellors = staff.filter(function (s) { return s.role === 'lead' || s.role === 'counselor'; });
 
@@ -48,7 +48,7 @@
       { id: 'a1', name: 'Shiv Shakti Education Point', owner: 'Manoj Tiwari', city: 'Gorakhpur', phone: '9845000011', commission: 8 },
       { id: 'a2', name: 'Career Guidance Centre', owner: 'Farhan Ali', city: 'Barabanki', phone: '9845000012', commission: 10 },
       { id: 'a3', name: 'Bright Future Consultancy', owner: 'Sunil Maurya', city: 'Sultanpur', phone: '9845000013', commission: 8 },
-      { id: 'a4', name: 'Vidya Admission Help Desk', owner: 'Rekha Srivastava', city: 'Ayodhya', phone: '9845000014', commission: 7 },
+      { id: 'a4', name: 'Shiksha Admission Help Desk', owner: 'Rekha Srivastava', city: 'Ayodhya', phone: '9845000014', commission: 7 },
       { id: 'a5', name: 'Gyan Deep Academy', owner: 'Ajay Chauhan', city: 'Bareilly', phone: '9845000015', commission: 9 },
     ];
 

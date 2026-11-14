@@ -22,8 +22,8 @@
     status TEXT NOT NULL DEFAULT 'active', price INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL DEFAULT ${R}
   );
-  -- Catalog columns mirrored from the CLATians website's \`courses\` table, so a
-  -- course looks the same in the app as it does on clatians.com. \`price\` stays
+  -- Catalog columns mirrored from the LexPrep Academy website's \`courses\` table, so a
+  -- course looks the same in the app as it does on lexprep.example.com. \`price\` stays
   -- the integer the checkout charges; \`fee_text\` is the website's display string.
   ALTER TABLE courses ADD COLUMN IF NOT EXISTS slug TEXT;
   ALTER TABLE courses ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'offline';

@@ -12,7 +12,7 @@ f:I[8745,["/demos/hirenova-portal/_next/static/chunks/32a74htrs4m-2.js","/demos/
 7:["$","$L6","skilled-trades",{"className":"tag","href":"/skilled-trades-jobs","children":"Skilled Trades"}]
 8:["$","$L6","general-labour",{"className":"tag","href":"/general-labour-jobs","children":"General Labour"}]
 9:["$","$Lf",null,{}]
-a:["$","$L10",null,{"slug":"hirenova-portal","title":"Hirenova Workforce","blurb":"Sample data stored only in this browser. Post a vacancy, approve it as admin, apply as a job seeker, then shortlist and request an interview as the employer.","apps":[{"href":"/demos/hirenova-portal/","name":"Public website & job search"},{"href":"/demos/hirenova-portal/login/?role=employer","name":"Employer portal","login":"employer@example.com · hirenova-demo"},{"href":"/demos/hirenova-portal/login/?role=job-seeker","name":"Job seeker portal","login":"jobseeker@example.com · hirenova-demo"},{"href":"/demos/hirenova-portal/admin/","name":"Admin panel","login":"admin@example.com · hirenova-demo · 2FA 123456"}]}]
+a:["$","$L10",null,{"slug":"hirenova-portal","title":"EuroBridge Workforce","blurb":"Sample data stored only in this browser. Post a vacancy, approve it as admin, apply as a job seeker, then shortlist and request an interview as the employer.","apps":[{"href":"/demos/hirenova-portal/","name":"Public website & job search"},{"href":"/demos/hirenova-portal/login/?role=employer","name":"Employer portal","login":"employer@example.com · eurobridge-demo"},{"href":"/demos/hirenova-portal/login/?role=job-seeker","name":"Job seeker portal","login":"jobseeker@example.com · eurobridge-demo"},{"href":"/demos/hirenova-portal/admin/","name":"Admin panel","login":"admin@example.com · eurobridge-demo · 2FA 123456"}]}]
 c:300
 e:true
 c:C

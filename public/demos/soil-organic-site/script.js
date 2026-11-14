@@ -81,7 +81,7 @@ if (form) {
     }
 
     const name = String(data.get("name") || "").trim();
-    formNote.textContent = `Thank you${name ? `, ${name}` : ""}. Your enquiry is ready for SOIL follow-up.`;
+    formNote.textContent = `Thank you${name ? `, ${name}` : ""}. Your enquiry is ready for GreenRoot follow-up.`;
     form.reset();
   });
 }

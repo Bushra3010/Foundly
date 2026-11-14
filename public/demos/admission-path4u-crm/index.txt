@@ -16,4 +16,4 @@ e:I[68027,[],"default"]
 b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=1"}]]
 f:I[27201,["/demos/admission-path4u-crm/_next/static/chunks/ff1a16fafef87110.js","/demos/admission-path4u-crm/_next/static/chunks/a2dfb6fc5208ab9b.js"],"IconMark"]
 9:null
-d:[["$","title","0",{"children":"Admission Path4U - Education Consultancy CRM"}],["$","meta","1",{"name":"description","content":"Manage leads, students, finance and HR for Admission Path4U consultancy"}],["$","link","2",{"rel":"icon","href":"/brand-logo.png"}],["$","$Lf","3",{}]]
+d:[["$","title","0",{"children":"CampusPath Admissions - Education Consultancy CRM"}],["$","meta","1",{"name":"description","content":"Manage leads, students, finance and HR for CampusPath Admissions consultancy"}],["$","link","2",{"rel":"icon","href":"/brand-logo.png"}],["$","$Lf","3",{}]]

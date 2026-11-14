@@ -55141,7 +55141,7 @@ return A.k(q.a.c.wM(),$async$JM)
 case 2:if(q.c!=null)q.K(new A.aLs(q))
 return A.n(null,r)}})
 return A.o($async$JM,r)},
-E(a){var s=null,r=B.e.bp(this.a.c.a4.b),q=r.length===0?"Everlane is getting a quick tune-up. Please check back soon.":r,p=this.d,o=p?"Checking\u2026":"Retry"
+E(a){var s=null,r=B.e.bp(this.a.c.a4.b),q=r.length===0?"Heartway is getting a quick tune-up. Please check back soon.":r,p=this.d,o=p?"Checking\u2026":"Retry"
 return new A.yo(B.VZ,"We\u2019ll be right back",q,A.b([new A.hU(o,s,p?s:this.gaSU(),s)],t.p),s)}}
 A.aLr.prototype={
 $0(){return this.a.d=!0},
@@ -55152,9 +55152,9 @@ $S:0}
 A.JV.prototype={
 a3(){return new A.a8V()}}
 A.a8V.prototype={
-E(a){var s=B.e.bp(this.a.c.a4.f),r=s.length===0?"A newer version of Everlane is out. Reload to get it.":s,q=A.b([],t.p)
+E(a){var s=B.e.bp(this.a.c.a4.f),r=s.length===0?"A newer version of Heartway is out. Reload to get it.":s,q=A.b([],t.p)
 q.push(new A.hU("Reload",null,new A.aTX(),null))
-return new A.yo(B.Wt,"Update Everlane",r,q,null)}}
+return new A.yo(B.Wt,"Update Heartway",r,q,null)}}
 A.aTX.prototype={
 $0(){return A.U1(A.aWI(A.b_k(),B.Z8,"_self"),t.y)},
 $S:0}
@@ -55378,7 +55378,7 @@ return A.k(A.Cm(),$async$By)
 case 3:o=c
 if(p.c==null){s=1
 break}p.K(new A.aEp(p))
-if(o==null){if(!a)p.c.a6(t.J).f.dX(A.dU(null,null,null,null,null,B.w,null,A.l("Couldn\u2019t find your location. Allow location access for Everlane and try again.",null,null,null,null,null,null,null,null),null,B.aO,null,null,null,null,null,null,null,null,null,null))
+if(o==null){if(!a)p.c.a6(t.J).f.dX(A.dU(null,null,null,null,null,B.w,null,A.l("Couldn\u2019t find your location. Allow location access for Heartway and try again.",null,null,null,null,null,null,null,null),null,B.aO,null,null,null,null,null,null,null,null,null,null))
 s=1
 break}n=k.z
 m=o.a
@@ -55787,7 +55787,7 @@ a=a7.b
 a0=a==null
 a1=a0?a5:a.d
 c=A.aV(a5,A.bM(a1==null?b1.d:a1,p,a5,21),B.n,a5,a5,new A.aF(c,a5,a5,b,a5,a5,B.E),a5,40,a5,a5,a5,a5,a5,40)
-if(l)b1=b1.c.toUpperCase()+" \xb7 EVERLANE EVENT"
+if(l)b1=b1.c.toUpperCase()+" \xb7 HEARTWAY EVENT"
 else b1=!a0?"+1 \xb7 "+a.c.toUpperCase():b1.c.toUpperCase()
 b=a7.ax
 a=t.p
@@ -55804,7 +55804,7 @@ c=c>0?b+", "+c:b}c=A.b([new A.dz(1,B.aW,A.l(c,a5,B.a5,a5,a5,B.b0,a5,a5,a5),a5)],
 b=b0?a5:a8.dy
 if(b===!0)B.b.L(c,A.b([B.jl,B.Xq],a))
 c=A.aE(c,B.r,B.i,B.m,0,a5)
-if(l)b=s==="Everlane"?"Hosted by the Everlane team":"Hosted by "+s+" \xb7 Everlane team"
+if(l)b=s==="Heartway"?"Hosted by the Heartway team":"Hosted by "+s+" \xb7 Heartway team"
 else b="Hosted by "+s
 if(l)l=B.bb
 else l=$.P?B.p:B.q
@@ -56332,7 +56332,7 @@ r.J$=0
 $.P=!0
 s.an()},
 E(a){var s=A.bpe()
-return new A.Gc(this.f,new A.eX(new A.aGY(this),null,this.gph(),null),"Everlane",s,!1,null)}}
+return new A.Gc(this.f,new A.eX(new A.aGY(this),null,this.gph(),null),"Heartway",s,!1,null)}}
 A.aGZ.prototype={
 $0(){var s=this.a.gph()
 s.wM()
@@ -56369,7 +56369,7 @@ q=s}return q},
 k(){this.gach().k()
 this.al4()},
 E(a){var s=null,r=t.Y,q=A.bu(B.cY,this.gach(),s)
-return A.f1(s,s,A.bO(A.aK(A.b([A.Y_(A.aZi("assets/images/app_logo.png",B.H,s,s,96,96),new A.af(q,new A.am(1,1.06,r),r.i("af<ak.T>"))),B.bG,A.l("Everlane",s,s,s,s,A.aZ1(s,44),s,s,s),B.bt,B.agz],t.p),B.r,B.i,B.ae,0,B.u),s,s),s,s,s)}}
+return A.f1(s,s,A.bO(A.aK(A.b([A.Y_(A.aZi("assets/images/app_logo.png",B.H,s,s,96,96),new A.af(q,new A.am(1,1.06,r),r.i("af<ak.T>"))),B.bG,A.l("Heartway",s,s,s,s,A.aZ1(s,44),s,s,s),B.bt,B.agz],t.p),B.r,B.i,B.ae,0,B.u),s,s),s,s,s)}}
 A.EM.prototype={
 a3(){return new A.Lu(new A.bh(null,t.sW))}}
 A.Lu.prototype={
@@ -56474,12 +56474,12 @@ j=a0.a4.w?a0.w.length:0
 j=A.b([new A.lk(B.WI,"Admirers","People who have liked your profile",B.K,k,j),new A.lk(B.aoT,"Connections","Your mutual likes and matches",B.bb,a.ox(new A.aH9(a)),b),new A.lk(B.XD,"Dating Goals","What you\u2019re looking for",B.nr,a.ox(new A.aHb(a2,a0)),b)],t.zn)
 if(a0.a4.r)j.push(new A.lk(B.XH,"Hangouts","Host a plan or join one near you",B.nl,a.ox(new A.aHc(a)),b))
 j.push(new A.lk(B.XB,"Explore","Introductions, nearby and crossed paths",B.nr,a.ox(new A.aHd(a2,a0)),b))
-j.push(new A.lk(B.Rw,"Everlane Plus","Premium plans and exclusive benefits",B.bB,a.ox(new A.aHe(a2,a0)),b))
+j.push(new A.lk(B.Rw,"Heartway Plus","Premium plans and exclusive benefits",B.bB,a.ox(new A.aHe(a2,a0)),b))
 j.push(new A.lk(B.XE,"Preferences","Account, privacy and app preferences",B.bb,a.ox(new A.aHf(a)),b))
 j.push(new A.lk(B.WP,"Help & support","Answers, requests and your data",B.nr,a.ox(new A.aHg(a2,a0)),a0.gCs()))
 k=a0.a4
 if(k.ch&&k.fr)a0.gc9()
-k=A.aZ3(B.H,A.l("Everlane",b,b,b,b,A.aZ1(b,36),b,b,b),B.hX)
+k=A.aZ3(B.H,A.l("Heartway",b,b,b,b,A.aZ1(b,36),b,b,b),B.hX)
 i=t.p
 h=A.b([A.dQ(b,b,new A.a_Q(a0.RG,b),b,b,new A.aHh(a),b,b,"Open profile menu",b),B.ey],i)
 if(a.d===0)h.push(A.dQ(b,b,A.bM(B.p3,$.P?B.p:B.q,b,25),b,b,new A.aHi(a2,a0),b,b,"Filter profiles",b))
@@ -57610,7 +57610,7 @@ p=10
 s=13
 return A.k(A.Yx(),$async$wJ)
 case 13:m=a6
-h=t.kc.a(m.a.h(0,"everlane.dismissed_announcements"))
+h=t.kc.a(m.a.h(0,"heartway.dismissed_announcements"))
 h=h==null?null:J.rZ(h,t.N)
 g=h==null?null:h.eV(h)
 t.Xb.a(g)
@@ -58088,7 +58088,7 @@ $2(a,b){var s=t.Ni
 return new A.cK(b,!1,A.km(a,new A.af(b,new A.am(B.a7I,B.k,s),s.i("af<ak.T>")),null,!0),null)},
 $S:175}
 A.a92.prototype={
-E(a){var s=null,r=A.aZi("assets/images/tara.jpg",B.Jn,new A.aUp(),B.cT,s,s),q=t.p,p=A.b([A.bO(A.l("Everlane",s,s,s,s,A.aZ1(B.f,34),s,s,s),s,s),B.ey,A.l("Find someone worth\nstaying for.",s,s,s,s,A.Tx(B.f,1.12,32,B.aD),s,s,s),B.e2,A.cg(A.fs(B.anZ,this.c,A.ht(new A.aUq(),B.f,s,B.v,B.qU,s,s,B.fn,s,B.mk)),s,1/0)],q),o=this.d
+E(a){var s=null,r=A.aZi("assets/images/tara.jpg",B.Jn,new A.aUp(),B.cT,s,s),q=t.p,p=A.b([A.bO(A.l("Heartway",s,s,s,s,A.aZ1(B.f,34),s,s,s),s,s),B.ey,A.l("Find someone worth\nstaying for.",s,s,s,s,A.Tx(B.f,1.12,32,B.aD),s,s,s),B.e2,A.cg(A.fs(B.anZ,this.c,A.ht(new A.aUq(),B.f,s,B.v,B.qU,s,s,B.fn,s,B.mk)),s,1/0)],q),o=this.d
 if(o!=null)p.push(A.bO(A.cW(B.amS,o,A.lp(s,s,s,s,s,s,s,s,s,B.f,s,s,s,s,s,s,s,s,s,s,s)),s,s))
 o=this.e
 if(o!=null)p.push(A.bO(A.cW(B.aoi,o,A.lp(s,s,s,s,s,s,s,s,s,B.aq,s,s,s,s,s,s,s,s,s,s,s)),s,s))
@@ -58314,13 +58314,13 @@ B.b.L(q,c)
 return A.ex(q,r,B.TV,r,r,!1)},
 aRe(a4){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1=this,a2=null,a3=a1.a.c
 switch(a1.gmi().a){case 0:s=a1.gqm()
-return a1.ma("What\u2019s your first name?","This is how you\u2019ll appear on Everlane.",A.b([A.jA(a2,B.l,s.a.a.length===0,a2,!0,B.w,a2,A.kJ(),s,a2,a2,a2,a2,a2,2,B.Ys,B.V,!0,a2,!0,a2,!1,a2,B.by,a2,a2,a2,a2,a2,a2,40,a2,1,a2,a2,!1,"\u2022",a2,new A.aOs(a1),a2,new A.aOt(a1),a2,!1,a2,a2,!1,a2,!0,a2,B.bs,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,!0,B.ab,a2,B.me,a2,B.ra,a2,a2)],t.p))
+return a1.ma("What\u2019s your first name?","This is how you\u2019ll appear on Heartway.",A.b([A.jA(a2,B.l,s.a.a.length===0,a2,!0,B.w,a2,A.kJ(),s,a2,a2,a2,a2,a2,2,B.Ys,B.V,!0,a2,!0,a2,!1,a2,B.by,a2,a2,a2,a2,a2,a2,40,a2,1,a2,a2,!1,"\u2022",a2,new A.aOs(a1),a2,new A.aOt(a1),a2,!1,a2,a2,!1,a2,!0,a2,B.bs,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,!0,B.ab,a2,B.me,a2,B.ra,a2,a2)],t.p))
 case 1:s=t.p
 r=A.b([B.bt,new A.a_V(a1.ga8b(),a1.gabj(),a1.gadK(),B.pc,a1.ch,new A.aOu(a1),new A.aOz(a1),new A.aOA(a1),a2)],s)
 q=a1.gpP()
 p=a1.a.c.a4.dy
 o=p<18
-if(q<(o?18:p))B.b.L(r,A.b([B.aF,A.l("Everlane is for adults aged "+(o?18:p)+" and over.",a2,a2,a2,a2,B.rd,B.b5,a2,a2)],s))
+if(q<(o?18:p))B.b.L(r,A.b([B.aF,A.l("Heartway is for adults aged "+(o?18:p)+" and over.",a2,a2,a2,a2,B.rd,B.b5,a2,a2)],s))
 return a1.ma("Select your birth date","Your profile will show only your age.",r)
 case 2:return a1.ma("What\u2019s your gender?",a2,A.b([new A.ON(B.a0a,a1.gKh(),new A.aOB(a1),a2)],t.p))
 case 3:return a1.ma("Who are you into?",a2,A.b([new A.ON(B.a3Y,a1.gSV(),new A.aOC(a1),a2)],t.p))
@@ -59872,7 +59872,7 @@ f.push(B.MI)
 f.push(B.au)
 f.push(A.bO(A.l("Made for something real.",k,k,k,k,A.b0I().$3$color$fontSize$fontStyle($.P?B.p:B.q,20,B.bS),k,k,k),k,k))
 f.push(B.bm)
-f.push(A.bO(A.l("Everlane \xb7 UI preview 0.1",k,k,k,k,A.a7(k,k,$.P?B.p:B.q,k,k,k,k,k,k,k,k,10,k,k,k,k,k,!0,k,k,k,k,k,k,k,k),k,k,k),k,k))
+f.push(A.bO(A.l("Heartway \xb7 UI preview 0.1",k,k,k,k,A.a7(k,k,$.P?B.p:B.q,k,k,k,k,k,k,k,k,10,k,k,k,k,k,!0,k,k,k,k,k,k,k,k),k,k,k),k,k))
 return A.ex(f,k,B.TL,k,k,!1)}}
 A.aO7.prototype={
 $0(){return this.a.d=!0},
@@ -60667,7 +60667,7 @@ case 4:p=3
 g=o.pop()
 i=A.ab(g)
 if(i instanceof A.xi){j=i
-if(B.e.m(j.a,"ermission")||B.e.m(j.a,"Denied"))i="Everlane needs your camera for the selfie. Allow camera access in your settings, then try again."
+if(B.e.m(j.a,"ermission")||B.e.m(j.a,"Denied"))i="Heartway needs your camera for the selfie. Allow camera access in your settings, then try again."
 else{i=j.b
 i="Couldn\u2019t start the camera. "+(i==null?"":i)}n.S0(i)}else n.S0("Couldn\u2019t start the camera.")
 s=6
@@ -60843,7 +60843,7 @@ E(a){var s,r,q=this,p=null,o=t.w,n=B.d.cX(A.ah(a,B.dC,o).w.a.a*0.85,0,360),m=A.a
 o=-n
 s=n*1.4
 r=t.p
-return new A.Tc(B.bO,B.er,n,A.de(B.aM,A.b([A.el(p,B.XS,s,p,p,o*0.55,o*0.9,s),B.a8X,B.a8Y,A.aK(A.b([new A.a2B(q.c,q.d,q.e,q.w,q.x,q.r,m.b,p),B.Sr,A.b3(A.bh0(new A.axH(q),q.f.length,B.Tm,new A.axI()),1),new A.ae(new A.Y(26,8,22,m.d+26),A.aE(A.b([A.l("EVERLANE",p,p,p,p,B.alL,p,p,p),B.c7,A.aV(p,p,B.n,B.bb.by(0.6),p,p,p,1,p,p,p,p,p,46),B.ey,B.XF],r),B.r,B.i,B.m,0,p),p)],r),B.bE,B.i,B.m,0,B.u)],r),B.w,B.aJ,p),p)}}
+return new A.Tc(B.bO,B.er,n,A.de(B.aM,A.b([A.el(p,B.XS,s,p,p,o*0.55,o*0.9,s),B.a8X,B.a8Y,A.aK(A.b([new A.a2B(q.c,q.d,q.e,q.w,q.x,q.r,m.b,p),B.Sr,A.b3(A.bh0(new A.axH(q),q.f.length,B.Tm,new A.axI()),1),new A.ae(new A.Y(26,8,22,m.d+26),A.aE(A.b([A.l("HEARTWAY",p,p,p,p,B.alL,p,p,p),B.c7,A.aV(p,p,B.n,B.bb.by(0.6),p,p,p,1,p,p,p,p,p,46),B.ey,B.XF],r),B.r,B.i,B.m,0,p),p)],r),B.bE,B.i,B.m,0,B.u)],r),B.w,B.aJ,p),p)}}
 A.axI.prototype={
 $2(a,b){return B.Sq},
 $S:699}
@@ -127884,7 +127884,7 @@ B.Za=new A.yK(2,"inAppBrowserView")
 B.Zb=new A.yK(3,"externalApplication")
 B.ad_=new A.t("1. Information We Collect","We collect information necessary to operate our matchmaking, compatibility, and social meetup services:\n\u2022 Account Information: We collect your name, age, date of birth, gender, phone number, email address, photographs, bio, and dating preferences during registration.\n\u2022 Verification Data: If you apply for a verified profile badge, we process your verification selfie or identity confirmation media strictly to authenticate your profile.\n\u2022 Compatibility Data: We process your questionnaire responses and interaction preferences to generate area-by-area Chemistry reports.\n\u2022 Location Data: With your permission, we collect precise or approximate location data to show nearby profiles and facilitate local Hangouts.\n\u2022 Payment Information: When you purchase a paid plan via a UPI app, we collect transaction reference numbers (UTR), payment screenshots, or UPI IDs required for manual verification.")
 B.abM=new A.t("2. How We Use Your Information","We process your personal data strictly for the following purposes:\n\u2022 Core Matchmaking: Operating your profile, delivering daily likes, sending weekly Sparks, applying monthly profile boosts, and calculating Chemistry reports.\n\u2022 Hangouts Feature: Enabling eligible members to host or join plans nearby and coordinate local meetups with other users.\n\u2022 Payment Verification: Manually verifying your UPI payment, which typically takes a few hours before your upgraded plan turns on.\n\u2022 Platform Safety: Detecting bots, preventing fraud, enforcing community guidelines, and investigating reported accounts.")
-B.ab_=new A.t("Interactive and system profiles","Alongside regular members, Everlane may operate system-assisted profiles to maintain active matchmaking and platform connectivity. Messages sent to these profiles are stored securely and handled under this privacy policy. Members should never share sensitive financial information or personal credentials.")
+B.ab_=new A.t("Interactive and system profiles","Alongside regular members, Heartway may operate system-assisted profiles to maintain active matchmaking and platform connectivity. Messages sent to these profiles are stored securely and handled under this privacy policy. Members should never share sensitive financial information or personal credentials.")
 B.aae=new A.t("3. Data Sharing and Disclosure","We do not sell your personal data to third-party advertisers or data brokers. We share data only in the following contexts:\n\u2022 With Other Users: Your public profile, photos, verification badge, and hosted Hangouts activity are visible to other platform members.\n\u2022 Service Providers: We use trusted hosting, database, and communication providers bound by strict confidentiality obligations.\n\u2022 Legal Compliance: We may disclose information if required by Indian law, court order, or law enforcement agencies investigating cybercrime or safety threats.")
 B.ab3=new A.t("4. Data Retention and Deletion","We retain your personal data only as long as your account remains active. When you delete your account, your profile, photos, and chat history are permanently erased from our active databases within 30 days, except for transaction records required for tax or legal compliance (retained for up to 7 years).")
 B.ab2=new A.t("5. Your Rights Under the DPDP Act","Under India's Digital Personal Data Protection Act, 2023, you hold the following rights regarding your data:\n\u2022 Right to Access: You may request a summary of the personal data we process and any third parties with whom it is shared.\n\u2022 Right to Correction: You may update inaccurate or incomplete personal details directly through your profile settings.\n\u2022 Right to Erasure: You may delete your account or request complete erasure of your personal data at any time.\n\u2022 Consent Withdrawal: You may revoke permissions such as location access via your device settings, though location-based matching will be limited.")
@@ -127895,19 +127895,19 @@ B.Zc=new A.nT("Privacy Policy",B.a4_,"privacy",null)
 B.abp=new A.t("Be kind",'Treat everyone with respect, online and when you meet. No harassment, hate speech, threats or bullying. A polite "no thanks" is always fine.')
 B.acW=new A.t("Be real","Use your own name, age and recent photos of you. Don't pretend to be someone else or mislead people about who you are.")
 B.aa6=new A.t("Stay safe","Meet in public places, tell a friend your plans and keep personal and financial details private until you trust someone.")
-B.aam=new A.t("No selling","Everlane is for meeting people, not for promoting products, services, other apps or asking for money. No spam, scams or solicitation.")
-B.a9M=new A.t("Adults only","You must be 18 or older to use Everlane. No sexual content involving minors, ever. We report it to the authorities.")
+B.aam=new A.t("No selling","Heartway is for meeting people, not for promoting products, services, other apps or asking for money. No spam, scams or solicitation.")
+B.a9M=new A.t("Adults only","You must be 18 or older to use Heartway. No sexual content involving minors, ever. We report it to the authorities.")
 B.abQ=new A.t("Reporting","If someone breaks these guidelines, report them from their profile or your chat. Reports are confidential, and our team reviews every one.")
 B.a_0=s([B.abp,B.acW,B.aa6,B.aam,B.a9M,B.abQ],t.L)
 B.Zd=new A.nT("Community guidelines",B.a_0,"guidelines",null)
-B.aco=new A.t("1. Acceptance of Terms and Eligibility","By creating an account or accessing everlanedating.com, you agree to be bound by these Terms and Conditions. You must be at least 18 years of age and legally permitted to form a binding contract under the Indian Contract Act, 1872.")
-B.aaF=new A.t("2. Membership Plans and Features","Everlane Dating offers a Free member tier alongside paid subscription upgrades (Plus, Gold, and Platinum):\n\u2022 Gold Plan: Priced at \u20b9499 per month, Gold includes everything in Plus, seeing who liked you, 50 likes each day, 2 Sparks each week, and 2 profile boosts each month.\n\u2022 Platinum Plan: Priced at \u20b9899 per month, Platinum includes everything in Gold, 100 likes each day, 3 Sparks each week, 5 profile boosts each month, a detailed Chemistry report, and Hangouts access.\n\u2022 Feature Allocation: Daily likes, weekly Sparks, and monthly profile boosts reset on their respective cycles and do not carry over or hold cash value.")
+B.aco=new A.t("1. Acceptance of Terms and Eligibility","By creating an account or accessing heartway.example.com, you agree to be bound by these Terms and Conditions. You must be at least 18 years of age and legally permitted to form a binding contract under the Indian Contract Act, 1872.")
+B.aaF=new A.t("2. Membership Plans and Features","Heartway Dating offers a Free member tier alongside paid subscription upgrades (Plus, Gold, and Platinum):\n\u2022 Gold Plan: Priced at \u20b9499 per month, Gold includes everything in Plus, seeing who liked you, 50 likes each day, 2 Sparks each week, and 2 profile boosts each month.\n\u2022 Platinum Plan: Priced at \u20b9899 per month, Platinum includes everything in Gold, 100 likes each day, 3 Sparks each week, 5 profile boosts each month, a detailed Chemistry report, and Hangouts access.\n\u2022 Feature Allocation: Daily likes, weekly Sparks, and monthly profile boosts reset on their respective cycles and do not carry over or hold cash value.")
 B.acv=new A.t("3. Payments, Manual Verification, and Cancellations","All paid subscriptions are subject to the following billing and verification rules:\n\u2022 UPI Payments: Paid plans can be purchased using any supported UPI app.\n\u2022 Manual Verification: We verify every payment by hand, usually within a few hours, and your upgraded plan turns on once payment is verified.\n\u2022 Subscriptions: Gold renews monthly at \u20b9499 and Platinum renews monthly at \u20b9899 until you cancel.\n\u2022 Cancellation Policy: You may cancel your subscription anytime through your account settings to prevent future billing cycles.\n\u2022 Refund Policy: Payments for verified active subscription cycles are non-refundable, except where a duplicate deduction occurs due to a verified technical error.")
-B.acN=new A.t("4. Hangouts and Offline Safety Disclaimer","The Hangouts feature allows eligible members to host or join plans nearby. Everlane Dating does not conduct criminal background checks on users and does not supervise offline events. You are solely responsible for your personal safety when meeting other users, and you must always meet in public places and inform a trusted contact of your plans.")
+B.acN=new A.t("4. Hangouts and Offline Safety Disclaimer","The Hangouts feature allows eligible members to host or join plans nearby. Heartway Dating does not conduct criminal background checks on users and does not supervise offline events. You are solely responsible for your personal safety when meeting other users, and you must always meet in public places and inform a trusted contact of your plans.")
 B.abr=new A.t("5. User Conduct and Community Guidelines","To maintain a safe platform, you agree not to engage in any of the following prohibited actions:\n\u2022 Impersonation: Creating fake profiles, misrepresenting your age or identity, or uploading photographs belonging to another person.\n\u2022 Harassment: Sending abusive, defamatory, obscene, or threatening messages to other members or support staff.\n\u2022 Commercial Solicitation: Using the platform or Hangouts to promote third-party businesses, scams, or unlawful activities.\n\u2022 Payment Fraud: Submitting falsified, altered, or duplicate UPI payment references during subscription verification.")
-B.a9P=new A.t("Interactive and system profiles","Everlane may operate system-assisted profiles to optimize matching queues and provide continuous platform activity across cities. These profiles do not solicit funds or personal data, and conversations may be monitored or assisted by platform operators to ensure service quality.")
+B.a9P=new A.t("Interactive and system profiles","Heartway may operate system-assisted profiles to optimize matching queues and provide continuous platform activity across cities. These profiles do not solicit funds or personal data, and conversations may be monitored or assisted by platform operators to ensure service quality.")
 B.ab7=new A.t("6. Account Suspension and Termination","We reserve the right to suspend or permanently terminate your account without refund if you violate these Terms, submit fraudulent UPI payment proofs, or engage in behavior that threatens the safety of our community.")
-B.ado=new A.t("7. Limitation of Liability",'Everlane Dating provides the platform on an "as-is" and "as-available" basis. To the maximum extent permitted by law, we are not liable for any indirect damages, Compatibility or Chemistry report outcomes, user disputes, or incidents arising from online interactions or offline Hangouts.')
+B.ado=new A.t("7. Limitation of Liability",'Heartway Dating provides the platform on an "as-is" and "as-available" basis. To the maximum extent permitted by law, we are not liable for any indirect damages, Compatibility or Chemistry report outcomes, user disputes, or incidents arising from online interactions or offline Hangouts.')
 B.ack=new A.t("8. Governing Law and Jurisdiction","These Terms are governed by the laws of India. Any legal disputes arising out of your use of the platform shall be subject to the exclusive jurisdiction of the courts in India.")
 B.a1Q=s([B.aco,B.aaF,B.acv,B.acN,B.abr,B.a9P,B.ab7,B.ado,B.ack],t.L)
 B.Ze=new A.nT("Terms & Conditions",B.a1Q,"terms",null)

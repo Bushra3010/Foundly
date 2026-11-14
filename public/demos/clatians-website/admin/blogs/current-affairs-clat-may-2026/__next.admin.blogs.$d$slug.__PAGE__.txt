@@ -2,7 +2,7 @@
 2:I[11645,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website/_next/static/chunks/0de.u2b-yxxd3.js","/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js"],"default"]
 4:I[97367,["/demos/clatians-website/_next/static/chunks/0d51pfsg~lw7~.js","/demos/clatians-website/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-3:T739,Stay updated with the most important current affairs for CLAT 2026. This monthly capsule covers all key events relevant for law entrance exams.
+3:T74e,Stay updated with the most important current affairs for CLAT 2026. This monthly capsule covers all key events relevant for law entrance exams.
 
 ## National Affairs
 
@@ -53,13 +53,13 @@
 - Major sporting events and champions
 - Indian sports awards
 
-## CLATians Daily GK Programme
+## LexPrep Academy Daily GK Programme
 
-At CLATians, we provide daily GK capsules to all enrolled students. Our GK program covers:
+At LexPrep Academy, we provide daily GK capsules to all enrolled students. Our GK program covers:
 - Daily newspaper analysis (The Hindu + Indian Express)
 - Weekly legal news summary
 - Monthly GK magazine
 - Emergency updates on breaking legal news
 
-Join CLATians today to never miss an important current affairs update for CLAT 2026!0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"current-affairs-clat-may-2026","title":"Current Affairs for CLAT – May 2026 Complete Capsule","excerpt":"All important current affairs events of May 2026 relevant for CLAT, AILET, and other law entrance exams.","content":"$3","category":"Current Affairs","categoryColor":"#f97316","author":"CLATians Faculty","authorAvatar":"CF","date":"20 May, 2026","readTime":"8 min read","tags":["Current Affairs","CLAT 2026","GK","Legal GK","Monthly Capsule"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
+Join LexPrep Academy today to never miss an important current affairs update for CLAT 2026!0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"current-affairs-clat-may-2026","title":"Current Affairs for CLAT – May 2026 Complete Capsule","excerpt":"All important current affairs events of May 2026 relevant for CLAT, AILET, and other law entrance exams.","content":"$3","category":"Current Affairs","categoryColor":"#f97316","author":"LexPrep Academy Faculty","authorAvatar":"CF","date":"20 May, 2026","readTime":"8 min read","tags":["Current Affairs","CLAT 2026","GK","Legal GK","Monthly Capsule"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website/_next/static/chunks/0k.fn523wyt~7.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mynJ8sHNeQP3N1QTDA63X"}
 6:null

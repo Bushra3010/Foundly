@@ -1,6 +1,6 @@
 const API_URL = "/.netlify/functions/admin-content";
 const CONTENT_URL = "../data/site-content.json";
-const passwordKey = "soil_admin_password";
+const passwordKey = "greenroot_admin_password";
 
 const loginPanel = document.querySelector("[data-login-panel]");
 const editorPanel = document.querySelector("[data-editor]");

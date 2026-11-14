@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Meera Prakash Education Center">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Bright Future Education Center">
   <defs>
     <path id="circleTop" d="M 100,100 m -82,0 a 82,82 0 1,1 164,0" />
     <path id="circleBottom" d="M 100,100 m -82,0 a 82,82 0 1,0 164,0" />
@@ -6,7 +6,7 @@
   <circle cx="100" cy="100" r="98" fill="#1b2a86" />
   <circle cx="100" cy="100" r="72" fill="#ffffff" />
   <text fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="bold" letter-spacing="1.5">
-    <textPath href="#circleTop" startOffset="50%" text-anchor="middle">MEERA PRAKASH EDUCATION</textPath>
+    <textPath href="#circleTop" startOffset="50%" text-anchor="middle">BRIGHT FUTURE EDUCATION</textPath>
   </text>
   <text fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="bold" letter-spacing="1.5">
     <textPath href="#circleBottom" startOffset="50%" text-anchor="middle">CENTER PVT. LTD.</textPath>
@@ -17,6 +17,6 @@
   <circle cx="100" cy="70" r="14" fill="#2f6fed" />
   <path d="M 82 92 Q 100 80 118 92 L 118 108 L 82 108 Z" fill="#2f6fed" />
   <rect x="88" y="94" width="24" height="18" rx="2" fill="#d81f2a" />
-  <text x="100" y="107" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="bold" text-anchor="middle">MPEC</text>
+  <text x="100" y="107" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="bold" text-anchor="middle">BFEC</text>
   <circle cx="100" cy="178" r="6" fill="#f5b400" />
 </svg>

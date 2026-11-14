@@ -1,25 +1,25 @@
 /* ==========================================================================
-   SWAMITRA Foundation — Content data
+   Civic Rights Foundation — Content data
    Edit this file to update programmes, trainings, resources, news & policies.
    ========================================================================== */
 
-window.SWAMITRA = (function () {
+window.CRF = (function () {
   const org = {
-    name: "SWAMITRA Foundation",
+    name: "Civic Rights Foundation",
     tagline: "Constitutionally Aware · Legally Empowered · Civically Responsible",
-    email: "info@swamitrafoundation.org",
-    emailAlt: "programmes@swamitrafoundation.org",
-    phone: "+91 70797 56771",
-    phoneHref: "+917079756771",
-    whatsapp: "+91 70797 56771",
-    address: "Boring Road, Patna, Bihar 800001, India",
+    email: "hello@civicrights.example.com",
+    emailAlt: "programmes@civicrights.example.com",
+    phone: "+91 98765 43211",
+    phoneHref: "+919876543211",
+    whatsapp: "+91 98765 43211",
+    address: "21 Lotus Lane, Patna, Bihar 800001, India",
     hours: "Monday – Friday · 10:00 AM – 6:00 PM IST",
     social: {
-      linkedin: "https://in.linkedin.com/company/swamitrafoundation",
-      facebook: "https://www.facebook.com/SWAMITRAFoundation",
+      linkedin: "#",
+      facebook: "#",
       x: "",
-      youtube: "https://www.youtube.com/@SWAMITRAFoundation",
-      instagram: "https://www.instagram.com/swamitra.foundation/"
+      youtube: "#",
+      instagram: "#"
     }
   };
 
@@ -30,7 +30,7 @@ window.SWAMITRA = (function () {
     autoplay: true,
     interval: 6500,
     heading: "Building a Constitutionally Aware, Legally Empowered and Civically Responsible India",
-    lead: "SWAMITRA Foundation works with schools, higher education institutions, governments, workplaces and communities to advance legal education, constitutional literacy, safe institutions and responsible citizenship.",
+    lead: "Civic Rights Foundation works with schools, higher education institutions, governments, workplaces and communities to advance legal education, constitutional literacy, safe institutions and responsible citizenship.",
     primaryText: "Explore Our Programs",
     primaryHref: "programs.html",
     secondaryText: "Partner With Us",
@@ -61,7 +61,7 @@ window.SWAMITRA = (function () {
         secondaryText: "Partner With Us", secondaryHref: "partnership-opportunities.html" },
       { src: "assets/img/slide6.jpg", title: "POSH Capacity Building", subtitle: "Certified training for Internal Committees",
         heading: "Creating Workplaces Free From Sexual Harassment",
-        lead: "SWAMITRA strengthens institutional capacity for prevention of sexual harassment through POSH awareness, training, policy understanding, Internal Committee capacity building and compliance support.",
+        lead: "CRF strengthens institutional capacity for prevention of sexual harassment through POSH awareness, training, policy understanding, Internal Committee capacity building and compliance support.",
         primaryText: "Explore POSH Training", primaryHref: "training.html",
         secondaryText: "Request Institutional Training", secondaryHref: "training.html" },
       { src: "assets/img/slide7.jpg", title: "POCSO Awareness Initiative", subtitle: "Every child deserves safety, dignity and respect",
@@ -71,42 +71,42 @@ window.SWAMITRA = (function () {
         secondaryText: "Build Child-Safe Institutions", secondaryHref: "programs.html" },
       { src: "assets/img/slide8.jpg", title: "Constitutional Literacy", subtitle: "Know your rights. Understand your duties.",
         heading: "Know the Constitution. Understand Your Rights. Fulfil Your Duties.",
-        lead: "SWAMITRA promotes constitutional literacy by helping citizens understand the Constitution, fundamental rights, duties, democratic values and their role in building a responsible society.",
+        lead: "CRF promotes constitutional literacy by helping citizens understand the Constitution, fundamental rights, duties, democratic values and their role in building a responsible society.",
         primaryText: "Explore Constitutional Literacy", primaryHref: "training.html",
         secondaryText: "Start Learning", secondaryHref: "training.html" },
       { src: "assets/img/slide9.jpg", title: "Legal & Civic Awareness", subtitle: "Rights explained where they are needed most",
         heading: "Making Law Understandable for Everyday Life",
-        lead: "SWAMITRA brings practical legal and civic awareness closer to citizens by explaining laws, rules, rights, duties and everyday procedures in a simple and accessible way.",
+        lead: "CRF brings practical legal and civic awareness closer to citizens by explaining laws, rules, rights, duties and everyday procedures in a simple and accessible way.",
         primaryText: "Explore Legal Awareness", primaryHref: "training.html",
         secondaryText: "Access Resources", secondaryHref: "resource-library.html" },
       { src: "assets/img/slide10.jpg", title: "Research & Policy Centre", subtitle: "Evidence · Insight · Impact",
         heading: "Researching Today. Shaping Better Institutions for Tomorrow.",
-        lead: "SWAMITRA's Research & Policy Centre develops evidence-based research, frameworks, standards and policy resources to strengthen legal education, institutional safety, governance and civic responsibility.",
+        lead: "CRF's Research & Policy Centre develops evidence-based research, frameworks, standards and policy resources to strengthen legal education, institutional safety, governance and civic responsibility.",
         primaryText: "Explore Research", primaryHref: "research.html",
         secondaryText: "Collaborate With Us", secondaryHref: "research.html" },
       { src: "assets/img/slide11.jpg", title: "Training & Capacity Building", subtitle: "Empowering people. Strengthening institutions.",
         heading: "Knowledge That Builds Capacity. Capacity That Creates Change.",
-        lead: "SWAMITRA delivers practical training and capacity-building programmes for educators, professionals, institutions, government bodies and communities.",
+        lead: "CRF delivers practical training and capacity-building programmes for educators, professionals, institutions, government bodies and communities.",
         primaryText: "Explore Training", primaryHref: "training.html",
         secondaryText: "Request Institutional Training", secondaryHref: "training.html" },
-      { src: "assets/img/slide12.jpg", title: "SWAMITRA Vision 2047", subtitle: "A just, educated and accountable India",
+      { src: "assets/img/slide12.jpg", title: "CRF Vision 2047", subtitle: "A just, educated and accountable India",
         heading: "Building the India We Aspire to See in 2047",
-        lead: "SWAMITRA Vision 2047 seeks to contribute to a just, educated, aware, safe and responsible India by strengthening legal awareness, constitutional values, institutional responsibility and active citizenship.",
+        lead: "CRF Vision 2047 seeks to contribute to a just, educated, aware, safe and responsible India by strengthening legal awareness, constitutional values, institutional responsibility and active citizenship.",
         primaryText: "Explore Vision 2047", primaryHref: "vision-and-mission.html",
         secondaryText: "Be Part of the Vision", secondaryHref: "get-involved.html" }
     ]
   };
 
   const about = {
-    eyebrow: "About SWAMITRA",
+    eyebrow: "About CRF",
     heading: "A national institution built to make legal knowledge ordinary",
-    shortText: "SWAMITRA Foundation is a not-for-profit organisation committed to building a legally aware, constitutionally informed, safe and responsible society. We work through legal education, research, capacity building and institutional partnerships to strengthen individuals and institutions across India.",
-    fullText: "From schools and universities to workplaces and communities, SWAMITRA promotes awareness of rights, duties, laws, safety and civic responsibility—helping people understand not only what the law says, but how it matters in everyday life. Our mission is to make legal and constitutional literacy a universal capability, not a privilege. We believe that every individual deserves to know their rights, understand their duties, and participate fully in the democratic process. Through our flagship programmes, certified training and evidence-based research, we are building a movement that reaches into every corner of Indian society.",
+    shortText: "Civic Rights Foundation is a not-for-profit organisation committed to building a legally aware, constitutionally informed, safe and responsible society. We work through legal education, research, capacity building and institutional partnerships to strengthen individuals and institutions across India.",
+    fullText: "From schools and universities to workplaces and communities, CRF promotes awareness of rights, duties, laws, safety and civic responsibility—helping people understand not only what the law says, but how it matters in everyday life. Our mission is to make legal and constitutional literacy a universal capability, not a privilege. We believe that every individual deserves to know their rights, understand their duties, and participate fully in the democratic process. Through our flagship programmes, certified training and evidence-based research, we are building a movement that reaches into every corner of Indian society.",
     figureImage: "assets/img/mark.png",
     figureCaption: "Constitutionally Aware · Legally Empowered · Civically Responsible",
     images: [
-      { src: "assets/img/mark.png", alt: "SWAMITRA Foundation emblem", caption: "Constitutionally Aware · Legally Empowered · Civically Responsible" },
-      { src: "assets/img/slide8.jpg", alt: "SWAMITRA Foundation work in schools and communities", caption: "Reaching schools, workplaces and communities across India" },
+      { src: "assets/img/mark.png", alt: "Civic Rights Foundation emblem", caption: "Constitutionally Aware · Legally Empowered · Civically Responsible" },
+      { src: "assets/img/slide8.jpg", alt: "Civic Rights Foundation work in schools and communities", caption: "Reaching schools, workplaces and communities across India" },
       { src: "assets/img/slide5.jpg", alt: "Framework and training programmes", caption: "Building systems that can be audited and trusted" },
       { src: "assets/img/slide6.jpg", alt: "Certified training programmes", caption: "Certified programmes for educators, committees and institutions" }
     ]
@@ -119,7 +119,7 @@ window.SWAMITRA = (function () {
       title: "National Legal Education Mission",
       tag: "Flagship",
       summary: "A nationwide mission to embed legal literacy and constitutional understanding across every stage of education.",
-      background: "Legal knowledge in India remains concentrated within the profession, while citizens who most need it are least equipped to use it. The National Legal Education Mission is SWAMITRA's response — a structured, national effort to make legal and constitutional education a normal part of learning rather than a specialist pursuit.",
+      background: "Legal knowledge in India remains concentrated within the profession, while citizens who most need it are least equipped to use it. The National Legal Education Mission is CRF's response — a structured, national effort to make legal and constitutional education a normal part of learning rather than a specialist pursuit.",
       need: "Surveys consistently show low awareness of fundamental rights, duties and grievance mechanisms among students, teachers and community members. Institutions lack a common curriculum, trained faculty and standard learning material.",
       relevance: "The Mission aligns with the constitutional promise of justice, liberty, equality and fraternity, and supports national education policy goals on values, ethics and constitutional literacy.",
       objectives: [
@@ -137,7 +137,7 @@ window.SWAMITRA = (function () {
       faqs: [
         ["Who can join the Mission?", "Any school, college, university, government body or civil-society organisation committed to delivering structured legal and constitutional education can apply to join."],
         ["Is there a participation fee?", "Core curriculum resources are provided free of cost. Customised institutional training may be chargeable on a cost-recovery basis."],
-        ["Do participating institutions receive recognition?", "Yes. Institutions completing the implementation cycle receive a SWAMITRA Participating Institution recognition and are listed in the national network."]
+        ["Do participating institutions receive recognition?", "Yes. Institutions completing the implementation cycle receive a CRF Participating Institution recognition and are listed in the national network."]
       ]
     },
     {
@@ -327,7 +327,7 @@ window.SWAMITRA = (function () {
       title: "Research & Policy Centre",
       tag: "Research",
       summary: "Evidence, frameworks and policy recommendations that give the Foundation's programmes their factual foundation.",
-      background: "Every SWAMITRA framework begins as research. The Research & Policy Centre produces the evidence base, national standards and policy briefs that guide practice.",
+      background: "Every CRF framework begins as research. The Research & Policy Centre produces the evidence base, national standards and policy briefs that guide practice.",
       need: "India lacks consolidated, comparable evidence on legal literacy, institutional safety and constitutional awareness.",
       relevance: "Positions the Foundation as a credible knowledge partner for government, academia and civil society.",
       objectives: [
@@ -528,7 +528,7 @@ window.SWAMITRA = (function () {
     {
       slug: "train-the-trainer", title: "Train the Trainer (ToT)", tag: "ToT", mode: "Offline · Hybrid",
       duration: "Three to five days", level: "Advanced",
-      summary: "Creating certified master trainers who can deliver SWAMITRA programmes independently within their institutions and regions.",
+      summary: "Creating certified master trainers who can deliver CRF programmes independently within their institutions and regions.",
       importance: "Scale comes from multiplication. ToT creates the trainers who carry these programmes into places we cannot reach directly.",
       benefits: ["Institutional training self-sufficiency", "Recognised master trainer status", "Access to the trainer network", "Continuing professional support"],
       objectives: ["Master programme content end-to-end", "Develop adult facilitation skills", "Deliver and assess sessions independently", "Maintain fidelity to the framework", "Mentor new facilitators"],
@@ -541,7 +541,7 @@ window.SWAMITRA = (function () {
         ["Module 5", "Certification practicum and mentoring"]
       ],
       methodology: ["Intensive workshops", "Supervised practice delivery", "Peer feedback", "Practicum assessment"],
-      certification: "Certified SWAMITRA Master Trainer, subject to practicum assessment and periodic revalidation."
+      certification: "Certified CRF Master Trainer, subject to practicum assessment and periodic revalidation."
     }
   ];
 
@@ -579,9 +579,9 @@ window.SWAMITRA = (function () {
 
   /* ---------- News & Events ---------- */
   const news = [
-    { title: "SWAMITRA releases the National Safe School Framework v1.0", cat: "Announcement", date: "2026-07-24", summary: "A complete, auditable safety standard covering policy, committees, response procedure and annual review — free for every school to adopt." },
+    { title: "CRF releases the National Safe School Framework v1.0", cat: "Announcement", date: "2026-07-24", summary: "A complete, auditable safety standard covering policy, committees, response procedure and annual review — free for every school to adopt." },
     { title: "National consultation on legal literacy in higher education", cat: "Event", date: "2026-07-10", summary: "Universities, regulators and civil society convene to discuss embedding legal literacy across non-law disciplines." },
-    { title: "Master Trainer cohort completes certification practicum", cat: "Programme", date: "2026-06-27", summary: "The first cohort of certified SWAMITRA Master Trainers is now equipped to deliver programmes independently across regions." },
+    { title: "Master Trainer cohort completes certification practicum", cat: "Programme", date: "2026-06-27", summary: "The first cohort of certified CRF Master Trainers is now equipped to deliver programmes independently across regions." },
     { title: "Baseline study on constitutional literacy published", cat: "Research", date: "2026-06-30", summary: "The Research Centre publishes its first national baseline study measuring constitutional awareness among school students and educators." },
     { title: "POSH capacity building rolled out for institutional partners", cat: "Programme", date: "2026-06-05", summary: "Internal committee certification and organisation-wide awareness delivered across partner institutions." },
     { title: "Community legal awareness camps expand to new districts", cat: "Community", date: "2026-05-18", summary: "Plain-language legal awareness reaches new communities through trained local facilitators." }
@@ -614,11 +614,11 @@ window.SWAMITRA = (function () {
     { icon: "chart", title: "Research & Policy", text: "Evidence, frameworks and policy recommendations that inform national practice." }
   ];
 
-  /* ---------- Objects Clause (from the SWAMITRA Objects document) ---------- */
+  /* ---------- Objects Clause (from the CRF Objects document) ---------- */
   const chapters = [
     {
       n: 1, title: "Constitutional & Legal Mission",
-      intro: "SWAMITRA exists to build a Constitutionally Competent, Legally Empowered and Civically Responsible India by advancing constitutional literacy, legal education, civic leadership, institutional excellence, public participation and the Rule of Law.",
+      intro: "CRF exists to build a Constitutionally Competent, Legally Empowered and Civically Responsible India by advancing constitutional literacy, legal education, civic leadership, institutional excellence, public participation and the Rule of Law.",
       objects: [
         ["Constitutional Literacy and Constitutional Competence", "Enable individuals and institutions to understand, appreciate and apply the Constitution of India — its philosophy, values, structure, principles and governance."],
         ["Constitutional Values and Democratic Culture", "Strengthen constitutional morality, democratic culture, Rule of Law, justice, liberty, equality, fraternity, human dignity and responsible citizenship."],
@@ -719,7 +719,7 @@ window.SWAMITRA = (function () {
     "privacy-policy": {
       title: "Privacy Policy",
       updated: "1 July 2026",
-      intro: "SWAMITRA Foundation respects the privacy of everyone who uses this website, registers for a programme or contacts us. This policy explains what we collect, why we collect it and the choices available to you.",
+      intro: "Civic Rights Foundation respects the privacy of everyone who uses this website, registers for a programme or contacts us. This policy explains what we collect, why we collect it and the choices available to you.",
       sections: [
         ["Information we collect", "We collect information you provide directly — name, organisation, email, phone, and any details submitted through enquiry, registration, volunteering or partnership forms. We also collect limited technical information such as browser type and pages visited, used only to improve the website."],
         ["How we use information", "Information is used to respond to enquiries, deliver programmes and training, issue certificates, send requested updates, and meet legal and reporting obligations. We do not sell personal information."],
@@ -770,7 +770,7 @@ window.SWAMITRA = (function () {
     "accessibility-statement": {
       title: "Accessibility Statement",
       updated: "1 July 2026",
-      intro: "SWAMITRA Foundation is committed to making this website usable by everyone, including people using assistive technologies.",
+      intro: "Civic Rights Foundation is committed to making this website usable by everyone, including people using assistive technologies.",
       sections: [
         ["Our commitment", "We aim to meet recognised accessibility standards, including sufficient colour contrast, keyboard navigability, meaningful alternative text and visible focus indicators."],
         ["Design measures", "The site uses responsive layouts, scalable text, semantic structure, descriptive link text and reduced-motion support for users who prefer it."],
@@ -781,10 +781,10 @@ window.SWAMITRA = (function () {
     "copyright-policy": {
       title: "Copyright Policy",
       updated: "1 July 2026",
-      intro: "Content on this website is owned by SWAMITRA Foundation unless otherwise stated.",
+      intro: "Content on this website is owned by Civic Rights Foundation unless otherwise stated.",
       sections: [
-        ["Ownership", "All frameworks, publications, toolkits, text, graphics and the SWAMITRA name and logo are the property of the Foundation or its licensors."],
-        ["Permitted use", "Educational and non-commercial use is permitted with clear attribution to SWAMITRA Foundation and without alteration of the content's meaning."],
+        ["Ownership", "All frameworks, publications, toolkits, text, graphics and the CRF name and logo are the property of the Foundation or its licensors."],
+        ["Permitted use", "Educational and non-commercial use is permitted with clear attribution to Civic Rights Foundation and without alteration of the content's meaning."],
         ["Restricted use", "Commercial reproduction, resale, rebranding or derivative distribution requires prior written permission."],
         ["Third-party rights", "Where third-party material is used, rights remain with the respective owners and are used with permission or under applicable exceptions."],
         ["Reporting infringement", "If you believe content on this site infringes your rights, please write to us with details and we will review it promptly."]
@@ -818,7 +818,7 @@ window.SWAMITRA = (function () {
     "child-protection-policy": {
       title: "Child Protection Policy",
       updated: "1 July 2026",
-      intro: "SWAMITRA Foundation has zero tolerance for any form of harm to children. Everyone who works with or for the Foundation is bound by this policy.",
+      intro: "Civic Rights Foundation has zero tolerance for any form of harm to children. Everyone who works with or for the Foundation is bound by this policy.",
       sections: [
         ["Scope", "This policy applies to all employees, trainers, volunteers, interns, consultants and partners engaged in any activity involving children."],
         ["Core commitments", "We ensure that all child-facing activity is designed to be safe, that adults are screened and trained, and that children are heard, believed and supported."],
@@ -832,7 +832,7 @@ window.SWAMITRA = (function () {
     "posh-policy": {
       title: "POSH Policy",
       updated: "1 July 2026",
-      intro: "SWAMITRA Foundation is committed to a workplace free from sexual harassment, where every person is treated with dignity.",
+      intro: "Civic Rights Foundation is committed to a workplace free from sexual harassment, where every person is treated with dignity.",
       sections: [
         ["Scope", "This policy covers all employees, trainers, volunteers, interns and consultants, at any workplace of the Foundation including field locations, training venues and virtual settings."],
         ["Prohibited conduct", "Any unwelcome physical, verbal, non-verbal or written conduct of a sexual nature, and any conduct that creates an intimidating or hostile environment, is prohibited."],
@@ -846,7 +846,7 @@ window.SWAMITRA = (function () {
     "code-of-ethics": {
       title: "Code of Ethics",
       updated: "1 July 2026",
-      intro: "The Code of Ethics defines the standard of conduct expected of everyone associated with SWAMITRA Foundation.",
+      intro: "The Code of Ethics defines the standard of conduct expected of everyone associated with Civic Rights Foundation.",
       sections: [
         ["Integrity", "We act honestly, keep our commitments and do not misrepresent our work, results or affiliations."],
         ["Constitutional values", "We uphold justice, liberty, equality, fraternity and human dignity in every programme and interaction."],

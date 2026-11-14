@@ -1,4 +1,4 @@
-/* Airawat Showroom — staff app (vanilla JS, no build step) */
+/* Teakwood Showroom — staff app (vanilla JS, no build step) */
 'use strict';
 
 // ---------------- helpers ----------------
@@ -116,7 +116,7 @@ route('login', (_, params) => {
   $('#tabs').hidden = true;
   $('#who').innerHTML = '';
   const as = DEMO_LOGINS.find((l) => l[0] === params.get('as'));
-  view.innerHTML = `<form class="login card" id="lf"><img src="logo.webp" alt="Airawat Handicraft">
+  view.innerHTML = `<form class="login card" id="lf"><img src="logo.webp" alt="Teakwood Living">
     <h1 style="text-align:center">Showroom sign in</h1>
     <label>Username<input name="username" autocomplete="username" autocapitalize="none" required value="${as ? esc(as[0]) : ''}"></label>
     <label>Password<input name="password" type="password" autocomplete="current-password" required value="${as ? esc(window.AHS.DEMO_PASSWORD) : ''}"></label>
@@ -975,7 +975,7 @@ route('settings', async () => {
   view.innerHTML = `<h1>Settings</h1><form id="stf" class="card">
     <label>Business name (printed on labels)<input name="business_name" value="${esc(s.business_name || '')}"></label>
     <label>Showroom contact (customer pages)<input name="showroom_contact" value="${esc(s.showroom_contact || '')}"></label>
-    <label>Public base URL for QR codes<input name="public_base_url" value="${esc(s.public_base_url || '')}" placeholder="https://showroom.airawathandicraft.com"></label>
+    <label>Public base URL for QR codes<input name="public_base_url" value="${esc(s.public_base_url || '')}" placeholder="https://showroom.teakwoodliving.example.com"></label>
     <p class="small muted">QR labels encode this address. Set it before printing labels so customer phones can reach the page. Leave blank to use the address you are using now.</p>
     <label class="check"><input type="checkbox" name="public_pages_enabled" ${s.public_pages_enabled !== '0' ? 'checked' : ''}> Customer QR pages enabled (turn off to disable every public link)</label>
     <label class="check"><input type="checkbox" name="public_show_prices" ${s.public_show_prices !== '0' ? 'checked' : ''}> Show prices on customer pages</label>

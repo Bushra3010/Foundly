@@ -2,7 +2,7 @@
 2:I[11645,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js","/demos/clatians-website-cms/_next/static/chunks/167ux.wmof526.js","/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js"],"default"]
 4:I[97367,["/demos/clatians-website-cms/_next/static/chunks/02ygummvxda98.js","/demos/clatians-website-cms/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-3:T9bb,Legal Reasoning is the most important section of CLAT — carrying 37 marks and determining whether you crack a top NLU or not. Here are 10 proven strategies.
+3:T9ca,Legal Reasoning is the most important section of CLAT — carrying 37 marks and determining whether you crack a top NLU or not. Here are 10 proven strategies.
 
 ## Why Legal Reasoning Matters Most
 
@@ -52,7 +52,7 @@ From September onwards, attempt at least 20 legal reasoning passages daily from 
 
 Every wrong answer goes into an error log with: question, why you got it wrong, correct reasoning. Review weekly.
 
-## Tip 10: Join CLATians Legal Reasoning Classes
+## Tip 10: Join LexPrep Academy Legal Reasoning Classes
 
-A.K. Singh's specialized Legal Reasoning sessions at CLATians systematically cover all areas — Torts, Contracts, Constitutional Law, Criminal Law — with 500+ practice passages. Students consistently score 30+/37 after completing the course.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"legal-reasoning-tips-clat-2026","title":"Legal Reasoning for CLAT 2026: 10 Proven Tips to Score 30+/37","excerpt":"Master legal reasoning with these expert strategies from A.K. Singh. Score full marks in the highest-weightage section.","content":"$3","category":"Legal","categoryColor":"#6366f1","author":"A.K. Singh","authorAvatar":"AK","date":"12 May, 2026","readTime":"7 min read","tags":["Legal Reasoning","CLAT Strategy","CLAT 2026","Study Tips"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
+S.K. Mishra's specialized Legal Reasoning sessions at LexPrep Academy systematically cover all areas — Torts, Contracts, Constitutional Law, Criminal Law — with 500+ practice passages. Students consistently score 30+/37 after completing the course.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"blog":{"slug":"legal-reasoning-tips-clat-2026","title":"Legal Reasoning for CLAT 2026: 10 Proven Tips to Score 30+/37","excerpt":"Master legal reasoning with these expert strategies from S.K. Mishra. Score full marks in the highest-weightage section.","content":"$3","category":"Legal","categoryColor":"#6366f1","author":"S.K. Mishra","authorAvatar":"SM","date":"12 May, 2026","readTime":"7 min read","tags":["Legal Reasoning","CLAT Strategy","CLAT 2026","Study Tips"]},"isNew":false}],[["$","script","script-0",{"src":"/demos/clatians-website-cms/_next/static/chunks/0wxg77rdpf.0_.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"qUGiI2hLtG2nds025c7Wg"}
 6:null

@@ -1,16 +1,16 @@
 /* ==========================================================================
-   SWAMITRA Foundation — App shell & interactions
+   Civic Rights Foundation — App shell & interactions
    Injects the header, mobile app bar, bottom tab bar, drawer and footer,
    then wires up every interactive component on the page.
    ========================================================================== */
 (function () {
   "use strict";
 
-  var D = window.SWAMITRA || {};
+  var D = window.CRF || {};
   var ORG = D.org || {};
   var BASE = (document.documentElement.getAttribute("data-base") || "");
   var PAGE = document.body.getAttribute("data-page") || "";
-  var TITLE = document.body.getAttribute("data-title") || "SWAMITRA";
+  var TITLE = document.body.getAttribute("data-title") || "CRF";
   var SUB = document.body.hasAttribute("data-subpage");
 
   function u(p) { return BASE + p; }
@@ -147,7 +147,7 @@
     { id: "home", label: "Home", href: "index.html" },
     {
       id: "about", label: "About", href: "about.html", children: [
-        ["About SWAMITRA", "about.html"],
+        ["About CRF", "about.html"],
         ["Our Story", "our-story.html"],
         ["Vision & Mission", "vision-and-mission.html"],
         ["Core Values", "core-values.html"],
@@ -246,8 +246,8 @@
         "</div>" +
       "</div></div>" +
       '<header class="site-header"><div class="wrap header-inner">' +
-        '<a class="brand" href="' + u("index.html") + '" aria-label="SWAMITRA Foundation — Home">' +
-          '<img src="' + a("assets/img/logo.png") + '" alt="SWAMITRA Foundation" width="2072" height="566">' +
+        '<a class="brand" href="' + u("index.html") + '" aria-label="Civic Rights Foundation — Home">' +
+          '<img src="' + a("assets/img/logo.png") + '" alt="Civic Rights Foundation" width="2072" height="566">' +
         "</a>" +
         '<nav aria-label="Main"><ul class="nav">' + navHtml + "</ul></nav>" +
         '<div class="header-cta">' +
@@ -259,7 +259,7 @@
       '<div class="app-bar">' +
         '<div class="app-bar__left">' +
           '<button class="icon-btn back-btn" type="button" aria-label="' + t("Go back") + '">' + icon("back") + "</button>" +
-          '<a href="' + u("index.html") + '" aria-label="Home"><img class="app-bar__mark" src="' + a("assets/img/mark.png") + '" alt="SWAMITRA Foundation"></a>' +
+          '<a href="' + u("index.html") + '" aria-label="Home"><img class="app-bar__mark" src="' + a("assets/img/mark.png") + '" alt="Civic Rights Foundation"></a>' +
           '<span class="app-bar__title">' + TITLE + "</span>" +
         "</div>" +
         '<div class="app-bar__actions">' +
@@ -296,7 +296,7 @@
       '<aside class="drawer" role="dialog" aria-modal="true" aria-label="Menu" tabindex="-1">' +
         '<div class="drawer__head">' +
           '<a class="brand" href="' + u("index.html") + '">' +
-            '<img src="' + a("assets/img/logo.png") + '" alt="SWAMITRA Foundation" width="2072" height="566">' +
+            '<img src="' + a("assets/img/logo.png") + '" alt="Civic Rights Foundation" width="2072" height="566">' +
           "</a>" +
           '<button class="icon-btn js-drawer-close" type="button" aria-label="Close menu">' + icon("close") + "</button>" +
         "</div>" +
@@ -323,7 +323,7 @@
 
     return '<footer class="site-footer">' +
       '<div class="footer-news"><div class="wrap">' +
-        '<div><h4>' + t("Stay Connected with SWAMITRA") + '</h4><p>' + t("Programme updates, new research and resources — a few times a year, never more.") + '</p></div>' +
+        '<div><h4>' + t("Stay Connected with CRF") + '</h4><p>' + t("Programme updates, new research and resources — a few times a year, never more.") + '</p></div>' +
         '<form class="newsletter-form js-newsletter" novalidate>' +
           '<label class="sr-only" for="nl-email">' + t("Email address") + '</label>' +
           '<input class="input" id="nl-email" type="email" name="email" placeholder="' + t("Your email address") + '" required>' +
@@ -332,12 +332,12 @@
       "</div></div>" +
       '<div class="wrap footer-top">' +
         '<div class="footer-brand">' +
-          '<img src="' + a("assets/img/logo.png") + '" alt="SWAMITRA Foundation">' +
-          "<p>" + (ORG.tagline || "") + ". " + t("SWAMITRA Foundation advances legal education, constitutional literacy, safe institutions and responsible citizenship across India through education, research and partnerships.") + "</p>" +
+          '<img src="' + a("assets/img/logo.png") + '" alt="Civic Rights Foundation">' +
+          "<p>" + (ORG.tagline || "") + ". " + t("Civic Rights Foundation advances legal education, constitutional literacy, safe institutions and responsible citizenship across India through education, research and partnerships.") + "</p>" +
           '<div class="footer-social">' + socialLinks() + "</div>" +
         "</div>" +
         '<div class="footer-col"><h5>' + t("About") + '</h5><ul>' +
-          '<li><a href="' + u("about.html") + '">' + t("About SWAMITRA") + '</a></li>' +
+          '<li><a href="' + u("about.html") + '">' + t("About CRF") + '</a></li>' +
           '<li><a href="' + u("vision-and-mission.html") + '">' + t("Vision & Mission") + '</a></li>' +
           '<li><a href="' + u("leadership.html") + '">' + t("Leadership") + '</a></li>' +
           '<li><a href="' + u("governance.html") + '">' + t("Governance") + '</a></li>' +
@@ -357,7 +357,7 @@
         "</div>" +
       "</div>" +
       '<div class="wrap footer-legal">' +
-        "<span>© " + new Date().getFullYear() + " SWAMITRA Foundation. " + t("All Rights Reserved.") + "</span>" +
+        "<span>© " + new Date().getFullYear() + " Civic Rights Foundation. " + t("All Rights Reserved.") + "</span>" +
         "<ul>" +
           '<li><a href="' + u("legal.html?doc=privacy-policy") + '">' + t("Privacy Policy") + '</a></li>' +
           '<li><a href="' + u("legal.html?doc=terms-of-use") + '">' + t("Terms of Use") + '</a></li>' +
@@ -768,7 +768,7 @@
     var short = document.getElementById("a-short"), full = document.getElementById("a-full");
     var tog = document.getElementById("a-toggle");   // optional Read More button
     var gal = document.getElementById("a-gallery");
-    if (eye) eye.textContent = A.eyebrow || "About SWAMITRA";
+    if (eye) eye.textContent = A.eyebrow || "About CRF";
     if (head) head.textContent = A.heading || "";
     if (short) short.textContent = A.shortText || "";
     /* About page — show full text directly (homepage is the "short" version) */

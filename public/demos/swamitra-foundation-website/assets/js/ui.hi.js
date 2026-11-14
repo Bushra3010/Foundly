@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SWAMITRA Foundation — Hindi strings for the app shell
+   Civic Rights Foundation — Hindi strings for the app shell
    Loaded only by pages under /hi/, before app.js. Keys are the English
    source strings used in app.js; values are what the visitor sees.
    ========================================================================== */
@@ -18,7 +18,7 @@ window.SW_UI = {
   "More": "अन्य",
 
   /* About menu */
-  "About SWAMITRA": "स्वामित्र के बारे में",
+  "About CRF": "सीआरएफ के बारे में",
   "Our Story": "हमारी कहानी",
   "Vision & Mission": "दृष्टि और लक्ष्य",
   "Core Values": "मूल मूल्य",
@@ -77,7 +77,7 @@ window.SW_UI = {
   "All Programmes →": "सभी कार्यक्रम →",
 
   /* Newsletter */
-  "Stay Connected with SWAMITRA": "स्वामित्र से जुड़े रहें",
+  "Stay Connected with CRF": "सीआरएफ से जुड़े रहें",
   "Programme updates, new research and resources — a few times a year, never more.":
     "कार्यक्रम अपडेट, नया शोध और संसाधन — वर्ष में कुछ ही बार, इससे अधिक नहीं।",
   "Email address": "ईमेल पता",
@@ -85,8 +85,8 @@ window.SW_UI = {
   "Subscribe": "सदस्यता लें",
 
   /* Footer */
-  "SWAMITRA Foundation advances legal education, constitutional literacy, safe institutions and responsible citizenship across India through education, research and partnerships.":
-    "स्वामित्र फाउंडेशन शिक्षा, शोध और साझेदारी के माध्यम से पूरे भारत में कानूनी शिक्षा, संवैधानिक साक्षरता, सुरक्षित संस्थानों और उत्तरदायी नागरिकता को आगे बढ़ाता है।",
+  "Civic Rights Foundation advances legal education, constitutional literacy, safe institutions and responsible citizenship across India through education, research and partnerships.":
+    "सिविक राइट्स फाउंडेशन शिक्षा, शोध और साझेदारी के माध्यम से पूरे भारत में कानूनी शिक्षा, संवैधानिक साक्षरता, सुरक्षित संस्थानों और उत्तरदायी नागरिकता को आगे बढ़ाता है।",
   "All Rights Reserved.": "सर्वाधिकार सुरक्षित।",
   "Privacy Policy": "गोपनीयता नीति",
   "Terms of Use": "उपयोग की शर्तें",

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Admin | LDRF × RGLM</title>
+<title>Admin | VSF × VSTC</title>
 <link rel="icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -283,9 +283,9 @@ tbody tr.sel-row{background:#f3f6fd}
 <!-- ================= LOGIN ================= -->
 <section class="login" id="vLogin">
   <form class="l-card" id="loginForm" novalidate>
-    <div class="l-logos"><img src="assets/logo.png" alt="LDRF"><img src="assets/rglm-logo.png" alt="RGLM"></div>
+    <div class="l-logos"><img src="assets/logo.png" alt="VSF"><img src="assets/rglm-logo.png" alt="VSTC"></div>
     <h1>Admin Panel</h1>
-    <p class="sub">LDRF × RGLM — sign in to manage the website</p>
+    <p class="sub">VSF × VSTC — sign in to manage the website</p>
     <div class="fld"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="username" placeholder="admin@example.com" required></div>
     <div class="fld"><label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password" placeholder="••••••••" required></div>
     <div class="fld hide" id="cpWrap"><label for="lPass2">Confirm Password</label><input id="lPass2" type="password" autocomplete="new-password" placeholder="Re-enter password"></div>
@@ -299,7 +299,7 @@ tbody tr.sel-row{background:#f3f6fd}
 <!-- ================= APP ================= -->
 <div class="shell hide" id="vApp">
   <aside class="sb" id="sb">
-    <div class="sb-brand"><img src="assets/logo.png" alt=""><div><b>LDRF Admin</b><small>LDRF × RGLM</small></div></div>
+    <div class="sb-brand"><img src="assets/logo.png" alt=""><div><b>VSF Admin</b><small>VSF × VSTC</small></div></div>
     <nav class="sb-nav">
       <div class="sb-lbl">Overview</div>
       <button class="nav on" data-p="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
@@ -353,7 +353,7 @@ const cap=s=>s?s[0].toUpperCase()+s.slice(1):'';
 
 const STATUS={enr:['new','contacted','enrolled','closed'],con:['new','replied','closed']};
 const SCOLOR={new:'#d97706',contacted:'#2563eb',replied:'#2563eb',enrolled:'#16a34a',closed:'#9ca3af'};
-const TABLE={enr:'ldrf_enrollments',con:'ldrf_contacts'};
+const TABLE={enr:'vsf_enrollments',con:'vsf_contacts'};
 const PAGE_SIZE=25;
 let sb=null,page='dash',data={enr:[],con:[]},view={enr:{q:'',st:'',crs:'',rng:'',pg:1},con:{q:'',st:'',crs:'',rng:'',pg:1}},openRow=null,lastLoad=null;
 
@@ -373,7 +373,7 @@ const IC={
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>',
   msg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
 };
-const waLink=(r,t)=>`https://wa.me/91${encodeURIComponent(r.mobile)}?text=${encodeURIComponent(`Hello ${r.name}, this is LDRF / RGLM Sopore regarding your ${t==='enr'?'registration for '+r.program:'message'}.`)}`;
+const waLink=(r,t)=>`https://wa.me/91${encodeURIComponent(r.mobile)}?text=${encodeURIComponent(`Hello ${r.name}, this is VSF / VSTC Sopore regarding your ${t==='enr'?'registration for '+r.program:'message'}.`)}`;
 
 /* ================= AUTH ================= */
 async function init(){
@@ -416,7 +416,7 @@ $('loginForm').addEventListener('submit',async e=>{
   enter(d.user);
 });
 async function enter(user){
-  const {data:rows,error}=await sb.from('ldrf_admins').select('email').limit(1);
+  const {data:rows,error}=await sb.from('vsf_admins').select('email').limit(1);
   if(error||!rows||!rows.length){await sb.auth.signOut();err('This account is not an admin.');return}
   $('meEmail').textContent=user.email;$('meAv').textContent=initials(user.email.split('@')[0]);
   $('vLogin').classList.add('hide');$('vApp').classList.remove('hide');
@@ -449,8 +449,8 @@ const skelGrid=()=>`<div class="mgrid">${'<div class="mcard"><div class="mthumb"
 /* ================= DATA ================= */
 async function loadLeads(){
   const [a,b]=await Promise.all([
-    sb.from('ldrf_enrollments').select('*').order('created_at',{ascending:false}).limit(5000),
-    sb.from('ldrf_contacts').select('*').order('created_at',{ascending:false}).limit(5000)
+    sb.from('vsf_enrollments').select('*').order('created_at',{ascending:false}).limit(5000),
+    sb.from('vsf_contacts').select('*').order('created_at',{ascending:false}).limit(5000)
   ]);
   if(a.error||b.error){$('page').innerHTML=emptyBox('Could not load data',esc((a.error||b.error).message));return}
   data.enr=a.data;data.con=b.data;lastLoad=new Date();
@@ -587,7 +587,7 @@ function exportCsv(t){
   const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
   const csv=[cols.join(','),...list.map(r=>cols.map(c=>q(c==='created_at'?fmtFull(r[c]):r[c])).join(','))].join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'}));
-  a.download=`ldrf-${t==='enr'?'enrollments':'contacts'}-${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  a.download=`vsf-${t==='enr'?'enrollments':'contacts'}-${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
 
 /* ================= DRAWER ================= */
@@ -643,14 +643,14 @@ $('dwScrim').onclick=closeDrawer;
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
 
 /* ================= MEDIA (Gallery + Course Photos) ================= */
-const BUCKET='ldrf-media';
-// Courses come from the ldrf_courses table (see supabase/schema.sql)
+const BUCKET='vsf-media';
+// Courses come from the vsf_courses table (see supabase/schema.sql)
 let gal=[],crs=[],galKind='photo';
 const absUrl=u=>/^https?:/.test(u)?u:'/'+u.replace(/^\//,'');
 async function loadMedia(){
   const [a,b]=await Promise.all([
-    sb.from('ldrf_gallery').select('*').order('sort',{ascending:true}).order('created_at',{ascending:true}),
-    sb.from('ldrf_courses').select('*').order('sort',{ascending:true}).order('id',{ascending:true})
+    sb.from('vsf_gallery').select('*').order('sort',{ascending:true}).order('created_at',{ascending:true}),
+    sb.from('vsf_courses').select('*').order('sort',{ascending:true}).order('id',{ascending:true})
   ]);
   if(a.error||b.error){$('page').innerHTML=emptyBox('Could not load media',esc((a.error||b.error).message));return}
   gal=a.data;crs=b.data;
@@ -767,7 +767,7 @@ function courseForm(c){
       if(newFile){up=await uploadFile(newFile,'courses');row.image_url=up.url;row.image_path=up.path}
       else if(dropImg){row.image_url=null;row.image_path=null}
       if(!c)row.sort=Math.max(0,...crs.map(x=>x.sort))+10;
-      const {error}=c?await sb.from('ldrf_courses').update(row).eq('id',c.id):await sb.from('ldrf_courses').insert(row);
+      const {error}=c?await sb.from('vsf_courses').update(row).eq('id',c.id):await sb.from('vsf_courses').insert(row);
       if(error)throw error;
       if(c&&(newFile||dropImg))await removeObj(c.image_path);
       closeDrawer();toast(c?'Course updated':'Course added');await loadMedia();
@@ -775,7 +775,7 @@ function courseForm(c){
   };
   if($('cfDel'))$('cfDel').onclick=async()=>{
     if(!confirm(`Delete the course “${c.name}”? It will be removed from the website. Existing enrollments are kept.`))return;
-    const {error}=await sb.from('ldrf_courses').delete().eq('id',c.id);
+    const {error}=await sb.from('vsf_courses').delete().eq('id',c.id);
     if(error){toast('Delete failed: '+error.message);return}
     await removeObj(c.image_path);closeDrawer();toast('Course deleted');await loadMedia();
   };
@@ -796,7 +796,7 @@ $('page').addEventListener('click',async e=>{
       try{
         const up=await uploadFile(f,'gallery');
         const max=Math.max(0,...gal.filter(g=>g.kind===up.kind).map(g=>g.sort));
-        const {data:row,error}=await sb.from('ldrf_gallery').insert({kind:up.kind,url:up.url,path:up.path,caption:capt,sort:max+10}).select().single();
+        const {data:row,error}=await sb.from('vsf_gallery').insert({kind:up.kind,url:up.url,path:up.path,caption:capt,sort:max+10}).select().single();
         if(error){await removeObj(up.path);throw error}
         gal.push(row);ok++;
       }catch(err){toast(`${f.name}: ${err.message}`)}
@@ -808,7 +808,7 @@ $('page').addEventListener('click',async e=>{
   if(del){
     const g=gal.find(x=>x.id===+del.dataset.gdel);
     if(!confirm('Delete this item from the website gallery?'))return;
-    const {error}=await sb.from('ldrf_gallery').delete().eq('id',g.id);
+    const {error}=await sb.from('vsf_gallery').delete().eq('id',g.id);
     if(error){toast('Delete failed: '+error.message);return}
     await removeObj(g.path);toast('Deleted');await loadMedia();return;
   }
@@ -817,7 +817,7 @@ $('page').addEventListener('click',async e=>{
     const list=gal.filter(g=>g.kind===galKind),id=+mv.closest('.mcard').dataset.gid;
     const i=list.findIndex(g=>g.id===id),j=i+(+mv.dataset.mv);if(j<0||j>=list.length)return;
     list.forEach((g,n)=>g.sort=(n+1)*10);[list[i].sort,list[j].sort]=[list[j].sort,list[i].sort];
-    const res=await Promise.all(list.map(g=>sb.from('ldrf_gallery').update({sort:g.sort}).eq('id',g.id)));
+    const res=await Promise.all(list.map(g=>sb.from('vsf_gallery').update({sort:g.sort}).eq('id',g.id)));
     const bad=res.find(r=>r.error);if(bad)toast('Reorder failed: '+bad.error.message);
     await loadMedia();return;
   }
@@ -827,7 +827,7 @@ $('page').addEventListener('click',async e=>{
   if(cm){
     const id=+cm.closest('.mcard').dataset.cid,i=crs.findIndex(x=>x.id===id),j=i+(+cm.dataset.cmv);if(j<0||j>=crs.length)return;
     crs.forEach((x,n)=>x.sort=(n+1)*10);[crs[i].sort,crs[j].sort]=[crs[j].sort,crs[i].sort];
-    const res=await Promise.all(crs.map(x=>sb.from('ldrf_courses').update({sort:x.sort}).eq('id',x.id)));
+    const res=await Promise.all(crs.map(x=>sb.from('vsf_courses').update({sort:x.sort}).eq('id',x.id)));
     const bad=res.find(r=>r.error);if(bad)toast('Reorder failed: '+bad.error.message);
     await loadMedia();
   }
@@ -836,7 +836,7 @@ $('page').addEventListener('focusout',async e=>{
   const c=e.target.closest('[data-cap]');if(!c)return;
   const g=gal.find(x=>x.id===+c.dataset.cap),val=c.value.trim()||null;
   if(!g||(g.caption||null)===val)return;
-  const {error}=await sb.from('ldrf_gallery').update({caption:val}).eq('id',g.id);
+  const {error}=await sb.from('vsf_gallery').update({caption:val}).eq('id',g.id);
   if(error){toast('Caption not saved: '+error.message);return}
   g.caption=val;toast('Caption saved');
 });

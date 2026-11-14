@@ -57,7 +57,7 @@ import{r as e}from"./rolldown-runtime-hePW80VL.js";import{m as t,p as n}from"./c
     <ul>${i.slice(0,16).map(e=>`<li>${C(e)}</li>`).join(``)}</ul>
     <div class="feat"><span>Govt. Recognised Certificate</span><span>Practical Lab</span><span>Expert Faculty</span></div>
     <div class="contact">
-      <p class="ph">Call: ${C(e.phone||`8252532179`)}</p>
+      <p class="ph">Call: ${C(e.phone||`9876543220`)}</p>
       <p>${C(w(e))}</p>
     </div>
   </div>`;return T(`Admission Banner — ${e.name??``}`,`size:A4 portrait;margin:0`,a,`.banner{width:210mm;height:297mm;padding:14mm;background:linear-gradient(160deg,#173653 0%,#1f4f7a 55%,#38c3be 100%);color:#fff;text-align:center;display:flex;flex-direction:column}

@@ -2,9 +2,9 @@
   "home": {
     "hero": {
       "eyebrow": "Transforming Agriculture Through Nature, Science & Sustainability",
-      "title": "Here The Life",
-      "accent": "Germinates",
-      "body": "SOIL promotes sustainable farming through bio-fertilizers, bio-inputs, organic farming solutions, soil health support, and trusted market linkages for farmers.",
+      "title": "Rooted in",
+      "accent": "Healthy Growth",
+      "body": "GreenRoot promotes sustainable farming through bio-fertilizers, bio-inputs, organic farming solutions, soil health support, and trusted market linkages for farmers.",
       "image": "assets/media/hero-billboard-farmer.jpeg",
       "primaryButton": "Explore Solutions",
       "secondaryButton": "Become a Partner"
@@ -12,33 +12,33 @@
     "about": {
       "label": "About Us",
       "title": "Restoring Soil. Empowering Farmers.",
-      "body": "At SOIL (Sheevar Organic Industrial Limited), healthy soil is the foundation of healthy food, healthy farmers, and a healthy nation. We support Indian agriculture with sustainable bio-products, organic farming guidance, and long-term farmer partnerships.",
+      "body": "At GreenRoot Organics, healthy soil is the foundation of healthy food, healthy farmers, and a healthy nation. We support Indian agriculture with sustainable bio-products, organic farming guidance, and long-term farmer partnerships.",
       "image": "assets/media/farmer-p-soul-field.jpeg"
     },
     "why": {
       "label": "Why Choose Us",
-      "title": "Why Choose SOIL",
+      "title": "Why Choose GreenRoot",
       "body": "Scientifically developed bio-products, expert field guidance, and a support system built for farmers, dealers, distributors, and sustainable agriculture partners."
     }
   },
   "about": {
     "hero": {
-      "eyebrow": "About SOIL",
+      "eyebrow": "About GreenRoot",
       "title": "Transforming Agriculture Through Nature, Science & Sustainability",
-      "body": "At SOIL, healthy soil is the foundation of healthy food, healthy farmers, and a healthy nation. We restore soil health, empower farmers, and create sustainable farm-to-market opportunities.",
+      "body": "At GreenRoot, healthy soil is the foundation of healthy food, healthy farmers, and a healthy nation. We restore soil health, empower farmers, and create sustainable farm-to-market opportunities.",
       "image": "assets/media/sustainability-contrast.jpeg"
     },
     "intro": {
-      "label": "Welcome to SOIL",
+      "label": "Welcome to GreenRoot",
       "title": "Restoring soil for a stronger agricultural future",
-      "body": "SOIL (Sheevar Organic Industrial Limited) promotes sustainable farming through bio-fertilizers, bio-inputs, organic farming solutions, and assured market linkages for farmers."
+      "body": "GreenRoot Organics promotes sustainable farming through bio-fertilizers, bio-inputs, organic farming solutions, and assured market linkages for farmers."
     }
   },
   "solutions": {
     "hero": {
-      "eyebrow": "SOIL Solutions",
+      "eyebrow": "GreenRoot Solutions",
       "title": "Bio-products, organic farming guidance, and market support",
-      "body": "SOIL supports farmers from soil health management to organic transition, quality inspection, and eligible crop procurement.",
+      "body": "GreenRoot supports farmers from soil health management to organic transition, quality inspection, and eligible crop procurement.",
       "image": "assets/media/soil-root-glow.jpeg"
     },
     "heading": {
@@ -55,7 +55,7 @@
       {
         "category": "Organic Farming",
         "title": "Organic Farming Solutions",
-        "body": "SOIL helps farmers gradually transition from conventional chemical farming to sustainable organic farming with farm assessment, soil health analysis, crop nutrition planning, and field support.",
+        "body": "GreenRoot helps farmers gradually transition from conventional chemical farming to sustainable organic farming with farm assessment, soil health analysis, crop nutrition planning, and field support.",
         "image": "assets/media/soil-root-glow.jpeg"
       },
       {
@@ -67,16 +67,16 @@
       {
         "category": "Market Linkage",
         "title": "Organic Crop Procurement",
-        "body": "SOIL supports eligible organic produce procurement cultivated under recommended practices, subject to quality standards and procurement policies.",
+        "body": "GreenRoot supports eligible organic produce procurement cultivated under recommended practices, subject to quality standards and procurement policies.",
         "image": "assets/media/product-nitrogrow-farmer.jpeg"
       }
     ]
   },
   "dealer": {
     "hero": {
-      "eyebrow": "Join the SOIL Family",
-      "title": "Grow with SOIL - together we build sustainable agriculture",
-      "body": "SOIL invites entrepreneurs, agri-professionals, retailers, distributors, and sales experts to build long-term growth with quality products, training, technical support, and market credibility.",
+      "eyebrow": "Join the GreenRoot Family",
+      "title": "Grow with GreenRoot - together we build sustainable agriculture",
+      "body": "GreenRoot invites entrepreneurs, agri-professionals, retailers, distributors, and sales experts to build long-term growth with quality products, training, technical support, and market credibility.",
       "image": "assets/media/event-products-bouquet.jpeg"
     },
     "supportHeading": {
@@ -84,15 +84,15 @@
       "title": "Marketing, Sales, Branding & Technical Support"
     },
     "mediaHeading": {
-      "label": "SOIL Network",
+      "label": "GreenRoot Network",
       "title": "Events, Products & Partner Presence"
     }
   },
   "gallery": {
     "hero": {
-      "eyebrow": "SOIL Media Gallery",
+      "eyebrow": "GreenRoot Media Gallery",
       "title": "Products, farmers, events, and field-ready brand visuals",
-      "body": "All provided SOIL photos and video are organized here so visitors can see the product range, farmer communication, and partner presence together.",
+      "body": "All provided GreenRoot photos and video are organized here so visitors can see the product range, farmer communication, and partner presence together.",
       "image": "assets/media/hero-billboard-farmer.jpeg"
     },
     "sections": [
@@ -101,7 +101,7 @@
         "title": "Campaign Visuals"
       },
       {
-        "label": "SOIL Products",
+        "label": "GreenRoot Products",
         "title": "Product Range"
       },
       {
@@ -110,21 +110,21 @@
       },
       {
         "label": "Events & Team Presence",
-        "title": "SOIL Network"
+        "title": "GreenRoot Network"
       }
     ]
   },
   "contact": {
     "hero": {
-      "eyebrow": "Contact SOIL",
-      "title": "Apply today and join the SOIL family",
+      "eyebrow": "Contact GreenRoot",
+      "title": "Apply today and join the GreenRoot family",
       "body": "Send your enquiry for products, farmer support, District Dealer, Block Distributor, Retailer, Sales Executive, or market linkage opportunities.",
       "image": "assets/media/hands-sapling.jpeg"
     },
     "form": {
       "label": "Get in Touch",
-      "title": "SOIL team is ready to support your next step",
-      "body": "Share your state, district, business type, and requirement. The SOIL team can guide you with the right product, support, or partnership opportunity."
+      "title": "GreenRoot team is ready to support your next step",
+      "body": "Share your state, district, business type, and requirement. The GreenRoot team can guide you with the right product, support, or partnership opportunity."
     }
   }
 }

@@ -28,4 +28,4 @@ f:"ViewportBoundary"
 11:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}],["$","meta","2",{"name":"theme-color","content":"#f49a3f"}]]
 16:I[27201,["$2"],"IconMark"]
 e:null
-14:[["$","title","0",{"children":"DriveWay Admin"}],["$","meta","1",{"name":"description","content":"Manage rides, drivers, customers, pricing and payments."}],["$","link","2",{"rel":"icon","href":"/demos/driveway-ride-booking/icon.png?icon.1pe78kwi7msz7.png","sizes":"256x256","type":"image/png"}],["$","$L16","3",{}]]
+14:[["$","title","0",{"children":"MoveEasy Admin"}],["$","meta","1",{"name":"description","content":"Manage rides, drivers, customers, pricing and payments."}],["$","link","2",{"rel":"icon","href":"/demos/driveway-ride-booking/icon.png?icon.1pe78kwi7msz7.png","sizes":"256x256","type":"image/png"}],["$","$L16","3",{}]]

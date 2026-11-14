@@ -12,4 +12,4 @@ c:I[68027,["/demos/gamehub-multiplayer-games/_next/static/chunks/3fntmmi971322.j
 7:C
 9:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"}],["$","meta","2",{"name":"theme-color","content":"#0a0f2c"}]]
 6:null
-b:[["$","title","0",{"children":"GameHub — Play • Win • Together"}],["$","meta","1",{"name":"description","content":"9 games, 1 account, 1 wallet. Rummy, Teen Patti, Andar Bahar, Dragon Tiger, Lucky 7, Poker, Ludo, Carrom and Chess."}]]
+b:[["$","title","0",{"children":"PlayArena — Play • Win • Together"}],["$","meta","1",{"name":"description","content":"9 games, 1 account, 1 wallet. Rummy, Teen Patti, Andar Bahar, Dragon Tiger, Lucky 7, Poker, Ludo, Carrom and Chess."}]]

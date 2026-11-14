@@ -398,7 +398,7 @@
 
       <div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap">
         <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <a class="btn btn--brass btn--sm" href="https://wa.me/${RR.company.whatsapp}?text=${encodeURIComponent("Hello " + l.name + ", this is Radhe Homes regarding your enquiry " + l.id + " for " + l.project + ".")}" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn--brass btn--sm" href="https://wa.me/${RR.company.whatsapp}?text=${encodeURIComponent("Hello " + l.name + ", this is Skyline Homes regarding your enquiry " + l.id + " for " + l.project + ".")}" target="_blank" rel="noopener">WhatsApp</a>
           <a class="btn btn--ghost btn--sm" href="tel:${esc(String(l.phone).replace(/[^\d+]/g, ""))}">Call</a>
           <a class="btn btn--ghost btn--sm" href="mailto:${esc(l.email)}?subject=${encodeURIComponent("Your enquiry " + l.id + ": " + l.project)}">Email</a>
         </div>
@@ -549,7 +549,7 @@
     const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\r\n");
     const url = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" }));
     const a = document.createElement("a");
-    a.href = url; a.download = `radhe-radhe-leads-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.href = url; a.download = `skyline-homes-leads-${new Date().toISOString().slice(0, 10)}.csv`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 4000);
     toast(`${Store.leads().length} leads exported.`);

@@ -1,4 +1,4 @@
-// Generated from SwanidhiGroupOfInstitutions/src/data/courses.ts (official fee structure).
+// Generated from UnityGroupOfColleges/src/data/courses.ts (official fee structure).
 window.SW_COURSES = [
 {
 "name": "BAMS",
