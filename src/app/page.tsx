@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { listPublishedProjects } from "@/server/portfolio";
 import { HOME_FEATURED, TAGLINES } from "@/lib/work-copy";
 import "@/app/work.css";
 import Link from "next/link";
@@ -76,6 +77,8 @@ function EngineRow({ label }: { label?: string }) {
   );
 }
 
+const PROJECT_COUNT = listPublishedProjects().length;
+
 export default function Home() {
   return (
     <div className="foundly-landing">
@@ -96,6 +99,17 @@ export default function Home() {
             </div>
             <EngineRow />
             <p className="lv-note">No card needed · Set up in 3 minutes · Made for businesses in India</p>
+            <nav className="lv-build" aria-label="Software we build">
+              <p><b>We also build software for your business:</b></p>
+              <div>
+                <Link href="/software/erp"><Icon name="business" size={15} /> ERP</Link>
+                <Link href="/software/crm"><Icon name="leads" size={15} /> CRM</Link>
+                <Link href="/software/app"><Icon name="website" size={15} /> Mobile apps</Link>
+                <Link href="/services#custom-development"><Icon name="settings" size={15} /> Custom software</Link>
+                <Link href="/automation"><Icon name="spark" size={15} /> AI automation</Link>
+                <Link href="/work" className="lv-build-work">See {PROJECT_COUNT} projects with live demos <Icon name="arrow" size={15} /></Link>
+              </div>
+            </nav>
           </section>
           <div id="product" className="lv-product">
             <LandingDashboard />

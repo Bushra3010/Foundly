@@ -261,3 +261,12 @@
 .lv-footer-cities strong { margin:0 6px 0 0 !important; }
 .lv-footer-button { font: inherit; color: inherit; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; }
 .lv-footer-button:hover { text-decoration: underline; }
+
+/* Hero: the development services Foundly also offers */
+.lv-build { margin:22px auto 0; max-width:760px; text-align:center; }
+.lv-build p { margin:0 0 10px; font-size:14px; color:#50544a; }
+.lv-build p b { color:#20221e; font-weight:750; }
+.lv-build div { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
+.lv-build a { display:inline-flex; align-items:center; gap:7px; padding:8px 14px; border-radius:100px; border:1px solid var(--lp-line); background:#fff; color:#20221e; font-size:14px; font-weight:700; text-decoration:none; transition:border-color .2s, transform .2s; }
+.lv-build a:hover { border-color:#a4cd48; transform:translateY(-1px); }
+.lv-build a.lv-build-work { background:#20221e; border-color:#20221e; color:#fff; }
