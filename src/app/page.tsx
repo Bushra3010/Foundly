@@ -14,13 +14,13 @@ import { GUIDES } from "@/lib/guides";
 import { INDUSTRIES } from "@/lib/industries";
 import { SERVICE_CITIES } from "@/lib/locations";
 import { jsonLdScript } from "@/lib/profile";
-import { faqLd, graph, organizationLd, softwareLd, websiteLd } from "@/lib/site-schema";
+import { faqLd, graph, organizationLd, softwareLd, websiteLd, whatsappLink } from "@/lib/site-schema";
 import "./landing.css";
 import "./landing-v2.css";
 
-const TITLE = "Foundly — Get recommended by ChatGPT, Gemini & Claude";
+const TITLE = "Foundly — Custom ERP, CRM, Mobile Apps & AI Automation | AI Search Visibility";
 const DESCRIPTION =
-  "Foundly tracks what ChatGPT, Gemini, Perplexity and Claude say about your business, shows who they recommend instead, and tells you what to fix to be named.";
+  "Foundly builds custom ERP, CRM, mobile apps and AI automation for businesses in India, with live demos of 80+ real projects, and helps you get recommended by ChatGPT, Gemini and Claude.";
 
 export const metadata: Metadata = {
   // Absolute so the layout template doesn't append a second "· Foundly".
@@ -77,7 +77,20 @@ function EngineRow({ label }: { label?: string }) {
   );
 }
 
-const PROJECT_COUNT = listPublishedProjects().length;
+const PROJECTS = listPublishedProjects();
+const WORK = {
+  total: PROJECTS.length,
+  industries: new Set(PROJECTS.map((p) => p.industry).filter(Boolean)).size,
+  live: PROJECTS.filter((p) => p.demoStatus === "live").length,
+};
+const countNeed = (...needs: string[]) => PROJECTS.filter((p) => needs.includes(p.need)).length;
+const HERO_SERVICES = [
+  { label: "ERP software", href: "/software/erp", icon: "business", count: countNeed("erp") },
+  { label: "CRM software", href: "/software/crm", icon: "leads", count: countNeed("crm") },
+  { label: "Mobile apps", href: "/software/app", icon: "website", count: countNeed("apps") },
+  { label: "AI automation", href: "/automation", icon: "spark", count: countNeed("ai") },
+  { label: "Websites & stores", href: "/work?need=websites", icon: "presence", count: countNeed("websites", "stores") },
+];
 
 export default function Home() {
   return (
@@ -87,34 +100,65 @@ export default function Home() {
 
       <main id="main" className="landing-main">
         <div className="lv-first">
-          <section className="lv-hero" aria-labelledby="hero-title">
+          <section className="lv-hero sw-hero" aria-labelledby="hero-title">
+            <p className="landing-eyebrow"><span /> CUSTOM SOFTWARE · AI AUTOMATION · AI SEARCH</p>
+            <h1 id="hero-title">We build the software<br />your business <span className="hero-found">runs on<svg viewBox="0 0 330 18" aria-hidden="true"><path d="M4 13 Q150 -2 326 7" /></svg></span>.</h1>
+            <p className="lv-hero-sub">
+              Custom ERP, CRM, mobile apps and AI automation for growing businesses in India. {WORK.total} projects delivered across {WORK.industries} industries, and you can try almost every one with a live demo.
+            </p>
+            <div className="hero-buttons lv-center">
+              <Link href="/work" className="landing-button">See our work <Icon name="arrow" size={18} /></Link>
+              <a href={whatsappLink("Hi Foundly, I'd like to discuss custom software for my business.")} className="landing-button secondary">Discuss your project</a>
+            </div>
+            <ul className="sw-hero-services" aria-label="What we build">
+              {HERO_SERVICES.map((s) => (
+                <li key={s.href}>
+                  <Link href={s.href}>
+                    <span className="sw-hero-ic"><Icon name={s.icon} size={17} /></span>
+                    <b>{s.label}</b>
+                    <small>{s.count} projects</small>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <div className="sw-hero-showcase" aria-label="Featured projects">
+            {HOME_FEATURED.slice(0, 3).map((p, i) => (
+              <Link key={p.slug} href={`/work/${p.slug}`} className={`sw-shot sw-shot-${i}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- static screenshot from /public */}
+                <img src={p.img} alt={`${p.name} screenshot`} loading={i === 0 ? "eager" : "lazy"} />
+                <span className="sw-shot-tag"><i /> Live demo · {p.label}</span>
+                <span className="sw-shot-name">{p.name}</span>
+              </Link>
+            ))}
+          </div>
+          <dl className="sw-hero-stats">
+            <div><dt>Projects delivered</dt><dd>{WORK.total}</dd></div>
+            <div><dt>Industries</dt><dd>{WORK.industries}</dd></div>
+            <div><dt>Live demos you can try</dt><dd>{WORK.live}</dd></div>
+            <div><dt>Built for</dt><dd>India</dd></div>
+          </dl>
+        </div>
+
+        <section id="product" className="landing-section lv-geo" aria-labelledby="geo-title">
+          <div className="lv-hero lv-geo-head">
             <p className="landing-eyebrow"><span /> AI SEARCH VISIBILITY FOR LOCAL BUSINESSES</p>
-            <h1 id="hero-title">Get recommended when<br />customers <span className="hero-found">ask AI<svg viewBox="0 0 330 18" aria-hidden="true"><path d="M4 13 Q150 -2 326 7" /></svg></span>.</h1>
+            <h2 id="geo-title">Get recommended when customers ask AI.</h2>
             <p className="lv-hero-sub">
               Foundly tracks how ChatGPT, Gemini, Perplexity and Claude talk about your business, shows who they recommend instead, and tells you exactly what to fix.
             </p>
             <div className="hero-buttons lv-center">
               <Link href="/signup" className="landing-button">Start free <Icon name="arrow" size={18} /></Link>
-              <a href="#product" className="landing-button secondary">See the dashboard <Icon name="down" size={17} /></a>
+              <a href="#ai-answers" className="landing-button secondary">See the AI answers <Icon name="down" size={17} /></a>
             </div>
             <EngineRow />
             <p className="lv-note">No card needed · Set up in 3 minutes · Made for businesses in India</p>
-            <nav className="lv-build" aria-label="Software we build">
-              <p><b>We also build software for your business:</b></p>
-              <div>
-                <Link href="/software/erp"><Icon name="business" size={15} /> ERP</Link>
-                <Link href="/software/crm"><Icon name="leads" size={15} /> CRM</Link>
-                <Link href="/software/app"><Icon name="website" size={15} /> Mobile apps</Link>
-                <Link href="/services#custom-development"><Icon name="settings" size={15} /> Custom software</Link>
-                <Link href="/automation"><Icon name="spark" size={15} /> AI automation</Link>
-                <Link href="/work" className="lv-build-work">See {PROJECT_COUNT} projects with live demos <Icon name="arrow" size={15} /></Link>
-              </div>
-            </nav>
-          </section>
-          <div id="product" className="lv-product">
+          </div>
+          <div className="lv-product">
             <LandingDashboard />
           </div>
-        </div>
+        </section>
 
         <section id="ai-answers" className="landing-section landing-ai landing-fit" aria-labelledby="ai-title"><div className="fit-body">
           <div className="landing-section-heading"><div><p className="landing-eyebrow"><span /> THE ANSWERS BEHIND THE NUMBERS</p><h2 id="ai-title">Read exactly what<br />AI says about you.</h2></div><p>Every answer is saved: your name highlighted, competitors marked, the position you were listed at and the sources the assistant read.</p></div>
